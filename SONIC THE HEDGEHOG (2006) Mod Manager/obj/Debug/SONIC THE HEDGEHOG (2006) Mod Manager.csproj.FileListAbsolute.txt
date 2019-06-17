@@ -1,0 +1,11 @@
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\bin\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.exe.config
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\bin\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.exe
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\bin\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.pdb
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.csprojAssemblyReference.cache
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC_THE_HEDGEHOG__2006__Mod_Manager.Properties.Resources.resources
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.csproj.GenerateResource.cache
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.csproj.CoreCompileInputs.cache
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.exe
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC THE HEDGEHOG (2006) Mod Manager.pdb
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC_THE_HEDGEHOG__2006__Mod_Manager.ModManager.resources
+C:\Users\Knuxfan24\source\repos\SONIC THE HEDGEHOG (2006) Mod Manager\SONIC THE HEDGEHOG (2006) Mod Manager\obj\Debug\SONIC_THE_HEDGEHOG__2006__Mod_Manager.ModCreate.resources
