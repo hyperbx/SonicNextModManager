@@ -32,7 +32,10 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
             s06PathBox.Text = Properties.Settings.Default.s06Path;
             xeniaPath = Properties.Settings.Default.xeniaPath;
             xeniaBox.Text = Properties.Settings.Default.xeniaPath;
+        }
 
+        private void ModManager_Load(object sender, EventArgs e)
+        {
             RefreshMods();
         }
 
@@ -44,33 +47,36 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
             }
             if (modsPath == "")
             {
-                MessageBox.Show("No Mods folder specified, select your SONIC THE HEDGEHOG (2006) mods folder");
+                MessageBox.Show("No Mods folder specified, select your SONIC THE HEDGEHOG (2006) Mods directory...",
+                                "Sonic '06 Mod Manager",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
                 FolderBrowserDialog modPathBrowser = new FolderBrowserDialog();
+                modPathBrowser.Description = "Select your SONIC THE HEDGEHOG (2006) Mods directory...";
                 if (modPathBrowser.ShowDialog() == DialogResult.OK)
                 {
                     modsPath = modPathBrowser.SelectedPath;
                     modsBox.Text = modsPath;
+
+                    if (!Directory.Exists(modsPath))
+                    {
+                        modList.Items.Clear();
+                        return;
+                    }
+                    modArray = Directory.GetDirectories(modsPath);
+                    modList.Items.Clear();
+                    foreach (string mod in modArray)
+                    {
+                        var modName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
+                        modName = modName.Replace("\\", "");
+                        modList.Items.Add(modName);
+                    }
+                    Properties.Settings.Default.modsPath = modsPath;
+                    Properties.Settings.Default.Save();
                 }
-                else
-                {
-                    return;
-                }
+                else{ Application.Exit(); }
             }
-            if (!Directory.Exists(modsPath))
-            {
-                modList.Items.Clear();
-                return;
-            }
-            modArray = Directory.GetDirectories(modsPath);
-            modList.Items.Clear();
-            foreach (string mod in modArray)
-            {
-                var modName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
-                modName = modName.Replace("\\", "");
-                modList.Items.Add(modName);
-            }
-            Properties.Settings.Default.modsPath = modsPath;
-            Properties.Settings.Default.Save();
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
@@ -111,6 +117,7 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
         private void S06PathButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog s06PathBrowser = new FolderBrowserDialog();
+            s06PathBrowser.Description = "Select your SONIC THE HEDGEHOG (2006) Game directory...";
             if (s06PathBrowser.ShowDialog() == DialogResult.OK)
             {
                 s06Path = s06PathBrowser.SelectedPath;
@@ -130,12 +137,16 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            CleanUpMods();
-            CopyMods();
-            Console.WriteLine("\nStarting Xenia.\n");
-            var xenia = Process.Start(xeniaPath);
-            xenia.WaitForExit();
-            CleanUpMods();
+            if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
+            {
+                CleanUpMods();
+                CopyMods();
+                Console.WriteLine("\nStarting Xenia.\n");
+                var xenia = Process.Start(xeniaPath);
+                xenia.WaitForExit();
+                CleanUpMods();
+            }
+            else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void CleanUpMods()
@@ -235,9 +246,11 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
                 }
             }
         }
+
         private void ModsButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog modPathBrowser = new FolderBrowserDialog();
+            modPathBrowser.Description = "Select your SONIC THE HEDGEHOG (2006) Mods directory...";
             if (modPathBrowser.ShowDialog() == DialogResult.OK)
             {
                 modsPath = modPathBrowser.SelectedPath;
@@ -250,6 +263,14 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
         {
             modsPath = modsBox.Text;
             RefreshMods();
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Sonic '06 Mod Manager\n\nKnuxfan24 - Lead Developer\nHyper - Project Helper",
+                            "Credits",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
         }
     }
 }
