@@ -1,4 +1,4 @@
-﻿namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
+﻿namespace Sonic_06_Mod_Manager
 {
     partial class ModManager
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModManager));
             this.playButton = new System.Windows.Forms.Button();
             this.group_Mods = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -51,12 +52,15 @@
             // 
             // playButton
             // 
-            this.playButton.Location = new System.Drawing.Point(9, 373);
+            this.playButton.BackColor = System.Drawing.Color.LightGreen;
+            this.playButton.FlatAppearance.BorderSize = 0;
+            this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playButton.Location = new System.Drawing.Point(10, 379);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(283, 23);
+            this.playButton.Size = new System.Drawing.Size(282, 23);
             this.playButton.TabIndex = 31;
             this.playButton.Text = "Save and Play";
-            this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.UseVisualStyleBackColor = false;
             this.playButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
             // group_Mods
@@ -67,39 +71,48 @@
             this.group_Mods.Controls.Add(this.modList);
             this.group_Mods.Location = new System.Drawing.Point(10, 3);
             this.group_Mods.Name = "group_Mods";
-            this.group_Mods.Size = new System.Drawing.Size(374, 262);
+            this.group_Mods.Size = new System.Drawing.Size(374, 267);
             this.group_Mods.TabIndex = 37;
             this.group_Mods.TabStop = false;
             this.group_Mods.Text = "Mods";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(284, 234);
+            this.button1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(283, 237);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 23);
             this.button1.TabIndex = 37;
             this.button1.Text = "Mod Info";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(90, 234);
+            this.createButton.BackColor = System.Drawing.Color.LightGreen;
+            this.createButton.FlatAppearance.BorderSize = 0;
+            this.createButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.createButton.Location = new System.Drawing.Point(95, 237);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(192, 23);
+            this.createButton.Size = new System.Drawing.Size(182, 23);
             this.createButton.TabIndex = 36;
             this.createButton.Text = "Create New Mod";
-            this.createButton.UseVisualStyleBackColor = true;
+            this.createButton.UseVisualStyleBackColor = false;
             this.createButton.Click += new System.EventHandler(this.CreateButton_Click);
             // 
             // refreshButton
             // 
-            this.refreshButton.Location = new System.Drawing.Point(5, 234);
+            this.refreshButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.refreshButton.FlatAppearance.BorderSize = 0;
+            this.refreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refreshButton.Location = new System.Drawing.Point(6, 237);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(83, 23);
             this.refreshButton.TabIndex = 35;
             this.refreshButton.Text = "Refresh Mods";
-            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.UseVisualStyleBackColor = false;
             this.refreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
             // 
             // modList
@@ -121,7 +134,7 @@
             this.groupBox1.Controls.Add(this.s06PathButton);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.s06PathBox);
-            this.groupBox1.Location = new System.Drawing.Point(10, 267);
+            this.groupBox1.Location = new System.Drawing.Point(10, 273);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(374, 99);
             this.groupBox1.TabIndex = 38;
@@ -130,13 +143,16 @@
             // 
             // modsButton
             // 
+            this.modsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(171)))), ((int)(((byte)(83)))));
+            this.modsButton.FlatAppearance.BorderSize = 0;
+            this.modsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.modsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.modsButton.Location = new System.Drawing.Point(346, 16);
+            this.modsButton.Location = new System.Drawing.Point(346, 17);
             this.modsButton.Name = "modsButton";
-            this.modsButton.Size = new System.Drawing.Size(22, 22);
+            this.modsButton.Size = new System.Drawing.Size(22, 20);
             this.modsButton.TabIndex = 45;
             this.modsButton.Text = "...";
-            this.modsButton.UseVisualStyleBackColor = true;
+            this.modsButton.UseVisualStyleBackColor = false;
             this.modsButton.Click += new System.EventHandler(this.ModsButton_Click);
             // 
             // label3
@@ -158,13 +174,16 @@
             // 
             // xeniaButton
             // 
+            this.xeniaButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(171)))), ((int)(((byte)(83)))));
+            this.xeniaButton.FlatAppearance.BorderSize = 0;
+            this.xeniaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.xeniaButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xeniaButton.Location = new System.Drawing.Point(346, 68);
+            this.xeniaButton.Location = new System.Drawing.Point(346, 69);
             this.xeniaButton.Name = "xeniaButton";
-            this.xeniaButton.Size = new System.Drawing.Size(22, 22);
+            this.xeniaButton.Size = new System.Drawing.Size(22, 20);
             this.xeniaButton.TabIndex = 42;
             this.xeniaButton.Text = "...";
-            this.xeniaButton.UseVisualStyleBackColor = true;
+            this.xeniaButton.UseVisualStyleBackColor = false;
             this.xeniaButton.Click += new System.EventHandler(this.XeniaButton_Click);
             // 
             // label2
@@ -186,13 +205,16 @@
             // 
             // s06PathButton
             // 
+            this.s06PathButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(171)))), ((int)(((byte)(83)))));
+            this.s06PathButton.FlatAppearance.BorderSize = 0;
+            this.s06PathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.s06PathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.s06PathButton.Location = new System.Drawing.Point(346, 42);
+            this.s06PathButton.Location = new System.Drawing.Point(346, 43);
             this.s06PathButton.Name = "s06PathButton";
-            this.s06PathButton.Size = new System.Drawing.Size(22, 22);
+            this.s06PathButton.Size = new System.Drawing.Size(22, 20);
             this.s06PathButton.TabIndex = 39;
             this.s06PathButton.Text = "...";
-            this.s06PathButton.UseVisualStyleBackColor = true;
+            this.s06PathButton.UseVisualStyleBackColor = false;
             this.s06PathButton.Click += new System.EventHandler(this.S06PathButton_Click);
             // 
             // label1
@@ -214,26 +236,31 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(294, 373);
+            this.button2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(298, 379);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(91, 23);
+            this.button2.Size = new System.Drawing.Size(86, 23);
             this.button2.TabIndex = 39;
             this.button2.Text = "About";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 404);
+            this.ClientSize = new System.Drawing.Size(394, 411);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.group_Mods);
             this.Controls.Add(this.playButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ModManager";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";
             this.Load += new System.EventHandler(this.ModManager_Load);
             this.group_Mods.ResumeLayout(false);

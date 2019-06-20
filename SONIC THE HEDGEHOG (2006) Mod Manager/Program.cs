@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
+namespace Sonic_06_Mod_Manager
 {
     static class Program
     {

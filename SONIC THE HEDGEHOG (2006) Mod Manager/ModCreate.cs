@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
+namespace Sonic_06_Mod_Manager
 {
     public partial class ModCreate : Form
     {
@@ -17,7 +17,9 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
         string modVersion = "";
         string modDate = "";
         string modAuthor = "";
+        bool modMerge = false;
         string modPathTrue;
+
         public ModCreate(string modPath)
         {
             Console.WriteLine(modPath);
@@ -71,10 +73,17 @@ namespace SONIC_THE_HEDGEHOG__2006__Mod_Manager
                     if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
                     if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
                     if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
+                    modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
                     modINI.Close();
                 }
             }
             this.Close();
+        }
+
+        private void Check_Merge_CheckedChanged(object sender, EventArgs e)
+        {
+            if (check_Merge.Checked == true) { modMerge = true; }
+            else { modMerge = false; }
         }
     }
 }
