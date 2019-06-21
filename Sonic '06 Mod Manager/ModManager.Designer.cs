@@ -37,6 +37,9 @@
             this.refreshButton = new System.Windows.Forms.Button();
             this.modList = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.combo_System = new System.Windows.Forms.ComboBox();
+            this.lbl_System = new System.Windows.Forms.Label();
+            this.check_FTP = new System.Windows.Forms.CheckBox();
             this.modsButton = new System.Windows.Forms.Button();
             this.lbl_ModsDirectory = new System.Windows.Forms.Label();
             this.modsBox = new System.Windows.Forms.TextBox();
@@ -49,6 +52,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.tm_CreatorDisposal = new System.Windows.Forms.Timer(this.components);
             this.tool_LabelInform = new System.Windows.Forms.ToolTip(this.components);
+            this.stopButton = new System.Windows.Forms.Button();
+            this.tool_Warning = new System.Windows.Forms.ToolTip(this.components);
             this.group_Mods.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -58,11 +63,11 @@
             this.playButton.BackColor = System.Drawing.Color.LightGreen;
             this.playButton.FlatAppearance.BorderSize = 0;
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playButton.Location = new System.Drawing.Point(10, 379);
+            this.playButton.Location = new System.Drawing.Point(10, 402);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(282, 23);
+            this.playButton.Size = new System.Drawing.Size(186, 23);
             this.playButton.TabIndex = 31;
-            this.playButton.Text = "Save and Play";
+            this.playButton.Text = "Play";
             this.playButton.UseVisualStyleBackColor = false;
             this.playButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
@@ -128,6 +133,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.combo_System);
+            this.groupBox1.Controls.Add(this.lbl_System);
+            this.groupBox1.Controls.Add(this.check_FTP);
             this.groupBox1.Controls.Add(this.modsButton);
             this.groupBox1.Controls.Add(this.lbl_ModsDirectory);
             this.groupBox1.Controls.Add(this.modsBox);
@@ -139,10 +147,47 @@
             this.groupBox1.Controls.Add(this.s06PathBox);
             this.groupBox1.Location = new System.Drawing.Point(10, 273);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(374, 99);
+            this.groupBox1.Size = new System.Drawing.Size(374, 121);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Directories";
+            // 
+            // combo_System
+            // 
+            this.combo_System.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_System.FormattingEnabled = true;
+            this.combo_System.Items.AddRange(new object[] {
+            "Xbox 360",
+            "PlayStation 3"});
+            this.combo_System.Location = new System.Drawing.Point(247, 93);
+            this.combo_System.Name = "combo_System";
+            this.combo_System.Size = new System.Drawing.Size(121, 21);
+            this.combo_System.TabIndex = 48;
+            this.combo_System.Visible = false;
+            this.combo_System.SelectedIndexChanged += new System.EventHandler(this.Combo_System_SelectedIndexChanged);
+            // 
+            // lbl_System
+            // 
+            this.lbl_System.AutoSize = true;
+            this.lbl_System.Location = new System.Drawing.Point(202, 97);
+            this.lbl_System.Name = "lbl_System";
+            this.lbl_System.Size = new System.Drawing.Size(44, 13);
+            this.lbl_System.TabIndex = 47;
+            this.lbl_System.Text = "System:";
+            this.lbl_System.Visible = false;
+            // 
+            // check_FTP
+            // 
+            this.check_FTP.AutoSize = true;
+            this.check_FTP.Location = new System.Drawing.Point(100, 96);
+            this.check_FTP.Name = "check_FTP";
+            this.check_FTP.Size = new System.Drawing.Size(86, 17);
+            this.check_FTP.TabIndex = 46;
+            this.check_FTP.Text = "FTP Server?";
+            this.tool_Warning.SetToolTip(this.check_FTP, "This option is experimental! We are not responsible for any data loss or corrupti" +
+        "on that may occur.");
+            this.check_FTP.UseVisualStyleBackColor = true;
+            this.check_FTP.CheckedChanged += new System.EventHandler(this.Check_FTP_CheckedChanged);
             // 
             // modsButton
             // 
@@ -248,7 +293,7 @@
             this.button2.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(298, 379);
+            this.button2.Location = new System.Drawing.Point(298, 402);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 23);
             this.button2.TabIndex = 39;
@@ -265,11 +310,31 @@
             this.tool_LabelInform.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tool_LabelInform.ToolTipTitle = "Label Shortcuts";
             // 
+            // stopButton
+            // 
+            this.stopButton.BackColor = System.Drawing.Color.Tomato;
+            this.stopButton.FlatAppearance.BorderSize = 0;
+            this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.stopButton.Location = new System.Drawing.Point(202, 402);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(90, 23);
+            this.stopButton.TabIndex = 40;
+            this.stopButton.Text = "Stop";
+            this.stopButton.UseVisualStyleBackColor = false;
+            this.stopButton.Visible = false;
+            this.stopButton.Click += new System.EventHandler(this.StopButton_Click);
+            // 
+            // tool_Warning
+            // 
+            this.tool_Warning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
+            this.tool_Warning.ToolTipTitle = "WARNING";
+            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 411);
+            this.ClientSize = new System.Drawing.Size(394, 435);
+            this.Controls.Add(this.stopButton);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.group_Mods);
@@ -308,6 +373,11 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Timer tm_CreatorDisposal;
         private System.Windows.Forms.ToolTip tool_LabelInform;
+        private System.Windows.Forms.CheckBox check_FTP;
+        private System.Windows.Forms.ComboBox combo_System;
+        private System.Windows.Forms.Label lbl_System;
+        private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.ToolTip tool_Warning;
     }
 }
 

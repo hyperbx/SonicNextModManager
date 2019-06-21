@@ -58,5 +58,41 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["xeniaPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ftpPath {
+            get {
+                return ((string)(this["ftpPath"]));
+            }
+            set {
+                this["ftpPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ftp {
+            get {
+                return ((bool)(this["ftp"]));
+            }
+            set {
+                this["ftp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ftpSystem {
+            get {
+                return ((int)(this["ftpSystem"]));
+            }
+            set {
+                this["ftpSystem"] = value;
+            }
+        }
     }
 }
