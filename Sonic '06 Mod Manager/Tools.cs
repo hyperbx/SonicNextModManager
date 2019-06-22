@@ -13,6 +13,29 @@ namespace Tools
 {
     class List
     {
+        public static List<string> root()
+        {
+            try
+            {
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}");
+                request.Method = WebRequestMethods.Ftp.ListDirectory;
+
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                Stream responseStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(responseStream);
+                string names = reader.ReadToEnd();
+
+                reader.Close();
+                response.Close();
+
+                return names.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         #region Xbox 360
         public static List<string> xenonarchives()
         {
