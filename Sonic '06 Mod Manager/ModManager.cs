@@ -1,19 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Linq;
 using System.Data;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
         public static string versionNumber = "Version 1.0";
+        public static string installState = "";
         public static bool isCreatorDisposed;
         string[] modArray;
         string modsPath;
@@ -389,6 +389,11 @@ namespace Sonic_06_Mod_Manager
                         }
                     }
                 }
+                else
+                {
+                    SaveChecks();
+                    LaunchXenia();
+                }
             }
         }
 
@@ -462,6 +467,12 @@ namespace Sonic_06_Mod_Manager
 
         private void CleanUpMods()
         {
+            installState = "cleanup";
+            var convertDialog = new ModStatus();
+            var parentLeft = Left + ((Width - convertDialog.Width) / 2);
+            var parentTop = Top + ((Height - convertDialog.Height) / 2);
+            convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
+            convertDialog.Show();
             if (!check_FTP.Checked)
             {
                 if (s06Path != string.Empty)
@@ -821,12 +832,19 @@ namespace Sonic_06_Mod_Manager
                     }
                 }
             }
+            convertDialog.Close();
         }
 
         private void CopyMods()
         {
             int[] indexes = modList.CheckedIndices.Cast<int>().ToArray();
 
+            installState = "install";
+            var convertDialog = new ModStatus();
+            var parentLeft = Left + ((Width - convertDialog.Width) / 2);
+            var parentTop = Top + ((Height - convertDialog.Height) / 2);
+            convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
+            convertDialog.Show();
             foreach (var item in indexes)
             {
                 var mods = Directory.GetFiles(modArray[item], "*.*", SearchOption.AllDirectories)
@@ -1061,6 +1079,7 @@ namespace Sonic_06_Mod_Manager
                     }
                 }
             }
+            convertDialog.Close();
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -1232,6 +1251,34 @@ namespace Sonic_06_Mod_Manager
                 MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+
+        private void Btn_UpperPriority_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = this.modList.SelectedIndex;
+            object selectedItem = this.modList.SelectedItem;
+
+            this.modList.Items.RemoveAt(selectedIndex);
+            selectedIndex -= 1;
+            this.modList.Items.Insert(selectedIndex, selectedItem);
+            this.modList.SelectedIndex = selectedIndex;
+        }
+
+        private void Btn_DownerPriority_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = this.modList.SelectedIndex;
+            object selectedItem = this.modList.SelectedItem;
+
+            this.modList.Items.RemoveAt(selectedIndex);
+            selectedIndex += 1;
+            this.modList.Items.Insert(selectedIndex, selectedItem);
+            this.modList.SelectedIndex = selectedIndex;
+        }
+
+        private void ModList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.btn_UpperPriority.Enabled = this.modList.SelectedIndex > 0;
+            this.btn_DownerPriority.Enabled = this.modList.SelectedIndex >= 0 && this.modList.SelectedIndex < this.modList.Items.Count - 1;
         }
     }
 }

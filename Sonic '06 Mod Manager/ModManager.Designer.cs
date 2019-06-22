@@ -54,6 +54,8 @@
             this.tool_LabelInform = new System.Windows.Forms.ToolTip(this.components);
             this.stopButton = new System.Windows.Forms.Button();
             this.tool_Warning = new System.Windows.Forms.ToolTip(this.components);
+            this.btn_DownerPriority = new System.Windows.Forms.Button();
+            this.btn_UpperPriority = new System.Windows.Forms.Button();
             this.group_Mods.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +75,8 @@
             // 
             // group_Mods
             // 
+            this.group_Mods.Controls.Add(this.btn_DownerPriority);
+            this.group_Mods.Controls.Add(this.btn_UpperPriority);
             this.group_Mods.Controls.Add(this.button1);
             this.group_Mods.Controls.Add(this.createButton);
             this.group_Mods.Controls.Add(this.refreshButton);
@@ -102,9 +106,9 @@
             this.createButton.BackColor = System.Drawing.Color.LightGreen;
             this.createButton.FlatAppearance.BorderSize = 0;
             this.createButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.createButton.Location = new System.Drawing.Point(95, 237);
+            this.createButton.Location = new System.Drawing.Point(157, 237);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(182, 23);
+            this.createButton.Size = new System.Drawing.Size(120, 23);
             this.createButton.TabIndex = 36;
             this.createButton.Text = "Create New Mod";
             this.createButton.UseVisualStyleBackColor = false;
@@ -130,6 +134,7 @@
             this.modList.Name = "modList";
             this.modList.Size = new System.Drawing.Size(362, 214);
             this.modList.TabIndex = 34;
+            this.modList.SelectedIndexChanged += new System.EventHandler(this.ModList_SelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -329,6 +334,32 @@
             this.tool_Warning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.tool_Warning.ToolTipTitle = "WARNING";
             // 
+            // btn_DownerPriority
+            // 
+            this.btn_DownerPriority.BackColor = System.Drawing.Color.White;
+            this.btn_DownerPriority.Enabled = false;
+            this.btn_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DownerPriority.Location = new System.Drawing.Point(125, 237);
+            this.btn_DownerPriority.Name = "btn_DownerPriority";
+            this.btn_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.btn_DownerPriority.TabIndex = 39;
+            this.btn_DownerPriority.Text = "▼";
+            this.btn_DownerPriority.UseVisualStyleBackColor = false;
+            this.btn_DownerPriority.Click += new System.EventHandler(this.Btn_DownerPriority_Click);
+            // 
+            // btn_UpperPriority
+            // 
+            this.btn_UpperPriority.BackColor = System.Drawing.Color.White;
+            this.btn_UpperPriority.Enabled = false;
+            this.btn_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_UpperPriority.Location = new System.Drawing.Point(95, 237);
+            this.btn_UpperPriority.Name = "btn_UpperPriority";
+            this.btn_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.btn_UpperPriority.TabIndex = 38;
+            this.btn_UpperPriority.Text = "▲";
+            this.btn_UpperPriority.UseVisualStyleBackColor = false;
+            this.btn_UpperPriority.Click += new System.EventHandler(this.Btn_UpperPriority_Click);
+            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -378,6 +409,8 @@
         private System.Windows.Forms.Label lbl_System;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.ToolTip tool_Warning;
+        private System.Windows.Forms.Button btn_DownerPriority;
+        private System.Windows.Forms.Button btn_UpperPriority;
     }
 }
 
