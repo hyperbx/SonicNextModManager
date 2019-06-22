@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModCreate));
             this.label1 = new System.Windows.Forms.Label();
             this.modTitleBox = new System.Windows.Forms.TextBox();
@@ -39,6 +40,7 @@
             this.modAuthorBox = new System.Windows.Forms.TextBox();
             this.createButton = new System.Windows.Forms.Button();
             this.check_Merge = new System.Windows.Forms.CheckBox();
+            this.tool_Info = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -131,8 +133,14 @@
             this.check_Merge.Size = new System.Drawing.Size(62, 17);
             this.check_Merge.TabIndex = 13;
             this.check_Merge.Text = "Merge?";
+            this.tool_Info.SetToolTip(this.check_Merge, "Does this mod need to merge files, rather than replacing them?");
             this.check_Merge.UseVisualStyleBackColor = true;
             this.check_Merge.CheckedChanged += new System.EventHandler(this.Check_Merge_CheckedChanged);
+            // 
+            // tool_Info
+            // 
+            this.tool_Info.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.tool_Info.ToolTipTitle = "Information";
             // 
             // ModCreate
             // 
@@ -173,5 +181,6 @@
         private System.Windows.Forms.TextBox modAuthorBox;
         private System.Windows.Forms.Button createButton;
         private System.Windows.Forms.CheckBox check_Merge;
+        private System.Windows.Forms.ToolTip tool_Info;
     }
 }

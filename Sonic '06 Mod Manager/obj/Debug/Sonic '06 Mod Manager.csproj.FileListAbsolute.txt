@@ -10,3 +10,15 @@ C:\Users\gabe1\Documents\Developer Tools\Mod Manager\Hacked-Together-Mod-Manager
 C:\Users\gabe1\Documents\Developer Tools\Mod Manager\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.csproj.CoreCompileInputs.cache
 C:\Users\gabe1\Documents\Developer Tools\Mod Manager\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.exe
 C:\Users\gabe1\Documents\Developer Tools\Mod Manager\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.pdb
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\bin\Debug\Sonic '06 Mod Manager.exe.config
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\bin\Debug\Sonic '06 Mod Manager.exe
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\bin\Debug\Sonic '06 Mod Manager.pdb
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.csprojAssemblyReference.cache
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic_06_Mod_Manager.About.resources
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic_06_Mod_Manager.ModCreate.resources
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic_06_Mod_Manager.ModManager.resources
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic_06_Mod_Manager.Properties.Resources.resources
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.csproj.GenerateResource.cache
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.csproj.CoreCompileInputs.cache
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.exe
+C:\Users\gabe1\Documents\Developer Tools\Mod Manager_topush\Hacked-Together-Mod-Manager\Sonic '06 Mod Manager\obj\Debug\Sonic '06 Mod Manager.pdb

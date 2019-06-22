@@ -67,7 +67,7 @@
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(186, 23);
             this.playButton.TabIndex = 31;
-            this.playButton.Text = "Play";
+            this.playButton.Text = "Save and Play";
             this.playButton.UseVisualStyleBackColor = false;
             this.playButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
@@ -308,7 +308,7 @@
             // tool_LabelInform
             // 
             this.tool_LabelInform.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.tool_LabelInform.ToolTipTitle = "Label Shortcuts";
+            this.tool_LabelInform.ToolTipTitle = "Shortcuts";
             // 
             // stopButton
             // 
@@ -319,7 +319,7 @@
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(90, 23);
             this.stopButton.TabIndex = 40;
-            this.stopButton.Text = "Stop";
+            this.stopButton.Text = "Remove Mods";
             this.stopButton.UseVisualStyleBackColor = false;
             this.stopButton.Visible = false;
             this.stopButton.Click += new System.EventHandler(this.StopButton_Click);
