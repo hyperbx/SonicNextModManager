@@ -22,7 +22,7 @@ Configure your Game Directory and Xenia Exectuable locations using the text boxe
 ## Xbox 360 Hardware
 [Allan Please Add Details]
 
-## PS3 Hardware
+## PlayStation 3 Hardware
 Tick the FTP Server? box to switch into Hardware Mode, this will replace the Game Directory box with an FTP Location one, enter the FTP link to your Modded PlayStation 3 with a copy of SONIC THE HEDGEHOG (2006) on the Hard Drive, (likely to be similar to ftp://192.168.0.27/dev_hdd0/GAMES/BLES00028-[SONIC THE HEDGEHOG]/PS3_GAME/USRDIR/). Ensure that the System dropdown box is set to PlayStation 3 then click Copy Mods, this will copy the mods your console. Once the copy is complete you can launch the game from your backup loader of choice. Once you're done, you can click Remove Mods to uninstall the mods and restore the game to base form.
 
 # Creating Mods
