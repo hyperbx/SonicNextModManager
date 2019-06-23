@@ -75,34 +75,6 @@ namespace Sonic_06_Mod_Manager
             else if (Properties.Settings.Default.ftpSystem == 1) combo_System.SelectedIndex = 1;
         }
 
-        private void GetChecks()
-        {
-            int totalMods = modList.Items.Count;
-            string getSeek = File.ReadAllLines($"{modsPath}\\mods.ini")[1];
-            string getOrigTotal = File.ReadAllLines($"{modsPath}\\mods.ini")[2];
-            int.TryParse(getSeek.Substring(5, getSeek.Length - 5), out int seek);
-            int.TryParse(getOrigTotal.Substring(6, getOrigTotal.Length - 6), out int origTotal);
-
-            if (origTotal == totalMods)
-            {
-                foreach (int i in Enumerable.Range(3, seek))
-                {
-                    try
-                    {
-                        string currentSeek = File.ReadAllLines($"{modsPath}\\mods.ini")[i];
-                        int.TryParse(currentSeek.Substring(currentSeek.LastIndexOf('=') + 1), out int index);
-                        modList.SetItemChecked(index, true);
-                    }
-                    catch { return; }
-                }
-            }
-            else
-            {
-                try { File.Delete($"{modsPath}\\mods.ini"); }
-                catch { return; }
-            }
-        }
-
         private void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath)
         {
             string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
@@ -213,6 +185,74 @@ namespace Sonic_06_Mod_Manager
             }
             Properties.Settings.Default.modsPath = modsPath;
             Properties.Settings.Default.Save();
+
+            if (File.Exists($"{modsPath}\\mods.ini")) GetChecks();
+        }
+
+        private void GetChecks()
+        {
+            int totalMods = modList.Items.Count;
+            string getSeek = File.ReadAllLines($"{modsPath}\\mods.ini")[1];
+            string getOrigTotal = File.ReadAllLines($"{modsPath}\\mods.ini")[2];
+            int.TryParse(getSeek.Substring(5, getSeek.Length - 5), out int seek);
+            int.TryParse(getOrigTotal.Substring(6, getOrigTotal.Length - 6), out int origTotal);
+
+            if (origTotal == totalMods)
+            {
+                foreach (int i in Enumerable.Range(3, seek))
+                {
+                    try
+                    {
+                        string currentSeek = File.ReadAllLines($"{modsPath}\\mods.ini")[i];
+                        int.TryParse(currentSeek.Substring(currentSeek.LastIndexOf('=') + 1), out int index);
+                        modList.SetItemChecked(index, true);
+                    }
+                    catch { return; }
+                }
+            }
+            else
+            {
+                try { File.Delete($"{modsPath}\\mods.ini"); }
+                catch { return; }
+            }
+        }
+
+        private void SaveChecks()
+        {
+            string checkList = $"{modsPath}\\mods.ini";
+            int checkTotal = 0;
+            int item = 0;
+
+            foreach (string items in modList.CheckedItems) { checkTotal++; }
+
+            using (StreamWriter sw = File.CreateText(checkList))
+            {
+                sw.WriteLine("[Main]");
+                sw.WriteLine($"Seek={checkTotal}");
+                sw.WriteLine($"Total={modList.Items.Count}");
+            }
+
+            foreach (int check in modList.CheckedIndices)
+            {
+                using (StreamWriter sw = File.AppendText(checkList))
+                {
+                    sw.WriteLine($"\"{modList.Items[check]}\"={check}");
+                }
+            }
+
+            using (StreamWriter sw = File.AppendText(checkList))
+            {
+                sw.WriteLine("\n[Mods]");
+            }
+
+            for (int i = 0; i < modList.Items.Count; i++)
+            {
+                using (StreamWriter sw = File.AppendText(checkList))
+                {
+                    sw.WriteLine($"Mod{i}=\"{modList.Items[i]}\"");
+                }
+            }
+
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
@@ -451,44 +491,6 @@ namespace Sonic_06_Mod_Manager
             var xenia = Process.Start(xeniaExec);
             xenia.WaitForExit();
             CleanUpMods();
-        }
-
-        private void SaveChecks()
-        {
-            string checkList = $"{modsPath}\\mods.ini";
-            int checkTotal = 0;
-            int item = 0;
-
-            foreach (string items in modList.CheckedItems) { checkTotal++; }
-
-            using (StreamWriter sw = File.CreateText(checkList))
-            {
-                sw.WriteLine("[Main]");
-                sw.WriteLine($"Seek={checkTotal}");
-                sw.WriteLine($"Total={modList.Items.Count}");
-            }
-
-            foreach (int check in modList.CheckedIndices)
-            {
-                using (StreamWriter sw = File.AppendText(checkList))
-                {
-                    sw.WriteLine($"{modList.Items[check]}={check}");
-                }
-            }
-
-            using (StreamWriter sw = File.AppendText(checkList))
-            {
-                sw.WriteLine("[Mods]");
-            }
-
-            for (int i = 0; i < modList.Items.Count; i++)
-            {
-                using (StreamWriter sw = File.AppendText(checkList))
-                {
-                    sw.WriteLine("Mod " + i + ": " + modList.Items[i]);
-                }
-            }
-
         }
 
         private void CleanUpMods()
