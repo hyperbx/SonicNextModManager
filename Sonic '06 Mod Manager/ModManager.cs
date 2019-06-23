@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace Sonic_06_Mod_Manager
 {
@@ -23,6 +24,7 @@ namespace Sonic_06_Mod_Manager
         string ftpPath;
         string origArcPath;
         string targetArcPath;
+        List<string> checkedModsList = new List<string>() { };
 
         public ModManager()
         {
@@ -280,6 +282,16 @@ namespace Sonic_06_Mod_Manager
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
+            checkedModsList.Clear();
+            for (int i = 0; i < modList.Items.Count; i++)
+            {
+                if (modList.GetItemChecked(i))
+                {
+                    checkedModsList.Add(modList.Items[i].ToString());
+                }
+                
+            }
+            checkedModsList.ForEach(i => Console.Write("{0}\n", i));
             if (modList.CheckedItems.Count != 0)
             {
                 if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
@@ -460,9 +472,23 @@ namespace Sonic_06_Mod_Manager
             {
                 using (StreamWriter sw = File.AppendText(checkList))
                 {
-                    sw.WriteLine($"Index{item++}={check}");
+                    sw.WriteLine($"{modList.Items[check]}={check}");
                 }
             }
+
+            using (StreamWriter sw = File.AppendText(checkList))
+            {
+                sw.WriteLine("[Mods]");
+            }
+
+            for (int i = 0; i < modList.Items.Count; i++)
+            {
+                using (StreamWriter sw = File.AppendText(checkList))
+                {
+                    sw.WriteLine("Mod " + i + ": " + modList.Items[i]);
+                }
+            }
+
         }
 
         private void CleanUpMods()
