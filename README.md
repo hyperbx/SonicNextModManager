@@ -18,8 +18,8 @@ Tick the FTP Server? box to switch into Hardware Mode, this will replace the Gam
 ## Xbox 360 Hardware
 [Allan Please Add Details]
 
-#Creating Mods
+# Creating Mods
 To-Do
 
-#ISO Extraction
+# ISO Extraction
 Something Something 06 Toolkit and MultiMan or whatever we want to tutorialise for the PS3 version.
