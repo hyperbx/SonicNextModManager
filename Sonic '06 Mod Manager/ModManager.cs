@@ -145,7 +145,7 @@ namespace Sonic_06_Mod_Manager
 
             File.Delete(Path.Combine(tempPath, Path.GetFileName(arc2)));
 
-            arctool = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc2))}\" -c \"{output}\"")
+            arctool = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc2))}\" -c \"{output}\"")
             {
                 WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
                 WindowStyle = ProcessWindowStyle.Hidden
@@ -289,7 +289,7 @@ namespace Sonic_06_Mod_Manager
                 {
                     checkedModsList.Add(modList.Items[i].ToString());
                 }
-                
+
             }
             checkedModsList.ForEach(i => Console.Write("{0}\n", i));
             if (modList.CheckedItems.Count != 0)
@@ -863,7 +863,7 @@ namespace Sonic_06_Mod_Manager
 
         private void CopyMods()
         {
-            int[] indexes = modList.CheckedIndices.Cast<int>().ToArray();
+            string[] names = modList.CheckedItems.Cast<string>().ToArray();
 
             installState = "install";
             var convertDialog = new ModStatus();
@@ -871,24 +871,22 @@ namespace Sonic_06_Mod_Manager
             var parentTop = Top + ((Height - convertDialog.Height) / 2);
             convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
             convertDialog.Show();
-            foreach (var item in indexes)
+            foreach (var item in names)
             {
-                var mods = Directory.GetFiles(modArray[item], "*.*", SearchOption.AllDirectories)
+                var mods = Directory.GetFiles($"{modsPath}\\{item}", "*.*", SearchOption.AllDirectories)
                 .Where(s => s.EndsWith(".arc") || s.EndsWith(".wmv") || s.EndsWith(".xma") || s.EndsWith(".xex"));
 
                 foreach (var mod in mods)
                 {
-                    arcPath = mod.Remove(0, modArray[item].Length);
-                    var arcName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
-                    arcName = arcName.Replace("\\", "");
+                    arcPath = mod.Remove(0, $"{modsPath}\\{item}".Length);
                     origArcPath = s06Path + arcPath;
                     targetArcPath = origArcPath + "_back";
 
                     if (!check_FTP.Checked)
                     {
-                        if (File.Exists(modArray[item] + "\\mod.ini"))
+                        if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
                         {
-                            if (File.ReadAllLines(modArray[item] + "\\mod.ini").Contains("Merge=\"True\""))
+                            if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
                             {
                                 if (mod.EndsWith(".arc"))
                                 {
@@ -934,9 +932,9 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (combo_System.SelectedIndex == 0)
                         {
-                            if (File.Exists(modArray[item] + "\\mod.ini"))
+                            if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
                             {
-                                if (File.ReadAllLines(modArray[item] + "\\mod.ini").Contains("Merge=\"True\""))
+                                if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
                                 {
                                     string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
                                     var tempData = new DirectoryInfo(tempPath);
@@ -1018,9 +1016,9 @@ namespace Sonic_06_Mod_Manager
                         }
                         else if (combo_System.SelectedIndex == 1)
                         {
-                            if (File.Exists(modArray[item] + "\\mod.ini"))
+                            if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
                             {
-                                if (File.ReadAllLines(modArray[item] + "\\mod.ini").Contains("Merge=\"True\""))
+                                if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
                                 {
                                     string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
                                     var tempData = new DirectoryInfo(tempPath);
