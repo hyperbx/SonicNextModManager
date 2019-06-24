@@ -53,22 +53,26 @@ namespace Sonic_06_Mod_Manager
             Console.WriteLine(modPathTrue + "\\" + modName);
             if (Directory.Exists(modPathTrue + "\\" + modName))
             {
-                MessageBox.Show("A mod called '" + modName + "' already exists.");
+                MessageBox.Show("A mod called '" + modName + "' already exists.", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             else
             {
-                Directory.CreateDirectory(modPathTrue + "\\" + modName);
-                using (Stream modINILocation = File.Open(modPathTrue + "\\" + modName + "\\mod.ini", FileMode.Create))
-                using (StreamWriter modINI = new StreamWriter(modINILocation))
+                try
                 {
-                    modINI.WriteLine("Title=\"" + modName + "\"");
-                    if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
-                    if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
-                    if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
-                    modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
-                    modINI.Close();
+                    Directory.CreateDirectory(modPathTrue + "\\" + modName);
+                    using (Stream modINILocation = File.Open(modPathTrue + "\\" + modName + "\\mod.ini", FileMode.Create))
+                    using (StreamWriter modINI = new StreamWriter(modINILocation))
+                    {
+                        modINI.WriteLine("Title=\"" + modName + "\"");
+                        if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
+                        if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
+                        if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
+                        modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
+                        modINI.Close();
+                    }
                 }
+                catch { MessageBox.Show("An error occurred when creating the directory. Please check for invalid characters in your mod name.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             }
             ModManager.isCreatorDisposed = true;
             Close();

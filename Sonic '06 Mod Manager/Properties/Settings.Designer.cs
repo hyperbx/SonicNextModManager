@@ -94,5 +94,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["ftpSystem"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int priority {
+            get {
+                return ((int)(this["priority"]));
+            }
+            set {
+                this["priority"] = value;
+            }
+        }
     }
 }

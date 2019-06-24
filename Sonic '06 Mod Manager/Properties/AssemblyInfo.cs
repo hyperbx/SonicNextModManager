@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Sonic '06 Mod Manager")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Sonic '06 Mod Manager")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Sonic '06 Mod Manager")]

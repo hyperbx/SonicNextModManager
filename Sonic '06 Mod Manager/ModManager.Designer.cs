@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModManager));
             this.playButton = new System.Windows.Forms.Button();
             this.group_Mods = new System.Windows.Forms.GroupBox();
+            this.btn_DownerPriority = new System.Windows.Forms.Button();
+            this.btn_UpperPriority = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.createButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
@@ -54,8 +56,9 @@
             this.tool_LabelInform = new System.Windows.Forms.ToolTip(this.components);
             this.stopButton = new System.Windows.Forms.Button();
             this.tool_Warning = new System.Windows.Forms.ToolTip(this.components);
-            this.btn_DownerPriority = new System.Windows.Forms.Button();
-            this.btn_UpperPriority = new System.Windows.Forms.Button();
+            this.btn_DeselectAll = new System.Windows.Forms.Button();
+            this.btn_SelectAll = new System.Windows.Forms.Button();
+            this.combo_Priority = new System.Windows.Forms.ComboBox();
             this.group_Mods.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -65,7 +68,7 @@
             this.playButton.BackColor = System.Drawing.Color.LightGreen;
             this.playButton.FlatAppearance.BorderSize = 0;
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playButton.Location = new System.Drawing.Point(10, 402);
+            this.playButton.Location = new System.Drawing.Point(10, 432);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(186, 23);
             this.playButton.TabIndex = 31;
@@ -75,27 +78,57 @@
             // 
             // group_Mods
             // 
+            this.group_Mods.Controls.Add(this.combo_Priority);
+            this.group_Mods.Controls.Add(this.btn_DeselectAll);
+            this.group_Mods.Controls.Add(this.btn_SelectAll);
             this.group_Mods.Controls.Add(this.btn_DownerPriority);
             this.group_Mods.Controls.Add(this.btn_UpperPriority);
             this.group_Mods.Controls.Add(this.button1);
             this.group_Mods.Controls.Add(this.createButton);
             this.group_Mods.Controls.Add(this.refreshButton);
             this.group_Mods.Controls.Add(this.modList);
-            this.group_Mods.Location = new System.Drawing.Point(10, 3);
+            this.group_Mods.Location = new System.Drawing.Point(10, 4);
             this.group_Mods.Name = "group_Mods";
-            this.group_Mods.Size = new System.Drawing.Size(374, 267);
+            this.group_Mods.Size = new System.Drawing.Size(375, 298);
             this.group_Mods.TabIndex = 37;
             this.group_Mods.TabStop = false;
             this.group_Mods.Text = "Mods";
             // 
+            // btn_DownerPriority
+            // 
+            this.btn_DownerPriority.BackColor = System.Drawing.Color.White;
+            this.btn_DownerPriority.Enabled = false;
+            this.btn_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DownerPriority.Location = new System.Drawing.Point(125, 238);
+            this.btn_DownerPriority.Name = "btn_DownerPriority";
+            this.btn_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.btn_DownerPriority.TabIndex = 39;
+            this.btn_DownerPriority.Text = "▼";
+            this.btn_DownerPriority.UseVisualStyleBackColor = false;
+            this.btn_DownerPriority.Click += new System.EventHandler(this.Btn_DownerPriority_Click);
+            // 
+            // btn_UpperPriority
+            // 
+            this.btn_UpperPriority.BackColor = System.Drawing.Color.White;
+            this.btn_UpperPriority.Enabled = false;
+            this.btn_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_UpperPriority.Location = new System.Drawing.Point(95, 238);
+            this.btn_UpperPriority.Name = "btn_UpperPriority";
+            this.btn_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.btn_UpperPriority.TabIndex = 38;
+            this.btn_UpperPriority.Text = "▲";
+            this.btn_UpperPriority.UseVisualStyleBackColor = false;
+            this.btn_UpperPriority.Click += new System.EventHandler(this.Btn_UpperPriority_Click);
+            // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button1.Enabled = false;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(283, 237);
+            this.button1.Location = new System.Drawing.Point(221, 267);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(85, 23);
+            this.button1.Size = new System.Drawing.Size(147, 23);
             this.button1.TabIndex = 37;
             this.button1.Text = "Mod Info";
             this.button1.UseVisualStyleBackColor = false;
@@ -106,9 +139,9 @@
             this.createButton.BackColor = System.Drawing.Color.LightGreen;
             this.createButton.FlatAppearance.BorderSize = 0;
             this.createButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.createButton.Location = new System.Drawing.Point(157, 237);
+            this.createButton.Location = new System.Drawing.Point(249, 238);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(120, 23);
+            this.createButton.Size = new System.Drawing.Size(119, 23);
             this.createButton.TabIndex = 36;
             this.createButton.Text = "Create New Mod";
             this.createButton.UseVisualStyleBackColor = false;
@@ -119,9 +152,9 @@
             this.refreshButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.refreshButton.FlatAppearance.BorderSize = 0;
             this.refreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.refreshButton.Location = new System.Drawing.Point(6, 237);
+            this.refreshButton.Location = new System.Drawing.Point(157, 238);
             this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(83, 23);
+            this.refreshButton.Size = new System.Drawing.Size(86, 23);
             this.refreshButton.TabIndex = 35;
             this.refreshButton.Text = "Refresh Mods";
             this.refreshButton.UseVisualStyleBackColor = false;
@@ -150,7 +183,7 @@
             this.groupBox1.Controls.Add(this.s06PathButton);
             this.groupBox1.Controls.Add(this.lbl_GameDirectory);
             this.groupBox1.Controls.Add(this.s06PathBox);
-            this.groupBox1.Location = new System.Drawing.Point(10, 273);
+            this.groupBox1.Location = new System.Drawing.Point(10, 304);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(374, 121);
             this.groupBox1.TabIndex = 38;
@@ -298,7 +331,7 @@
             this.button2.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(298, 402);
+            this.button2.Location = new System.Drawing.Point(298, 432);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 23);
             this.button2.TabIndex = 39;
@@ -320,7 +353,7 @@
             this.stopButton.BackColor = System.Drawing.Color.Tomato;
             this.stopButton.FlatAppearance.BorderSize = 0;
             this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.stopButton.Location = new System.Drawing.Point(202, 402);
+            this.stopButton.Location = new System.Drawing.Point(202, 432);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(90, 23);
             this.stopButton.TabIndex = 40;
@@ -334,37 +367,50 @@
             this.tool_Warning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.tool_Warning.ToolTipTitle = "WARNING";
             // 
-            // btn_DownerPriority
+            // btn_DeselectAll
             // 
-            this.btn_DownerPriority.BackColor = System.Drawing.Color.White;
-            this.btn_DownerPriority.Enabled = false;
-            this.btn_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DownerPriority.Location = new System.Drawing.Point(125, 237);
-            this.btn_DownerPriority.Name = "btn_DownerPriority";
-            this.btn_DownerPriority.Size = new System.Drawing.Size(26, 23);
-            this.btn_DownerPriority.TabIndex = 39;
-            this.btn_DownerPriority.Text = "▼";
-            this.btn_DownerPriority.UseVisualStyleBackColor = false;
-            this.btn_DownerPriority.Click += new System.EventHandler(this.Btn_DownerPriority_Click);
+            this.btn_DeselectAll.BackColor = System.Drawing.Color.Tomato;
+            this.btn_DeselectAll.FlatAppearance.BorderSize = 0;
+            this.btn_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DeselectAll.Location = new System.Drawing.Point(6, 267);
+            this.btn_DeselectAll.Name = "btn_DeselectAll";
+            this.btn_DeselectAll.Size = new System.Drawing.Size(83, 23);
+            this.btn_DeselectAll.TabIndex = 41;
+            this.btn_DeselectAll.Text = "Deselect All";
+            this.btn_DeselectAll.UseVisualStyleBackColor = false;
+            this.btn_DeselectAll.Click += new System.EventHandler(this.Btn_DeselectAll_Click);
             // 
-            // btn_UpperPriority
+            // btn_SelectAll
             // 
-            this.btn_UpperPriority.BackColor = System.Drawing.Color.White;
-            this.btn_UpperPriority.Enabled = false;
-            this.btn_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_UpperPriority.Location = new System.Drawing.Point(95, 237);
-            this.btn_UpperPriority.Name = "btn_UpperPriority";
-            this.btn_UpperPriority.Size = new System.Drawing.Size(26, 23);
-            this.btn_UpperPriority.TabIndex = 38;
-            this.btn_UpperPriority.Text = "▲";
-            this.btn_UpperPriority.UseVisualStyleBackColor = false;
-            this.btn_UpperPriority.Click += new System.EventHandler(this.Btn_UpperPriority_Click);
+            this.btn_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
+            this.btn_SelectAll.FlatAppearance.BorderSize = 0;
+            this.btn_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_SelectAll.Location = new System.Drawing.Point(6, 238);
+            this.btn_SelectAll.Name = "btn_SelectAll";
+            this.btn_SelectAll.Size = new System.Drawing.Size(83, 23);
+            this.btn_SelectAll.TabIndex = 40;
+            this.btn_SelectAll.Text = "Select All";
+            this.btn_SelectAll.UseVisualStyleBackColor = false;
+            this.btn_SelectAll.Click += new System.EventHandler(this.Btn_SelectAll_Click);
+            // 
+            // combo_Priority
+            // 
+            this.combo_Priority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_Priority.FormattingEnabled = true;
+            this.combo_Priority.Items.AddRange(new object[] {
+            "Top to Bottom",
+            "Bottom to Top"});
+            this.combo_Priority.Location = new System.Drawing.Point(95, 268);
+            this.combo_Priority.Name = "combo_Priority";
+            this.combo_Priority.Size = new System.Drawing.Size(120, 21);
+            this.combo_Priority.TabIndex = 50;
+            this.combo_Priority.SelectedIndexChanged += new System.EventHandler(this.Combo_Priority_SelectedIndexChanged);
             // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 435);
+            this.ClientSize = new System.Drawing.Size(394, 464);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox1);
@@ -411,6 +457,9 @@
         private System.Windows.Forms.ToolTip tool_Warning;
         private System.Windows.Forms.Button btn_DownerPriority;
         private System.Windows.Forms.Button btn_UpperPriority;
+        private System.Windows.Forms.Button btn_DeselectAll;
+        private System.Windows.Forms.Button btn_SelectAll;
+        private System.Windows.Forms.ComboBox combo_Priority;
     }
 }
 

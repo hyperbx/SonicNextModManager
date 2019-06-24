@@ -34,6 +34,7 @@
             this.lbl_versionNumber = new System.Windows.Forms.Label();
             this.lbl_Contributors = new System.Windows.Forms.Label();
             this.btn_GitHub = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,11 +95,25 @@
             this.btn_GitHub.UseVisualStyleBackColor = false;
             this.btn_GitHub.Click += new System.EventHandler(this.Btn_GitHub_Click);
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Tomato;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(234, 155);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(246, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Reset Sonic \'06 Mod Manager";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(487, 214);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_GitHub);
             this.Controls.Add(this.lbl_Contributors);
             this.Controls.Add(this.lbl_versionNumber);
@@ -125,5 +140,6 @@
         private System.Windows.Forms.Label lbl_versionNumber;
         private System.Windows.Forms.Label lbl_Contributors;
         private System.Windows.Forms.Button btn_GitHub;
+        private System.Windows.Forms.Button button1;
     }
 }

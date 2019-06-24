@@ -5,9 +5,35 @@ using System.Linq;
 using System.Data;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Text.RegularExpressions;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
+// Welcome to Sonic '06 Mod Manager!
+
+// Sonic '06 Mod Manager is licensed under the MIT License:
+/*
+ * MIT License
+
+ * Copyright (c) 2019 Knuxfan24 & HyperPolygon64
+
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 namespace Sonic_06_Mod_Manager
 {
@@ -44,8 +70,6 @@ namespace Sonic_06_Mod_Manager
 
         private void ModManager_Load(object sender, EventArgs e)
         {
-            Text = $"Sonic '06 Mod Manager ({versionNumber})";
-
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php", Properties.Resources.arctoolphp);
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\unarc.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\unarc.php", Properties.Resources.unarcphp);
@@ -54,7 +78,6 @@ namespace Sonic_06_Mod_Manager
 
             RefreshMods();
             if (Directory.Exists(s06Path)) CleanUpMods();
-            if (File.Exists($"{modsPath}\\mods.ini")) GetChecks();
 
             tm_CreatorDisposal.Start();
 
@@ -73,6 +96,9 @@ namespace Sonic_06_Mod_Manager
 
             if (Properties.Settings.Default.ftpSystem == 0) combo_System.SelectedIndex = 0;
             else if (Properties.Settings.Default.ftpSystem == 1) combo_System.SelectedIndex = 1;
+
+            if (Properties.Settings.Default.priority == 0) combo_Priority.SelectedIndex = 0;
+            else if (Properties.Settings.Default.priority == 1) combo_Priority.SelectedIndex = 1;
         }
 
         private void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath)
@@ -175,45 +201,63 @@ namespace Sonic_06_Mod_Manager
                 modList.Items.Clear();
                 return;
             }
-            modArray = Directory.GetDirectories(modsPath);
-            modList.Items.Clear();
-            foreach (string mod in modArray)
-            {
-                var modName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
-                modName = modName.Replace("\\", "");
-                modList.Items.Add(modName);
-            }
+
             Properties.Settings.Default.modsPath = modsPath;
             Properties.Settings.Default.Save();
 
             if (File.Exists($"{modsPath}\\mods.ini")) GetChecks();
+            else
+            {
+                modArray = Directory.GetDirectories(modsPath);
+                modList.Items.Clear();
+                foreach (string mod in modArray)
+                {
+                    var modName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
+                    modName = modName.Replace("\\", "");
+                    modList.Items.Add(modName);
+                }
+            }
         }
 
         private void GetChecks()
         {
-            int totalMods = modList.Items.Count;
-            string getSeek = File.ReadAllLines($"{modsPath}\\mods.ini")[1];
-            string getOrigTotal = File.ReadAllLines($"{modsPath}\\mods.ini")[2];
-            int.TryParse(getSeek.Substring(5, getSeek.Length - 5), out int seek);
-            int.TryParse(getOrigTotal.Substring(6, getOrigTotal.Length - 6), out int origTotal);
-
-            if (origTotal == totalMods)
+            string line;
+            modArray = Directory.GetDirectories(modsPath);
+            using (StreamReader sr = new StreamReader($"{modsPath}\\mods.ini"))
             {
-                foreach (int i in Enumerable.Range(3, seek))
+                sr.ReadLine();
+                modList.Items.Clear();
+                while ((line = sr.ReadLine()) != null)
                 {
-                    try
+                    bool modExists = false;
+                    foreach (var item in modArray)
                     {
-                        string currentSeek = File.ReadAllLines($"{modsPath}\\mods.ini")[i];
-                        int.TryParse(currentSeek.Substring(currentSeek.LastIndexOf('=') + 1), out int index);
-                        modList.SetItemChecked(index, true);
+                        if (Path.GetFileName(item) == line) modExists = true;
                     }
-                    catch { return; }
+                    if (modExists)
+                    {
+                        modList.Items.Add(line);
+                        for (int i = 0; i < modList.Items.Count; i++) modList.SetItemChecked(i, true);
+                    }
                 }
             }
-            else
+
+            foreach (string mod in modArray)
             {
-                try { File.Delete($"{modsPath}\\mods.ini"); }
-                catch { return; }
+                var modName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
+                modName = modName.Replace("\\", "");
+                bool isInList = false;
+                for (int i = 0; i < modList.Items.Count; i++)
+                {
+                    if (modName == modList.Items[i].ToString())
+                    {
+                        isInList = true;
+                    }
+                }
+                if (!isInList)
+                {
+                    modList.Items.Add(modName);
+                }
             }
         }
 
@@ -221,38 +265,21 @@ namespace Sonic_06_Mod_Manager
         {
             string checkList = $"{modsPath}\\mods.ini";
             int checkTotal = 0;
-            int item = 0;
 
             foreach (string items in modList.CheckedItems) { checkTotal++; }
 
             using (StreamWriter sw = File.CreateText(checkList))
             {
                 sw.WriteLine("[Main]");
-                sw.WriteLine($"Seek={checkTotal}");
-                sw.WriteLine($"Total={modList.Items.Count}");
             }
 
-            foreach (int check in modList.CheckedIndices)
+            foreach (var item in checkedModsList)
             {
                 using (StreamWriter sw = File.AppendText(checkList))
                 {
-                    sw.WriteLine($"\"{modList.Items[check]}\"={check}");
+                    sw.WriteLine($"{item}");
                 }
             }
-
-            using (StreamWriter sw = File.AppendText(checkList))
-            {
-                sw.WriteLine("\n[Mods]");
-            }
-
-            for (int i = 0; i < modList.Items.Count; i++)
-            {
-                using (StreamWriter sw = File.AppendText(checkList))
-                {
-                    sw.WriteLine($"Mod{i}=\"{modList.Items[i]}\"");
-                }
-            }
-
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
@@ -323,13 +350,25 @@ namespace Sonic_06_Mod_Manager
         private void PlayButton_Click(object sender, EventArgs e)
         {
             checkedModsList.Clear();
-            for (int i = 0; i < modList.Items.Count; i++)
+            if (combo_Priority.SelectedIndex == 0)
             {
-                if (modList.GetItemChecked(i))
+                for (int i = modList.Items.Count - 1; i >= 0; i--)
                 {
-                    checkedModsList.Add(modList.Items[i].ToString());
+                    if (modList.GetItemChecked(i))
+                    {
+                        checkedModsList.Add(modList.Items[i].ToString());
+                    }
                 }
-
+            }
+            else if (combo_Priority.SelectedIndex == 1)
+            {
+                for (int i = 0; i < modList.Items.Count; i++)
+                {
+                    if (modList.GetItemChecked(i))
+                    {
+                        checkedModsList.Add(modList.Items[i].ToString());
+                    }
+                }
             }
             checkedModsList.ForEach(i => Console.Write("{0}\n", i));
             if (modList.CheckedItems.Count != 0)
@@ -865,7 +904,7 @@ namespace Sonic_06_Mod_Manager
 
         private void CopyMods()
         {
-            string[] names = modList.CheckedItems.Cast<string>().ToArray();
+            string[] names = checkedModsList.ToArray(); //modList.CheckedItems.Cast<string>().ToArray();
 
             installState = "install";
             var convertDialog = new ModStatus();
@@ -994,6 +1033,16 @@ namespace Sonic_06_Mod_Manager
                                 {
                                     using (WebClient client = new WebClient())
                                     {
+                                        FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                        if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                        Console.WriteLine(win32cleanup.RequestUri);
+                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                        win32cleanup.UseBinary = false;
+                                        win32cleanup.UsePassive = true;
+                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
                                         if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                         else if (mod.Contains(@"\xenon\sound\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                         else if (mod.Contains(@"\xenon\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
@@ -1007,6 +1056,16 @@ namespace Sonic_06_Mod_Manager
                             {
                                 using (WebClient client = new WebClient())
                                 {
+                                    FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                    if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                    else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                    Console.WriteLine(win32cleanup.RequestUri);
+                                    win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                    win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                    win32cleanup.UseBinary = false;
+                                    win32cleanup.UsePassive = true;
+
+                                    FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
                                     if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                     else if (mod.Contains(@"\xenon\sound\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                     else if (mod.Contains(@"\xenon\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
@@ -1078,6 +1137,16 @@ namespace Sonic_06_Mod_Manager
                                 {
                                     using (WebClient client = new WebClient())
                                     {
+                                        FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                        if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                        Console.WriteLine(win32cleanup.RequestUri);
+                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                        win32cleanup.UseBinary = false;
+                                        win32cleanup.UsePassive = true;
+                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
                                         if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                         else if (mod.Contains(@"\ps3\sound\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                         else if (mod.Contains(@"\ps3\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
@@ -1091,6 +1160,16 @@ namespace Sonic_06_Mod_Manager
                             {
                                 using (WebClient client = new WebClient())
                                 {
+                                    FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                    if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                    else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                    Console.WriteLine(win32cleanup.RequestUri);
+                                    win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                    win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                    win32cleanup.UseBinary = false;
+                                    win32cleanup.UsePassive = true;
+                                    FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
                                     if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                     else if (mod.Contains(@"\ps3\sound\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                     else if (mod.Contains(@"\ps3\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
@@ -1100,9 +1179,8 @@ namespace Sonic_06_Mod_Manager
                                 }
                             }
                         }
-
-                        MessageBox.Show("Mod installation complete! You can now launch the game.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
+                    if (check_FTP.Checked) MessageBox.Show("Mod installation complete! You can now launch the game.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             convertDialog.Close();
@@ -1110,16 +1188,16 @@ namespace Sonic_06_Mod_Manager
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (modList.SelectedIndex == -1)
-            {
-                return;
-            }
+            string[] names = checkedModsList.ToArray();
+
+            if (modList.SelectedIndex == -1) return;
             else
             {
-                if (File.Exists(modArray[modList.SelectedIndex] + "\\mod.ini"))
+                string getItem = modList.GetItemText(modList.SelectedItem);
+                if (File.Exists($"{Path.Combine(modsPath, getItem)}\\mod.ini"))
                 {
                     var modDetails = "";
-                    using (StreamReader configFile = new StreamReader(modArray[modList.SelectedIndex] + "\\mod.ini"))
+                    using (StreamReader configFile = new StreamReader($"{Path.Combine(modsPath, getItem)}\\mod.ini"))
                     {
                         string line;
                         string entryValue;
@@ -1129,31 +1207,31 @@ namespace Sonic_06_Mod_Manager
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
-                                modDetails = modDetails + "Title: " + entryValue + "\n";
+                                modDetails += "Title: " + entryValue + "\n";
                             }
                             if (line.Contains("Version=\""))
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
-                                modDetails = modDetails + "Version: " + entryValue + "\n";
+                                modDetails += "Version: " + entryValue + "\n";
                             }
                             if (line.Contains("Date=\""))
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
-                                modDetails = modDetails + "Date: " + entryValue + "\n";
+                                modDetails += "Date: " + entryValue + "\n";
                             }
                             if (line.Contains("Author=\""))
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
-                                modDetails = modDetails + "Author: " + entryValue + "\n";
+                                modDetails += "Author: " + entryValue + "\n";
                             }
                             if (line.Contains("Merge=\""))
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
-                                modDetails = modDetails + "Merge: " + entryValue + "\n";
+                                modDetails += "Merge: " + entryValue + "\n";
                             }
                         }
                     }
@@ -1303,8 +1381,28 @@ namespace Sonic_06_Mod_Manager
 
         private void ModList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            this.button1.Enabled = this.modList.SelectedIndex >= 0;
             this.btn_UpperPriority.Enabled = this.modList.SelectedIndex > 0;
             this.btn_DownerPriority.Enabled = this.modList.SelectedIndex >= 0 && this.modList.SelectedIndex < this.modList.Items.Count - 1;
+        }
+
+        private void Btn_SelectAll_Click(object sender, EventArgs e)
+        {
+            //Checks all available checkboxes.
+            for (int i = 0; i < modList.Items.Count; i++) modList.SetItemChecked(i, true);
+        }
+
+        private void Btn_DeselectAll_Click(object sender, EventArgs e)
+        {
+            //Unchecks all available checkboxes.
+            for (int i = 0; i < modList.Items.Count; i++) modList.SetItemChecked(i, false);
+        }
+
+        private void Combo_Priority_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (combo_Priority.SelectedIndex == 0) { Properties.Settings.Default.priority = 0; }
+            else { Properties.Settings.Default.priority = 1; }
+            Properties.Settings.Default.Save();
         }
     }
 }
