@@ -373,45 +373,90 @@ namespace Sonic_06_Mod_Manager
             checkedModsList.ForEach(i => Console.Write("{0}\n", i));
             if (modList.CheckedItems.Count != 0)
             {
-                if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
+                if (!check_FTP.Checked)
                 {
-                    SaveChecks();
-
-                    if (check_FTP.Checked)
+                    if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
                     {
-                        if (s06PathBox.Text.StartsWith("ftp://"))
-                        {
-                            if (s06PathBox.Text.EndsWith("/"))
-                            {
-                                InstallMods();
-                            }
-                            else
-                            {
-                                s06PathBox.AppendText("/");
-                                InstallMods();
-                            }
-                        }
-                        else
-                        {
-                            if (s06PathBox.Text.StartsWith("/")) { s06PathBox.Text = s06PathBox.Text.Substring(1); }
-                            s06PathBox.Text = $"ftp://{s06PathBox.Text}";
+                        SaveChecks();
 
-                            if (s06PathBox.Text.EndsWith("/"))
+                        if (check_FTP.Checked)
+                        {
+                            if (s06PathBox.Text.StartsWith("ftp://"))
                             {
-                                InstallMods();
+                                if (s06PathBox.Text.EndsWith("/"))
+                                {
+                                    InstallMods();
+                                }
+                                else
+                                {
+                                    s06PathBox.AppendText("/");
+                                    InstallMods();
+                                }
                             }
                             else
                             {
-                                s06PathBox.AppendText("/");
-                                InstallMods();
+                                if (s06PathBox.Text.StartsWith("/")) { s06PathBox.Text = s06PathBox.Text.Substring(1); }
+                                s06PathBox.Text = $"ftp://{s06PathBox.Text}";
+
+                                if (s06PathBox.Text.EndsWith("/"))
+                                {
+                                    InstallMods();
+                                }
+                                else
+                                {
+                                    s06PathBox.AppendText("/");
+                                    InstallMods();
+                                }
                             }
                         }
+                        else { InstallMods(); }
+
+                        if (!check_FTP.Checked) LaunchXenia();
                     }
-                    else { InstallMods(); }
-
-                    if (!check_FTP.Checked) LaunchXenia();
+                    else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                 }
-                else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                else
+                {
+                    if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty)
+                    {
+                        SaveChecks();
+
+                        if (check_FTP.Checked)
+                        {
+                            if (s06PathBox.Text.StartsWith("ftp://"))
+                            {
+                                if (s06PathBox.Text.EndsWith("/"))
+                                {
+                                    InstallMods();
+                                }
+                                else
+                                {
+                                    s06PathBox.AppendText("/");
+                                    InstallMods();
+                                }
+                            }
+                            else
+                            {
+                                if (s06PathBox.Text.StartsWith("/")) { s06PathBox.Text = s06PathBox.Text.Substring(1); }
+                                s06PathBox.Text = $"ftp://{s06PathBox.Text}";
+
+                                if (s06PathBox.Text.EndsWith("/"))
+                                {
+                                    InstallMods();
+                                }
+                                else
+                                {
+                                    s06PathBox.AppendText("/");
+                                    InstallMods();
+                                }
+                            }
+                        }
+                        else { InstallMods(); }
+
+                        if (!check_FTP.Checked) LaunchXenia();
+                    }
+                    else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                }
             }
             else
             {
@@ -494,6 +539,7 @@ namespace Sonic_06_Mod_Manager
             catch (Exception ex)
             {
                 MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Tools.Notification.Dispose();
                 return;
             }
 
@@ -507,9 +553,11 @@ namespace Sonic_06_Mod_Manager
                 catch (Exception ex2)
                 {
                     MessageBox.Show($"Please refer to the following error for more information:\n\n{ex2}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Tools.Notification.Dispose();
                     return;
                 }
 
+                Tools.Notification.Dispose();
                 return;
             }
         }
@@ -581,7 +629,7 @@ namespace Sonic_06_Mod_Manager
                                 xenoncleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -603,7 +651,7 @@ namespace Sonic_06_Mod_Manager
                                 xenoncleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -625,7 +673,7 @@ namespace Sonic_06_Mod_Manager
                                 xenoncleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -647,7 +695,7 @@ namespace Sonic_06_Mod_Manager
                                 xenoncleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -669,7 +717,7 @@ namespace Sonic_06_Mod_Manager
                                 xenoncleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -691,7 +739,7 @@ namespace Sonic_06_Mod_Manager
                                 xenoncleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -713,7 +761,7 @@ namespace Sonic_06_Mod_Manager
                                 xenoncleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
                     #endregion
@@ -739,7 +787,7 @@ namespace Sonic_06_Mod_Manager
                                 ps3cleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -761,7 +809,7 @@ namespace Sonic_06_Mod_Manager
                                 ps3cleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -783,7 +831,7 @@ namespace Sonic_06_Mod_Manager
                                 ps3cleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -805,7 +853,7 @@ namespace Sonic_06_Mod_Manager
                                 ps3cleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -827,7 +875,7 @@ namespace Sonic_06_Mod_Manager
                                 ps3cleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -849,7 +897,7 @@ namespace Sonic_06_Mod_Manager
                                 ps3cleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
 
@@ -871,7 +919,7 @@ namespace Sonic_06_Mod_Manager
                                 ps3cleanup.UsePassive = true;
                                 FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
                             }
-                            catch { return; }
+                            catch { Tools.Notification.Dispose(); return; }
                         }
                     }
                     #endregion
@@ -895,7 +943,7 @@ namespace Sonic_06_Mod_Manager
                             win32cleanup.UsePassive = true;
                             FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
                         }
-                        catch { return; }
+                        catch { Tools.Notification.Dispose(); return; }
                     }
                 }
             }
@@ -1027,7 +1075,7 @@ namespace Sonic_06_Mod_Manager
                                             }
                                         }
                                     }
-                                    catch { return; }
+                                    catch { Tools.Notification.Dispose(); return; }
                                 }
                                 else
                                 {
@@ -1131,7 +1179,7 @@ namespace Sonic_06_Mod_Manager
                                             }
                                         }
                                     }
-                                    catch { return; }
+                                    catch { Tools.Notification.Dispose(); return; }
                                 }
                                 else
                                 {
@@ -1362,10 +1410,22 @@ namespace Sonic_06_Mod_Manager
             int selectedIndex = this.modList.SelectedIndex;
             object selectedItem = this.modList.SelectedItem;
 
-            this.modList.Items.RemoveAt(selectedIndex);
-            selectedIndex -= 1;
-            this.modList.Items.Insert(selectedIndex, selectedItem);
-            this.modList.SelectedIndex = selectedIndex;
+            if (modList.GetItemCheckState(selectedIndex) == CheckState.Checked)
+            {
+                this.modList.Items.RemoveAt(selectedIndex);
+                selectedIndex -= 1;
+                this.modList.Items.Insert(selectedIndex, selectedItem);
+                this.modList.SelectedIndex = selectedIndex;
+                modList.SetItemChecked(selectedIndex, true);
+            }
+            else
+            {
+                this.modList.Items.RemoveAt(selectedIndex);
+                selectedIndex -= 1;
+                this.modList.Items.Insert(selectedIndex, selectedItem);
+                this.modList.SelectedIndex = selectedIndex;
+                modList.SetItemChecked(selectedIndex, false);
+            }
         }
 
         private void Btn_DownerPriority_Click(object sender, EventArgs e)
@@ -1373,10 +1433,22 @@ namespace Sonic_06_Mod_Manager
             int selectedIndex = this.modList.SelectedIndex;
             object selectedItem = this.modList.SelectedItem;
 
-            this.modList.Items.RemoveAt(selectedIndex);
-            selectedIndex += 1;
-            this.modList.Items.Insert(selectedIndex, selectedItem);
-            this.modList.SelectedIndex = selectedIndex;
+            if (modList.GetItemCheckState(selectedIndex) == CheckState.Checked)
+            {
+                this.modList.Items.RemoveAt(selectedIndex);
+                selectedIndex += 1;
+                this.modList.Items.Insert(selectedIndex, selectedItem);
+                this.modList.SelectedIndex = selectedIndex;
+                modList.SetItemChecked(selectedIndex, true);
+            }
+            else
+            {
+                this.modList.Items.RemoveAt(selectedIndex);
+                selectedIndex += 1;
+                this.modList.Items.Insert(selectedIndex, selectedItem);
+                this.modList.SelectedIndex = selectedIndex;
+                modList.SetItemChecked(selectedIndex, false);
+            }
         }
 
         private void ModList_SelectedIndexChanged(object sender, EventArgs e)

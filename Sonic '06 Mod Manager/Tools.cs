@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Linq;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -309,6 +310,24 @@ namespace Tools
             catch (Exception)
             {
                 throw;
+            }
+        }
+    }
+
+    class Notification
+    {
+        public static void Dispose()
+        {
+            Sonic_06_Mod_Manager.ModStatus statusForm = Application.OpenForms["ModStatus"] != null ? (Sonic_06_Mod_Manager.ModStatus)Application.OpenForms["ModStatus"] : null;
+
+            if (statusForm != null)
+            {
+                try
+                {
+                    statusForm = (Sonic_06_Mod_Manager.ModStatus)Application.OpenForms["ModStatus"];
+                    statusForm.Close();
+                }
+                catch { }
             }
         }
     }
