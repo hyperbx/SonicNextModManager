@@ -40,6 +40,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -64,6 +65,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}xenon/archives/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -87,6 +89,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}xenon/sound/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -110,6 +113,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}xenon/sound/event/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -133,6 +137,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}xenon/sound/voice/e/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -156,6 +161,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}xenon/sound/voice/j/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -181,6 +187,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}ps3/archives/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -204,6 +211,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}ps3/sound/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -226,6 +234,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}ps3/sound/event/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -249,6 +258,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}ps3/sound/voice/e/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -272,6 +282,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}ps3/sound/voice/j/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
@@ -296,6 +307,7 @@ namespace Tools
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}win32/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();

@@ -32,6 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModManager));
             this.playButton = new System.Windows.Forms.Button();
             this.group_Mods = new System.Windows.Forms.GroupBox();
+            this.combo_Priority = new System.Windows.Forms.ComboBox();
+            this.btn_DeselectAll = new System.Windows.Forms.Button();
+            this.btn_SelectAll = new System.Windows.Forms.Button();
             this.btn_DownerPriority = new System.Windows.Forms.Button();
             this.btn_UpperPriority = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -53,22 +56,25 @@
             this.s06PathBox = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.tm_CreatorDisposal = new System.Windows.Forms.Timer(this.components);
-            this.tool_LabelInform = new System.Windows.Forms.ToolTip(this.components);
+            this.tool_Information = new System.Windows.Forms.ToolTip(this.components);
             this.stopButton = new System.Windows.Forms.Button();
             this.tool_Warning = new System.Windows.Forms.ToolTip(this.components);
-            this.btn_DeselectAll = new System.Windows.Forms.Button();
-            this.btn_SelectAll = new System.Windows.Forms.Button();
-            this.combo_Priority = new System.Windows.Forms.ComboBox();
+            this.lbl_Username = new System.Windows.Forms.Label();
+            this.userField = new System.Windows.Forms.TextBox();
+            this.lbl_Password = new System.Windows.Forms.Label();
+            this.passField = new System.Windows.Forms.TextBox();
             this.group_Mods.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // playButton
             // 
+            this.playButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.playButton.BackColor = System.Drawing.Color.LightGreen;
             this.playButton.FlatAppearance.BorderSize = 0;
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playButton.Location = new System.Drawing.Point(10, 432);
+            this.playButton.Location = new System.Drawing.Point(10, 458);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(186, 23);
             this.playButton.TabIndex = 31;
@@ -93,6 +99,45 @@
             this.group_Mods.TabIndex = 37;
             this.group_Mods.TabStop = false;
             this.group_Mods.Text = "Mods";
+            // 
+            // combo_Priority
+            // 
+            this.combo_Priority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_Priority.FormattingEnabled = true;
+            this.combo_Priority.Items.AddRange(new object[] {
+            "Top to Bottom",
+            "Bottom to Top"});
+            this.combo_Priority.Location = new System.Drawing.Point(95, 268);
+            this.combo_Priority.Name = "combo_Priority";
+            this.combo_Priority.Size = new System.Drawing.Size(120, 21);
+            this.combo_Priority.TabIndex = 50;
+            this.combo_Priority.SelectedIndexChanged += new System.EventHandler(this.Combo_Priority_SelectedIndexChanged);
+            // 
+            // btn_DeselectAll
+            // 
+            this.btn_DeselectAll.BackColor = System.Drawing.Color.Tomato;
+            this.btn_DeselectAll.FlatAppearance.BorderSize = 0;
+            this.btn_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DeselectAll.Location = new System.Drawing.Point(6, 267);
+            this.btn_DeselectAll.Name = "btn_DeselectAll";
+            this.btn_DeselectAll.Size = new System.Drawing.Size(83, 23);
+            this.btn_DeselectAll.TabIndex = 41;
+            this.btn_DeselectAll.Text = "Deselect All";
+            this.btn_DeselectAll.UseVisualStyleBackColor = false;
+            this.btn_DeselectAll.Click += new System.EventHandler(this.Btn_DeselectAll_Click);
+            // 
+            // btn_SelectAll
+            // 
+            this.btn_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
+            this.btn_SelectAll.FlatAppearance.BorderSize = 0;
+            this.btn_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_SelectAll.Location = new System.Drawing.Point(6, 238);
+            this.btn_SelectAll.Name = "btn_SelectAll";
+            this.btn_SelectAll.Size = new System.Drawing.Size(83, 23);
+            this.btn_SelectAll.TabIndex = 40;
+            this.btn_SelectAll.Text = "Select All";
+            this.btn_SelectAll.UseVisualStyleBackColor = false;
+            this.btn_SelectAll.Click += new System.EventHandler(this.Btn_SelectAll_Click);
             // 
             // btn_DownerPriority
             // 
@@ -249,7 +294,7 @@
             this.lbl_ModsDirectory.Size = new System.Drawing.Size(81, 13);
             this.lbl_ModsDirectory.TabIndex = 44;
             this.lbl_ModsDirectory.Text = "Mods Directory:";
-            this.tool_LabelInform.SetToolTip(this.lbl_ModsDirectory, "Click here to open your Mods directory...");
+            this.tool_Information.SetToolTip(this.lbl_ModsDirectory, "Click here to open your Mods directory...");
             this.lbl_ModsDirectory.Click += new System.EventHandler(this.Lbl_ModsDirectory_Click);
             // 
             // modsBox
@@ -282,7 +327,7 @@
             this.lbl_XeniaExecutable.Size = new System.Drawing.Size(93, 13);
             this.lbl_XeniaExecutable.TabIndex = 41;
             this.lbl_XeniaExecutable.Text = "Xenia Executable:";
-            this.tool_LabelInform.SetToolTip(this.lbl_XeniaExecutable, "Click here to launch Xenia...");
+            this.tool_Information.SetToolTip(this.lbl_XeniaExecutable, "Click here to launch Xenia...");
             this.lbl_XeniaExecutable.Click += new System.EventHandler(this.Lbl_XeniaExecutable_Click);
             // 
             // xeniaBox
@@ -315,7 +360,7 @@
             this.lbl_GameDirectory.Size = new System.Drawing.Size(83, 13);
             this.lbl_GameDirectory.TabIndex = 38;
             this.lbl_GameDirectory.Text = "Game Directory:";
-            this.tool_LabelInform.SetToolTip(this.lbl_GameDirectory, "Click here to open your Game directory...");
+            this.tool_Information.SetToolTip(this.lbl_GameDirectory, "Click here to open your Game directory...");
             this.lbl_GameDirectory.Click += new System.EventHandler(this.Lbl_GameDirectory_Click);
             // 
             // s06PathBox
@@ -328,10 +373,12 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(298, 432);
+            this.button2.Location = new System.Drawing.Point(298, 458);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 23);
             this.button2.TabIndex = 39;
@@ -343,17 +390,19 @@
             // 
             this.tm_CreatorDisposal.Tick += new System.EventHandler(this.Tm_CreatorDisposal_Tick);
             // 
-            // tool_LabelInform
+            // tool_Information
             // 
-            this.tool_LabelInform.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.tool_LabelInform.ToolTipTitle = "Shortcuts";
+            this.tool_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.tool_Information.ToolTipTitle = "Information";
             // 
             // stopButton
             // 
+            this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.stopButton.BackColor = System.Drawing.Color.Tomato;
             this.stopButton.FlatAppearance.BorderSize = 0;
             this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.stopButton.Location = new System.Drawing.Point(202, 432);
+            this.stopButton.Location = new System.Drawing.Point(202, 458);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(90, 23);
             this.stopButton.TabIndex = 40;
@@ -367,50 +416,56 @@
             this.tool_Warning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.tool_Warning.ToolTipTitle = "WARNING";
             // 
-            // btn_DeselectAll
+            // lbl_Username
             // 
-            this.btn_DeselectAll.BackColor = System.Drawing.Color.Tomato;
-            this.btn_DeselectAll.FlatAppearance.BorderSize = 0;
-            this.btn_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DeselectAll.Location = new System.Drawing.Point(6, 267);
-            this.btn_DeselectAll.Name = "btn_DeselectAll";
-            this.btn_DeselectAll.Size = new System.Drawing.Size(83, 23);
-            this.btn_DeselectAll.TabIndex = 41;
-            this.btn_DeselectAll.Text = "Deselect All";
-            this.btn_DeselectAll.UseVisualStyleBackColor = false;
-            this.btn_DeselectAll.Click += new System.EventHandler(this.Btn_DeselectAll_Click);
+            this.lbl_Username.AutoSize = true;
+            this.lbl_Username.Location = new System.Drawing.Point(11, 434);
+            this.lbl_Username.Name = "lbl_Username";
+            this.lbl_Username.Size = new System.Drawing.Size(58, 13);
+            this.lbl_Username.TabIndex = 43;
+            this.lbl_Username.Text = "Username:";
+            this.tool_Information.SetToolTip(this.lbl_Username, "This field is typically left empty for the PlayStation 3.");
+            this.lbl_Username.Visible = false;
             // 
-            // btn_SelectAll
+            // userField
             // 
-            this.btn_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
-            this.btn_SelectAll.FlatAppearance.BorderSize = 0;
-            this.btn_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SelectAll.Location = new System.Drawing.Point(6, 238);
-            this.btn_SelectAll.Name = "btn_SelectAll";
-            this.btn_SelectAll.Size = new System.Drawing.Size(83, 23);
-            this.btn_SelectAll.TabIndex = 40;
-            this.btn_SelectAll.Text = "Select All";
-            this.btn_SelectAll.UseVisualStyleBackColor = false;
-            this.btn_SelectAll.Click += new System.EventHandler(this.Btn_SelectAll_Click);
+            this.userField.Location = new System.Drawing.Point(72, 431);
+            this.userField.Name = "userField";
+            this.userField.Size = new System.Drawing.Size(124, 20);
+            this.userField.TabIndex = 42;
+            this.userField.Visible = false;
+            this.userField.TextChanged += new System.EventHandler(this.UserField_TextChanged);
             // 
-            // combo_Priority
+            // lbl_Password
             // 
-            this.combo_Priority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.combo_Priority.FormattingEnabled = true;
-            this.combo_Priority.Items.AddRange(new object[] {
-            "Top to Bottom",
-            "Bottom to Top"});
-            this.combo_Priority.Location = new System.Drawing.Point(95, 268);
-            this.combo_Priority.Name = "combo_Priority";
-            this.combo_Priority.Size = new System.Drawing.Size(120, 21);
-            this.combo_Priority.TabIndex = 50;
-            this.combo_Priority.SelectedIndexChanged += new System.EventHandler(this.Combo_Priority_SelectedIndexChanged);
+            this.lbl_Password.AutoSize = true;
+            this.lbl_Password.Location = new System.Drawing.Point(201, 434);
+            this.lbl_Password.Name = "lbl_Password";
+            this.lbl_Password.Size = new System.Drawing.Size(56, 13);
+            this.lbl_Password.TabIndex = 45;
+            this.lbl_Password.Text = "Password:";
+            this.tool_Information.SetToolTip(this.lbl_Password, "This field is typically left empty for the PlayStation 3.");
+            this.lbl_Password.Visible = false;
+            // 
+            // passField
+            // 
+            this.passField.Location = new System.Drawing.Point(260, 431);
+            this.passField.Name = "passField";
+            this.passField.PasswordChar = '*';
+            this.passField.Size = new System.Drawing.Size(124, 20);
+            this.passField.TabIndex = 44;
+            this.passField.Visible = false;
+            this.passField.TextChanged += new System.EventHandler(this.PassField_TextChanged);
             // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 464);
+            this.ClientSize = new System.Drawing.Size(394, 490);
+            this.Controls.Add(this.lbl_Password);
+            this.Controls.Add(this.passField);
+            this.Controls.Add(this.lbl_Username);
+            this.Controls.Add(this.userField);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox1);
@@ -419,6 +474,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(410, 503);
             this.Name = "ModManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";
@@ -427,6 +483,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -449,7 +506,7 @@
         private System.Windows.Forms.TextBox s06PathBox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Timer tm_CreatorDisposal;
-        private System.Windows.Forms.ToolTip tool_LabelInform;
+        private System.Windows.Forms.ToolTip tool_Information;
         private System.Windows.Forms.CheckBox check_FTP;
         private System.Windows.Forms.ComboBox combo_System;
         private System.Windows.Forms.Label lbl_System;
@@ -460,6 +517,10 @@
         private System.Windows.Forms.Button btn_DeselectAll;
         private System.Windows.Forms.Button btn_SelectAll;
         private System.Windows.Forms.ComboBox combo_Priority;
+        private System.Windows.Forms.Label lbl_Username;
+        private System.Windows.Forms.TextBox userField;
+        private System.Windows.Forms.Label lbl_Password;
+        private System.Windows.Forms.TextBox passField;
     }
 }
 
