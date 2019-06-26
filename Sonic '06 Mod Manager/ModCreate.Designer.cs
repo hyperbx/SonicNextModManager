@@ -41,6 +41,8 @@
             this.createButton = new System.Windows.Forms.Button();
             this.check_Merge = new System.Windows.Forms.CheckBox();
             this.tool_Info = new System.Windows.Forms.ToolTip(this.components);
+            this.combo_System = new System.Windows.Forms.ComboBox();
+            this.lbl_System = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -113,11 +115,12 @@
             // 
             // createButton
             // 
+            this.createButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.createButton.BackColor = System.Drawing.Color.LightGreen;
             this.createButton.Enabled = false;
             this.createButton.FlatAppearance.BorderSize = 0;
             this.createButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.createButton.Location = new System.Drawing.Point(281, 116);
+            this.createButton.Location = new System.Drawing.Point(281, 142);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(75, 23);
             this.createButton.TabIndex = 12;
@@ -127,8 +130,9 @@
             // 
             // check_Merge
             // 
+            this.check_Merge.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.check_Merge.AutoSize = true;
-            this.check_Merge.Location = new System.Drawing.Point(62, 120);
+            this.check_Merge.Location = new System.Drawing.Point(62, 146);
             this.check_Merge.Name = "check_Merge";
             this.check_Merge.Size = new System.Drawing.Size(62, 17);
             this.check_Merge.TabIndex = 13;
@@ -142,11 +146,34 @@
             this.tool_Info.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tool_Info.ToolTipTitle = "Information";
             // 
+            // combo_System
+            // 
+            this.combo_System.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_System.FormattingEnabled = true;
+            this.combo_System.Items.AddRange(new object[] {
+            "Xbox 360",
+            "PlayStation 3"});
+            this.combo_System.Location = new System.Drawing.Point(62, 116);
+            this.combo_System.Name = "combo_System";
+            this.combo_System.Size = new System.Drawing.Size(121, 21);
+            this.combo_System.TabIndex = 50;
+            // 
+            // lbl_System
+            // 
+            this.lbl_System.AutoSize = true;
+            this.lbl_System.Location = new System.Drawing.Point(12, 119);
+            this.lbl_System.Name = "lbl_System";
+            this.lbl_System.Size = new System.Drawing.Size(44, 13);
+            this.lbl_System.TabIndex = 49;
+            this.lbl_System.Text = "System:";
+            // 
             // ModCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 148);
+            this.ClientSize = new System.Drawing.Size(365, 174);
+            this.Controls.Add(this.combo_System);
+            this.Controls.Add(this.lbl_System);
             this.Controls.Add(this.check_Merge);
             this.Controls.Add(this.createButton);
             this.Controls.Add(this.label3);
@@ -164,6 +191,7 @@
             this.Name = "ModCreate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Mod Creator";
+            this.Load += new System.EventHandler(this.ModCreate_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,5 +210,7 @@
         private System.Windows.Forms.Button createButton;
         private System.Windows.Forms.CheckBox check_Merge;
         private System.Windows.Forms.ToolTip tool_Info;
+        private System.Windows.Forms.ComboBox combo_System;
+        private System.Windows.Forms.Label lbl_System;
     }
 }

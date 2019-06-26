@@ -68,6 +68,7 @@ namespace Sonic_06_Mod_Manager
                         if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
                         if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
                         if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
+                        modINI.WriteLine("Platform=\"" + combo_System.Text + "\"");
                         modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
                         modINI.Close();
                     }
@@ -82,6 +83,11 @@ namespace Sonic_06_Mod_Manager
         {
             if (check_Merge.Checked == true) { modMerge = true; }
             else { modMerge = false; }
+        }
+
+        private void ModCreate_Load(object sender, EventArgs e)
+        {
+            combo_System.SelectedIndex = 0;
         }
     }
 }

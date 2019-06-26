@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Text;
 
 // Welcome to Sonic '06 Mod Manager!
 
@@ -53,6 +54,7 @@ namespace Sonic_06_Mod_Manager
         string origArcPath;
         string targetArcPath;
         List<string> checkedModsList = new List<string>() { };
+        List<string> skippedMods = new List<string>() { };
 
         public ModManager()
         {
@@ -88,7 +90,7 @@ namespace Sonic_06_Mod_Manager
                 Height = 529;
                 check_FTP.Checked = true;
                 playButton.Width = 186;
-                playButton.Text = "Copy Mods";
+                playButton.Text = "Test Connection";
             }
             else
             {
@@ -623,6 +625,7 @@ namespace Sonic_06_Mod_Manager
 
         private void CleanUpMods()
         {
+            skippedMods.Clear();
             installState = "cleanup";
             var convertDialog = new ModStatus();
             var parentLeft = Left + ((Width - convertDialog.Width) / 2);
@@ -658,20 +661,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bxex_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.xex");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{Path.GetFileNameWithoutExtension(item.ToString())}.xex");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                xenoncleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)xenoncleanup.GetResponse();
-                                xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{item.ToString()}");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.Rename;
-                                xenoncleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xex";
-                                xenoncleanup.UseBinary = false;
-                                xenoncleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.xex");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create(Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString())));
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xex";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -681,20 +700,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\barc_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                xenoncleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)xenoncleanup.GetResponse();
-                                xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/archives/{item.ToString()}");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.Rename;
-                                xenoncleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.arc";
-                                xenoncleanup.UseBinary = false;
-                                xenoncleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/archives/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.arc";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -704,20 +739,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bxma_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                xenoncleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)xenoncleanup.GetResponse();
-                                xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{item.ToString()}");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.Rename;
-                                xenoncleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
-                                xenoncleanup.UseBinary = false;
-                                xenoncleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -727,20 +778,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bwmv_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.wmv");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.wmv");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                xenoncleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)xenoncleanup.GetResponse();
-                                xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{item.ToString()}");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.Rename;
-                                xenoncleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.wmv";
-                                xenoncleanup.UseBinary = false;
-                                xenoncleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.wmv");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.wmv";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -750,20 +817,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bxma_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                xenoncleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)xenoncleanup.GetResponse();
-                                xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/event/{item.ToString()}");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.Rename;
-                                xenoncleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
-                                xenoncleanup.UseBinary = false;
-                                xenoncleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/event/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -773,20 +856,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bxma_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                xenoncleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)xenoncleanup.GetResponse();
-                                xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/e/{item.ToString()}");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.Rename;
-                                xenoncleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
-                                xenoncleanup.UseBinary = false;
-                                xenoncleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/e/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -796,20 +895,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bxma_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                xenoncleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)xenoncleanup.GetResponse();
-                                xenoncleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/j/{item.ToString()}");
-                                xenoncleanup.Method = WebRequestMethods.Ftp.Rename;
-                                xenoncleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
-                                xenoncleanup.UseBinary = false;
-                                xenoncleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)xenoncleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/j/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.xma";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
                     #endregion
@@ -823,20 +938,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bBIN_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.BIN");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{Path.GetFileNameWithoutExtension(item.ToString())}.BIN");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanup.GetResponse();
-                                ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{item.ToString()}");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                ps3cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.BIN";
-                                ps3cleanup.UseBinary = false;
-                                ps3cleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.BIN");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create(Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString())));
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.BIN";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -846,20 +977,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\barc_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanup.GetResponse();
-                                ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/archives/{item.ToString()}");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                ps3cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.arc";
-                                ps3cleanup.UseBinary = false;
-                                ps3cleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/archives/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.arc";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -869,20 +1016,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bat3_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanup.GetResponse();
-                                ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{item.ToString()}");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                ps3cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
-                                ps3cleanup.UseBinary = false;
-                                ps3cleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -892,20 +1055,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bpam_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.pam");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.pam");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanup.GetResponse();
-                                ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{item.ToString()}");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                ps3cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.pam";
-                                ps3cleanup.UseBinary = false;
-                                ps3cleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.pam");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.pam";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -915,20 +1094,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bat3_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanup.GetResponse();
-                                ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/event/{item.ToString()}");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                ps3cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
-                                ps3cleanup.UseBinary = false;
-                                ps3cleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/event/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -938,20 +1133,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bat3_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanup.GetResponse();
-                                ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/e/{item.ToString()}");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                ps3cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
-                                ps3cleanup.UseBinary = false;
-                                ps3cleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/e/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
 
@@ -961,20 +1172,36 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (Regex.Match(item.ToString(), @"\bat3_back\b", RegexOptions.IgnoreCase).Success)
                         {
+                            bool fileExists = false;
+                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                             try
                             {
-                                FtpWebRequest ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanup.GetResponse();
-                                ps3cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/j/{item.ToString()}");
-                                ps3cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                ps3cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
-                                ps3cleanup.UseBinary = false;
-                                ps3cleanup.UsePassive = true;
-                                FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanup.GetResponse();
+                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                fileExists = true;
                             }
-                            catch { Tools.Notification.Dispose(); return; }
+                            catch (WebException ex)
+                            {
+                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                            }
+
+                            if (fileExists)
+                            {
+                                FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
+                                ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                            }
+
+                            FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/j/{item.ToString()}");
+                            ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                            ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.at3";
+                            ps3cleanupStep2.UseBinary = false;
+                            ps3cleanupStep2.UsePassive = true;
+                            FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                         }
                     }
                     #endregion
@@ -986,20 +1213,36 @@ namespace Sonic_06_Mod_Manager
                 {
                     if (Regex.Match(item.ToString(), @"\barc_back\b", RegexOptions.IgnoreCase).Success)
                     {
+                        bool fileExists = false;
+                        FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}win32/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
+                        getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                        getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
                         try
                         {
-                            FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}win32/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
-                            win32cleanup.Method = WebRequestMethods.Ftp.DeleteFile;
-                            win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                            FtpWebResponse win32DeleteResponse = (FtpWebResponse)win32cleanup.GetResponse();
-                            win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}win32/archives/{item.ToString()}");
-                            win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                            win32cleanup.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.arc";
-                            win32cleanup.UseBinary = false;
-                            win32cleanup.UsePassive = true;
-                            FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+                            FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                            fileExists = true;
                         }
-                        catch { Tools.Notification.Dispose(); return; }
+                        catch (WebException ex)
+                        {
+                            FtpWebResponse response = (FtpWebResponse)ex.Response;
+                            if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                        }
+
+                        if (fileExists)
+                        {
+                            FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}win32/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
+                            ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
+                            ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
+                        }
+
+                        FtpWebRequest ps3cleanupStep2 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}win32/archives/{item.ToString()}");
+                        ps3cleanupStep2.Method = WebRequestMethods.Ftp.Rename;
+                        ps3cleanupStep2.RenameTo = $"{Path.GetFileNameWithoutExtension(item.ToString())}.arc";
+                        ps3cleanupStep2.UseBinary = false;
+                        ps3cleanupStep2.UsePassive = true;
+                        FtpWebResponse ps3RenameResponse = (FtpWebResponse)ps3cleanupStep2.GetResponse();
                     }
                 }
             }
@@ -1008,6 +1251,7 @@ namespace Sonic_06_Mod_Manager
 
         private void CopyMods()
         {
+            skippedMods.Clear();
             string[] names = checkedModsList.ToArray(); //modList.CheckedItems.Cast<string>().ToArray();
 
             installState = "install";
@@ -1031,32 +1275,42 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
                         {
-                            if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
+                            if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Platform=\"Xbox 360\""))
                             {
-                                if (mod.EndsWith(".arc"))
+                                if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
                                 {
-                                    Console.WriteLine("Merging " + mod);
-                                    MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
+                                    if (mod.EndsWith(".arc"))
+                                    {
+                                        Console.WriteLine("Merging " + mod);
+                                        MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Copying " + mod);
+                                        if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                        File.Copy(mod, origArcPath, true);
+                                    }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Copying " + mod);
-                                    if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                    File.Copy(mod, origArcPath, true);
+                                    if (!File.Exists(targetArcPath))
+                                    {
+                                        Console.WriteLine("Copying " + mod);
+                                        if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                        File.Copy(mod, origArcPath, true);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Skipped " + mod);
+                                        skippedMods.Add($"\n► {item} (failed because a mod already installed on that file - try merging instead)");
+                                        break;
+                                    }
                                 }
                             }
                             else
                             {
-                                if (!File.Exists(targetArcPath))
-                                {
-                                    Console.WriteLine("Copying " + mod);
-                                    if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                    File.Copy(mod, origArcPath, true);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Skipped " + mod);
-                                }
+                                skippedMods.Add($"\n► {item} (failed because the mod was not targeted for the {combo_System.Text})");
+                                break;
                             }
                         }
                         else
@@ -1070,6 +1324,8 @@ namespace Sonic_06_Mod_Manager
                             else
                             {
                                 Console.WriteLine("Skipped " + mod);
+                                skippedMods.Add($"\n► {item} (failed because a mod already installed on that file - try merging instead)");
+                                break;
                             }
                         }
                     }
@@ -1079,70 +1335,147 @@ namespace Sonic_06_Mod_Manager
                         {
                             if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
                             {
-                                if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
+                                if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Platform=\"Xbox 360\""))
                                 {
-                                    string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
-                                    var tempData = new DirectoryInfo(tempPath);
-
-                                    using (WebClient client = new WebClient())
+                                    if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
                                     {
-                                        client.UseDefaultCredentials = true;
-                                        client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                        string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                                        var tempData = new DirectoryInfo(tempPath);
 
-                                        byte[] arcBytes = null;
-                                        if (mod.Contains(@"\xenon\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
-                                        else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-
-                                        Directory.CreateDirectory(tempPath);
-
-                                        using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                        using (WebClient client = new WebClient())
                                         {
-                                            file.Write(arcBytes, 0, arcBytes.Length);
-                                            file.Close();
+                                            client.UseDefaultCredentials = true;
+                                            client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+
+                                            byte[] arcBytes = null;
+                                            if (mod.Contains(@"\xenon\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                            else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+
+                                            Directory.CreateDirectory(tempPath);
+
+                                            using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                            {
+                                                file.Write(arcBytes, 0, arcBytes.Length);
+                                                file.Close();
+                                            }
+
+                                            FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                            if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                            else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                            Console.WriteLine(win32cleanup.RequestUri);
+                                            win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                            win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                            win32cleanup.UseBinary = false;
+                                            win32cleanup.UsePassive = true;
+                                            FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                            MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
                                         }
 
-                                        FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
-                                        if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
-                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-                                        Console.WriteLine(win32cleanup.RequestUri);
-                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
-                                        win32cleanup.UseBinary = false;
-                                        win32cleanup.UsePassive = true;
-                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
-
-                                        MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
-                                    }
-
-                                    using (WebClient client = new WebClient())
-                                    {
-                                        client.UseDefaultCredentials = true;
-                                        client.Credentials = new NetworkCredential(userField.Text, userField.Text);
-
-                                        if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                        else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                    }
-
-                                    try
-                                    {
-                                        if (Directory.Exists(tempPath))
+                                        using (WebClient client = new WebClient())
                                         {
-                                            foreach (FileInfo file in tempData.GetFiles())
+                                            client.UseDefaultCredentials = true;
+                                            client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+
+                                            if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                            else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                        }
+
+                                        try
+                                        {
+                                            if (Directory.Exists(tempPath))
                                             {
-                                                file.Delete();
+                                                foreach (FileInfo file in tempData.GetFiles())
+                                                {
+                                                    file.Delete();
+                                                }
+                                                foreach (DirectoryInfo directory in tempData.GetDirectories())
+                                                {
+                                                    directory.Delete(true);
+                                                }
                                             }
-                                            foreach (DirectoryInfo directory in tempData.GetDirectories())
+                                        }
+                                        catch { Tools.Notification.Dispose(); return; }
+                                    }
+                                    else
+                                    {
+                                        using (WebClient client = new WebClient())
+                                        {
+                                            bool fileExists = false;
+                                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
+                                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                            try
                                             {
-                                                directory.Delete(true);
+                                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                                fileExists = true;
+                                            }
+                                            catch (WebException ex)
+                                            {
+                                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                            }
+
+                                            if (!fileExists)
+                                            {
+                                                client.UseDefaultCredentials = true;
+                                                client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+
+                                                FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                                if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                                else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                Console.WriteLine(win32cleanup.RequestUri);
+                                                win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                                win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                                win32cleanup.UseBinary = false;
+                                                win32cleanup.UsePassive = true;
+                                                FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                                if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\xenon\sound\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\xenon\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\xenon\sound\voice\e\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\xenon\sound\voice\j\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                            }
+                                            else
+                                            {
+                                                skippedMods.Add($"\n► {item} (failed because a mod already installed on that file - try merging instead)");
+                                                break;
                                             }
                                         }
                                     }
-                                    catch { Tools.Notification.Dispose(); return; }
                                 }
                                 else
                                 {
-                                    using (WebClient client = new WebClient())
+                                    skippedMods.Add($"\n► {item} (failed because the mod was not targeted for the {combo_System.Text})");
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                using (WebClient client = new WebClient())
+                                {
+                                    bool fileExists = false;
+                                    FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
+                                    getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                    getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                    try
+                                    {
+                                        FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                        fileExists = true;
+                                    }
+                                    catch (WebException ex)
+                                    {
+                                        FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                        if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                    }
+
+                                    if (!fileExists)
                                     {
                                         client.UseDefaultCredentials = true;
                                         client.Credentials = new NetworkCredential(userField.Text, userField.Text);
@@ -1165,32 +1498,11 @@ namespace Sonic_06_Mod_Manager
                                         else if (mod.Contains(@"\xenon\sound\voice\j\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                         else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                     }
-                                }
-                            }
-                            else
-                            {
-                                using (WebClient client = new WebClient())
-                                {
-                                    client.UseDefaultCredentials = true;
-                                    client.Credentials = new NetworkCredential(userField.Text, userField.Text);
-
-                                    FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
-                                    if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
-                                    else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-                                    Console.WriteLine(win32cleanup.RequestUri);
-                                    win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                    win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
-                                    win32cleanup.UseBinary = false;
-                                    win32cleanup.UsePassive = true;
-
-                                    FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
-                                    if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\xenon\sound\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\xenon\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\xenon\sound\voice\e\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\xenon\sound\voice\j\")) client.UploadFile($"{s06PathBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                    else
+                                    {
+                                        skippedMods.Add($"\n► {item} (failed because a mod already installed on that file - try merging instead)");
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -1198,70 +1510,147 @@ namespace Sonic_06_Mod_Manager
                         {
                             if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
                             {
-                                if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
+                                if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Platform=\"PlayStation 3\""))
                                 {
-                                    string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
-                                    var tempData = new DirectoryInfo(tempPath);
-
-                                    using (WebClient client = new WebClient())
+                                    if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
                                     {
-                                        client.UseDefaultCredentials = true;
-                                        client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                        string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                                        var tempData = new DirectoryInfo(tempPath);
 
-                                        byte[] arcBytes = null;
-                                        if (mod.Contains(@"\ps3\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
-                                        else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-
-                                        Directory.CreateDirectory(tempPath);
-
-                                        using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                        using (WebClient client = new WebClient())
                                         {
-                                            file.Write(arcBytes, 0, arcBytes.Length);
-                                            file.Close();
+                                            client.UseDefaultCredentials = true;
+                                            client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+
+                                            byte[] arcBytes = null;
+                                            if (mod.Contains(@"\ps3\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                            else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+
+                                            Directory.CreateDirectory(tempPath);
+
+                                            using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                            {
+                                                file.Write(arcBytes, 0, arcBytes.Length);
+                                                file.Close();
+                                            }
+
+                                            FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                            if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                            else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                            Console.WriteLine(win32cleanup.RequestUri);
+                                            win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                            win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                            win32cleanup.UseBinary = false;
+                                            win32cleanup.UsePassive = true;
+                                            FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                            MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
                                         }
 
-                                        FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
-                                        if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
-                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-                                        Console.WriteLine(win32cleanup.RequestUri);
-                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
-                                        win32cleanup.UseBinary = false;
-                                        win32cleanup.UsePassive = true;
-                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
-
-                                        MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
-                                    }
-
-                                    using (WebClient client = new WebClient())
-                                    {
-                                        client.UseDefaultCredentials = true;
-                                        client.Credentials = new NetworkCredential(userField.Text, userField.Text);
-
-                                        if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                        else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                    }
-
-                                    try
-                                    {
-                                        if (Directory.Exists(tempPath))
+                                        using (WebClient client = new WebClient())
                                         {
-                                            foreach (FileInfo file in tempData.GetFiles())
+                                            client.UseDefaultCredentials = true;
+                                            client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+
+                                            if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                            else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                        }
+
+                                        try
+                                        {
+                                            if (Directory.Exists(tempPath))
                                             {
-                                                file.Delete();
+                                                foreach (FileInfo file in tempData.GetFiles())
+                                                {
+                                                    file.Delete();
+                                                }
+                                                foreach (DirectoryInfo directory in tempData.GetDirectories())
+                                                {
+                                                    directory.Delete(true);
+                                                }
                                             }
-                                            foreach (DirectoryInfo directory in tempData.GetDirectories())
+                                        }
+                                        catch { Tools.Notification.Dispose(); return; }
+                                    }
+                                    else
+                                    {
+                                        using (WebClient client = new WebClient())
+                                        {
+                                            bool fileExists = false;
+                                            FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}_back");
+                                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                            try
                                             {
-                                                directory.Delete(true);
+                                                FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                                fileExists = true;
+                                            }
+                                            catch (WebException ex)
+                                            {
+                                                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                            }
+
+                                            if (!fileExists)
+                                            {
+                                                client.UseDefaultCredentials = true;
+                                                client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+
+                                                FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                                if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                                else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                Console.WriteLine(win32cleanup.RequestUri);
+                                                win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                                win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                                win32cleanup.UseBinary = false;
+                                                win32cleanup.UsePassive = true;
+                                                FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                                if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\ps3\sound\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\ps3\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\ps3\sound\voice\e\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\ps3\sound\voice\j\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                            }
+                                            else
+                                            {
+                                                skippedMods.Add($"\n► {item} (failed because a mod already installed on that file - try merging instead)");
+                                                break;
                                             }
                                         }
                                     }
-                                    catch { Tools.Notification.Dispose(); return; }
                                 }
                                 else
                                 {
-                                    using (WebClient client = new WebClient())
+                                    skippedMods.Add($"\n► {item} (failed because the mod was not targeted for the {combo_System.Text})");
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                using (WebClient client = new WebClient())
+                                {
+                                    bool fileExists = false;
+                                    FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}_back");
+                                    getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                    getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                    try
+                                    {
+                                        FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                        fileExists = true;
+                                    }
+                                    catch (WebException ex)
+                                    {
+                                        FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                        if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                    }
+
+                                    if (!fileExists)
                                     {
                                         client.UseDefaultCredentials = true;
                                         client.Credentials = new NetworkCredential(userField.Text, userField.Text);
@@ -1284,40 +1673,28 @@ namespace Sonic_06_Mod_Manager
                                         else if (mod.Contains(@"\ps3\sound\voice\j\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                         else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
                                     }
-                                }
-                            }
-                            else
-                            {
-                                using (WebClient client = new WebClient())
-                                {
-                                    client.UseDefaultCredentials = true;
-                                    client.Credentials = new NetworkCredential(userField.Text, userField.Text);
-
-                                    FtpWebRequest win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
-                                    if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
-                                    else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-                                    Console.WriteLine(win32cleanup.RequestUri);
-                                    win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
-                                    win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
-                                    win32cleanup.UseBinary = false;
-                                    win32cleanup.UsePassive = true;
-                                    FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
-
-                                    if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\ps3\sound\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\ps3\sound\event\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\ps3\sound\voice\e\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\ps3\sound\voice\j\")) client.UploadFile($"{s06PathBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
-                                    else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                    else
+                                    {
+                                        skippedMods.Add($"\n► {item} (failed because a mod already installed on that file - try merging instead)");
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
-                    if (check_FTP.Checked) MessageBox.Show("Mod installation complete! You can now launch the game.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             convertDialog.Close();
+            if (check_FTP.Checked && skippedMods.ToString() != string.Empty) MessageBox.Show("Mod installation complete! You can now launch the game.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (skippedMods.ToString() != string.Empty)
+            {
+                var getString = new StringBuilder();
+                foreach (var modName in skippedMods)
+                {
+                    getString.Append(modName);
+                }
+                if (getString.ToString() != string.Empty) MessageBox.Show($"Mod installation completed, but the following mods were skipped:\n{getString.ToString()}", "Success, but errors occurred...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -1360,6 +1737,12 @@ namespace Sonic_06_Mod_Manager
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
                                 modDetails += "Author: " + entryValue + "\n";
+                            }
+                            if (line.Contains("Platform=\""))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                modDetails += "Platform: " + entryValue + "\n";
                             }
                             if (line.Contains("Merge=\""))
                             {
@@ -1407,7 +1790,7 @@ namespace Sonic_06_Mod_Manager
             }
 
             if (modList.CheckedItems.Count == 0 && check_FTP.Checked) { playButton.Text = "Test Connection"; }
-            else if (check_FTP.Checked) { playButton.Text = "Copy Mods"; }
+            else if (check_FTP.Checked) { playButton.Text = "Install Mods"; }
             else { playButton.Text = "Save and Play"; }
         }
 
@@ -1492,11 +1875,12 @@ namespace Sonic_06_Mod_Manager
             try
             {
                 CleanUpMods();
-                MessageBox.Show("Mod clean-up complete.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Mod uninstall complete.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Tools.Notification.Dispose();
                 return;
             }
         }

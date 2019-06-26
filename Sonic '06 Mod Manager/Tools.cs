@@ -305,7 +305,7 @@ namespace Tools
         {
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}win32/");
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"{Sonic_06_Mod_Manager.Properties.Settings.Default.ftpPath}win32/archives/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
                 request.Credentials = new NetworkCredential(Sonic_06_Mod_Manager.ModManager.username, Sonic_06_Mod_Manager.ModManager.password);
 

@@ -57,11 +57,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.tm_CreatorDisposal = new System.Windows.Forms.Timer(this.components);
             this.tool_Information = new System.Windows.Forms.ToolTip(this.components);
+            this.lbl_Username = new System.Windows.Forms.Label();
+            this.lbl_Password = new System.Windows.Forms.Label();
             this.stopButton = new System.Windows.Forms.Button();
             this.tool_Warning = new System.Windows.Forms.ToolTip(this.components);
-            this.lbl_Username = new System.Windows.Forms.Label();
             this.userField = new System.Windows.Forms.TextBox();
-            this.lbl_Password = new System.Windows.Forms.Label();
             this.passField = new System.Windows.Forms.TextBox();
             this.group_Mods.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -395,27 +395,6 @@
             this.tool_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tool_Information.ToolTipTitle = "Information";
             // 
-            // stopButton
-            // 
-            this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.stopButton.BackColor = System.Drawing.Color.Tomato;
-            this.stopButton.FlatAppearance.BorderSize = 0;
-            this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.stopButton.Location = new System.Drawing.Point(202, 458);
-            this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(90, 23);
-            this.stopButton.TabIndex = 40;
-            this.stopButton.Text = "Remove Mods";
-            this.stopButton.UseVisualStyleBackColor = false;
-            this.stopButton.Visible = false;
-            this.stopButton.Click += new System.EventHandler(this.StopButton_Click);
-            // 
-            // tool_Warning
-            // 
-            this.tool_Warning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
-            this.tool_Warning.ToolTipTitle = "WARNING";
-            // 
             // lbl_Username
             // 
             this.lbl_Username.AutoSize = true;
@@ -427,15 +406,6 @@
             this.tool_Information.SetToolTip(this.lbl_Username, "This field is typically left empty for the PlayStation 3.");
             this.lbl_Username.Visible = false;
             // 
-            // userField
-            // 
-            this.userField.Location = new System.Drawing.Point(72, 431);
-            this.userField.Name = "userField";
-            this.userField.Size = new System.Drawing.Size(124, 20);
-            this.userField.TabIndex = 42;
-            this.userField.Visible = false;
-            this.userField.TextChanged += new System.EventHandler(this.UserField_TextChanged);
-            // 
             // lbl_Password
             // 
             this.lbl_Password.AutoSize = true;
@@ -446,6 +416,36 @@
             this.lbl_Password.Text = "Password:";
             this.tool_Information.SetToolTip(this.lbl_Password, "This field is typically left empty for the PlayStation 3.");
             this.lbl_Password.Visible = false;
+            // 
+            // stopButton
+            // 
+            this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.stopButton.BackColor = System.Drawing.Color.Tomato;
+            this.stopButton.FlatAppearance.BorderSize = 0;
+            this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.stopButton.Location = new System.Drawing.Point(202, 458);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(90, 23);
+            this.stopButton.TabIndex = 40;
+            this.stopButton.Text = "Uninstall Mods";
+            this.stopButton.UseVisualStyleBackColor = false;
+            this.stopButton.Visible = false;
+            this.stopButton.Click += new System.EventHandler(this.StopButton_Click);
+            // 
+            // tool_Warning
+            // 
+            this.tool_Warning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
+            this.tool_Warning.ToolTipTitle = "WARNING";
+            // 
+            // userField
+            // 
+            this.userField.Location = new System.Drawing.Point(72, 431);
+            this.userField.Name = "userField";
+            this.userField.Size = new System.Drawing.Size(124, 20);
+            this.userField.TabIndex = 42;
+            this.userField.Visible = false;
+            this.userField.TextChanged += new System.EventHandler(this.UserField_TextChanged);
             // 
             // passField
             // 

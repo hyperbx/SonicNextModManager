@@ -48,10 +48,10 @@ namespace Sonic_06_Mod_Manager
             }
             else if (ModManager.installState == "cleanup")
             {
-                Text = "Cleaning Up...";
-                lbl_unpackState.Text = "Cleaning Up. Please wait...";
+                Text = "Uninstalling Mods...";
+                lbl_unpackState.Text = "Uninstalling Mods. Please wait...";
                 pnl_windowCheck.BackColor = Color.Honeydew; BackColor = Color.Honeydew;
-                Width = 264;
+                Width = 288;
                 Height = 138;
             }
         }
