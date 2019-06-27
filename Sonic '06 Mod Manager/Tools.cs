@@ -343,4 +343,21 @@ namespace Tools
             }
         }
     }
+
+    public class TimedWebClient : WebClient
+    {
+        public int Timeout { get; set; }
+
+        public TimedWebClient()
+        {
+            Timeout = 100000;
+        }
+
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            var objWebRequest = base.GetWebRequest(address);
+            objWebRequest.Timeout = Timeout;
+            return objWebRequest;
+        }
+    }
 }

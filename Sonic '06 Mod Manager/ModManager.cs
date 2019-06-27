@@ -40,8 +40,10 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.03";
-        public static string installState = "";
+        public static string versionNumber = "Version 1.04";
+        public static string updateState;
+        public static string serverStatus;
+        public static string installState;
         public static bool isCreatorDisposed;
         public static string username;
         public static string password;
@@ -72,8 +74,61 @@ namespace Sonic_06_Mod_Manager
 
         public string applicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
+        public static void CheckForUpdates(string currentVersion, string newVersionDownloadLink, string versionInfoLink)
+        {
+            try
+            {
+                var latestVersion = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString(versionInfoLink);
+                var changeLogs = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt");
+                if (latestVersion.Contains("Version"))
+                {
+                    if (latestVersion != currentVersion)
+                    {
+                        DialogResult confirmUpdate = MessageBox.Show("Sonic '06 Mod Manager - " + latestVersion + " is now available!\n\nChangelogs:\n" + changeLogs + "\n\nDo you wish to download it?", "New update available!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        switch (confirmUpdate)
+                        {
+                            case DialogResult.Yes:
+                                try
+                                {
+                                    if (File.Exists(Application.ExecutablePath))
+                                    {
+                                        var clientApplication = new WebClient();
+                                        clientApplication.DownloadFileAsync(new Uri(newVersionDownloadLink), Application.ExecutablePath + ".pak");
+                                        clientApplication.DownloadFileCompleted += (s, e) =>
+                                        {
+                                            File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
+                                            Process.Start(Application.ExecutablePath);
+                                            Application.Exit();
+                                        };
+                                    }
+                                    else { MessageBox.Show("Sonic '06 Mod Manager doesn't exist... What?!", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                                }
+                                catch
+                                {
+                                    MessageBox.Show("An error occurred when updating Sonic '06 Mod Manager.", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                break;
+                        }
+                    }
+                    else if (updateState == "user") MessageBox.Show("There are currently no updates available.", "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    serverStatus = "down";
+                }
+            }
+            catch
+            {
+                serverStatus = "offline";
+            }
+
+            updateState = null;
+        }
+
         private void ModManager_Load(object sender, EventArgs e)
         {
+            CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
+
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php", Properties.Resources.arctoolphp);
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\unarc.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\unarc.php", Properties.Resources.unarcphp);

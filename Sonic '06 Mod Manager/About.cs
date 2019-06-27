@@ -78,5 +78,16 @@ namespace Sonic_06_Mod_Manager
         {
             Process.Start("https://twitter.com/sharu6262");
         }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            if (ModManager.serverStatus == "offline") MessageBox.Show("Unable to establish a connection to SEGA Carnival.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (ModManager.serverStatus == "down") MessageBox.Show("The update servers are currently undergoing maintenance. Apologies for the inconvenience.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
+            {
+                ModManager.updateState = "user";
+                ModManager.CheckForUpdates(ModManager.versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
+            }
+        }
     }
 }
