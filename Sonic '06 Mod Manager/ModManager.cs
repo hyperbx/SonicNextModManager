@@ -40,7 +40,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.0";
+        public static string versionNumber = "Version 1.02";
         public static string installState = "";
         public static bool isCreatorDisposed;
         public static string username;
@@ -451,7 +451,7 @@ namespace Sonic_06_Mod_Manager
                         }
                         else { InstallMods(); }
 
-                        if (!check_FTP.Checked) LaunchXenia();
+                        if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
                     }
                     else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                 }
@@ -568,7 +568,7 @@ namespace Sonic_06_Mod_Manager
                 else
                 {
                     SaveChecks();
-                    LaunchXenia();
+                    if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
                 }
             }
         }
@@ -1881,7 +1881,7 @@ namespace Sonic_06_Mod_Manager
                 }
             }
             convertDialog.Close();
-            if (check_FTP.Checked && skippedMods.ToString() != string.Empty) MessageBox.Show("Mod installation complete! You can now launch the game.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (check_FTP.Checked && skippedMods.ToString() != string.Empty || check_manUninstall.Checked && skippedMods.ToString() != string.Empty) MessageBox.Show("Mod installation complete! You can now launch the game.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             if (skippedMods.ToString() != string.Empty)
             {
                 var getString = new StringBuilder();
