@@ -40,7 +40,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.02";
+        public static string versionNumber = "Version 1.03";
         public static string installState = "";
         public static bool isCreatorDisposed;
         public static string username;
@@ -90,43 +90,33 @@ namespace Sonic_06_Mod_Manager
                 Height = 529;
                 check_manUninstall.Visible = false;
                 check_FTP.Checked = true;
+                playButton.Left = 10;
                 playButton.Width = 186;
                 playButton.Text = "Test Connection";
             }
             else
             {
-                Height = 503;
-                check_manUninstall.Visible = true;
-                check_FTP.Checked = false;
-                playButton.Width = 282;
-                playButton.Text = "Save and Play";
-            }
-
-            if (Properties.Settings.Default.manUninstall == true)
-            {
-                check_manUninstall.Checked = true;
-                playButton.Text = "Install Mods";
-                playButton.Left = 106;
-                playButton.Width = 90;
-                stopButton.Visible = true;
-                launchXeniaButton.Visible = true;
-            }
-            else
-            {
-                check_manUninstall.Checked = false;
-                playButton.Text = "Save and Play";
-                playButton.Left = 10;
-                if (!check_FTP.Checked)
+                if (Properties.Settings.Default.manUninstall == true)
                 {
-                    playButton.Width = 282;
-                    stopButton.Visible = false;
-                    launchXeniaButton.Visible = false;
+                    Height = 503;
+                    check_FTP.Checked = false;
+                    check_manUninstall.Checked = true;
+                    playButton.Text = "Install Mods";
+                    playButton.Left = 106;
+                    playButton.Width = 90;
+                    stopButton.Visible = true;
+                    launchXeniaButton.Visible = true;
                 }
                 else
                 {
-                    playButton.Width = 186;
-                    stopButton.Visible = true;
+                    Height = 503;
+                    check_FTP.Checked = false;
+                    check_manUninstall.Checked = false;
+                    stopButton.Visible = false;
                     launchXeniaButton.Visible = false;
+                    playButton.Left = 10;
+                    playButton.Width = 282;
+                    playButton.Text = "Save and Play";
                 }
             }
 
@@ -135,6 +125,25 @@ namespace Sonic_06_Mod_Manager
 
             if (Properties.Settings.Default.priority == 0) combo_Priority.SelectedIndex = 0;
             else if (Properties.Settings.Default.priority == 1) combo_Priority.SelectedIndex = 1;
+
+            if (Properties.Settings.Default.filter == 0)
+            {
+                radio_All.Checked = true;
+                radio_Xbox.Checked = false;
+                radio_PlayStation.Checked = false;
+            }
+            else if (Properties.Settings.Default.filter == 1)
+            {
+                radio_All.Checked = false;
+                radio_Xbox.Checked = true;
+                radio_PlayStation.Checked = false;
+            }
+            else if (Properties.Settings.Default.filter == 2)
+            {
+                radio_All.Checked = false;
+                radio_Xbox.Checked = false;
+                radio_PlayStation.Checked = true;
+            }
 
             userField.Text = Properties.Settings.Default.username;
         }
@@ -252,7 +261,32 @@ namespace Sonic_06_Mod_Manager
                 {
                     var modName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
                     modName = modName.Replace("\\", "");
-                    modList.Items.Add(modName);
+                    if (Properties.Settings.Default.filter == 0)
+                    {
+                        modList.Items.Add(modName);
+                    }
+                    else if (Properties.Settings.Default.filter == 1)
+                    {
+                        if (File.Exists($"{Path.Combine(modsPath, modName)}\\mod.ini"))
+                        {
+                            var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, modName)}\\mod.ini");
+                            if (getPlatform.Contains("Platform=\"Xbox 360\""))
+                            {
+                                modList.Items.Add(modName);
+                            }
+                        }
+                    }
+                    else if (Properties.Settings.Default.filter == 2)
+                    {
+                        if (File.Exists($"{Path.Combine(modsPath, modName)}\\mod.ini"))
+                        {
+                            var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, modName)}\\mod.ini");
+                            if (getPlatform.Contains("Platform=\"PlayStation 3\""))
+                            {
+                                modList.Items.Add(modName);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -274,7 +308,32 @@ namespace Sonic_06_Mod_Manager
                     }
                     if (modExists)
                     {
-                        modList.Items.Add(line);
+                        if (Properties.Settings.Default.filter == 0)
+                        {
+                            modList.Items.Add(line);
+                        }
+                        else if (Properties.Settings.Default.filter == 1)
+                        {
+                            if (File.Exists($"{Path.Combine(modsPath, line)}\\mod.ini"))
+                            {
+                                var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, line)}\\mod.ini");
+                                if (getPlatform.Contains("Platform=\"Xbox 360\""))
+                                {
+                                    modList.Items.Add(line);
+                                }
+                            }
+                        }
+                        else if (Properties.Settings.Default.filter == 2)
+                        {
+                            if (File.Exists($"{Path.Combine(modsPath, line)}\\mod.ini"))
+                            {
+                                var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, line)}\\mod.ini");
+                                if (getPlatform.Contains("Platform=\"PlayStation 3\""))
+                                {
+                                    modList.Items.Add(line);
+                                }
+                            }
+                        }
                         for (int i = 0; i < modList.Items.Count; i++) modList.SetItemChecked(i, true);
                     }
                 }
@@ -294,7 +353,32 @@ namespace Sonic_06_Mod_Manager
                 }
                 if (!isInList)
                 {
-                    modList.Items.Add(modName);
+                    if (Properties.Settings.Default.filter == 0)
+                    {
+                        modList.Items.Add(modName);
+                    }
+                    else if (Properties.Settings.Default.filter == 1)
+                    {
+                        if (File.Exists($"{Path.Combine(modsPath, modName)}\\mod.ini"))
+                        {
+                            var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, modName)}\\mod.ini");
+                            if (getPlatform.Contains("Platform=\"Xbox 360\""))
+                            {
+                                modList.Items.Add(modName);
+                            }
+                        }
+                    }
+                    else if (Properties.Settings.Default.filter == 2)
+                    {
+                        if (File.Exists($"{Path.Combine(modsPath, modName)}\\mod.ini"))
+                        {
+                            var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, modName)}\\mod.ini");
+                            if (getPlatform.Contains("Platform=\"PlayStation 3\""))
+                            {
+                                modList.Items.Add(modName);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1950,7 +2034,7 @@ namespace Sonic_06_Mod_Manager
                     }
                     MessageBox.Show(modDetails, modList.Items[modList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else { MessageBox.Show("No configuration file found for selected mod.", "None", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                else { MessageBox.Show("No configuration file found for the selected mod.", "None", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
             }
         }
 
@@ -2238,6 +2322,45 @@ namespace Sonic_06_Mod_Manager
         private void LaunchXeniaButton_Click(object sender, EventArgs e)
         {
             LaunchXenia();
+        }
+
+        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_All.Checked == true)
+            {
+                Properties.Settings.Default.filter = 0;
+                btn_UpperPriority.Enabled = false;
+                btn_DownerPriority.Enabled = false;
+                RefreshMods();
+            }
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void Radio_Xbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_Xbox.Checked == true)
+            {
+                Properties.Settings.Default.filter = 1;
+                btn_UpperPriority.Enabled = false;
+                btn_DownerPriority.Enabled = false;
+                RefreshMods();
+            }
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void Radio_PlayStation_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_PlayStation.Checked == true)
+            {
+                Properties.Settings.Default.filter = 2;
+                btn_UpperPriority.Enabled = false;
+                btn_DownerPriority.Enabled = false;
+                RefreshMods();
+            }
+
+            Properties.Settings.Default.Save();
         }
     }
 }

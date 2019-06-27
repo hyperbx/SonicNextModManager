@@ -64,6 +64,9 @@
             this.userField = new System.Windows.Forms.TextBox();
             this.passField = new System.Windows.Forms.TextBox();
             this.launchXeniaButton = new System.Windows.Forms.Button();
+            this.radio_Xbox = new System.Windows.Forms.RadioButton();
+            this.radio_PlayStation = new System.Windows.Forms.RadioButton();
+            this.radio_All = new System.Windows.Forms.RadioButton();
             this.group_Mods.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -85,6 +88,9 @@
             // 
             // group_Mods
             // 
+            this.group_Mods.Controls.Add(this.radio_All);
+            this.group_Mods.Controls.Add(this.radio_PlayStation);
+            this.group_Mods.Controls.Add(this.radio_Xbox);
             this.group_Mods.Controls.Add(this.combo_Priority);
             this.group_Mods.Controls.Add(this.btn_DeselectAll);
             this.group_Mods.Controls.Add(this.btn_SelectAll);
@@ -486,6 +492,42 @@
             this.launchXeniaButton.Visible = false;
             this.launchXeniaButton.Click += new System.EventHandler(this.LaunchXeniaButton_Click);
             // 
+            // radio_Xbox
+            // 
+            this.radio_Xbox.AutoSize = true;
+            this.radio_Xbox.Location = new System.Drawing.Point(210, -2);
+            this.radio_Xbox.Name = "radio_Xbox";
+            this.radio_Xbox.Size = new System.Drawing.Size(70, 17);
+            this.radio_Xbox.TabIndex = 51;
+            this.radio_Xbox.TabStop = true;
+            this.radio_Xbox.Text = "Xbox 360";
+            this.radio_Xbox.UseVisualStyleBackColor = true;
+            this.radio_Xbox.CheckedChanged += new System.EventHandler(this.Radio_Xbox_CheckedChanged);
+            // 
+            // radio_PlayStation
+            // 
+            this.radio_PlayStation.AutoSize = true;
+            this.radio_PlayStation.Location = new System.Drawing.Point(281, -2);
+            this.radio_PlayStation.Name = "radio_PlayStation";
+            this.radio_PlayStation.Size = new System.Drawing.Size(87, 17);
+            this.radio_PlayStation.TabIndex = 52;
+            this.radio_PlayStation.TabStop = true;
+            this.radio_PlayStation.Text = "PlayStation 3";
+            this.radio_PlayStation.UseVisualStyleBackColor = true;
+            this.radio_PlayStation.CheckedChanged += new System.EventHandler(this.Radio_PlayStation_CheckedChanged);
+            // 
+            // radio_All
+            // 
+            this.radio_All.AutoSize = true;
+            this.radio_All.Location = new System.Drawing.Point(173, -2);
+            this.radio_All.Name = "radio_All";
+            this.radio_All.Size = new System.Drawing.Size(36, 17);
+            this.radio_All.TabIndex = 53;
+            this.radio_All.TabStop = true;
+            this.radio_All.Text = "All";
+            this.radio_All.UseVisualStyleBackColor = true;
+            this.radio_All.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
+            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -510,6 +552,7 @@
             this.Text = "Sonic \'06 Mod Manager";
             this.Load += new System.EventHandler(this.ModManager_Load);
             this.group_Mods.ResumeLayout(false);
+            this.group_Mods.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -552,6 +595,9 @@
         private System.Windows.Forms.TextBox passField;
         private System.Windows.Forms.CheckBox check_manUninstall;
         private System.Windows.Forms.Button launchXeniaButton;
+        private System.Windows.Forms.RadioButton radio_PlayStation;
+        private System.Windows.Forms.RadioButton radio_Xbox;
+        private System.Windows.Forms.RadioButton radio_All;
     }
 }
 

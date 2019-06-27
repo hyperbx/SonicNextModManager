@@ -130,5 +130,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["manUninstall"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int filter {
+            get {
+                return ((int)(this["filter"]));
+            }
+            set {
+                this["filter"] = value;
+            }
+        }
     }
 }
