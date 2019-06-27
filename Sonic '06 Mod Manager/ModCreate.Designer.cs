@@ -47,6 +47,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(26, 15);
             this.label1.Name = "label1";
@@ -56,6 +57,7 @@
             // 
             // modTitleBox
             // 
+            this.modTitleBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.modTitleBox.Location = new System.Drawing.Point(62, 12);
             this.modTitleBox.Name = "modTitleBox";
             this.modTitleBox.Size = new System.Drawing.Size(294, 20);
@@ -64,6 +66,7 @@
             // 
             // versionLabel
             // 
+            this.versionLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.versionLabel.AutoSize = true;
             this.versionLabel.Location = new System.Drawing.Point(11, 41);
             this.versionLabel.Name = "versionLabel";
@@ -73,6 +76,7 @@
             // 
             // modVersionBox
             // 
+            this.modVersionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.modVersionBox.Location = new System.Drawing.Point(62, 38);
             this.modVersionBox.Name = "modVersionBox";
             this.modVersionBox.Size = new System.Drawing.Size(294, 20);
@@ -81,6 +85,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(23, 67);
             this.label2.Name = "label2";
@@ -90,6 +95,7 @@
             // 
             // modDateBox
             // 
+            this.modDateBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.modDateBox.Location = new System.Drawing.Point(62, 64);
             this.modDateBox.Name = "modDateBox";
             this.modDateBox.Size = new System.Drawing.Size(294, 20);
@@ -98,6 +104,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(15, 93);
             this.label3.Name = "label3";
@@ -107,6 +114,7 @@
             // 
             // modAuthorBox
             // 
+            this.modAuthorBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.modAuthorBox.Location = new System.Drawing.Point(62, 90);
             this.modAuthorBox.Name = "modAuthorBox";
             this.modAuthorBox.Size = new System.Drawing.Size(294, 20);
@@ -115,12 +123,12 @@
             // 
             // createButton
             // 
-            this.createButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.createButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.createButton.BackColor = System.Drawing.Color.LightGreen;
             this.createButton.Enabled = false;
             this.createButton.FlatAppearance.BorderSize = 0;
             this.createButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.createButton.Location = new System.Drawing.Point(281, 142);
+            this.createButton.Location = new System.Drawing.Point(281, 144);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(75, 23);
             this.createButton.TabIndex = 12;
@@ -130,9 +138,9 @@
             // 
             // check_Merge
             // 
-            this.check_Merge.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.check_Merge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.check_Merge.AutoSize = true;
-            this.check_Merge.Location = new System.Drawing.Point(62, 146);
+            this.check_Merge.Location = new System.Drawing.Point(62, 147);
             this.check_Merge.Name = "check_Merge";
             this.check_Merge.Size = new System.Drawing.Size(62, 17);
             this.check_Merge.TabIndex = 13;
@@ -148,6 +156,7 @@
             // 
             // combo_System
             // 
+            this.combo_System.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.combo_System.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_System.FormattingEnabled = true;
             this.combo_System.Items.AddRange(new object[] {
@@ -155,11 +164,12 @@
             "PlayStation 3"});
             this.combo_System.Location = new System.Drawing.Point(62, 116);
             this.combo_System.Name = "combo_System";
-            this.combo_System.Size = new System.Drawing.Size(121, 21);
+            this.combo_System.Size = new System.Drawing.Size(294, 21);
             this.combo_System.TabIndex = 50;
             // 
             // lbl_System
             // 
+            this.lbl_System.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lbl_System.AutoSize = true;
             this.lbl_System.Location = new System.Drawing.Point(12, 119);
             this.lbl_System.Name = "lbl_System";
@@ -184,10 +194,10 @@
             this.Controls.Add(this.modVersionBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.modTitleBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(381, 213);
             this.Name = "ModCreate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Mod Creator";

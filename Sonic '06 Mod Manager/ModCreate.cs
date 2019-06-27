@@ -88,6 +88,7 @@ namespace Sonic_06_Mod_Manager
         private void ModCreate_Load(object sender, EventArgs e)
         {
             combo_System.SelectedIndex = 0;
+            this.MaximumSize = new System.Drawing.Size(int.MaxValue, 213);
         }
     }
 }

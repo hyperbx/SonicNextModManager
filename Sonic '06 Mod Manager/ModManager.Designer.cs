@@ -42,6 +42,7 @@
             this.refreshButton = new System.Windows.Forms.Button();
             this.modList = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.check_manUninstall = new System.Windows.Forms.CheckBox();
             this.combo_System = new System.Windows.Forms.ComboBox();
             this.lbl_System = new System.Windows.Forms.Label();
             this.check_FTP = new System.Windows.Forms.CheckBox();
@@ -60,9 +61,9 @@
             this.lbl_Username = new System.Windows.Forms.Label();
             this.lbl_Password = new System.Windows.Forms.Label();
             this.stopButton = new System.Windows.Forms.Button();
-            this.tool_Warning = new System.Windows.Forms.ToolTip(this.components);
             this.userField = new System.Windows.Forms.TextBox();
             this.passField = new System.Windows.Forms.TextBox();
+            this.launchXeniaButton = new System.Windows.Forms.Button();
             this.group_Mods.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -74,11 +75,11 @@
             this.playButton.BackColor = System.Drawing.Color.LightGreen;
             this.playButton.FlatAppearance.BorderSize = 0;
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playButton.Location = new System.Drawing.Point(10, 458);
+            this.playButton.Location = new System.Drawing.Point(106, 458);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(186, 23);
+            this.playButton.Size = new System.Drawing.Size(90, 23);
             this.playButton.TabIndex = 31;
-            this.playButton.Text = "Save and Play";
+            this.playButton.Text = "Install Mods";
             this.playButton.UseVisualStyleBackColor = false;
             this.playButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
@@ -216,6 +217,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.check_manUninstall);
             this.groupBox1.Controls.Add(this.combo_System);
             this.groupBox1.Controls.Add(this.lbl_System);
             this.groupBox1.Controls.Add(this.check_FTP);
@@ -234,6 +236,19 @@
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Directories";
+            // 
+            // check_manUninstall
+            // 
+            this.check_manUninstall.AutoSize = true;
+            this.check_manUninstall.Location = new System.Drawing.Point(193, 96);
+            this.check_manUninstall.Name = "check_manUninstall";
+            this.check_manUninstall.Size = new System.Drawing.Size(102, 17);
+            this.check_manUninstall.TabIndex = 49;
+            this.check_manUninstall.Text = "Manual uninstall";
+            this.tool_Information.SetToolTip(this.check_manUninstall, "This option will add an Uninstall Mods button for Xenia users to keep mods instal" +
+        "led when closing Xenia.");
+            this.check_manUninstall.UseVisualStyleBackColor = true;
+            this.check_manUninstall.CheckedChanged += new System.EventHandler(this.Check_manUninstall_CheckedChanged);
             // 
             // combo_System
             // 
@@ -267,8 +282,8 @@
             this.check_FTP.Size = new System.Drawing.Size(86, 17);
             this.check_FTP.TabIndex = 46;
             this.check_FTP.Text = "FTP Server?";
-            this.tool_Warning.SetToolTip(this.check_FTP, "This option is experimental! We are not responsible for any data loss or corrupti" +
-        "on that may occur.");
+            this.tool_Information.SetToolTip(this.check_FTP, "This option is for transferring mods to real hardware. Enable this to make Sonic " +
+        "\'06 Mod Manager work with a modded Xbox 360 or PlayStation 3.");
             this.check_FTP.UseVisualStyleBackColor = true;
             this.check_FTP.CheckedChanged += new System.EventHandler(this.Check_FTP_CheckedChanged);
             // 
@@ -392,6 +407,9 @@
             // 
             // tool_Information
             // 
+            this.tool_Information.AutoPopDelay = 10000;
+            this.tool_Information.InitialDelay = 500;
+            this.tool_Information.ReshowDelay = 100;
             this.tool_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tool_Information.ToolTipTitle = "Information";
             // 
@@ -433,11 +451,6 @@
             this.stopButton.Visible = false;
             this.stopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
-            // tool_Warning
-            // 
-            this.tool_Warning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
-            this.tool_Warning.ToolTipTitle = "WARNING";
-            // 
             // userField
             // 
             this.userField.Location = new System.Drawing.Point(72, 431);
@@ -457,6 +470,22 @@
             this.passField.Visible = false;
             this.passField.TextChanged += new System.EventHandler(this.PassField_TextChanged);
             // 
+            // launchXeniaButton
+            // 
+            this.launchXeniaButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.launchXeniaButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.launchXeniaButton.FlatAppearance.BorderSize = 0;
+            this.launchXeniaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.launchXeniaButton.Location = new System.Drawing.Point(10, 458);
+            this.launchXeniaButton.Name = "launchXeniaButton";
+            this.launchXeniaButton.Size = new System.Drawing.Size(90, 23);
+            this.launchXeniaButton.TabIndex = 46;
+            this.launchXeniaButton.Text = "Play";
+            this.launchXeniaButton.UseVisualStyleBackColor = false;
+            this.launchXeniaButton.Visible = false;
+            this.launchXeniaButton.Click += new System.EventHandler(this.LaunchXeniaButton_Click);
+            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -471,6 +500,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.group_Mods);
             this.Controls.Add(this.playButton);
+            this.Controls.Add(this.launchXeniaButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -511,7 +541,6 @@
         private System.Windows.Forms.ComboBox combo_System;
         private System.Windows.Forms.Label lbl_System;
         private System.Windows.Forms.Button stopButton;
-        private System.Windows.Forms.ToolTip tool_Warning;
         private System.Windows.Forms.Button btn_DownerPriority;
         private System.Windows.Forms.Button btn_UpperPriority;
         private System.Windows.Forms.Button btn_DeselectAll;
@@ -521,6 +550,8 @@
         private System.Windows.Forms.TextBox userField;
         private System.Windows.Forms.Label lbl_Password;
         private System.Windows.Forms.TextBox passField;
+        private System.Windows.Forms.CheckBox check_manUninstall;
+        private System.Windows.Forms.Button launchXeniaButton;
     }
 }
 
