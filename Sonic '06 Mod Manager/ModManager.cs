@@ -1480,7 +1480,7 @@ namespace Sonic_06_Mod_Manager
                             }
                             else
                             {
-                                skippedMods.Add($"\n► {item} (failed because the mod was not targeted for the {combo_System.Text})");
+                                skippedMods.Add($"\n► {item} (failed because the mod was not targeted for the Xbox 360)");
                                 break;
                             }
                         }
