@@ -323,6 +323,8 @@ namespace Sonic_06_Mod_Manager
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             RefreshMods();
+            btn_UpperPriority.Enabled = false;
+            btn_DownerPriority.Enabled = false;
         }
 
         private void S06PathBox_TextChanged(object sender, EventArgs e)
