@@ -40,7 +40,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.04";
+        public static string versionNumber = "Version 1.05";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -88,24 +88,29 @@ namespace Sonic_06_Mod_Manager
                         switch (confirmUpdate)
                         {
                             case DialogResult.Yes:
-                                try
+                                var exists = System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1;
+                                if (exists) { MessageBox.Show("Please close any other instances of Sonic '06 Mod Manager and try again.", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                                else
                                 {
-                                    if (File.Exists(Application.ExecutablePath))
+                                    try
                                     {
-                                        var clientApplication = new WebClient();
-                                        clientApplication.DownloadFileAsync(new Uri(newVersionDownloadLink), Application.ExecutablePath + ".pak");
-                                        clientApplication.DownloadFileCompleted += (s, e) =>
+                                        if (File.Exists(Application.ExecutablePath))
                                         {
-                                            File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
-                                            Process.Start(Application.ExecutablePath);
-                                            Application.Exit();
-                                        };
+                                            var clientApplication = new WebClient();
+                                            clientApplication.DownloadFileAsync(new Uri(newVersionDownloadLink), Application.ExecutablePath + ".pak");
+                                            clientApplication.DownloadFileCompleted += (s, e) =>
+                                            {
+                                                File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
+                                                Process.Start(Application.ExecutablePath);
+                                                Application.Exit();
+                                            };
+                                        }
+                                        else { MessageBox.Show("Sonic '06 Mod Manager doesn't exist... What?!", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                                     }
-                                    else { MessageBox.Show("Sonic '06 Mod Manager doesn't exist... What?!", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("An error occurred when updating Sonic '06 Mod Manager.", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    catch
+                                    {
+                                        MessageBox.Show("An error occurred when updating Sonic '06 Mod Manager.", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
                                 }
                                 break;
                         }
