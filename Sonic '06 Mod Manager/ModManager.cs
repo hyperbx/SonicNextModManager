@@ -40,7 +40,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.05";
+        public static string versionNumber = "Version 1.06-indev";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -132,7 +132,7 @@ namespace Sonic_06_Mod_Manager
 
         private void ModManager_Load(object sender, EventArgs e)
         {
-            CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
+            //CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
 
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php", Properties.Resources.arctoolphp);
@@ -647,6 +647,7 @@ namespace Sonic_06_Mod_Manager
                 if (check_FTP.Checked)
                 {
                     FtpWebRequest testConnection = (FtpWebRequest)WebRequest.Create(s06PathBox.Text);
+                    testConnection.Credentials = new NetworkCredential(userField.Text, passField.Text);
                     testConnection.Method = WebRequestMethods.Ftp.ListDirectory;
 
                     if (s06PathBox.Text.StartsWith("ftp://"))
@@ -839,7 +840,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.xex");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -857,7 +858,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.xex");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -878,7 +879,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -896,7 +897,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -917,7 +918,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -935,7 +936,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -956,7 +957,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.wmv");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -974,7 +975,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.wmv");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -995,7 +996,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1013,7 +1014,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1034,7 +1035,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1052,7 +1053,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1073,7 +1074,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1091,7 +1092,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}xenon/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.xma");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1116,7 +1117,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.BIN");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1134,7 +1135,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{Path.Combine(s06PathBox.Text, Path.GetFileNameWithoutExtension(item.ToString()))}.BIN");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1155,7 +1156,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1173,7 +1174,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1194,7 +1195,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1212,7 +1213,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1233,7 +1234,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.pam");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1251,7 +1252,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/{Path.GetFileNameWithoutExtension(item.ToString())}.pam");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1272,7 +1273,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1290,7 +1291,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/event/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1311,7 +1312,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1329,7 +1330,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/e/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1350,7 +1351,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             bool fileExists = false;
                             FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
-                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                             try
@@ -1368,7 +1369,7 @@ namespace Sonic_06_Mod_Manager
                             {
                                 FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}ps3/sound/voice/j/{Path.GetFileNameWithoutExtension(item.ToString())}.at3");
                                 ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                 FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                             }
 
@@ -1391,7 +1392,7 @@ namespace Sonic_06_Mod_Manager
                     {
                         bool fileExists = false;
                         FtpWebRequest getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}win32/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
-                        getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                        getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                         getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                         try
@@ -1409,7 +1410,7 @@ namespace Sonic_06_Mod_Manager
                         {
                             FtpWebRequest ps3cleanupStep1 = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}win32/archives/{Path.GetFileNameWithoutExtension(item.ToString())}.arc");
                             ps3cleanupStep1.Method = WebRequestMethods.Ftp.DeleteFile;
-                            ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                            ps3cleanupStep1.Credentials = new NetworkCredential(userField.Text, passField.Text);
                             FtpWebResponse ps3DeleteResponse = (FtpWebResponse)ps3cleanupStep1.GetResponse();
                         }
 
@@ -1521,7 +1522,7 @@ namespace Sonic_06_Mod_Manager
                                         using (WebClient client = new WebClient())
                                         {
                                             client.UseDefaultCredentials = true;
-                                            client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            client.Credentials = new NetworkCredential(userField.Text, passField.Text);
 
                                             if (Path.GetFileName(mod).Contains(".arc"))
                                             {
@@ -1543,7 +1544,7 @@ namespace Sonic_06_Mod_Manager
                                                 if (mod.Contains(@"\xenon\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
                                                 else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
                                                 else break;
-                                                getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                 getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                                 try
@@ -1565,7 +1566,7 @@ namespace Sonic_06_Mod_Manager
                                                     else break;
                                                     Console.WriteLine(win32cleanup.RequestUri);
                                                     win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                     win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                                     win32cleanup.UseBinary = false;
                                                     win32cleanup.UsePassive = true;
@@ -1580,6 +1581,9 @@ namespace Sonic_06_Mod_Manager
                                             }
                                             else
                                             {
+                                                client.UseDefaultCredentials = true;
+                                                client.Credentials = new NetworkCredential(userField.Text, passField.Text);
+
                                                 bool fileExists = false;
                                                 FtpWebRequest getFile = null;
                                                 if (mod.Contains(@"\xenon\sound\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}_back");
@@ -1587,7 +1591,7 @@ namespace Sonic_06_Mod_Manager
                                                 else if (mod.Contains(@"\xenon\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}_back");
                                                 else if (mod.Contains(@"\xenon\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}_back");
                                                 else break;
-                                                getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                 getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                                 try
@@ -1611,7 +1615,7 @@ namespace Sonic_06_Mod_Manager
                                                     else break;
                                                     Console.WriteLine(win32cleanup.RequestUri);
                                                     win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                     win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                                     win32cleanup.UseBinary = false;
                                                     win32cleanup.UsePassive = true;
@@ -1646,6 +1650,9 @@ namespace Sonic_06_Mod_Manager
                                     {
                                         using (WebClient client = new WebClient())
                                         {
+                                            client.UseDefaultCredentials = true;
+                                            client.Credentials = new NetworkCredential(userField.Text, passField.Text);
+
                                             bool fileExists = false;
                                             FtpWebRequest getFile = null;
                                             if (mod.Contains(@"\xenon\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
@@ -1654,7 +1661,7 @@ namespace Sonic_06_Mod_Manager
                                             else if (mod.Contains(@"\xenon\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}_back");
                                             else if (mod.Contains(@"\xenon\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}_back");
                                             else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
-                                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                             try
@@ -1684,7 +1691,7 @@ namespace Sonic_06_Mod_Manager
                                                 else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
                                                 Console.WriteLine(win32cleanup.RequestUri);
                                                 win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                 win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                                 win32cleanup.UseBinary = false;
                                                 win32cleanup.UsePassive = true;
@@ -1710,6 +1717,9 @@ namespace Sonic_06_Mod_Manager
                             {
                                 using (WebClient client = new WebClient())
                                 {
+                                    client.UseDefaultCredentials = true;
+                                    client.Credentials = new NetworkCredential(userField.Text, passField.Text);
+
                                     bool fileExists = false;
                                     FtpWebRequest getFile = null;
                                     if (mod.Contains(@"\xenon\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
@@ -1718,7 +1728,7 @@ namespace Sonic_06_Mod_Manager
                                     else if (mod.Contains(@"\xenon\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}_back");
                                     else if (mod.Contains(@"\xenon\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}_back");
                                     else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
-                                    getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                    getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                     getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                     try
@@ -1748,7 +1758,7 @@ namespace Sonic_06_Mod_Manager
                                         else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
                                         Console.WriteLine(win32cleanup.RequestUri);
                                         win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                         win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                         win32cleanup.UseBinary = false;
                                         win32cleanup.UsePassive = true;
@@ -1778,7 +1788,7 @@ namespace Sonic_06_Mod_Manager
                                         using (WebClient client = new WebClient())
                                         {
                                             client.UseDefaultCredentials = true;
-                                            client.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            client.Credentials = new NetworkCredential(userField.Text, passField.Text);
 
                                             if (Path.GetFileName(mod).Contains(".arc"))
                                             {
@@ -1800,7 +1810,7 @@ namespace Sonic_06_Mod_Manager
                                                 if (mod.Contains(@"\ps3\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}_back");
                                                 else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
                                                 else break;
-                                                getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                 getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                                 try
@@ -1822,7 +1832,7 @@ namespace Sonic_06_Mod_Manager
                                                     else break;
                                                     Console.WriteLine(win32cleanup.RequestUri);
                                                     win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                     win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                                     win32cleanup.UseBinary = false;
                                                     win32cleanup.UsePassive = true;
@@ -1844,7 +1854,7 @@ namespace Sonic_06_Mod_Manager
                                                 else if (mod.Contains(@"\ps3\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}_back");
                                                 else if (mod.Contains(@"\ps3\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}_back");
                                                 else break;
-                                                getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                 getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                                 try
@@ -1868,7 +1878,7 @@ namespace Sonic_06_Mod_Manager
                                                     else break;
                                                     Console.WriteLine(win32cleanup.RequestUri);
                                                     win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                     win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                                     win32cleanup.UseBinary = false;
                                                     win32cleanup.UsePassive = true;
@@ -1911,7 +1921,7 @@ namespace Sonic_06_Mod_Manager
                                             else if (mod.Contains(@"\ps3\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}_back");
                                             else if (mod.Contains(@"\ps3\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}_back");
                                             else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
-                                            getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                            getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                             getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                             try
@@ -1941,7 +1951,7 @@ namespace Sonic_06_Mod_Manager
                                                 else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
                                                 Console.WriteLine(win32cleanup.RequestUri);
                                                 win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                                win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                                 win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                                 win32cleanup.UseBinary = false;
                                                 win32cleanup.UsePassive = true;
@@ -1975,7 +1985,7 @@ namespace Sonic_06_Mod_Manager
                                     else if (mod.Contains(@"\ps3\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}_back");
                                     else if (mod.Contains(@"\ps3\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}_back");
                                     else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
-                                    getFile.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                    getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                     getFile.Method = WebRequestMethods.Ftp.GetFileSize;
 
                                     try
@@ -2005,7 +2015,7 @@ namespace Sonic_06_Mod_Manager
                                         else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{s06PathBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
                                         Console.WriteLine(win32cleanup.RequestUri);
                                         win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, userField.Text);
+                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
                                         win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
                                         win32cleanup.UseBinary = false;
                                         win32cleanup.UsePassive = true;

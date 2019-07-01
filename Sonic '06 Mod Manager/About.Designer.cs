@@ -39,6 +39,7 @@
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.button2 = new System.Windows.Forms.Button();
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +51,7 @@
             this.pic_Logo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pic_Logo.Location = new System.Drawing.Point(-1, -1);
             this.pic_Logo.Name = "pic_Logo";
-            this.pic_Logo.Size = new System.Drawing.Size(229, 259);
+            this.pic_Logo.Size = new System.Drawing.Size(229, 271);
             this.pic_Logo.TabIndex = 0;
             this.pic_Logo.TabStop = false;
             this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
@@ -79,20 +80,18 @@
             // 
             this.lbl_Contributors.AutoSize = true;
             this.lbl_Contributors.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Contributors.Location = new System.Drawing.Point(233, 48);
+            this.lbl_Contributors.Location = new System.Drawing.Point(233, 47);
             this.lbl_Contributors.Name = "lbl_Contributors";
-            this.lbl_Contributors.Size = new System.Drawing.Size(196, 105);
+            this.lbl_Contributors.Size = new System.Drawing.Size(196, 120);
             this.lbl_Contributors.TabIndex = 3;
-            this.lbl_Contributors.Text = "Contributors:\r\nKnuxfan24- Lead Developer\r\nHyper - Co-developer and Designer\r\nxose" +
-    " - ARC Unpacker\r\ng0ldenlink - ARC Repacker\r\nsharu6262- Xbox Tester\r\nChrisHighwin" +
-    "d - Linux Tester";
+            this.lbl_Contributors.Text = resources.GetString("lbl_Contributors.Text");
             // 
             // btn_GitHub
             // 
             this.btn_GitHub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(218)))), ((int)(((byte)(240)))));
             this.btn_GitHub.FlatAppearance.BorderSize = 0;
             this.btn_GitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_GitHub.Location = new System.Drawing.Point(234, 224);
+            this.btn_GitHub.Location = new System.Drawing.Point(234, 237);
             this.btn_GitHub.Name = "btn_GitHub";
             this.btn_GitHub.Size = new System.Drawing.Size(246, 23);
             this.btn_GitHub.TabIndex = 4;
@@ -105,7 +104,7 @@
             this.button1.BackColor = System.Drawing.Color.Tomato;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(234, 195);
+            this.button1.Location = new System.Drawing.Point(234, 208);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(246, 23);
             this.button1.TabIndex = 5;
@@ -118,7 +117,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel1.Location = new System.Drawing.Point(233, 64);
+            this.linkLabel1.Location = new System.Drawing.Point(233, 63);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(62, 14);
             this.linkLabel1.TabIndex = 6;
@@ -131,7 +130,7 @@
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel2.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel2.Location = new System.Drawing.Point(233, 79);
+            this.linkLabel2.Location = new System.Drawing.Point(233, 78);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(38, 14);
             this.linkLabel2.TabIndex = 7;
@@ -144,7 +143,7 @@
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel3.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel3.Location = new System.Drawing.Point(233, 124);
+            this.linkLabel3.Location = new System.Drawing.Point(233, 123);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(62, 14);
             this.linkLabel3.TabIndex = 8;
@@ -157,7 +156,7 @@
             this.button2.BackColor = System.Drawing.Color.LightGreen;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(234, 166);
+            this.button2.Location = new System.Drawing.Point(234, 179);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(246, 23);
             this.button2.TabIndex = 9;
@@ -165,11 +164,25 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
+            // linkLabel4
+            // 
+            this.linkLabel4.AutoSize = true;
+            this.linkLabel4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel4.LinkColor = System.Drawing.Color.Black;
+            this.linkLabel4.Location = new System.Drawing.Point(233, 138);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(64, 14);
+            this.linkLabel4.TabIndex = 10;
+            this.linkLabel4.TabStop = true;
+            this.linkLabel4.Text = "Melpontro";
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel4_LinkClicked);
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 254);
+            this.ClientSize = new System.Drawing.Size(487, 267);
+            this.Controls.Add(this.linkLabel4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.linkLabel3);
             this.Controls.Add(this.linkLabel2);
@@ -206,5 +219,6 @@
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.LinkLabel linkLabel4;
     }
 }

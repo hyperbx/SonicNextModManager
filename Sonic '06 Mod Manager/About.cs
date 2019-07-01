@@ -89,5 +89,10 @@ namespace Sonic_06_Mod_Manager
                 ModManager.CheckForUpdates(ModManager.versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
             }
         }
+
+        private void LinkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://www.youtube.com/user/Melpontro");
+        }
     }
 }

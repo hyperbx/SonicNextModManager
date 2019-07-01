@@ -3324,6 +3324,16 @@
         BcHlZKs64N94AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="lbl_Contributors.Text" xml:space="preserve">
+    <value>Contributors:
+Knuxfan24- Lead Developer
+Hyper - Co-developer and Designer
+xose - ARC Unpacker
+g0ldenlink - ARC Repacker
+sharu6262- Xbox Tester
+Melpontro - Xbox Tester
+ChrisHighwind - Linux Tester</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAkAEBAAAAEAIABoBAAAlgAAABgYAAABACAAiAkAAP4EAAAgIAAAAQAgAKgQAACGDgAAMDAAAAEA
