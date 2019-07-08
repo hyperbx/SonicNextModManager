@@ -1428,6 +1428,8 @@ namespace Sonic_06_Mod_Manager
 
         private void CopyMods()
         {
+            string[] filesToCopy;
+            List<string> filesToCopyList = new List<string>();
             skippedMods.Clear();
             string[] names = checkedModsList.ToArray(); //modList.CheckedItems.Cast<string>().ToArray();
 
@@ -1439,6 +1441,29 @@ namespace Sonic_06_Mod_Manager
             convertDialog.Show();
             foreach (var item in names)
             {
+                if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
+                {
+                    using (StreamReader configFile = new StreamReader($"{Path.Combine(modsPath, item)}\\mod.ini"))
+                    {
+                        string line;
+                        string entryValue;
+                        while ((line = configFile.ReadLine()) != null)
+                        {
+                            if (line.Contains("Copy=\""))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                string[] filesToCopyBroken = entryValue.Split(',');
+                                filesToCopy = filesToCopyBroken.Select(x => x.Replace("\"", string.Empty)).ToArray();
+                                foreach (string file in filesToCopy)
+                                {
+                                    filesToCopyList.Add(file);
+                                }
+
+                            }
+                        }
+                    }
+                }
                 var mods = Directory.GetFiles($"{modsPath}\\{item}", "*.*", SearchOption.AllDirectories)
                 .Where(s => s.EndsWith(".arc") || s.EndsWith(".wmv") || s.EndsWith(".xma") || s.EndsWith(".xex"));
 
@@ -1458,6 +1483,15 @@ namespace Sonic_06_Mod_Manager
                                 {
                                     if (mod.EndsWith(".arc"))
                                     {
+                                        for (int i = 0; i < filesToCopyList.Count; i++)
+                                        {
+                                            if (filesToCopyList[i].Contains(arcPath.Remove(0, 1)))
+                                            {
+                                                Console.WriteLine("Copying " + mod);
+                                                if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                                File.Copy(mod, origArcPath, true);
+                                            }
+                                        }
                                         Console.WriteLine("Merging " + mod);
                                         MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
                                     }
