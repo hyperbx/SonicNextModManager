@@ -854,22 +854,9 @@ namespace Sonic_06_Mod_Manager
                     xeniaBox.Text = xeniaPath;
                     Properties.Settings.Default.xeniaPath = xeniaPath;
                     Properties.Settings.Default.Save();
+
+                    tab_Section.SelectedIndex = 1;
                 }
-
-                string args;
-                if (File.Exists($"{s06Path}\\default.xex")) { args = $"\"{s06Path}\\default.xex\""; }
-                else { args = string.Empty; }
-
-                Console.WriteLine("\nStarting Xenia.\n");
-                ProcessStartInfo xeniaExec;
-                xeniaExec = new ProcessStartInfo(xeniaPath)
-                {
-                    WorkingDirectory = Path.GetDirectoryName(xeniaPath),
-                    Arguments = args
-                };
-                var xenia = Process.Start(xeniaExec);
-                xenia.WaitForExit();
-                CleanUpMods();
             }
         }
 
