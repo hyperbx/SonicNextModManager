@@ -43,13 +43,16 @@
             this.tool_Info = new System.Windows.Forms.ToolTip(this.components);
             this.combo_System = new System.Windows.Forms.ComboBox();
             this.lbl_System = new System.Windows.Forms.Label();
+            this.lbl_Copy = new System.Windows.Forms.Label();
+            this.modCopyBox = new System.Windows.Forms.TextBox();
+            this.readonlyButtonHelp = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 15);
+            this.label1.Location = new System.Drawing.Point(38, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 13);
             this.label1.TabIndex = 5;
@@ -58,9 +61,9 @@
             // modTitleBox
             // 
             this.modTitleBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.modTitleBox.Location = new System.Drawing.Point(62, 12);
+            this.modTitleBox.Location = new System.Drawing.Point(73, 11);
             this.modTitleBox.Name = "modTitleBox";
-            this.modTitleBox.Size = new System.Drawing.Size(294, 20);
+            this.modTitleBox.Size = new System.Drawing.Size(283, 20);
             this.modTitleBox.TabIndex = 4;
             this.modTitleBox.TextChanged += new System.EventHandler(this.ModTitleBox_TextChanged);
             // 
@@ -68,7 +71,7 @@
             // 
             this.versionLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.versionLabel.AutoSize = true;
-            this.versionLabel.Location = new System.Drawing.Point(11, 41);
+            this.versionLabel.Location = new System.Drawing.Point(23, 40);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(45, 13);
             this.versionLabel.TabIndex = 7;
@@ -77,9 +80,9 @@
             // modVersionBox
             // 
             this.modVersionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.modVersionBox.Location = new System.Drawing.Point(62, 38);
+            this.modVersionBox.Location = new System.Drawing.Point(73, 37);
             this.modVersionBox.Name = "modVersionBox";
-            this.modVersionBox.Size = new System.Drawing.Size(294, 20);
+            this.modVersionBox.Size = new System.Drawing.Size(283, 20);
             this.modVersionBox.TabIndex = 6;
             this.modVersionBox.TextChanged += new System.EventHandler(this.ModVersionBox_TextChanged);
             // 
@@ -87,7 +90,7 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(23, 67);
+            this.label2.Location = new System.Drawing.Point(35, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 9;
@@ -96,9 +99,9 @@
             // modDateBox
             // 
             this.modDateBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.modDateBox.Location = new System.Drawing.Point(62, 64);
+            this.modDateBox.Location = new System.Drawing.Point(73, 63);
             this.modDateBox.Name = "modDateBox";
-            this.modDateBox.Size = new System.Drawing.Size(294, 20);
+            this.modDateBox.Size = new System.Drawing.Size(283, 20);
             this.modDateBox.TabIndex = 8;
             this.modDateBox.TextChanged += new System.EventHandler(this.ModDateBox_TextChanged);
             // 
@@ -106,7 +109,7 @@
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 93);
+            this.label3.Location = new System.Drawing.Point(27, 92);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 11;
@@ -115,9 +118,9 @@
             // modAuthorBox
             // 
             this.modAuthorBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.modAuthorBox.Location = new System.Drawing.Point(62, 90);
+            this.modAuthorBox.Location = new System.Drawing.Point(73, 89);
             this.modAuthorBox.Name = "modAuthorBox";
-            this.modAuthorBox.Size = new System.Drawing.Size(294, 20);
+            this.modAuthorBox.Size = new System.Drawing.Size(283, 20);
             this.modAuthorBox.TabIndex = 10;
             this.modAuthorBox.TextChanged += new System.EventHandler(this.ModAuthorBox_TextChanged);
             // 
@@ -128,7 +131,7 @@
             this.createButton.Enabled = false;
             this.createButton.FlatAppearance.BorderSize = 0;
             this.createButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.createButton.Location = new System.Drawing.Point(281, 144);
+            this.createButton.Location = new System.Drawing.Point(281, 169);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(75, 23);
             this.createButton.TabIndex = 12;
@@ -140,7 +143,7 @@
             // 
             this.check_Merge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.check_Merge.AutoSize = true;
-            this.check_Merge.Location = new System.Drawing.Point(62, 147);
+            this.check_Merge.Location = new System.Drawing.Point(73, 172);
             this.check_Merge.Name = "check_Merge";
             this.check_Merge.Size = new System.Drawing.Size(62, 17);
             this.check_Merge.TabIndex = 13;
@@ -162,26 +165,64 @@
             this.combo_System.Items.AddRange(new object[] {
             "Xbox 360",
             "PlayStation 3"});
-            this.combo_System.Location = new System.Drawing.Point(62, 116);
+            this.combo_System.Location = new System.Drawing.Point(73, 115);
             this.combo_System.Name = "combo_System";
-            this.combo_System.Size = new System.Drawing.Size(294, 21);
+            this.combo_System.Size = new System.Drawing.Size(283, 21);
             this.combo_System.TabIndex = 50;
             // 
             // lbl_System
             // 
             this.lbl_System.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lbl_System.AutoSize = true;
-            this.lbl_System.Location = new System.Drawing.Point(12, 119);
+            this.lbl_System.Location = new System.Drawing.Point(24, 118);
             this.lbl_System.Name = "lbl_System";
             this.lbl_System.Size = new System.Drawing.Size(44, 13);
             this.lbl_System.TabIndex = 49;
             this.lbl_System.Text = "System:";
             // 
+            // lbl_Copy
+            // 
+            this.lbl_Copy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lbl_Copy.AutoSize = true;
+            this.lbl_Copy.Enabled = false;
+            this.lbl_Copy.Location = new System.Drawing.Point(10, 145);
+            this.lbl_Copy.Name = "lbl_Copy";
+            this.lbl_Copy.Size = new System.Drawing.Size(58, 13);
+            this.lbl_Copy.TabIndex = 52;
+            this.lbl_Copy.Text = "Read-only:";
+            // 
+            // modCopyBox
+            // 
+            this.modCopyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.modCopyBox.Enabled = false;
+            this.modCopyBox.Location = new System.Drawing.Point(73, 142);
+            this.modCopyBox.Name = "modCopyBox";
+            this.modCopyBox.Size = new System.Drawing.Size(257, 20);
+            this.modCopyBox.TabIndex = 51;
+            this.modCopyBox.TextChanged += new System.EventHandler(this.ModCopy_TextChanged);
+            // 
+            // readonlyButtonHelp
+            // 
+            this.readonlyButtonHelp.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.readonlyButtonHelp.Enabled = false;
+            this.readonlyButtonHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.readonlyButtonHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.readonlyButtonHelp.Location = new System.Drawing.Point(334, 142);
+            this.readonlyButtonHelp.Name = "readonlyButtonHelp";
+            this.readonlyButtonHelp.Size = new System.Drawing.Size(22, 20);
+            this.readonlyButtonHelp.TabIndex = 66;
+            this.readonlyButtonHelp.Text = "?";
+            this.readonlyButtonHelp.UseVisualStyleBackColor = false;
+            this.readonlyButtonHelp.Click += new System.EventHandler(this.ReadonlyButtonHelp_Click);
+            // 
             // ModCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 174);
+            this.ClientSize = new System.Drawing.Size(365, 200);
+            this.Controls.Add(this.readonlyButtonHelp);
+            this.Controls.Add(this.lbl_Copy);
+            this.Controls.Add(this.modCopyBox);
             this.Controls.Add(this.combo_System);
             this.Controls.Add(this.lbl_System);
             this.Controls.Add(this.check_Merge);
@@ -222,5 +263,8 @@
         private System.Windows.Forms.ToolTip tool_Info;
         private System.Windows.Forms.ComboBox combo_System;
         private System.Windows.Forms.Label lbl_System;
+        private System.Windows.Forms.Label lbl_Copy;
+        private System.Windows.Forms.TextBox modCopyBox;
+        private System.Windows.Forms.Button readonlyButtonHelp;
     }
 }

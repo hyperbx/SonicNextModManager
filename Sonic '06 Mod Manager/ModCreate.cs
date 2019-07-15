@@ -10,6 +10,7 @@ namespace Sonic_06_Mod_Manager
         string modVersion = "";
         string modDate = "";
         string modAuthor = "";
+        string modCopy = "";
         bool modMerge = false;
         string modPathTrue;
 
@@ -70,6 +71,7 @@ namespace Sonic_06_Mod_Manager
                         if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
                         modINI.WriteLine("Platform=\"" + combo_System.Text + "\"");
                         modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
+                        if (modCopy != "") { modINI.WriteLine("Copy=\"" + modCopy + "\""); }
                         modINI.Close();
                     }
                 }
@@ -81,14 +83,36 @@ namespace Sonic_06_Mod_Manager
 
         private void Check_Merge_CheckedChanged(object sender, EventArgs e)
         {
-            if (check_Merge.Checked == true) { modMerge = true; }
-            else { modMerge = false; }
+            if (check_Merge.Checked == true)
+            {
+                modMerge = true;
+                lbl_Copy.Enabled = true;
+                modCopyBox.Enabled = true;
+                readonlyButtonHelp.Enabled = true;
+            }
+            else
+            {
+                modMerge = false;
+                lbl_Copy.Enabled = false;
+                modCopyBox.Enabled = false;
+                readonlyButtonHelp.Enabled = true;
+            }
         }
 
         private void ModCreate_Load(object sender, EventArgs e)
         {
             combo_System.SelectedIndex = 0;
-            this.MaximumSize = new System.Drawing.Size(int.MaxValue, 213);
+            this.MaximumSize = new System.Drawing.Size(int.MaxValue, 239);
+        }
+
+        private void ModCopy_TextChanged(object sender, EventArgs e)
+        {
+            modCopy = modCopyBox.Text;
+        }
+
+        private void ReadonlyButtonHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This parameter tells the Mod Manager not to merge files marked as 'read-only.' Files must be listed as comma separated values (e.g. 'cache.arc,player.arc,object.arc').", "Read-only", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

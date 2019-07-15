@@ -97,7 +97,7 @@ namespace Sonic_06_Mod_Manager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int priority {
             get {
                 return ((int)(this["priority"]));
@@ -140,6 +140,114 @@ namespace Sonic_06_Mod_Manager.Properties {
             }
             set {
                 this["filter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int msaaLevel {
+            get {
+                return ((int)(this["msaaLevel"]));
+            }
+            set {
+                this["msaaLevel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int reflectionLevel {
+            get {
+                return ((int)(this["reflectionLevel"]));
+            }
+            set {
+                this["reflectionLevel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int api {
+            get {
+                return ((int)(this["api"]));
+            }
+            set {
+                this["api"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool vulkanOnDX12 {
+            get {
+                return ((bool)(this["vulkanOnDX12"]));
+            }
+            set {
+                this["vulkanOnDX12"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool vsync {
+            get {
+                return ((bool)(this["vsync"]));
+            }
+            set {
+                this["vsync"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool protectZero {
+            get {
+                return ((bool)(this["protectZero"]));
+            }
+            set {
+                this["protectZero"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool rtv {
+            get {
+                return ((bool)(this["rtv"]));
+            }
+            set {
+                this["rtv"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool doubleIntRes {
+            get {
+                return ((bool)(this["doubleIntRes"]));
+            }
+            set {
+                this["doubleIntRes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool gamma {
+            get {
+                return ((bool)(this["gamma"]));
+            }
+            set {
+                this["gamma"] = value;
             }
         }
     }
