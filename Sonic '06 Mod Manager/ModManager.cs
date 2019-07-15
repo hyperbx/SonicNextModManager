@@ -3,11 +3,11 @@ using System.IO;
 using System.Net;
 using System.Linq;
 using System.Data;
+using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Text;
 
 // Welcome to Sonic '06 Mod Manager!
 
@@ -40,7 +40,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.06-indev";
+        public static string versionNumber = "Version 1.06-test";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -73,7 +73,7 @@ namespace Sonic_06_Mod_Manager
             xeniaBox.Text = Properties.Settings.Default.xeniaPath;
         }
 
-        public string applicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        public static string applicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         public static void CheckForUpdates(string currentVersion, string newVersionDownloadLink, string versionInfoLink)
         {
@@ -136,10 +136,13 @@ namespace Sonic_06_Mod_Manager
             //CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
 
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
+            if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub");
+            if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs");
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php", Properties.Resources.arctoolphp);
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\unarc.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\unarc.php", Properties.Resources.unarcphp);
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arcc.php")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arcc.php", Properties.Resources.arccphp);
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", Properties.Resources.arctool);
+            if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar", Properties.Resources.unlub);
 
             RefreshMods();
             if (Directory.Exists(s06Path) && Properties.Settings.Default.manUninstall == false) CleanUpMods();
@@ -313,7 +316,9 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.modsPath = modsPath;
             Properties.Settings.Default.Save();
 
-            if (File.Exists($"{modsPath}\\mods.ini")) GetChecks();
+            if (File.Exists($"{modsPath}\\patches.ini")) GetPatchChecks();
+
+            if (File.Exists($"{modsPath}\\mods.ini")) GetModChecks();
             else
             {
                 modArray = Directory.GetDirectories(modsPath);
@@ -352,7 +357,7 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        private void GetChecks()
+        private void GetModChecks()
         {
             string line;
             modArray = Directory.GetDirectories(modsPath);
@@ -444,23 +449,53 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
+        private void GetPatchChecks()
+        {
+            string line;
+            using (StreamReader sr = new StreamReader($"{modsPath}\\patches.ini"))
+            {
+                sr.ReadLine();
+                while ((line = sr.ReadLine()) != null)
+                {
+                    int.TryParse(line, out int index);
+                    patchesList.SetItemChecked(index, true);
+                }
+            }
+        }
+
         private void SaveChecks()
         {
-            string checkList = $"{modsPath}\\mods.ini";
-            int checkTotal = 0;
+            string modCheckList = $"{modsPath}\\mods.ini";
+            string patchCheckList = $"{modsPath}\\patches.ini";
+            int modCheckTotal = 0;
+            int patchCheckTotal = 0;
 
-            foreach (string items in modList.CheckedItems) { checkTotal++; }
+            foreach (string items in modList.CheckedItems) { modCheckTotal++; }
+            foreach (string items in patchesList.CheckedItems) { patchCheckTotal++; }
 
-            using (StreamWriter sw = File.CreateText(checkList))
+            using (StreamWriter sw = File.CreateText(modCheckList))
             {
                 sw.WriteLine("[Main]");
             }
 
             foreach (var item in checkedModsList)
             {
-                using (StreamWriter sw = File.AppendText(checkList))
+                using (StreamWriter sw = File.AppendText(modCheckList))
                 {
                     sw.WriteLine($"{item}");
+                }
+            }
+
+            using (StreamWriter sw = File.CreateText(patchCheckList))
+            {
+                sw.WriteLine("[Main]");
+            }
+
+            foreach (var item in patchesList.CheckedItems)
+            {
+                using (StreamWriter sw = File.AppendText(patchCheckList))
+                {
+                    sw.WriteLine(patchesList.Items.IndexOf(item));
                 }
             }
         }
@@ -714,6 +749,18 @@ namespace Sonic_06_Mod_Manager
                 {
                     SaveChecks();
                     RefreshMods();
+
+                    try
+                    {
+                        if (patchesList.CheckedItems.Count != 0 || combo_MSAA.SelectedIndex != 1 || combo_Reflections.SelectedIndex != 1) InstallPatches();
+                    }
+                    catch (Exception ex3)
+                    {
+                        MessageBox.Show($"Please refer to the following error for more information:\n\n{ex3}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Tools.Notification.Dispose();
+                        return;
+                    }
+
                     if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
                 }
             }
@@ -743,6 +790,17 @@ namespace Sonic_06_Mod_Manager
                     return;
                 }
 
+                Tools.Notification.Dispose();
+                return;
+            }
+
+            try
+            {
+                if (patchesList.CheckedItems.Count != 0 || combo_MSAA.SelectedIndex != 1 || combo_Reflections.SelectedIndex != 1) InstallPatches();
+            }
+            catch (Exception ex3)
+            {
+                MessageBox.Show($"Please refer to the following error for more information:\n\n{ex3}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Tools.Notification.Dispose();
                 return;
             }
@@ -1573,60 +1631,120 @@ namespace Sonic_06_Mod_Manager
                                             client.UseDefaultCredentials = true;
                                             client.Credentials = new NetworkCredential(userField.Text, passField.Text);
 
-                                            if (Path.GetFileName(mod).Contains(".arc"))
+                                            if (Path.GetExtension(mod) == ".arc")
                                             {
-                                                byte[] arcBytes = null;
-                                                if (mod.Contains(@"\xenon\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
-                                                else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-                                                else break;
-
-                                                Directory.CreateDirectory(tempPath);
-
-                                                using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                                if (string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)))
                                                 {
-                                                    file.Write(arcBytes, 0, arcBytes.Length);
-                                                    file.Close();
+                                                    client.UseDefaultCredentials = true;
+                                                    client.Credentials = new NetworkCredential(userField.Text, passField.Text);
+
+                                                    bool fileExists = false;
+                                                    FtpWebRequest getFile = null;
+                                                    if (mod.Contains(@"\xenon\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\xenon\sound\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\xenon\sound\event\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/event/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\xenon\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\xenon\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
+                                                    getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                    getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                                    try
+                                                    {
+                                                        FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                                        fileExists = true;
+                                                    }
+                                                    catch (WebException ex)
+                                                    {
+                                                        FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                                        if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                                    }
+
+                                                    if (fileExists)
+                                                    {
+                                                        skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        FtpWebRequest win32cleanup = null;
+                                                        if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\xenon\sound\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\xenon\sound\event\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/event/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\xenon\sound\voice\e\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\xenon\sound\voice\j\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                        Console.WriteLine(win32cleanup.RequestUri);
+                                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                                        win32cleanup.UseBinary = false;
+                                                        win32cleanup.UsePassive = true;
+                                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                                        if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\xenon\sound\")) client.UploadFile($"{ftpLocationBox.Text}{"xenon/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\xenon\sound\event\")) client.UploadFile($"{ftpLocationBox.Text}{"xenon/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\xenon\sound\voice\e\")) client.UploadFile($"{ftpLocationBox.Text}{"xenon/sound/voice/e/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\xenon\sound\voice\j\")) client.UploadFile($"{ftpLocationBox.Text}{"xenon/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                    }
                                                 }
-
-                                                bool fileExists = false;
-                                                FtpWebRequest getFile = null;
-                                                if (mod.Contains(@"\xenon\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
-                                                else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
-                                                else break;
-                                                getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
-                                                getFile.Method = WebRequestMethods.Ftp.GetFileSize;
-
-                                                try
+                                                else
                                                 {
-                                                    FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
-                                                    fileExists = true;
-                                                }
-                                                catch (WebException ex)
-                                                {
-                                                    FtpWebResponse response = (FtpWebResponse)ex.Response;
-                                                    if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
-                                                }
-
-                                                if (!fileExists)
-                                                {
-                                                    FtpWebRequest win32cleanup = null;
-                                                    if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
-                                                    else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                    byte[] arcBytes = null;
+                                                    if (mod.Contains(@"\xenon\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                                    else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
                                                     else break;
-                                                    Console.WriteLine(win32cleanup.RequestUri);
-                                                    win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
-                                                    win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
-                                                    win32cleanup.UseBinary = false;
-                                                    win32cleanup.UsePassive = true;
-                                                    FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                                    Directory.CreateDirectory(tempPath);
+
+                                                    using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                                    {
+                                                        file.Write(arcBytes, 0, arcBytes.Length);
+                                                        file.Close();
+                                                    }
+
+                                                    bool fileExists = false;
+                                                    FtpWebRequest getFile = null;
+                                                    if (mod.Contains(@"\xenon\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
+                                                    else break;
+                                                    getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                    getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                                    try
+                                                    {
+                                                        FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                                        fileExists = true;
+                                                    }
+                                                    catch (WebException ex)
+                                                    {
+                                                        FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                                        if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                                    }
+
+                                                    if (!fileExists)
+                                                    {
+                                                        FtpWebRequest win32cleanup = null;
+                                                        if (mod.Contains(@"\xenon\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                        else break;
+                                                        Console.WriteLine(win32cleanup.RequestUri);
+                                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                                        win32cleanup.UseBinary = false;
+                                                        win32cleanup.UsePassive = true;
+                                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+                                                    }
+
+                                                    MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
+
+                                                    if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                                    else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                                    else break;
                                                 }
-
-                                                MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
-
-                                                if (mod.Contains(@"\xenon\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"xenon/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                                else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                                else break;
                                             }
                                             else
                                             {
@@ -1839,60 +1957,117 @@ namespace Sonic_06_Mod_Manager
                                             client.UseDefaultCredentials = true;
                                             client.Credentials = new NetworkCredential(userField.Text, passField.Text);
 
-                                            if (Path.GetFileName(mod).Contains(".arc"))
+                                            if (Path.GetExtension(mod) == ".arc")
                                             {
-                                                byte[] arcBytes = null;
-                                                if (mod.Contains(@"\ps3\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
-                                                else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
-                                                else break;
-
-                                                Directory.CreateDirectory(tempPath);
-
-                                                using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                                if (string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)))
                                                 {
-                                                    file.Write(arcBytes, 0, arcBytes.Length);
-                                                    file.Close();
+                                                    bool fileExists = false;
+                                                    FtpWebRequest getFile = null;
+                                                    if (mod.Contains(@"\ps3\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\ps3\sound\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\ps3\sound\event\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/event/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\ps3\sound\voice\e\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\ps3\sound\voice\j\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
+                                                    getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                    getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                                    try
+                                                    {
+                                                        FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                                        fileExists = true;
+                                                    }
+                                                    catch (WebException ex)
+                                                    {
+                                                        FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                                        if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                                    }
+
+                                                    if (fileExists)
+                                                    {
+                                                        skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        FtpWebRequest win32cleanup = null;
+                                                        if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\ps3\sound\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\ps3\sound\event\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/event/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\ps3\sound\voice\e\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\ps3\sound\voice\j\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                        Console.WriteLine(win32cleanup.RequestUri);
+                                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                                        win32cleanup.UseBinary = false;
+                                                        win32cleanup.UsePassive = true;
+                                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                                        if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\ps3\sound\")) client.UploadFile($"{ftpLocationBox.Text}{"ps3/sound/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\ps3\sound\event\")) client.UploadFile($"{ftpLocationBox.Text}{"ps3/sound/event/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\ps3\sound\voice\e\")) client.UploadFile($"{ftpLocationBox.Text}{"ps3/sound/voice/e/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\ps3\sound\voice\j\")) client.UploadFile($"{ftpLocationBox.Text}{"ps3/sound/voice/j/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                        else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, mod);
+                                                    }
                                                 }
-
-                                                bool fileExists = false;
-                                                FtpWebRequest getFile = null;
-                                                if (mod.Contains(@"\ps3\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}_back");
-                                                else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
-                                                else break;
-                                                getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
-                                                getFile.Method = WebRequestMethods.Ftp.GetFileSize;
-
-                                                try
+                                                else
                                                 {
-                                                    FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
-                                                    fileExists = true;
-                                                }
-                                                catch (WebException ex)
-                                                {
-                                                    FtpWebResponse response = (FtpWebResponse)ex.Response;
-                                                    if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
-                                                }
-
-                                                if (!fileExists)
-                                                {
-                                                    FtpWebRequest win32cleanup = null;
-                                                    if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
-                                                    else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                    byte[] arcBytes = null;
+                                                    if (mod.Contains(@"\ps3\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                                    else if (mod.Contains(@"\win32\archives\")) arcBytes = client.DownloadData($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
                                                     else break;
-                                                    Console.WriteLine(win32cleanup.RequestUri);
-                                                    win32cleanup.Method = WebRequestMethods.Ftp.Rename;
-                                                    win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
-                                                    win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
-                                                    win32cleanup.UseBinary = false;
-                                                    win32cleanup.UsePassive = true;
-                                                    FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+
+                                                    Directory.CreateDirectory(tempPath);
+
+                                                    using (FileStream file = File.Create($"{tempPath}\\{Path.GetFileName(mod)}"))
+                                                    {
+                                                        file.Write(arcBytes, 0, arcBytes.Length);
+                                                        file.Close();
+                                                    }
+
+                                                    bool fileExists = false;
+                                                    FtpWebRequest getFile = null;
+                                                    if (mod.Contains(@"\ps3\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}_back");
+                                                    else if (mod.Contains(@"\win32\archives\")) getFile = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}_back");
+                                                    else break;
+                                                    getFile.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                    getFile.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                                                    try
+                                                    {
+                                                        FtpWebResponse fileResponse = (FtpWebResponse)getFile.GetResponse();
+                                                        fileExists = true;
+                                                    }
+                                                    catch (WebException ex)
+                                                    {
+                                                        FtpWebResponse response = (FtpWebResponse)ex.Response;
+                                                        if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) fileExists = false;
+                                                    }
+
+                                                    if (!fileExists)
+                                                    {
+                                                        FtpWebRequest win32cleanup = null;
+                                                        if (mod.Contains(@"\ps3\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}");
+                                                        else if (mod.Contains(@"\win32\archives\")) win32cleanup = (FtpWebRequest)WebRequest.Create($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}");
+                                                        else break;
+                                                        Console.WriteLine(win32cleanup.RequestUri);
+                                                        win32cleanup.Method = WebRequestMethods.Ftp.Rename;
+                                                        win32cleanup.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                                                        win32cleanup.RenameTo = $"{Path.GetFileName(mod)}_back";
+                                                        win32cleanup.UseBinary = false;
+                                                        win32cleanup.UsePassive = true;
+                                                        FtpWebResponse win32RenameResponse = (FtpWebResponse)win32cleanup.GetResponse();
+                                                    }
+
+                                                    MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
+
+                                                    if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                                    else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
+                                                    else break;
                                                 }
-
-                                                MergeARCs($"{tempPath}\\{Path.GetFileName(mod)}", mod, $"{tempPath}\\{Path.GetFileName(mod)}", true, tempPath);
-
-                                                if (mod.Contains(@"\ps3\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"ps3/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                                else if (mod.Contains(@"\win32\archives\")) client.UploadFile($"{ftpLocationBox.Text}{"win32/archives/"}{Path.GetFileName(mod)}", WebRequestMethods.Ftp.UploadFile, $"{tempPath}\\{Path.GetFileName(mod)}");
-                                                else break;
                                             }
                                             else
                                             {
@@ -2243,6 +2418,15 @@ namespace Sonic_06_Mod_Manager
                 groupBox3.Enabled = false;
                 groupBox4.Enabled = false;
                 groupBox5.Enabled = false;
+                patchesList.Enabled = false;
+                label1.Enabled = false;
+                label3.Enabled = false;
+                combo_MSAA.Enabled = false;
+                combo_Reflections.Enabled = false;
+                lbl_MSAAdef.Enabled = false;
+                lbl_Reflectionsdef.Enabled = false;
+                btn_Patches_Apply.Enabled = false;
+                btn_Patches_RestoreDefaults.Enabled = false;
 
                 if (ftpPath == string.Empty) { ftpLocationBox.Text = "ftp://"; }
                 else { ftpLocationBox.Text = ftpPath; }
@@ -2272,6 +2456,15 @@ namespace Sonic_06_Mod_Manager
                 groupBox3.Enabled = true;
                 groupBox4.Enabled = true;
                 groupBox5.Enabled = true;
+                patchesList.Enabled = true;
+                label1.Enabled = true;
+                label3.Enabled = true;
+                combo_MSAA.Enabled = true;
+                combo_Reflections.Enabled = true;
+                lbl_MSAAdef.Enabled = true;
+                lbl_Reflectionsdef.Enabled = true;
+                btn_Patches_Apply.Enabled = true;
+                btn_Patches_RestoreDefaults.Enabled = true;
 
                 Properties.Settings.Default.ftp = false;
             }
@@ -2545,6 +2738,12 @@ namespace Sonic_06_Mod_Manager
 
             //Unchecks all available checkboxes.
             for (int i = 0; i < patchesList.Items.Count; i++) patchesList.SetItemChecked(i, false);
+
+            if (File.Exists($"{s06Path}\\xenon\\archives\\cache.arc_orig"))
+            {
+                File.Delete($"{s06Path}\\xenon\\archives\\cache.arc");
+                File.Move($"{s06Path}\\xenon\\archives\\cache.arc_orig", $"{s06Path}\\xenon\\archives\\cache.arc");
+            }
         }
 
         #region Information Text
@@ -2682,87 +2881,6 @@ namespace Sonic_06_Mod_Manager
         private void Check_Gamma_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
         #endregion
 
-        private void Btn_Patches_Apply_Click(object sender, EventArgs e)
-        {
-            checkedPatchesList.Clear();
-            for (int i = patchesList.Items.Count - 1; i >= 0; i--)
-            {
-                if (patchesList.GetItemChecked(i))
-                {
-                    checkedPatchesList.Add(patchesList.Items[i].ToString());
-                }
-            }
-            checkedPatchesList.ForEach(i => Console.Write("{0}\n", i));
-            if (modList.CheckedItems.Count != 0)
-            {
-                if (!check_FTP.Checked)
-                {
-                    if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
-                    {
-                        SaveChecks();
-                        RefreshMods();
-                    }
-                }
-                SaveChecks();
-                RefreshMods();
-
-                if (check_FTP.Checked)
-                {
-                    if (ftpLocationBox.Text.StartsWith("ftp://"))
-                    {
-                        if (ftpLocationBox.Text.EndsWith("/"))
-                        {
-                            InstallPatches();
-                        }
-                        else
-                        {
-                            ftpLocationBox.AppendText("/");
-                            InstallPatches();
-                        }
-                    }
-                    else
-                    {
-                        if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
-                        ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
-
-                        if (ftpLocationBox.Text.EndsWith("/"))
-                        {
-                            InstallPatches();
-                        }
-                        else
-                        {
-                            ftpLocationBox.AppendText("/");
-                            InstallPatches();
-                        }
-                    }
-                }
-                else { InstallPatches(); }
-            }
-        }
-
-        private void InstallPatches()
-        {
-            try { CleanUpMods(); }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Tools.Notification.Dispose();
-                return;
-            }
-
-            try
-            {
-                if (combo_MSAA.SelectedIndex != 1)
-                {
-                    if (combo_MSAA.SelectedIndex == 0)
-                    {
-
-                    }
-                }
-            }
-            catch (Exception ex1) { MessageBox.Show($"Please refer to the following error for more information:\n\n{ex1}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-        }
-
         private void Tab_Section_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tab_Section.SelectedIndex == 2) { button1.Text = "Patch Info"; }
@@ -2771,7 +2889,7 @@ namespace Sonic_06_Mod_Manager
             if (tab_Section.SelectedIndex != 0) { refreshButton.Enabled = false; }
             else { refreshButton.Enabled = true; }
 
-            if (tab_Section.SelectedIndex == 0 || tab_Section.SelectedIndex == 2)
+            if (tab_Section.SelectedIndex == 0)
             {
                 radio_All.Enabled = true;
                 radio_Xbox.Enabled = true;
@@ -2863,6 +2981,564 @@ namespace Sonic_06_Mod_Manager
         {
             Properties.Settings.Default.gamma = check_Gamma.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        public static void WriteDecompiler()
+        {
+            //Writes the decompiler to the failsafe directory to ensure any LUBs left over from other open archives aren't copied over to the selected archive.
+            if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\");
+            if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs");
+            if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar")) File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar", Properties.Resources.unlub);
+            if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat"))
+            {
+                var decompilerWrite = File.Create($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat");
+                var decompilerText = new UTF8Encoding(true).GetBytes("cd \".\\lubs\"\nfor /r %%i in (*.lub) do java -jar ..\\unlub.jar \"%%~dpni.lub\" > \"%%~dpni.lua\"\nxcopy \".\\*.lua\" \"..\\luas\" /y /i\ndel \".\\*.lua\" /q\n@ECHO OFF\n:delete\ndel /q /f *.lub\n@ECHO OFF\n:rename\ncd \"..\\luas\"\nrename \"*.lua\" \"*.lub\"\nexit");
+                decompilerWrite.Write(decompilerText, 0, decompilerText.Length);
+                decompilerWrite.Close();
+            }
+        }
+
+        private void PatchARC(string arc, string output)
+        {
+            installState = "patch";
+            var convertDialog = new ModStatus();
+            var parentLeft = Left + ((Width - convertDialog.Width) / 2);
+            var parentTop = Top + ((Height - convertDialog.Height) / 2);
+            convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
+            convertDialog.Show();
+
+            string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
+            var tempData = new DirectoryInfo(tempPath);
+            Directory.CreateDirectory(tempPath);
+            File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
+            if (!File.Exists($"{arc}_orig")) File.Move(arc, $"{arc}_orig");
+
+            ProcessStartInfo patch;
+
+            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"")
+            {
+                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            var Unpack1 = Process.Start(patch);
+            Unpack1.WaitForExit();
+            Unpack1.Close();
+
+            WriteDecompiler();
+
+            if (combo_MSAA.Enabled)
+            {
+                #region No MSAA
+                if (combo_MSAA.SelectedIndex == 0)
+                {
+                    //Checks the header for each file to ensure that it can be safely decompiled.
+                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+                    {
+                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+                        {
+                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+
+                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            {
+                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
+
+                            var Patch1 = Process.Start(patch);
+                            Patch1.WaitForExit();
+                            Patch1.Close();
+
+                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+                        }
+                    }
+
+                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+                            lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0)";
+                    }
+                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+                }
+                #endregion
+
+                #region 2x MSAA
+                else if (combo_MSAA.SelectedIndex == 1)
+                {
+                    //Checks the header for each file to ensure that it can be safely decompiled.
+                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+                    {
+                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+                        {
+                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+
+                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            {
+                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
+
+                            var Patch1 = Process.Start(patch);
+                            Patch1.WaitForExit();
+                            Patch1.Close();
+
+                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+                        }
+                    }
+
+                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("MSAAType = \""))
+                            lines[i] = "MSAAType = \"2x\"";
+                        if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+                            lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
+                    }
+                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+                }
+                #endregion
+
+                #region 4x MSAA
+                else if (combo_MSAA.SelectedIndex == 2)
+                {
+                    //Checks the header for each file to ensure that it can be safely decompiled.
+                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+                    {
+                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+                        {
+                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+
+                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            {
+                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
+
+                            var Patch1 = Process.Start(patch);
+                            Patch1.WaitForExit();
+                            Patch1.Close();
+
+                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+                        }
+                    }
+
+                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("MSAAType = \""))
+                            lines[i] = "MSAAType = \"4x\"";
+                        if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+                            lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
+                    }
+                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+                }
+                #endregion
+            }
+
+            if (combo_Reflections.Enabled)
+            {
+                #region No Reflections
+                if (combo_Reflections.SelectedIndex == 0)
+                {
+                    //Checks the header for each file to ensure that it can be safely decompiled.
+                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
+                    {
+                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                        {
+                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+
+                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            {
+                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
+
+                            var Patch1 = Process.Start(patch);
+                            Patch1.WaitForExit();
+                            Patch1.Close();
+
+                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                        }
+                    }
+
+                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("EnableReflection ="))
+                            lines[i] = "EnableReflection = false";
+                    }
+                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
+                }
+                #endregion
+
+                #region Quarter Reflections
+                else if (combo_Reflections.SelectedIndex == 1)
+                {
+                    //Checks the header for each file to ensure that it can be safely decompiled.
+                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
+                    {
+                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                        {
+                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+
+                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            {
+                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
+
+                            var Patch1 = Process.Start(patch);
+                            Patch1.WaitForExit();
+                            Patch1.Close();
+
+                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                        }
+                    }
+
+                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("EnableReflection ="))
+                            lines[i] = "EnableReflection = true";
+                        if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                            lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 4";
+                        if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                            lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 4";
+                    }
+                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
+                }
+                #endregion
+
+                #region Half Reflections
+                else if (combo_Reflections.SelectedIndex == 2)
+                {
+                    //Checks the header for each file to ensure that it can be safely decompiled.
+                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
+                    {
+                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                        {
+                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+
+                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            {
+                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
+
+                            var Patch1 = Process.Start(patch);
+                            Patch1.WaitForExit();
+                            Patch1.Close();
+
+                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                        }
+                    }
+
+                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("EnableReflection ="))
+                            lines[i] = "EnableReflection = true";
+                        if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                            lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 2";
+                        if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                            lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 2";
+                    }
+                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
+                }
+                #endregion
+
+                #region Full Reflections
+                else if (combo_Reflections.SelectedIndex == 3)
+                {
+                    //Checks the header for each file to ensure that it can be safely decompiled.
+                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
+                    {
+                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                        {
+                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+
+                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            {
+                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
+
+                            var Patch1 = Process.Start(patch);
+                            Patch1.WaitForExit();
+                            Patch1.Close();
+
+                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                        }
+                    }
+
+                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Contains("EnableReflection ="))
+                            lines[i] = "EnableReflection = true";
+                        if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                            lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")";
+                        if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                            lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")";
+                    }
+                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
+                }
+                #endregion
+            }
+
+            foreach (var item in checkedPatchesList)
+            {
+                #region Disable Shadows
+                if (item == "Disable Shadows")
+                {
+                    if (patchesList.GetItemChecked(0))
+                    {
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub"))
+                        {
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub")[0].Contains("LuaP"))
+                            {
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode.lub", true);
+
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", true);
+                            }
+                        }
+
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub"))
+                        {
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub")[0].Contains("LuaP"))
+                            {
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_title.lub", true);
+
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_title.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", true);
+                            }
+                        }
+
+                        string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
+                        for (int i = 0; i < gamemodeLines.Length; i++)
+                        {
+                            if (gamemodeLines[i].Contains("CreateCSM(_ARG_0_)"))
+                                gamemodeLines[i] = "  --CreateCSM(_ARG_0_)";
+                            if (gamemodeLines[i].Contains("RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)"))
+                                gamemodeLines[i] = "  --RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)";
+                        }
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
+
+                        string[] titleLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub");
+                        for (int i = 0; i < titleLines.Length; i++)
+                        {
+                            if (titleLines[i].Contains("CreateCSM(_ARG_0_)"))
+                                titleLines[i] = "  --CreateCSM(_ARG_0_)";
+                        }
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
+                    }
+                    else
+                    {
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub"))
+                        {
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub")[0].Contains("LuaP"))
+                            {
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode.lub", true);
+
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", true);
+                            }
+                        }
+
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub"))
+                        {
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub")[0].Contains("LuaP"))
+                            {
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_title.lub", true);
+
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_title.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", true);
+                            }
+                        }
+
+                        string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
+                        for (int i = 0; i < gamemodeLines.Length; i++)
+                        {
+                            if (gamemodeLines[i].Contains("--CreateCSM(_ARG_0_)"))
+                                gamemodeLines[i] = "  CreateCSM(_ARG_0_)";
+                            if (gamemodeLines[i].Contains("--RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)"))
+                                gamemodeLines[i] = "  RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)";
+                        }
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
+
+                        string[] titleLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub");
+                        for (int i = 0; i < titleLines.Length; i++)
+                        {
+                            if (titleLines[i].Contains("--CreateCSM(_ARG_0_)"))
+                                titleLines[i] = "  CreateCSM(_ARG_0_)";
+                        }
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
+                    }
+                }
+                #endregion
+
+                #region Vulkan API Compatibility
+                else if (item == "Vulkan API Compatibility")
+                {
+                    if (patchesList.GetItemChecked(1))
+                    {
+                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", Properties.Resources.vulkanRenderTitle);
+                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", Properties.Resources.vulkanRenderGamemode);
+                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", Properties.Resources.vulkanRenderMain);
+                    }
+                    else
+                    {
+                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", Properties.Resources.originalRenderTitle);
+                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", Properties.Resources.originalRenderGamemode);
+                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", Properties.Resources.originalRenderMain);
+                    }
+                }
+                #endregion
+            }
+
+            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
+            {
+                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            var Repack1 = Process.Start(patch);
+            Repack1.WaitForExit();
+            Repack1.Close();
+
+            try
+            {
+                if (Directory.Exists(tempPath))
+                {
+                    foreach (FileInfo file in tempData.GetFiles())
+                    {
+                        file.Delete();
+                    }
+                    foreach (DirectoryInfo directory in tempData.GetDirectories())
+                    {
+                        directory.Delete(true);
+                    }
+                }
+            }
+            catch { return; }
+
+            convertDialog.Close();
+        }
+
+        private void InstallPatches()
+        {
+            if (s06Path != string.Empty)
+            {
+                Console.WriteLine("Applying patches...");
+                PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc");
+            }
+            else { MessageBox.Show("Please set your Game Directory! We can't patch (or even mod) the game without it...", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+        }
+
+        private void Btn_Patches_Apply_Click(object sender, EventArgs e)
+        {
+            checkedPatchesList.Clear();
+            for (int i = patchesList.Items.Count - 1; i >= 0; i--)
+            {
+                if (patchesList.GetItemChecked(i))
+                {
+                    checkedPatchesList.Add(patchesList.Items[i].ToString());
+                }
+            }
+            checkedPatchesList.ForEach(i => Console.Write("{0}\n", i));
+
+            try { CleanUpMods(); }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Tools.Notification.Dispose();
+                return;
+            }
+
+            if (!check_FTP.Checked)
+            {
+                if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
+                {
+                    SaveChecks();
+                    RefreshMods();
+                }
+            }
+            SaveChecks();
+            RefreshMods();
+
+            if (check_FTP.Checked)
+            {
+                if (ftpLocationBox.Text.StartsWith("ftp://"))
+                {
+                    if (ftpLocationBox.Text.EndsWith("/"))
+                    {
+                        InstallPatches();
+                    }
+                    else
+                    {
+                        ftpLocationBox.AppendText("/");
+                        InstallPatches();
+                    }
+                }
+                else
+                {
+                    if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
+                    ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
+
+                    if (ftpLocationBox.Text.EndsWith("/"))
+                    {
+                        InstallPatches();
+                    }
+                    else
+                    {
+                        ftpLocationBox.AppendText("/");
+                        InstallPatches();
+                    }
+                }
+            }
+            else { InstallPatches(); }
         }
     }
 }

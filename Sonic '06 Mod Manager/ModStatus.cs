@@ -54,6 +54,14 @@ namespace Sonic_06_Mod_Manager
                 Width = 288;
                 Height = 138;
             }
+            else if (ModManager.installState == "patch")
+            {
+                Text = "Applying Patches...";
+                lbl_unpackState.Text = "Applying Patches. Please wait...";
+                pnl_windowCheck.BackColor = Color.AliceBlue; BackColor = Color.AliceBlue;
+                Width = 288;
+                Height = 138;
+            }
         }
     }
 }

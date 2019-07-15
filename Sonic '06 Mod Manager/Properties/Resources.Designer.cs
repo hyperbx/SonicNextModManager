@@ -103,9 +103,79 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] originalRenderGamemode {
+            get {
+                object obj = ResourceManager.GetObject("originalRenderGamemode", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] originalRenderMain {
+            get {
+                object obj = ResourceManager.GetObject("originalRenderMain", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] originalRenderTitle {
+            get {
+                object obj = ResourceManager.GetObject("originalRenderTitle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] unarcphp {
             get {
                 object obj = ResourceManager.GetObject("unarcphp", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] unlub {
+            get {
+                object obj = ResourceManager.GetObject("unlub", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkanRenderGamemode {
+            get {
+                object obj = ResourceManager.GetObject("vulkanRenderGamemode", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkanRenderMain {
+            get {
+                object obj = ResourceManager.GetObject("vulkanRenderMain", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkanRenderTitle {
+            get {
+                object obj = ResourceManager.GetObject("vulkanRenderTitle", resourceCulture);
                 return ((byte[])(obj));
             }
         }

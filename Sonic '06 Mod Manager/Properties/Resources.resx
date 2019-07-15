@@ -130,7 +130,28 @@
   <data name="logo_main" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo_main.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="originalRenderGamemode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orig_render_gamemode.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="originalRenderMain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orig_render_main.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="originalRenderTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orig_render_title.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="unarcphp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unarc.php;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="unlub" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\unlub.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vulkanRenderGamemode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\render_gamemode.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vulkanRenderMain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\render_main.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vulkanRenderTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\render_title.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -112,6 +112,12 @@
     </Compile>
     <None Include="Resources\arcc.php" />
     <None Include="Resources\arctool.php" />
+    <None Include="Resources\orig_render_gamemode.lub" />
+    <None Include="Resources\orig_render_main.lub" />
+    <None Include="Resources\orig_render_title.lub" />
+    <None Include="Resources\render_gamemode.lub" />
+    <None Include="Resources\render_main.lub" />
+    <None Include="Resources\render_title.lub" />
     <None Include="Resources\unarc.php" />
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,7 @@
     <None Include="Resources\arctool.exe" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\unlub.jar" />
     <None Include="Resources\logo_main.png" />
     <Content Include="Resources\sonic__06_mod_manager_logo_beJ_icon.ico" />
   </ItemGroup>
