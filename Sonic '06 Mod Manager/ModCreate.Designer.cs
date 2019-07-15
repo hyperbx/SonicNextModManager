@@ -203,6 +203,7 @@
             // 
             // readonlyButtonHelp
             // 
+            this.readonlyButtonHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.readonlyButtonHelp.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.readonlyButtonHelp.Enabled = false;
             this.readonlyButtonHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

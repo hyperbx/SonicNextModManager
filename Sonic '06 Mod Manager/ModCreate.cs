@@ -71,7 +71,7 @@ namespace Sonic_06_Mod_Manager
                         if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
                         modINI.WriteLine("Platform=\"" + combo_System.Text + "\"");
                         modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
-                        if (modCopy != "") { modINI.WriteLine("Copy=\"" + modCopy + "\""); }
+                        if (modCopy != "") { modINI.WriteLine("Read-only=\"" + modCopy + "\""); }
                         modINI.Close();
                     }
                 }
@@ -95,7 +95,7 @@ namespace Sonic_06_Mod_Manager
                 modMerge = false;
                 lbl_Copy.Enabled = false;
                 modCopyBox.Enabled = false;
-                readonlyButtonHelp.Enabled = true;
+                readonlyButtonHelp.Enabled = false;
             }
         }
 

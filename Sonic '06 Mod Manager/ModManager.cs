@@ -1464,7 +1464,7 @@ namespace Sonic_06_Mod_Manager
                         string entryValue;
                         while ((line = configFile.ReadLine()) != null)
                         {
-                            if (line.Contains("Copy=\""))
+                            if (line.Contains("Read-only=\""))
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
@@ -1496,33 +1496,16 @@ namespace Sonic_06_Mod_Manager
                             {
                                 if (File.ReadAllLines($"{modsPath}\\{item}\\mod.ini").Contains("Merge=\"True\""))
                                 {
-                                    if (mod.EndsWith(".arc"))
+                                    if (Path.GetExtension(mod) == ".arc")
                                     {
-                                        if (combo_Priority.SelectedIndex == 0)
+                                        if (string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)))
                                         {
-                                            foreach (var modFile in filesToCopyList)
-                                            {
-                                                if (modFile == Path.GetFileName(mod))
-                                                {
-                                                    Console.WriteLine("Copying " + mod);
-                                                    if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                                    File.Copy(mod, origArcPath, true);
-                                                }
-                                            }
-                                            Console.WriteLine("Merging " + mod);
-                                            MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
+                                            Console.WriteLine("Copying " + mod);
+                                            if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                            File.Copy(mod, origArcPath, true);
                                         }
-                                        else if (combo_Priority.SelectedIndex == 1)
+                                        else
                                         {
-                                            foreach (var modFile in filesToCopyList)
-                                            {
-                                                if (modFile == Path.GetFileName(mod))
-                                                {
-                                                    Console.WriteLine("Copying " + mod);
-                                                    if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                                    File.Copy(mod, origArcPath, true);
-                                                }
-                                            }
                                             Console.WriteLine("Merging " + mod);
                                             MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
                                         }
