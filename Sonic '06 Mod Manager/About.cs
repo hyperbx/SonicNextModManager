@@ -94,5 +94,10 @@ namespace Sonic_06_Mod_Manager
         {
             Process.Start("https://www.youtube.com/user/Melpontro");
         }
+
+        private void LinkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://www.youtube.com/channel/UC35wsF1NUwoUWmw2DLz6uJg");
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.06-test";
+        public static string versionNumber = "Version 1.06";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -133,7 +133,7 @@ namespace Sonic_06_Mod_Manager
 
         private void ModManager_Load(object sender, EventArgs e)
         {
-            //CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
+            CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
 
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub");
