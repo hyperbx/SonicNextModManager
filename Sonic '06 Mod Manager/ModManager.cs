@@ -1573,7 +1573,14 @@ namespace Sonic_06_Mod_Manager
                                     else
                                     {
                                         Console.WriteLine("Skipped " + mod);
-                                        skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                        if (Path.GetExtension(mod) == ".arc")
+                                        {
+                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                        }
+                                        else
+                                        {
+                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                        }
                                         break;
                                     }
                                 }
@@ -1595,7 +1602,14 @@ namespace Sonic_06_Mod_Manager
                             else
                             {
                                 Console.WriteLine("Skipped " + mod);
-                                skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                if (Path.GetExtension(mod) == ".arc")
+                                {
+                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                }
+                                else
+                                {
+                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                }
                                 break;
                             }
                         }
@@ -1831,7 +1845,14 @@ namespace Sonic_06_Mod_Manager
 
                                             if (fileExists)
                                             {
-                                                skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                if (Path.GetExtension(mod) == ".arc")
+                                                {
+                                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                }
+                                                else
+                                                {
+                                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                                }
                                                 break;
                                             }
                                             else
@@ -1898,7 +1919,14 @@ namespace Sonic_06_Mod_Manager
 
                                     if (fileExists)
                                     {
-                                        skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                        if (Path.GetExtension(mod) == ".arc")
+                                        {
+                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                        }
+                                        else
+                                        {
+                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                        }
                                         break;
                                     }
                                     else
@@ -1972,7 +2000,14 @@ namespace Sonic_06_Mod_Manager
 
                                                     if (fileExists)
                                                     {
-                                                        skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                        if (Path.GetExtension(mod) == ".arc")
+                                                        {
+                                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                        }
+                                                        else
+                                                        {
+                                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                                        }
                                                         break;
                                                     }
                                                     else
@@ -2148,7 +2183,14 @@ namespace Sonic_06_Mod_Manager
 
                                             if (fileExists)
                                             {
-                                                skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                if (Path.GetExtension(mod) == ".arc")
+                                                {
+                                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                }
+                                                else
+                                                {
+                                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                                }
                                                 break;
                                             }
                                             else
@@ -2212,7 +2254,14 @@ namespace Sonic_06_Mod_Manager
 
                                     if (fileExists)
                                     {
-                                        skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                        if (Path.GetExtension(mod) == ".arc")
+                                        {
+                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                        }
+                                        else
+                                        {
+                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                        }
                                         break;
                                     }
                                     else
