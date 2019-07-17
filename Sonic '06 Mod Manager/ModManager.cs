@@ -3114,6 +3114,12 @@ namespace Sonic_06_Mod_Manager
             convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
             convertDialog.Show();
 
+            if (File.Exists($"{s06Path}\\xenon\\archives\\cache.arc_orig"))
+            {
+                File.Delete($"{s06Path}\\xenon\\archives\\cache.arc");
+                File.Move($"{s06Path}\\xenon\\archives\\cache.arc_orig", $"{s06Path}\\xenon\\archives\\cache.arc");
+            }
+
             string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
             var tempData = new DirectoryInfo(tempPath);
             Directory.CreateDirectory(tempPath);
