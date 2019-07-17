@@ -360,9 +360,4 @@ namespace Tools
             return objWebRequest;
         }
     }
-
-    public class GameBanana
-    {
-
-    }
 }
