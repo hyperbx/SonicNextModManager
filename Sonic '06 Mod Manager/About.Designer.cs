@@ -41,6 +41,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.linkLabel5 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel6 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@
             this.pic_Logo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pic_Logo.Location = new System.Drawing.Point(-1, -1);
             this.pic_Logo.Name = "pic_Logo";
-            this.pic_Logo.Size = new System.Drawing.Size(229, 339);
+            this.pic_Logo.Size = new System.Drawing.Size(229, 351);
             this.pic_Logo.TabIndex = 0;
             this.pic_Logo.TabStop = false;
             this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
@@ -83,7 +84,7 @@
             this.lbl_Contributors.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Contributors.Location = new System.Drawing.Point(233, 51);
             this.lbl_Contributors.Name = "lbl_Contributors";
-            this.lbl_Contributors.Size = new System.Drawing.Size(196, 180);
+            this.lbl_Contributors.Size = new System.Drawing.Size(378, 195);
             this.lbl_Contributors.TabIndex = 3;
             this.lbl_Contributors.Text = resources.GetString("lbl_Contributors.Text");
             // 
@@ -92,9 +93,9 @@
             this.btn_GitHub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(218)))), ((int)(((byte)(240)))));
             this.btn_GitHub.FlatAppearance.BorderSize = 0;
             this.btn_GitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_GitHub.Location = new System.Drawing.Point(234, 305);
+            this.btn_GitHub.Location = new System.Drawing.Point(234, 316);
             this.btn_GitHub.Name = "btn_GitHub";
-            this.btn_GitHub.Size = new System.Drawing.Size(246, 23);
+            this.btn_GitHub.Size = new System.Drawing.Size(377, 23);
             this.btn_GitHub.TabIndex = 4;
             this.btn_GitHub.Text = "GitHub";
             this.btn_GitHub.UseVisualStyleBackColor = false;
@@ -105,9 +106,9 @@
             this.button1.BackColor = System.Drawing.Color.Tomato;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(234, 276);
+            this.button1.Location = new System.Drawing.Point(234, 287);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(246, 23);
+            this.button1.Size = new System.Drawing.Size(377, 23);
             this.button1.TabIndex = 5;
             this.button1.Text = "Reset Sonic \'06 Mod Manager";
             this.button1.UseVisualStyleBackColor = false;
@@ -144,7 +145,7 @@
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel3.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel3.Location = new System.Drawing.Point(233, 172);
+            this.linkLabel3.Location = new System.Drawing.Point(233, 187);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(62, 14);
             this.linkLabel3.TabIndex = 8;
@@ -157,9 +158,9 @@
             this.button2.BackColor = System.Drawing.Color.LightGreen;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(234, 247);
+            this.button2.Location = new System.Drawing.Point(234, 258);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(246, 23);
+            this.button2.Size = new System.Drawing.Size(377, 23);
             this.button2.TabIndex = 9;
             this.button2.Text = "Check for updates";
             this.button2.UseVisualStyleBackColor = false;
@@ -170,7 +171,7 @@
             this.linkLabel4.AutoSize = true;
             this.linkLabel4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel4.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel4.Location = new System.Drawing.Point(233, 187);
+            this.linkLabel4.Location = new System.Drawing.Point(233, 202);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(64, 14);
             this.linkLabel4.TabIndex = 10;
@@ -183,7 +184,7 @@
             this.linkLabel5.AutoSize = true;
             this.linkLabel5.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel5.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel5.Location = new System.Drawing.Point(233, 217);
+            this.linkLabel5.Location = new System.Drawing.Point(233, 232);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(77, 14);
             this.linkLabel5.TabIndex = 11;
@@ -191,11 +192,25 @@
             this.linkLabel5.Text = "NonamiEight";
             this.linkLabel5.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel5_LinkClicked);
             // 
+            // linkLabel6
+            // 
+            this.linkLabel6.AutoSize = true;
+            this.linkLabel6.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel6.LinkColor = System.Drawing.Color.Black;
+            this.linkLabel6.Location = new System.Drawing.Point(233, 142);
+            this.linkLabel6.Name = "linkLabel6";
+            this.linkLabel6.Size = new System.Drawing.Size(79, 14);
+            this.linkLabel6.TabIndex = 12;
+            this.linkLabel6.TabStop = true;
+            this.linkLabel6.Text = "SuperSonic16";
+            this.linkLabel6.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel6_LinkClicked);
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 335);
+            this.ClientSize = new System.Drawing.Size(617, 347);
+            this.Controls.Add(this.linkLabel6);
             this.Controls.Add(this.linkLabel5);
             this.Controls.Add(this.linkLabel4);
             this.Controls.Add(this.button2);
@@ -236,5 +251,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.LinkLabel linkLabel4;
         private System.Windows.Forms.LinkLabel linkLabel5;
+        private System.Windows.Forms.LinkLabel linkLabel6;
     }
 }

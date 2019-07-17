@@ -1,5 +1,9 @@
 ﻿using System;
+using System.IO;
+using GameBanana;
+using System.Diagnostics;
 using System.Windows.Forms;
+using System.Security.Principal;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -34,11 +38,84 @@ namespace Sonic_06_Mod_Manager
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ModManager());
+
+            bool running = Process.GetProcessesByName(Application.ExecutablePath).Length > 1;
+
+            if (args.Length > 0)
+            {
+                if (args[0] == "-banana")
+                {
+                    int downloadID = 0;
+                    string modType = string.Empty;
+                    int modID = 0;
+                    string[] getIDs = args[1].Remove(0, 40).Split(',');
+                    int i = 0;
+
+                    foreach (var item in getIDs)
+                    {
+                        if (i == 0) { int.TryParse(item, out downloadID);
+                            { i++; }
+                        }
+                        else if (i == 1)
+                        {
+                            modType = item;
+                            i++;
+                        }
+                        else if (i == 2) { int.TryParse(item, out modID);
+                            { i++; }
+                        }
+                    }
+
+                    var mod = new GBAPIItemDataBasic(modType, modID);
+                    if (GBAPI.RequestItemData(mod))
+                    {
+                        new ModOneClickInstall(mod, args[1], downloadID).ShowDialog();
+
+                        if (!running)
+                        {
+                            try
+                            {
+                                if (!File.Exists(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll")))
+                                {
+                                    File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+                                }
+                                Application.Run(new ModManager(args));
+                            }
+                            catch
+                            {
+                                File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!running)
+                {
+                    try
+                    {
+                        if (!File.Exists(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll")))
+                        {
+                            File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+                        }
+                        Application.Run(new ModManager(args));
+                    }
+                    catch
+                    {
+                        File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+                    }
+                }
+            }
+        }
+
+        public static bool RunningAsAdmin()
+        {
+            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

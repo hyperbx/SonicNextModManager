@@ -99,5 +99,10 @@ namespace Sonic_06_Mod_Manager
         {
             Process.Start("https://www.youtube.com/channel/UC35wsF1NUwoUWmw2DLz6uJg");
         }
+
+        private void LinkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/thesupersonic16");
+        }
     }
 }

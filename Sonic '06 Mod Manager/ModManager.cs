@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Microsoft.Win32;
 
 // Welcome to Sonic '06 Mod Manager!
 
@@ -36,11 +37,36 @@ using System.Text.RegularExpressions;
  * SOFTWARE.
  */
 
+// MainForm code is licensed under the MIT License:
+/*
+ * MIT License
+
+ * Copyright (c) 2017 thesupersonic16
+
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.06";
+        public static string versionNumber = "Version 1.07";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -59,7 +85,7 @@ namespace Sonic_06_Mod_Manager
         List<string> checkedPatchesList = new List<string>() { };
         List<string> skippedMods = new List<string>() { };
 
-        public ModManager()
+        public ModManager(string[] args)
         {
             InitializeComponent();
 
@@ -133,7 +159,52 @@ namespace Sonic_06_Mod_Manager
 
         private void ModManager_Load(object sender, EventArgs e)
         {
-            CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
+            try
+            {
+                var Protocol = "sonic06mm";
+                var key = Registry.ClassesRoot.OpenSubKey(Protocol + "\\shell\\open\\command");
+
+                if (key == null)
+                {
+                    if (!Program.RunningAsAdmin())
+                    {
+                        DialogResult registry = MessageBox.Show("The registry key for GameBanana 1-Click Mod Install is missing. Do you want to run Sonic '06 Mod Manager as an administrator to install it?", "Missing Registry", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                        switch (registry)
+                        {
+                            case DialogResult.Yes:
+                                var runAsAdmin = new ProcessStartInfo(Application.ExecutablePath);
+                                runAsAdmin.Verb = "runas";
+                                if (Process.Start(runAsAdmin) != null) { Application.Exit(); }
+                                break;
+                        }
+                    }
+                }
+
+                key = Registry.ClassesRoot.OpenSubKey(Protocol, true);
+                if (key == null)
+                    key = Registry.ClassesRoot.CreateSubKey(Protocol);
+                key.SetValue("", "URL:Sonic '06 Mod Manager");
+                key.SetValue("URL Protocol", "");
+                var prevkey = key;
+                key = key.OpenSubKey("shell", true);
+                if (key == null)
+                    key = prevkey.CreateSubKey("shell");
+                prevkey = key;
+                key = key.OpenSubKey("open", true);
+                if (key == null)
+                    key = prevkey.CreateSubKey("open");
+                prevkey = key;
+                key = key.OpenSubKey("command", true);
+                if (key == null)
+                    key = prevkey.CreateSubKey("command");
+
+                key.SetValue("", $"\"{Application.ExecutablePath}\" \"-banana\" \"%1\"");
+                key.Close();
+            }
+            catch { }
+
+            if (!versionNumber.Contains("-indev")) CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt");
 
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub")) Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub");
@@ -521,7 +592,7 @@ namespace Sonic_06_Mod_Manager
 
         private void XeniaButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog xeniaBrowser = new OpenFileDialog();
+            System.Windows.Forms.OpenFileDialog xeniaBrowser = new System.Windows.Forms.OpenFileDialog();
             xeniaBrowser.Title = "Select a Xenia executable...";
             xeniaBrowser.Filter = "Programs (*.exe)|*.exe";
             xeniaBrowser.FilterIndex = 1;
@@ -843,7 +914,7 @@ namespace Sonic_06_Mod_Manager
             {
                 MessageBox.Show("Please specify your executable file for Xenia.", "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                OpenFileDialog xeniaBrowser = new OpenFileDialog();
+                System.Windows.Forms.OpenFileDialog xeniaBrowser = new System.Windows.Forms.OpenFileDialog();
                 xeniaBrowser.Title = "Select a Xenia executable...";
                 xeniaBrowser.Filter = "Programs (*.exe)|*.exe";
                 xeniaBrowser.FilterIndex = 1;

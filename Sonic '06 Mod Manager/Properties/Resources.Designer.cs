@@ -91,12 +91,61 @@ namespace Sonic_06_Mod_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to body 
+        ///{
+        ///    background-color: #FFFFFF;
+        ///    color: #000000;
+        ///    font-size: 12px;
+        ///    font-family: &apos;Microsoft Sans Serif&apos;, sans-serif;
+        ///}
+        ///
+        ///a 
+        ///{
+        ///    color: #FF0000;
+        ///    text-decoration: none;
+        ///    vertical-align: baseline;
+        ///}
+        ///
+        ///h1
+        ///{
+        ///    font-size: 12px;
+        ///    margin: 0 0 0.75em;
+        ///    padding: 0 0 0.25em 0;
+        ///}
+        ///
+        ///li
+        ///{
+        ///    list-style-type: square;
+        ///}
+        ///
+        ///span.RedColor
+        ///{
+        ///    color: #FF4E4E;
+        ///}.
+        /// </summary>
+        internal static string GBStyleSheet {
+            get {
+                return ResourceManager.GetString("GBStyleSheet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap logo_main {
             get {
                 object obj = ResourceManager.GetObject("logo_main", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Newtonsoft_Json {
+            get {
+                object obj = ResourceManager.GetObject("Newtonsoft_Json", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

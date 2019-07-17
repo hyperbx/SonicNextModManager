@@ -39,8 +39,17 @@
     <ApplicationIcon>Resources\sonic__06_mod_manager_logo_beJ_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,6 +79,12 @@
     <Compile Include="ModCreate.Designer.cs">
       <DependentUpon>ModCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModOneClickInstall.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModOneClickInstall.Designer.cs">
+      <DependentUpon>ModOneClickInstall.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModStatus.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +93,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GameBanana.cs" />
     <Compile Include="Tools.cs" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
@@ -87,6 +103,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ModManager.resx">
       <DependentUpon>ModManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModOneClickInstall.resx">
+      <DependentUpon>ModOneClickInstall.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ModStatus.resx">
       <DependentUpon>ModStatus.cs</DependentUpon>
@@ -101,6 +120,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -129,6 +149,8 @@
   <ItemGroup>
     <None Include="Resources\unlub.jar" />
     <None Include="Resources\logo_main.png" />
+    <None Include="Resources\GBStyleSheet.css" />
+    <None Include="bin\Debug\Newtonsoft.Json.dll" />
     <Content Include="Resources\sonic__06_mod_manager_logo_beJ_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
