@@ -267,7 +267,7 @@ namespace Sonic_06_Mod_Manager
             }
             catch
             {
-                MessageBox.Show($"Failed to extract {Item.ModName}.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Failed to extract {Item.ModName}.", "Extract Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
             }
         }
