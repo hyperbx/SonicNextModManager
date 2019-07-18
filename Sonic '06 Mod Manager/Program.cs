@@ -43,8 +43,6 @@ namespace Sonic_06_Mod_Manager
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            bool running = Process.GetProcessesByName(Application.ExecutablePath).Length > 1;
-
             if (args.Length > 0)
             {
                 if (args[0] == "-banana")
@@ -73,9 +71,9 @@ namespace Sonic_06_Mod_Manager
                     var mod = new GBAPIItemDataBasic(modType, modID);
                     if (GBAPI.RequestItemData(mod))
                     {
-                        new ModOneClickInstall(mod, args[1], downloadID).ShowDialog();
+                        new ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog();
 
-                        if (!running)
+                        if (PriorProcess() == null)
                         {
                             try
                             {
@@ -95,7 +93,7 @@ namespace Sonic_06_Mod_Manager
             }
             else
             {
-                if (!running)
+                if (PriorProcess() == null)
                 {
                     try
                     {
@@ -116,6 +114,19 @@ namespace Sonic_06_Mod_Manager
         public static bool RunningAsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static Process PriorProcess()
+        {
+            Process curr = Process.GetCurrentProcess();
+            Process[] procs = Process.GetProcessesByName(curr.ProcessName);
+            foreach (Process p in procs)
+            {
+                if ((p.Id != curr.Id) &&
+                    (p.MainModule.FileName == curr.MainModule.FileName))
+                    return p;
+            }
+            return null;
         }
     }
 }

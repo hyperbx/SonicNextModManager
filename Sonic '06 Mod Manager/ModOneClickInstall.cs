@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.IO.Compression;
+using System.Text.RegularExpressions;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -70,34 +71,40 @@ namespace Sonic_06_Mod_Manager
         public WebClient WebClient = new WebClient();
         public static string cache;
         public string downloadURL;
+        public int mod;
 
-        public ModOneClickInstall(GBAPIItemDataBasic item, string url, int downloadID)
+        public ModOneClickInstall(GBAPIItemDataBasic item, string url, int downloadID, int modID)
         {
             InitializeComponent();
             URL = url;
             Item = item;
+            mod = modID;
             this.downloadID = downloadID.ToString();
             downloadURL = $"https://gamebanana.com/mmdl/{downloadID}";
             cache = Path.Combine(Application.StartupPath, "cache");
             title.Text = item.ModName;
             Text = $"GameBanana 1-Click Install for {item.ModName}";
             credits.Text = $"Published by {item.OwnerName}\n\n{ProcessCredits(item.Credits)}";
-            description.DocumentText = $"<html><body><style>{Properties.Resources.GBStyleSheet}</style><h1>{item.Subtitle}</h1><br>{item.Body}</body></html>";
+            if (item.Subtitle != string.Empty) { description.DocumentText = $"<html><body><style>{Properties.Resources.GBStyleSheet}</style><h1><center>{item.Subtitle}</center></h1><br>{Regex.Replace(item.Body, @"Â", "")}</body></html>"; }
+            else { description.DocumentText = $"<html><body><style>{Properties.Resources.GBStyleSheet}</style>{Regex.Replace(item.Body, @"Â", "")}</body></html>"; }
 
             // Loads an Image if the submission contains one
             if (item.ScreenshotURL != null)
             {
-                var request = WebRequest.Create(item.ScreenshotURL);
-
-                using (var response = request.GetResponse())
-                using (var stream = response.GetResponseStream())
+                try
                 {
-                    pictureBox1.BackgroundImage = Bitmap.FromStream(stream);
-                    pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+                    var request = WebRequest.Create(item.ScreenshotURL);
+
+                    using (var response = request.GetResponse())
+                    using (var stream = response.GetResponseStream())
+                    {
+                        pictureBox1.BackgroundImage = Bitmap.FromStream(stream);
+                        pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+                    }
                 }
+                catch { pictureBox1.BackgroundImage = Properties.Resources.logo_image_not_found; }
             }
-
-
+            else { pictureBox1.BackgroundImage = Properties.Resources.logo_image_not_found; }
         }
 
         public static string applicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -118,11 +125,18 @@ namespace Sonic_06_Mod_Manager
 
         public static void InstallFromZip(string ZipPath)
         {
-            // Extracts all contents inside of the zip file
-            ZipFile.ExtractToDirectory(ZipPath, Properties.Settings.Default.modsPath);
+            try
+            {
+                // Extracts all contents inside of the zip file
+                ZipFile.ExtractToDirectory(ZipPath, Properties.Settings.Default.modsPath);
 
-            // Deletes the temp folder with all of its contents
-            Directory.Delete(cache, true);
+                // Deletes the temp folder with all of its contents
+                Directory.Delete(cache, true);
+            }
+            catch
+            {
+                InstallFrom7zArchive(ZipPath);
+            }
         }
 
         // Requires 7-Zip to be installed.
@@ -205,22 +219,27 @@ namespace Sonic_06_Mod_Manager
             dl_Progress.Visible = true;
             btn_Decline.Text = "Cancel";
 
-            var request = (HttpWebRequest)WebRequest.Create(downloadURL);
-            var response = request.GetResponse();
-            var URI = response.ResponseUri;
-            response.Close();
-
-            Directory.CreateDirectory(cache);
-
-            using (WebClient wc = new WebClient())
+            try
             {
-                wc.DownloadProgressChanged += wc_DownloadProgressChanged;
-                wc.DownloadFileCompleted += wc_DownloadFileCompleted;
-                wc.DownloadFileAsync(URI, $"{cache}\\{Path.GetFileName(downloadURL)}.bin");
-            }
+                var request = (HttpWebRequest)WebRequest.Create(downloadURL);
+                var response = request.GetResponse();
+                var URI = response.ResponseUri;
+                response.Close();
 
-            MessageBox.Show($"{Item.ModName} has been installed in your mods directory.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Close();
+                Directory.CreateDirectory(cache);
+
+                using (WebClient wc = new WebClient())
+                {
+                    wc.DownloadProgressChanged += wc_DownloadProgressChanged;
+                    wc.DownloadFileCompleted += wc_DownloadFileCompleted;
+                    wc.DownloadFileAsync(URI, $"{cache}\\{Path.GetFileName(downloadURL)}.bin");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Unable to establish a connection to GameBanana.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
         }
 
         private void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -230,15 +249,44 @@ namespace Sonic_06_Mod_Manager
 
         private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            var bytes = File.ReadAllBytes($"{cache}\\{Path.GetFileName(downloadURL)}.bin").Take(4).ToArray();
-            var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
-            if (hexString == "50 4B")
+            try
             {
-                InstallFromZip($"{cache}\\{Path.GetFileName(downloadURL)}.bin");
+                var bytes = File.ReadAllBytes($"{cache}\\{Path.GetFileName(downloadURL)}.bin").Take(2).ToArray();
+                var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+                if (hexString == "50 4B")
+                {
+                    InstallFromZip($"{cache}\\{Path.GetFileName(downloadURL)}.bin");
+                }
+                else
+                {
+                    InstallFrom7zArchive($"{cache}\\{Path.GetFileName(downloadURL)}.bin");
+                }
+
+                MessageBox.Show($"{Item.ModName} has been installed in your mods directory.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Close();
+            }
+            catch
+            {
+                MessageBox.Show($"Failed to extract {Item.ModName}.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
+        }
+
+        private void ModOneClickInstall_Shown(object sender, EventArgs e)
+        {
+            if (mod == 6666)
+            {
+                MessageBox.Show("Interesting choice of mod, huh...", "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Close();
             }
             else
             {
-                InstallFrom7zArchive($"{cache}\\{Path.GetFileName(downloadURL)}.bin");
+                try
+                {
+                    var getArchiveList = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString($"https://api.gamebanana.com/Core/Item/Data?itemtype=File&itemid={downloadID}&fields=Metadata().aArchiveFilesList()");
+                    if (!getArchiveList.Contains("mod.ini")) { MessageBox.Show("This mod may not be compatible with Sonic '06 Mod Manager.", "Missing Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                }
+                catch { }
             }
         }
     }

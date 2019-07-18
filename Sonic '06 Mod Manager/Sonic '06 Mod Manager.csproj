@@ -151,6 +151,7 @@
     <None Include="Resources\logo_main.png" />
     <None Include="Resources\GBStyleSheet.css" />
     <None Include="bin\Debug\Newtonsoft.Json.dll" />
+    <None Include="Resources\logo_image_not_found.png" />
     <Content Include="Resources\sonic__06_mod_manager_logo_beJ_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

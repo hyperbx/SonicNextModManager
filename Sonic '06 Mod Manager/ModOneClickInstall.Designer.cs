@@ -34,12 +34,12 @@
             this.pic_Logo = new System.Windows.Forms.PictureBox();
             this.credits = new System.Windows.Forms.RichTextBox();
             this.mainControls_Split = new System.Windows.Forms.SplitContainer();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.description = new System.Windows.Forms.WebBrowser();
             this.lbl_Query = new System.Windows.Forms.Label();
             this.btn_Decline = new System.Windows.Forms.Button();
             this.btn_Accept = new System.Windows.Forms.Button();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.description = new System.Windows.Forms.WebBrowser();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.dl_Progress = new System.Windows.Forms.ProgressBar();
             this.pnl_Backdrop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
@@ -97,7 +97,7 @@
             this.credits.Location = new System.Drawing.Point(0, 0);
             this.credits.Name = "credits";
             this.credits.ReadOnly = true;
-            this.credits.Size = new System.Drawing.Size(183, 355);
+            this.credits.Size = new System.Drawing.Size(183, 461);
             this.credits.TabIndex = 19;
             this.credits.Text = "";
             // 
@@ -116,48 +116,9 @@
             // mainControls_Split.Panel2
             // 
             this.mainControls_Split.Panel2.Controls.Add(this.splitContainer1);
-            this.mainControls_Split.Size = new System.Drawing.Size(549, 355);
+            this.mainControls_Split.Size = new System.Drawing.Size(549, 461);
             this.mainControls_Split.SplitterDistance = 183;
             this.mainControls_Split.TabIndex = 21;
-            // 
-            // lbl_Query
-            // 
-            this.lbl_Query.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbl_Query.AutoSize = true;
-            this.lbl_Query.Font = new System.Drawing.Font("Segoe UI", 11.25F);
-            this.lbl_Query.Location = new System.Drawing.Point(10, 440);
-            this.lbl_Query.Name = "lbl_Query";
-            this.lbl_Query.Size = new System.Drawing.Size(251, 20);
-            this.lbl_Query.TabIndex = 21;
-            this.lbl_Query.Text = "Do you want to download this mod?";
-            // 
-            // btn_Decline
-            // 
-            this.btn_Decline.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Decline.BackColor = System.Drawing.Color.Tomato;
-            this.btn_Decline.FlatAppearance.BorderSize = 0;
-            this.btn_Decline.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Decline.Location = new System.Drawing.Point(417, 439);
-            this.btn_Decline.Name = "btn_Decline";
-            this.btn_Decline.Size = new System.Drawing.Size(139, 23);
-            this.btn_Decline.TabIndex = 43;
-            this.btn_Decline.Text = "No";
-            this.btn_Decline.UseVisualStyleBackColor = false;
-            this.btn_Decline.Click += new System.EventHandler(this.Btn_Decline_Click);
-            // 
-            // btn_Accept
-            // 
-            this.btn_Accept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Accept.BackColor = System.Drawing.Color.LightGreen;
-            this.btn_Accept.FlatAppearance.BorderSize = 0;
-            this.btn_Accept.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Accept.Location = new System.Drawing.Point(272, 439);
-            this.btn_Accept.Name = "btn_Accept";
-            this.btn_Accept.Size = new System.Drawing.Size(139, 23);
-            this.btn_Accept.TabIndex = 42;
-            this.btn_Accept.Text = "Yes";
-            this.btn_Accept.UseVisualStyleBackColor = false;
-            this.btn_Accept.Click += new System.EventHandler(this.Btn_Accept_Click);
             // 
             // splitContainer1
             // 
@@ -173,9 +134,20 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.description);
-            this.splitContainer1.Size = new System.Drawing.Size(362, 355);
-            this.splitContainer1.SplitterDistance = 156;
+            this.splitContainer1.Size = new System.Drawing.Size(362, 461);
+            this.splitContainer1.SplitterDistance = 202;
             this.splitContainer1.TabIndex = 22;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::Sonic_06_Mod_Manager.Properties.Resources.logo_image_not_found;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(362, 202);
+            this.pictureBox1.TabIndex = 44;
+            this.pictureBox1.TabStop = false;
             // 
             // description
             // 
@@ -183,23 +155,53 @@
             this.description.Location = new System.Drawing.Point(0, 0);
             this.description.MinimumSize = new System.Drawing.Size(20, 20);
             this.description.Name = "description";
-            this.description.Size = new System.Drawing.Size(362, 195);
+            this.description.Size = new System.Drawing.Size(362, 255);
             this.description.TabIndex = 45;
             // 
-            // pictureBox1
+            // lbl_Query
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(362, 156);
-            this.pictureBox1.TabIndex = 44;
-            this.pictureBox1.TabStop = false;
+            this.lbl_Query.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbl_Query.AutoSize = true;
+            this.lbl_Query.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lbl_Query.Location = new System.Drawing.Point(10, 546);
+            this.lbl_Query.Name = "lbl_Query";
+            this.lbl_Query.Size = new System.Drawing.Size(251, 20);
+            this.lbl_Query.TabIndex = 21;
+            this.lbl_Query.Text = "Do you want to download this mod?";
+            // 
+            // btn_Decline
+            // 
+            this.btn_Decline.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Decline.BackColor = System.Drawing.Color.Tomato;
+            this.btn_Decline.FlatAppearance.BorderSize = 0;
+            this.btn_Decline.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Decline.Location = new System.Drawing.Point(417, 545);
+            this.btn_Decline.Name = "btn_Decline";
+            this.btn_Decline.Size = new System.Drawing.Size(139, 23);
+            this.btn_Decline.TabIndex = 43;
+            this.btn_Decline.Text = "No";
+            this.btn_Decline.UseVisualStyleBackColor = false;
+            this.btn_Decline.Click += new System.EventHandler(this.Btn_Decline_Click);
+            // 
+            // btn_Accept
+            // 
+            this.btn_Accept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Accept.BackColor = System.Drawing.Color.LightGreen;
+            this.btn_Accept.FlatAppearance.BorderSize = 0;
+            this.btn_Accept.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Accept.Location = new System.Drawing.Point(272, 545);
+            this.btn_Accept.Name = "btn_Accept";
+            this.btn_Accept.Size = new System.Drawing.Size(139, 23);
+            this.btn_Accept.TabIndex = 42;
+            this.btn_Accept.Text = "Yes";
+            this.btn_Accept.UseVisualStyleBackColor = false;
+            this.btn_Accept.Click += new System.EventHandler(this.Btn_Accept_Click);
             // 
             // dl_Progress
             // 
             this.dl_Progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dl_Progress.Location = new System.Drawing.Point(8, 439);
+            this.dl_Progress.Location = new System.Drawing.Point(8, 545);
             this.dl_Progress.Name = "dl_Progress";
             this.dl_Progress.Size = new System.Drawing.Size(403, 23);
             this.dl_Progress.TabIndex = 44;
@@ -209,7 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 471);
+            this.ClientSize = new System.Drawing.Size(564, 577);
             this.Controls.Add(this.btn_Decline);
             this.Controls.Add(this.btn_Accept);
             this.Controls.Add(this.mainControls_Split);
@@ -221,6 +223,7 @@
             this.Name = "ModOneClickInstall";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameBanana - 1-Click Mod Install";
+            this.Shown += new System.EventHandler(this.ModOneClickInstall_Shown);
             this.pnl_Backdrop.ResumeLayout(false);
             this.pnl_Backdrop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).EndInit();
