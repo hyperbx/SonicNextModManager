@@ -66,7 +66,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.08";
+        public static string versionNumber = "Version 1.09";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -76,11 +76,13 @@ namespace Sonic_06_Mod_Manager
         string[] modArray;
         string modsPath;
         string s06Path;
-        string xeniaPath;
+        string vkXeniaPath;
+        string dx12XeniaPath;
         string arcPath;
         string ftpPath;
         string origArcPath;
         string targetArcPath;
+        string patchArcPath;
         List<string> checkedModsList = new List<string>() { };
         List<string> checkedPatchesList = new List<string>() { };
         List<string> skippedMods = new List<string>() { };
@@ -95,8 +97,9 @@ namespace Sonic_06_Mod_Manager
             ftpPath = Properties.Settings.Default.ftpPath;
             ftpLocationBox.Text = Properties.Settings.Default.ftpPath;
             s06PathBox.Text = Properties.Settings.Default.s06Path;
-            xeniaPath = Properties.Settings.Default.xeniaPath;
-            xeniaBox.Text = Properties.Settings.Default.xeniaPath;
+            vkXeniaPath = Properties.Settings.Default.vkXeniaPath;
+            dx12XeniaPath = Properties.Settings.Default.dx12XeniaPath;
+            xeniaBox.Text = Properties.Settings.Default.dx12XeniaPath;
         }
 
         public static string applicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -256,6 +259,12 @@ namespace Sonic_06_Mod_Manager
             check_RTV.Checked = Properties.Settings.Default.rtv;
             check_2xRes.Checked = Properties.Settings.Default.doubleIntRes;
             check_Gamma.Checked = Properties.Settings.Default.gamma;
+            HardTextureRAM.Value = Properties.Settings.Default.hardTextureCache;
+            SoftTextureRAM.Value = Properties.Settings.Default.softTextureCache;
+            SoftCacheLifetime.Value = Properties.Settings.Default.softCacheLifetime;
+            check_Debug.Checked = Properties.Settings.Default.debug;
+            viewportX.Value = Properties.Settings.Default.viewportX;
+            viewportY.Value = Properties.Settings.Default.viewportY;
 
             if (Properties.Settings.Default.filter == 0)
             {
@@ -585,9 +594,16 @@ namespace Sonic_06_Mod_Manager
 
         private void XeniaBox_TextChanged(object sender, EventArgs e)
         {
-            xeniaPath = xeniaBox.Text;
-            Properties.Settings.Default.xeniaPath = xeniaPath;
-            Properties.Settings.Default.Save();
+            if (combo_API.SelectedIndex == 0)
+            {
+                Properties.Settings.Default.vkXeniaPath = xeniaBox.Text;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.dx12XeniaPath = xeniaBox.Text;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void XeniaButton_Click(object sender, EventArgs e)
@@ -599,10 +615,18 @@ namespace Sonic_06_Mod_Manager
             xeniaBrowser.RestoreDirectory = true;
             if (xeniaBrowser.ShowDialog() == DialogResult.OK)
             {
-                xeniaPath = xeniaBrowser.FileName;
-                xeniaBox.Text = xeniaPath;
-                Properties.Settings.Default.xeniaPath = xeniaPath;
-                Properties.Settings.Default.Save();
+                if (combo_API.SelectedIndex == 0)
+                {
+                    xeniaBox.Text = xeniaBrowser.FileName;
+                    Properties.Settings.Default.vkXeniaPath = xeniaBrowser.FileName;
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    xeniaBox.Text = xeniaBrowser.FileName;
+                    Properties.Settings.Default.dx12XeniaPath = xeniaBrowser.FileName;
+                    Properties.Settings.Default.Save();
+                }
             }
         }
 
@@ -629,211 +653,277 @@ namespace Sonic_06_Mod_Manager
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            checkedModsList.Clear();
-            if (combo_Priority.SelectedIndex == 0)
+            if (playButton.Text == "Save and Play" || playButton.Text == "Install Mods")
             {
-                for (int i = modList.Items.Count - 1; i >= 0; i--)
+                checkedModsList.Clear();
+                if (combo_Priority.SelectedIndex == 0)
                 {
-                    if (modList.GetItemChecked(i))
+                    for (int i = modList.Items.Count - 1; i >= 0; i--)
                     {
-                        checkedModsList.Add(modList.Items[i].ToString());
+                        if (modList.GetItemChecked(i))
+                        {
+                            checkedModsList.Add(modList.Items[i].ToString());
+                        }
+                    }
+                }
+                else if (combo_Priority.SelectedIndex == 1)
+                {
+                    for (int i = 0; i < modList.Items.Count; i++)
+                    {
+                        if (modList.GetItemChecked(i))
+                        {
+                            checkedModsList.Add(modList.Items[i].ToString());
+                        }
+                    }
+                }
+                checkedModsList.ForEach(i => Console.Write("{0}\n", i));
+                if (modList.CheckedItems.Count != 0)
+                {
+                    if (!check_FTP.Checked)
+                    {
+                        if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
+                        {
+                            SaveChecks();
+                            RefreshMods();
+
+                            if (check_FTP.Checked)
+                            {
+                                if (ftpLocationBox.Text.StartsWith("ftp://"))
+                                {
+                                    if (ftpLocationBox.Text.EndsWith("/"))
+                                    {
+                                        InstallMods();
+                                    }
+                                    else
+                                    {
+                                        ftpLocationBox.AppendText("/");
+                                        InstallMods();
+                                    }
+                                }
+                                else
+                                {
+                                    if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
+                                    ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
+
+                                    if (ftpLocationBox.Text.EndsWith("/"))
+                                    {
+                                        InstallMods();
+                                    }
+                                    else
+                                    {
+                                        ftpLocationBox.AppendText("/");
+                                        InstallMods();
+                                    }
+                                }
+                            }
+                            else { InstallMods(); }
+
+                            if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
+                        }
+                        else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                    }
+                    else
+                    {
+                        if (modsBox.Text != string.Empty && ftpLocationBox.Text != string.Empty)
+                        {
+                            SaveChecks();
+                            RefreshMods();
+
+                            if (check_FTP.Checked)
+                            {
+                                if (ftpLocationBox.Text.StartsWith("ftp://"))
+                                {
+                                    if (ftpLocationBox.Text.EndsWith("/"))
+                                    {
+                                        InstallMods();
+                                    }
+                                    else
+                                    {
+                                        ftpLocationBox.AppendText("/");
+                                        InstallMods();
+                                    }
+                                }
+                                else
+                                {
+                                    if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
+                                    ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
+
+                                    if (ftpLocationBox.Text.EndsWith("/"))
+                                    {
+                                        InstallMods();
+                                    }
+                                    else
+                                    {
+                                        ftpLocationBox.AppendText("/");
+                                        InstallMods();
+                                    }
+                                }
+                            }
+                            else { InstallMods(); }
+
+                            if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
+                        }
+                        else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                    }
+                }
+                else
+                {
+                    if (check_FTP.Checked)
+                    {
+                        try
+                        {
+                            FtpWebRequest testConnection = (FtpWebRequest)WebRequest.Create(ftpLocationBox.Text);
+                            testConnection.Credentials = new NetworkCredential(userField.Text, passField.Text);
+                            testConnection.Method = WebRequestMethods.Ftp.ListDirectory;
+                            if (ftpLocationBox.Text.StartsWith("ftp://"))
+                            {
+                                if (ftpLocationBox.Text.EndsWith("/"))
+                                {
+                                    try
+                                    {
+                                        WebResponse getResponse = testConnection.GetResponse();
+                                        MessageBox.Show("Successfully established a connection to the FTP server.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                                else
+                                {
+                                    ftpLocationBox.AppendText("/");
+                                    try
+                                    {
+                                        WebResponse getResponse = testConnection.GetResponse();
+                                        MessageBox.Show("Successfully established a connection to the FTP server.", "Connection Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
+                                ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
+
+                                if (ftpLocationBox.Text.EndsWith("/"))
+                                {
+                                    try
+                                    {
+                                        WebResponse getResponse = testConnection.GetResponse();
+                                        MessageBox.Show("Successfully established a connection to the FTP server.", "Connection Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                                else
+                                {
+                                    ftpLocationBox.AppendText("/");
+                                    try
+                                    {
+                                        WebResponse getResponse = testConnection.GetResponse();
+                                        MessageBox.Show("Successfully established a connection to the FTP server.", "Connection Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Tools.Notification.Dispose();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        SaveChecks();
+                        RefreshMods();
+
+                        try
+                        {
+                            if (patchesList.CheckedItems.Count != 0 || combo_MSAA.SelectedIndex != 1 || combo_Reflections.SelectedIndex != 1) InstallPatches();
+                        }
+                        catch (Exception ex3)
+                        {
+                            MessageBox.Show($"Please refer to the following error for more information:\n\n{ex3}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Tools.Notification.Dispose();
+                            return;
+                        }
+
+                        if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
                     }
                 }
             }
-            else if (combo_Priority.SelectedIndex == 1)
+            else
             {
-                for (int i = 0; i < modList.Items.Count; i++)
+                checkedPatchesList.Clear();
+                for (int i = patchesList.Items.Count - 1; i >= 0; i--)
                 {
-                    if (modList.GetItemChecked(i))
+                    if (patchesList.GetItemChecked(i))
                     {
-                        checkedModsList.Add(modList.Items[i].ToString());
+                        checkedPatchesList.Add(patchesList.Items[i].ToString());
                     }
                 }
-            }
-            checkedModsList.ForEach(i => Console.Write("{0}\n", i));
-            if (modList.CheckedItems.Count != 0)
-            {
+                checkedPatchesList.ForEach(i => Console.Write("{0}\n", i));
+
+                try { CleanUpMods(); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Tools.Notification.Dispose();
+                    return;
+                }
+
                 if (!check_FTP.Checked)
                 {
                     if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
                     {
                         SaveChecks();
                         RefreshMods();
-
-                        if (check_FTP.Checked)
-                        {
-                            if (ftpLocationBox.Text.StartsWith("ftp://"))
-                            {
-                                if (ftpLocationBox.Text.EndsWith("/"))
-                                {
-                                    InstallMods();
-                                }
-                                else
-                                {
-                                    ftpLocationBox.AppendText("/");
-                                    InstallMods();
-                                }
-                            }
-                            else
-                            {
-                                if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
-                                ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
-
-                                if (ftpLocationBox.Text.EndsWith("/"))
-                                {
-                                    InstallMods();
-                                }
-                                else
-                                {
-                                    ftpLocationBox.AppendText("/");
-                                    InstallMods();
-                                }
-                            }
-                        }
-                        else { InstallMods(); }
-
-                        if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
                     }
-                    else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                 }
-                else
-                {
-                    if (modsBox.Text != string.Empty && ftpLocationBox.Text != string.Empty)
-                    {
-                        SaveChecks();
-                        RefreshMods();
+                SaveChecks();
+                RefreshMods();
 
-                        if (check_FTP.Checked)
-                        {
-                            if (ftpLocationBox.Text.StartsWith("ftp://"))
-                            {
-                                if (ftpLocationBox.Text.EndsWith("/"))
-                                {
-                                    InstallMods();
-                                }
-                                else
-                                {
-                                    ftpLocationBox.AppendText("/");
-                                    InstallMods();
-                                }
-                            }
-                            else
-                            {
-                                if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
-                                ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
-
-                                if (ftpLocationBox.Text.EndsWith("/"))
-                                {
-                                    InstallMods();
-                                }
-                                else
-                                {
-                                    ftpLocationBox.AppendText("/");
-                                    InstallMods();
-                                }
-                            }
-                        }
-                        else { InstallMods(); }
-
-                        if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
-                    }
-                    else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-                }
-            }
-            else
-            {
                 if (check_FTP.Checked)
                 {
-                    try
+                    if (ftpLocationBox.Text.StartsWith("ftp://"))
                     {
-                        FtpWebRequest testConnection = (FtpWebRequest)WebRequest.Create(ftpLocationBox.Text);
-                        testConnection.Credentials = new NetworkCredential(userField.Text, passField.Text);
-                        testConnection.Method = WebRequestMethods.Ftp.ListDirectory;
-                        if (ftpLocationBox.Text.StartsWith("ftp://"))
+                        if (ftpLocationBox.Text.EndsWith("/"))
                         {
-                            if (ftpLocationBox.Text.EndsWith("/"))
-                            {
-                                try
-                                {
-                                    WebResponse getResponse = testConnection.GetResponse();
-                                    MessageBox.Show("Successfully established a connection to the FTP server.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
-                            else
-                            {
-                                ftpLocationBox.AppendText("/");
-                                try
-                                {
-                                    WebResponse getResponse = testConnection.GetResponse();
-                                    MessageBox.Show("Successfully established a connection to the FTP server.", "Connection Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
+                            InstallPatches();
                         }
                         else
                         {
-                            if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
-                            ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
-
-                            if (ftpLocationBox.Text.EndsWith("/"))
-                            {
-                                try
-                                {
-                                    WebResponse getResponse = testConnection.GetResponse();
-                                    MessageBox.Show("Successfully established a connection to the FTP server.", "Connection Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
-                            else
-                            {
-                                ftpLocationBox.AppendText("/");
-                                try
-                                {
-                                    WebResponse getResponse = testConnection.GetResponse();
-                                    MessageBox.Show("Successfully established a connection to the FTP server.", "Connection Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Unable to establish a connection to the FTP server.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
+                            ftpLocationBox.AppendText("/");
+                            InstallPatches();
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Tools.Notification.Dispose();
-                        return;
+                        if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
+                        ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
+
+                        if (ftpLocationBox.Text.EndsWith("/"))
+                        {
+                            InstallPatches();
+                        }
+                        else
+                        {
+                            ftpLocationBox.AppendText("/");
+                            InstallPatches();
+                        }
                     }
                 }
-                else
-                {
-                    SaveChecks();
-                    RefreshMods();
-
-                    try
-                    {
-                        if (patchesList.CheckedItems.Count != 0 || combo_MSAA.SelectedIndex != 1 || combo_Reflections.SelectedIndex != 1) InstallPatches();
-                    }
-                    catch (Exception ex3)
-                    {
-                        MessageBox.Show($"Please refer to the following error for more information:\n\n{ex3}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Tools.Notification.Dispose();
-                        return;
-                    }
-
-                    if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
-                }
+                else { InstallPatches(); }
             }
         }
 
@@ -864,17 +954,6 @@ namespace Sonic_06_Mod_Manager
                 Tools.Notification.Dispose();
                 return;
             }
-
-            try
-            {
-                if (patchesList.CheckedItems.Count != 0 || combo_MSAA.SelectedIndex != 1 || combo_Reflections.SelectedIndex != 1) InstallPatches();
-            }
-            catch (Exception ex3)
-            {
-                MessageBox.Show($"Please refer to the following error for more information:\n\n{ex3}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Tools.Notification.Dispose();
-                return;
-            }
         }
 
         private void LaunchXenia()
@@ -887,28 +966,50 @@ namespace Sonic_06_Mod_Manager
                 if (File.Exists($"{s06Path}\\default.xex")) { args = $"\"{s06Path}\\default.xex\""; xeniaParameters.Add(args); }
                 else { args = string.Empty; }
 
-                if (check_RTV.Checked) { xeniaParameters.Add("--d3d12_edram_rov=false"); }
-                if (check_2xRes.Checked) { xeniaParameters.Add("--d3d12_resolution_scale=2"); }
-                if (!check_VSync.Checked) { xeniaParameters.Add("--vsync=false"); }
-                if (check_VulkanOnDX12.Checked) { xeniaParameters.Add("--gpu=vulkan"); }
-                if (!check_ProtectZero.Checked) { xeniaParameters.Add("--protect_zero=false"); }
-                if (check_Gamma.Checked) { xeniaParameters.Add("--kernel_display_gamma_type=2"); }
+                if (check_RTV.Enabled && check_RTV.Checked) { xeniaParameters.Add("--d3d12_edram_rov=false"); }
+                if (check_2xRes.Enabled && check_2xRes.Checked) { xeniaParameters.Add("--d3d12_resolution_scale=2"); }
+                if (check_VSync.Enabled && !check_VSync.Checked) { xeniaParameters.Add("--vsync=false"); }
+                if (check_VulkanOnDX12.Enabled && check_VulkanOnDX12.Checked) { xeniaParameters.Add("--gpu=vulkan"); }
+                if (check_ProtectZero.Enabled && !check_ProtectZero.Checked) { xeniaParameters.Add("--protect_zero=false"); }
+                if (check_Gamma.Enabled && check_Gamma.Checked) { xeniaParameters.Add("--kernel_display_gamma_type=2"); }
+                if (HardTextureRAM.Enabled && HardTextureRAM.Value != 0) { xeniaParameters.Add($"--d3d12_texture_cache_limit_hard={HardTextureRAM.Value}"); }
+                if (SoftTextureRAM.Enabled && SoftTextureRAM.Value != 0) { xeniaParameters.Add($"--d3d12_texture_cache_limit_soft={SoftTextureRAM.Value}"); }
+                if (SoftCacheLifetime.Enabled && SoftCacheLifetime.Value != 0) { xeniaParameters.Add($"--d3d12_texture_cache_limit_soft_lifetime={SoftCacheLifetime.Value}"); }
+                if (check_Debug.Enabled && check_Debug.Checked) { xeniaParameters.Add("--debug"); }
 
                 launchArgs = xeniaParameters.ToArray();
 
-                Console.WriteLine("\nStarting Xenia.\n");
+                Console.WriteLine($"\nStarting Xenia <{combo_API.Text}>\n");
                 Console.WriteLine($"Parameters:\n");
                 //xeniaParameters.ForEach(i => Console.Write("{0}\n", i));
                 Console.WriteLine(string.Join(" ", xeniaParameters.ToArray()));
                 ProcessStartInfo xeniaExec;
-                xeniaExec = new ProcessStartInfo(xeniaPath)
+                if (combo_API.SelectedIndex == 0)
                 {
-                    WorkingDirectory = Path.GetDirectoryName(xeniaPath),
-                    Arguments = string.Join(" ", xeniaParameters.ToArray())
-                };
+                    xeniaExec = new ProcessStartInfo(vkXeniaPath)
+                    {
+                        WorkingDirectory = Path.GetDirectoryName(vkXeniaPath),
+                        Arguments = string.Join(" ", xeniaParameters.ToArray())
+                    };
+                }
+                else
+                {
+                    xeniaExec = new ProcessStartInfo(dx12XeniaPath)
+                    {
+                        WorkingDirectory = Path.GetDirectoryName(dx12XeniaPath),
+                        Arguments = string.Join(" ", xeniaParameters.ToArray())
+                    };
+                }
                 var xenia = Process.Start(xeniaExec);
                 xenia.WaitForExit();
+
                 if (!check_manUninstall.Checked) CleanUpMods();
+
+                if (check_Debug.Checked)
+                {
+                    Tools.XeniaException.GetErrors();
+                    Tools.XeniaException.GetWarnings();
+                }
             }
             else
             {
@@ -921,10 +1022,18 @@ namespace Sonic_06_Mod_Manager
                 xeniaBrowser.RestoreDirectory = true;
                 if (xeniaBrowser.ShowDialog() == DialogResult.OK)
                 {
-                    xeniaPath = xeniaBrowser.FileName;
-                    xeniaBox.Text = xeniaPath;
-                    Properties.Settings.Default.xeniaPath = xeniaPath;
-                    Properties.Settings.Default.Save();
+                    if (combo_API.SelectedIndex == 0)
+                    {
+                        xeniaBox.Text = xeniaBrowser.FileName;
+                        Properties.Settings.Default.vkXeniaPath = xeniaBrowser.FileName;
+                        Properties.Settings.Default.Save();
+                    }
+                    else
+                    {
+                        xeniaBox.Text = xeniaBrowser.FileName;
+                        Properties.Settings.Default.dx12XeniaPath = xeniaBrowser.FileName;
+                        Properties.Settings.Default.Save();
+                    }
 
                     tab_Section.SelectedIndex = 1;
                 }
@@ -1603,6 +1712,7 @@ namespace Sonic_06_Mod_Manager
                     arcPath = mod.Remove(0, $"{modsPath}\\{item}".Length);
                     origArcPath = s06Path + arcPath;
                     targetArcPath = origArcPath + "_back";
+                    patchArcPath = origArcPath + "_orig";
 
                     if (!check_FTP.Checked)
                     {
@@ -1614,7 +1724,28 @@ namespace Sonic_06_Mod_Manager
                                 {
                                     if (Path.GetExtension(mod) == ".arc")
                                     {
-                                        if (string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)))
+                                        if (!File.Exists(patchArcPath))
+                                        {
+                                            if (string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)))
+                                            {
+                                                Console.WriteLine("Copying " + mod);
+                                                if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                                File.Copy(mod, origArcPath, true);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Merging " + mod);
+                                                MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            skippedMods.Add($"\n► {item} (failed because a patch was already installed on file: {Path.GetFileName(mod)})");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if ((!File.Exists(targetArcPath) || !File.Exists(patchArcPath)) == false)
                                         {
                                             Console.WriteLine("Copying " + mod);
                                             if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
@@ -1622,20 +1753,33 @@ namespace Sonic_06_Mod_Manager
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Merging " + mod);
-                                            MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
+                                            Console.WriteLine("Skipped " + mod);
+                                            if (Path.GetExtension(mod).Contains(".arc"))
+                                            {
+                                                if (File.Exists(targetArcPath))
+                                                {
+                                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                                }
+                                                else if (File.Exists(patchArcPath))
+                                                {
+                                                    skippedMods.Add($"\n► {item} (failed because a patch was already installed on file: {Path.GetFileName(mod)})");
+                                                }
+                                                else
+                                                {
+                                                    skippedMods.Add($"\n► {item} (failed for literally no reason whatsoever)");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)})");
+                                            }
+                                            break;
                                         }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Copying " + mod);
-                                        if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                        File.Copy(mod, origArcPath, true);
                                     }
                                 }
                                 else
                                 {
-                                    if (!File.Exists(targetArcPath))
+                                    if ((!File.Exists(targetArcPath) || !File.Exists(patchArcPath)) == false)
                                     {
                                         Console.WriteLine("Copying " + mod);
                                         if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
@@ -1644,9 +1788,20 @@ namespace Sonic_06_Mod_Manager
                                     else
                                     {
                                         Console.WriteLine("Skipped " + mod);
-                                        if (Path.GetExtension(mod) == ".arc")
+                                        if (Path.GetExtension(mod).Contains(".arc"))
                                         {
-                                            skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                            if (File.Exists(targetArcPath))
+                                            {
+                                                skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                            }
+                                            else if (File.Exists(patchArcPath))
+                                            {
+                                                skippedMods.Add($"\n► {item} (failed because a patch was already installed on file: {Path.GetFileName(mod)})");
+                                            }
+                                            else
+                                            {
+                                                skippedMods.Add($"\n► {item} (failed for literally no reason whatsoever)");
+                                            }
                                         }
                                         else
                                         {
@@ -1664,7 +1819,7 @@ namespace Sonic_06_Mod_Manager
                         }
                         else
                         {
-                            if (!File.Exists(targetArcPath))
+                            if ((!File.Exists(targetArcPath) || !File.Exists(patchArcPath)) == false)
                             {
                                 Console.WriteLine("Copying " + mod);
                                 if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
@@ -1673,9 +1828,20 @@ namespace Sonic_06_Mod_Manager
                             else
                             {
                                 Console.WriteLine("Skipped " + mod);
-                                if (Path.GetExtension(mod) == ".arc")
+                                if (Path.GetExtension(mod).Contains(".arc"))
                                 {
-                                    skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                    if (File.Exists(targetArcPath))
+                                    {
+                                        skippedMods.Add($"\n► {item} (failed because a mod was already installed on file: {Path.GetFileName(mod)} - try merging instead)");
+                                    }
+                                    else if (File.Exists(patchArcPath))
+                                    {
+                                        skippedMods.Add($"\n► {item} (failed because a patch was already installed on file: {Path.GetFileName(mod)})");
+                                    }
+                                    else
+                                    {
+                                        skippedMods.Add($"\n► {item} (failed for literally no reason whatsoever)");
+                                    }
                                 }
                                 else
                                 {
@@ -2389,9 +2555,13 @@ namespace Sonic_06_Mod_Manager
                     {
                         MessageBox.Show("This patch will disable all real-time shadows. This can provide a minor performance boost and will make the game render darkness by vertex colouring.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
+                    else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Omega Blur Fix")
+                    {
+                        MessageBox.Show("This patch will replace Omega's shaders to prevent the sprites from becoming blurry on Xenia.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Vulkan API Compatibility")
                     {
-                        MessageBox.Show("This patch will enable the fixes so the game renders correctly with the Vulkan API on Xenia. This patch cannot be used with any others as conflicting configurations may cause issues.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("This patch will enable the fixes so the game renders correctly with the Vulkan API on Xenia.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -2489,8 +2659,9 @@ namespace Sonic_06_Mod_Manager
             }
 
             if (modList.CheckedItems.Count == 0 && check_FTP.Checked) { playButton.Text = "Test Connection"; }
-            else if (check_FTP.Checked || check_manUninstall.Checked) { playButton.Text = "Install Mods"; }
-            else { playButton.Text = "Save and Play"; }
+            else if (check_FTP.Checked && tab_Section.SelectedIndex != 2 || check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Install Mods"; stopButton.Text = "Uninstall Mods"; }
+            else if (!check_FTP.Checked && tab_Section.SelectedIndex != 2 || !check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Save and Play"; }
+            else { playButton.Text = "Apply Patches"; stopButton.Text = "Restore Defaults"; }
         }
 
         private void Lbl_ModsDirectory_Click(object sender, EventArgs e)
@@ -2532,8 +2703,6 @@ namespace Sonic_06_Mod_Manager
                 combo_Reflections.Enabled = false;
                 lbl_MSAAdef.Enabled = false;
                 lbl_Reflectionsdef.Enabled = false;
-                btn_Patches_Apply.Enabled = false;
-                btn_Patches_RestoreDefaults.Enabled = false;
 
                 if (ftpPath == string.Empty) { ftpLocationBox.Text = "ftp://"; }
                 else { ftpLocationBox.Text = ftpPath; }
@@ -2570,8 +2739,6 @@ namespace Sonic_06_Mod_Manager
                 combo_Reflections.Enabled = true;
                 lbl_MSAAdef.Enabled = true;
                 lbl_Reflectionsdef.Enabled = true;
-                btn_Patches_Apply.Enabled = true;
-                btn_Patches_RestoreDefaults.Enabled = true;
 
                 Properties.Settings.Default.ftp = false;
             }
@@ -2586,34 +2753,74 @@ namespace Sonic_06_Mod_Manager
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            try
+            if (stopButton.Text == "Uninstall Mods")
             {
-                if (check_FTP.Checked)
+                try
                 {
-                    if (ftpLocationBox.Text.StartsWith("ftp://"))
+                    if (check_FTP.Checked)
                     {
-                        if (ftpLocationBox.Text.EndsWith("/"))
+                        if (ftpLocationBox.Text.StartsWith("ftp://"))
                         {
-                            CleanUpMods();
-                        }
-                        else
-                        {
-                            ftpLocationBox.AppendText("/");
-                            CleanUpMods();
+                            if (ftpLocationBox.Text.EndsWith("/"))
+                            {
+                                CleanUpMods();
+                            }
+                            else
+                            {
+                                ftpLocationBox.AppendText("/");
+                                CleanUpMods();
+                            }
                         }
                     }
+                    else
+                    {
+                        CleanUpMods();
+                    }
+                    MessageBox.Show("Mod uninstall complete.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else
+                catch (Exception ex)
                 {
-                    CleanUpMods();
+                    MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Tools.Notification.Dispose();
+                    return;
                 }
-                MessageBox.Show("Mod uninstall complete.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Tools.Notification.Dispose();
-                return;
+                try
+                {
+                    combo_MSAA.SelectedIndex = 1;
+                    combo_Reflections.SelectedIndex = 1;
+                    viewportX.Value = 1280;
+                    viewportY.Value = 720;
+
+                    //Unchecks all available checkboxes.
+                    for (int i = 0; i < patchesList.Items.Count; i++) patchesList.SetItemChecked(i, false);
+
+                    if (s06Path != string.Empty)
+                    {
+                        var mods = Directory.GetFiles(s06Path, "*.*", SearchOption.AllDirectories)
+                        .Where(s => s.EndsWith(".arc_orig"));
+
+                        foreach (var mod in mods)
+                        {
+                            if (File.Exists(mod.ToString().Remove(mod.Length - 5)))
+                            {
+                                File.Delete(mod.ToString().Remove(mod.Length - 5));
+                            }
+                            File.Move(mod.ToString(), mod.ToString().Remove(mod.Length - 5));
+                            Console.WriteLine("Removing: " + mod.ToString().Remove(mod.Length - 5));
+                        }
+                    }
+                    File.Delete($"{modsPath}\\patches.ini");
+                    MessageBox.Show("Patch uninstall complete.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Tools.Notification.Dispose();
+                    return;
+                }
             }
         }
 
@@ -2806,21 +3013,21 @@ namespace Sonic_06_Mod_Manager
 
         private void Combo_MSAA_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (combo_MSAA.SelectedIndex == 1)
-            {
-                lbl_MSAAdef.Visible = true;
-            }
-            else if (combo_MSAA.SelectedIndex == 2)
-            {
-                lbl_MSAAdef.Visible = false;
-                if (Properties.Settings.Default.msaaLevel != 2) MessageBox.Show("4x MSAA can cause issues in certain sections of the game. Use this at your own risk.", "MSAA Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                lbl_MSAAdef.Visible = false;
-            }
-            Properties.Settings.Default.msaaLevel = combo_MSAA.SelectedIndex;
-            Properties.Settings.Default.Save();
+            //if (combo_MSAA.SelectedIndex == 1)
+            //{
+            //    lbl_MSAAdef.Visible = true;
+            //}
+            //else if (combo_MSAA.SelectedIndex == 2)
+            //{
+            //    lbl_MSAAdef.Visible = false;
+            //    if (Properties.Settings.Default.msaaLevel != 2) MessageBox.Show("4x MSAA can cause issues in certain sections of the game. Use this at your own risk.", "MSAA Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //}
+            //else
+            //{
+            //    lbl_MSAAdef.Visible = false;
+            //}
+            //Properties.Settings.Default.msaaLevel = combo_MSAA.SelectedIndex;
+            //Properties.Settings.Default.Save();
         }
 
         private void Combo_Reflections_SelectedIndexChanged(object sender, EventArgs e)
@@ -2838,175 +3045,43 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_Patches_RestoreDefaults_Click(object sender, EventArgs e)
-        {
-            combo_MSAA.SelectedIndex = 1;
-            combo_Reflections.SelectedIndex = 1;
-
-            //Unchecks all available checkboxes.
-            for (int i = 0; i < patchesList.Items.Count; i++) patchesList.SetItemChecked(i, false);
-
-            if (File.Exists($"{s06Path}\\xenon\\archives\\cache.arc_orig"))
-            {
-                File.Delete($"{s06Path}\\xenon\\archives\\cache.arc");
-                File.Move($"{s06Path}\\xenon\\archives\\cache.arc_orig", $"{s06Path}\\xenon\\archives\\cache.arc");
-            }
-        }
-
-        #region Information Text
-        private void Combo_System_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option tells Sonic '06 Mod Manager what type of system it's connecting to\n for the correct paths to the files."; }
-        private void Combo_System_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void ModsBox_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This is the path to your mods directory... Or at least, we think it is."; }
-        private void ModsBox_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void ModsButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "I think this button lets you browse for a mods directory."; }
-        private void ModsButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void S06PathBox_MouseEnter(object sender, EventArgs e) {
-            lbl_SettingsInformation.Text = "This should be the path to your game directory. If it's not pointing to the folder\ncontaining 'default.xex' or 'EBOOT.BIN,' you're doing it wrong. =P";
-            if (!check_manUninstall.Checked) tm_CheckLabel.Start();
-        }
-        private void Tm_CheckLabel_Tick(object sender, EventArgs e) {
-            lbl_SettingsInformation.Text = "This should be the path to your game directory. If it's not pointing to the folder\ncontaining 'default.xex' or 'EBOOT.BIN,' you're doing it wrong. =P\n\nOkay, well... 'EBOOT.BIN' isn't used on the Xbox 360, but you get the point.";
-            tm_CheckLabel.Stop();
-        }
-        private void S06PathBox_MouseLeave(object sender, EventArgs e)
-        {
-            lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information.";
-            tm_CheckLabel.Stop();
-        }
-
-        private void S06PathButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This might be the button to browse for your game directory."; }
-        private void S06PathButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void XeniaBox_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This is the path to your executable for Xenia.\n\nFor example: 'xenia.exe'"; }
-        private void XeniaBox_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void XeniaButton_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "There's a very high chance that this button lets you browse for Xenia."; }
-        private void XeniaButton_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void label4_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "We apologise for the amount of silly information tags. Those responsible have\nbeen sacked."; }
-        private void label4_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Button2_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Opens the About section for Sonic '06 Mod Manager."; }
-        private void Button2_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void FtpLocationBox_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This should be the path to your game directory on the FTP server. If it's not\npointing to the folder containing 'default.xex' or 'EBOOT.BIN,' you're doing it\nwrong. =P"; }
-        private void FtpLocationBox_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void UserField_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "The username for your FTP server. This field is typically left empty for the\nPlayStation 3."; }
-        private void UserField_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void PassField_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "The password for your FTP server. This field is typically left empty for the\nPlayStation 3."; }
-        private void PassField_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_FTP_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option is for transferring mods to real hardware via an FTP server. Enable\nthis to make Sonic '06 Mod Manager work with a modded Xbox 360 or\nPlayStation 3 remotely."; }
-        private void Check_FTP_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_manUninstall_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option is for both Xenia users and those who want to use real hardware\nwithout an Internet connection.\n\n- For Xenia users, this allows for a more permanent mod installation solution.\n- For those on real hardware, this will be the option for you to install the mods to\n  the game on an external drive."; }
-        private void Check_manUninstall_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Btn_SaveMods_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will save your selected mods."; }
-        private void Btn_SaveMods_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void PlayButton_MouseEnter(object sender, EventArgs e) {
-            if (check_FTP.Checked && playButton.Text != "Test Connection")
-            {
-                lbl_SettingsInformation.Text = "This button will install your selected mods to the specified FTP server.";
-            }
-            else if (check_FTP.Checked && playButton.Text == "Test Connection")
-            {
-                lbl_SettingsInformation.Text = "This button will attempt to establish a connection to your FTP server.";
-            }
-            else if (check_manUninstall.Checked)
-            {
-                lbl_SettingsInformation.Text = "This button will install your selected mods.";
-            }
-            else
-            {
-                lbl_SettingsInformation.Text = "This button will install your selected mods and launch Xenia.";
-            }
-        }
-        private void PlayButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void StopButton_MouseEnter(object sender, EventArgs e) {
-            if (check_FTP.Checked)
-            {
-                lbl_SettingsInformation.Text = "This button will uninstall all mods in the specified FTP server.";
-            }
-            else
-            {
-                lbl_SettingsInformation.Text = "This button will uninstall all mods in the specified game directory.";
-            }
-        }
-        private void StopButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void LaunchXeniaButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will launch Xenia."; }
-        private void LaunchXeniaButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void CreateButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will reveal the Mod Creator window."; }
-        private void CreateButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Button1_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will display information about the selected mod."; }
-        private void Button1_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void RefreshButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will refresh the mods list."; }
-        private void RefreshButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Radio_All_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option will display all mods in the mods list."; }
-        private void Radio_All_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Radio_Xbox_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option will display only Xbox 360 mods in the mods list."; }
-        private void Radio_Xbox_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Radio_PlayStation_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option will display only PlayStation 3 mods in the mods list."; }
-        private void Radio_PlayStation_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Combo_API_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This is where you specify what API the selected build of Xenia uses."; }
-        private void Combo_API_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_RTV_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Render Target Views are default on Xenia if your GPU doesn't support\nRasteriser Ordered Views. Rasteriser Ordered Views typically perform better\nthan Render Target Views if your hardware supports it.\n\nIf unsure, leave this unchecked."; }
-        private void Check_RTV_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_2xRes_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option will double the internal resolution.\n\nIf unsure, leave this unchecked."; }
-        private void Check_2xRes_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_VSync_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Self-explanatory; this option will enable/disable V-Sync. Disabling V-Sync typically\nleads to unstable framerates, as in most cases it removes the framerate cap.\n\nRecommended for SONIC THE HEDGEHOG (2006)."; }
-        private void Check_VSync_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_VulkanOnDX12_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option will use the Vulkan API if the selected build of Xenia uses DirectX 12\nby default.\n\nIf unsure, leave this unchecked."; }
-        private void Check_VulkanOnDX12_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_ProtectZero_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Protect Zero is the default memory protection mode for Xenia. Disabling this will\nchange how memory protection works.\n\nIf unsure, leave this checked."; }
-        private void Check_ProtectZero_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void label6_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "We apologise for the amount of silly information tags. Those responsible have\nbeen sacked."; }
-        private void label6_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-
-        private void Check_Gamma_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option will enable gamma. Though, I think you knew that already.\n\nRecommended for SONIC THE HEDGEHOG (2006)."; }
-        private void Check_Gamma_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
-        #endregion
-
         private void Tab_Section_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tab_Section.SelectedIndex == 2) { button1.Text = "Patch Info"; }
-            else { button1.Text = "Mod Info"; }
+            if (tab_Section.SelectedIndex == 2)
+            {
+                button1.Text = "Patch Info";
+                playButton.Text = "Apply Patches";
+                playButton.Width = 101;
+                stopButton.Text = "Restore Defaults";
+                stopButton.Visible = true;
+            }
+            else
+            {
+                button1.Text = "Mod Info";
+                if (check_manUninstall.Checked) playButton.Text = "Install Mods";
+                else
+                {
+                    playButton.Text = "Save and Play";
+                    playButton.Width = 207;
+                    stopButton.Text = "Uninstall Mods";
+                    stopButton.Visible = false;
+                }
+            }
 
             if (tab_Section.SelectedIndex != 0) { refreshButton.Enabled = false; }
             else { refreshButton.Enabled = true; }
 
             if (tab_Section.SelectedIndex == 0)
             {
-                radio_All.Enabled = true;
-                radio_Xbox.Enabled = true;
-                radio_PlayStation.Enabled = true;
+                radio_All.Visible = true;
+                radio_Xbox.Visible = true;
+                radio_PlayStation.Visible = true;
             }
             else
             {
-                radio_All.Enabled = false;
-                radio_Xbox.Enabled = false;
-                radio_PlayStation.Enabled = false;
+                radio_All.Visible = false;
+                radio_Xbox.Visible = false;
+                radio_PlayStation.Visible = false;
             }
 
             modList.ClearSelected();
@@ -3025,12 +3100,43 @@ namespace Sonic_06_Mod_Manager
                 check_RTV.Enabled = false;
                 check_2xRes.Enabled = false;
                 check_VulkanOnDX12.Enabled = false;
+                HardTextureRAM.Enabled = false;
+                SoftTextureRAM.Enabled = false;
+                SoftCacheLifetime.Enabled = false;
+                lbl_HardCache.Enabled = false;
+                lbl_SoftCache.Enabled = false;
+                lbl_SoftLifetime.Enabled = false;
+
+                xeniaBox.Text = Properties.Settings.Default.vkXeniaPath;
             }
             else
             {
-                check_RTV.Enabled = true;
-                check_2xRes.Enabled = true;
                 check_VulkanOnDX12.Enabled = true;
+                xeniaBox.Text = Properties.Settings.Default.dx12XeniaPath;
+
+                if (check_VulkanOnDX12.Checked)
+                {
+                    check_RTV.Enabled = false;
+                    check_2xRes.Enabled = false;
+                    HardTextureRAM.Enabled = false;
+                    SoftTextureRAM.Enabled = false;
+                    SoftCacheLifetime.Enabled = false;
+                    lbl_HardCache.Enabled = false;
+                    lbl_SoftCache.Enabled = false;
+                    lbl_SoftLifetime.Enabled = false;
+                }
+                else
+                {
+                    check_RTV.Enabled = true;
+                    check_2xRes.Enabled = true;
+                    check_VulkanOnDX12.Enabled = true;
+                    HardTextureRAM.Enabled = true;
+                    SoftTextureRAM.Enabled = true;
+                    SoftCacheLifetime.Enabled = true;
+                    lbl_HardCache.Enabled = true;
+                    lbl_SoftCache.Enabled = true;
+                    lbl_SoftLifetime.Enabled = true;
+                }
             }
             Properties.Settings.Default.api = combo_API.SelectedIndex;
             Properties.Settings.Default.Save();
@@ -3042,11 +3148,23 @@ namespace Sonic_06_Mod_Manager
             {
                 check_RTV.Enabled = false;
                 check_2xRes.Enabled = false;
+                HardTextureRAM.Enabled = false;
+                SoftTextureRAM.Enabled = false;
+                SoftCacheLifetime.Enabled = false;
+                lbl_HardCache.Enabled = false;
+                lbl_SoftCache.Enabled = false;
+                lbl_SoftLifetime.Enabled = false;
             }
             else
             {
                 check_RTV.Enabled = true;
                 check_2xRes.Enabled = true;
+                HardTextureRAM.Enabled = true;
+                SoftTextureRAM.Enabled = true;
+                SoftCacheLifetime.Enabled = true;
+                lbl_HardCache.Enabled = true;
+                lbl_SoftCache.Enabled = true;
+                lbl_SoftLifetime.Enabled = true;
             }
             Properties.Settings.Default.vulkanOnDX12 = check_VulkanOnDX12.Checked;
             Properties.Settings.Default.Save();
@@ -3114,11 +3232,7 @@ namespace Sonic_06_Mod_Manager
             convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
             convertDialog.Show();
 
-            if (File.Exists($"{s06Path}\\xenon\\archives\\cache.arc_orig"))
-            {
-                File.Delete($"{s06Path}\\xenon\\archives\\cache.arc");
-                File.Move($"{s06Path}\\xenon\\archives\\cache.arc_orig", $"{s06Path}\\xenon\\archives\\cache.arc");
-            }
+            if (patchesList.GetItemChecked(1)) { Tools.Patch.Omega_Blur_Fix(); }
 
             string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
             var tempData = new DirectoryInfo(tempPath);
@@ -3140,114 +3254,126 @@ namespace Sonic_06_Mod_Manager
 
             WriteDecompiler();
 
-            if (combo_MSAA.Enabled)
-            {
-                #region No MSAA
-                if (combo_MSAA.SelectedIndex == 0)
-                {
-                    //Checks the header for each file to ensure that it can be safely decompiled.
-                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
-                    {
-                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
-                        {
-                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+            //Unused MSAA Code - Lua decompiler appears to break 'render_main.lub,' so this won't be possible
+            //(it's pointless anyway, as the game crashes with anything other than 2x).
+            #region Unused MSAA Code
+            //if (combo_MSAA.Enabled)
+            //{
+            //    #region No MSAA
+            //    if (combo_MSAA.SelectedIndex == 0)
+            //    {
+            //        //Checks the header for each file to ensure that it can be safely decompiled.
+            //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+            //        {
+            //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+            //            {
+            //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
 
-                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                            {
-                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
+            //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+            //                {
+            //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+            //                    WindowStyle = ProcessWindowStyle.Hidden
+            //                };
 
-                            var Patch1 = Process.Start(patch);
-                            Patch1.WaitForExit();
-                            Patch1.Close();
+            //                var Patch1 = Process.Start(patch);
+            //                Patch1.WaitForExit();
+            //                Patch1.Close();
 
-                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
-                        }
-                    }
+            //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+            //            }
+            //            else
+            //            {
+            //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+            //                for (int i = 0; i < lines.Length; i++)
+            //                {
+            //                    if (lines[i].Contains("MSAAType = \""))
+            //                        lines[i] = "MSAAType = \"0x\"";
+            //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+            //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0)";
+            //                }
+            //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+            //            }
+            //        }
+            //    }
+            //    #endregion
 
-                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
-                            lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0)";
-                    }
-                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
-                }
-                #endregion
+            //    #region 2x MSAA
+            //    else if (combo_MSAA.SelectedIndex == 1)
+            //    {
+            //        //Checks the header for each file to ensure that it can be safely decompiled.
+            //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+            //        {
+            //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+            //            {
+            //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
 
-                #region 2x MSAA
-                else if (combo_MSAA.SelectedIndex == 1)
-                {
-                    //Checks the header for each file to ensure that it can be safely decompiled.
-                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
-                    {
-                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
-                        {
-                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+            //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+            //                {
+            //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+            //                    WindowStyle = ProcessWindowStyle.Hidden
+            //                };
 
-                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                            {
-                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
+            //                var Patch1 = Process.Start(patch);
+            //                Patch1.WaitForExit();
+            //                Patch1.Close();
 
-                            var Patch1 = Process.Start(patch);
-                            Patch1.WaitForExit();
-                            Patch1.Close();
+            //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+            //            }
+            //            else
+            //            {
+            //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+            //                for (int i = 0; i < lines.Length; i++)
+            //                {
+            //                    if (lines[i].Contains("MSAAType = \""))
+            //                        lines[i] = "MSAAType = \"2x\"";
+            //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+            //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
+            //                }
+            //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+            //            }
+            //        }
+            //    }
+            //    #endregion
 
-                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
-                        }
-                    }
+            //    #region 4x MSAA
+            //    else if (combo_MSAA.SelectedIndex == 2)
+            //    {
+            //        //Checks the header for each file to ensure that it can be safely decompiled.
+            //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+            //        {
+            //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+            //            {
+            //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
 
-                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("MSAAType = \""))
-                            lines[i] = "MSAAType = \"2x\"";
-                        if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
-                            lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
-                    }
-                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
-                }
-                #endregion
+            //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+            //                {
+            //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+            //                    WindowStyle = ProcessWindowStyle.Hidden
+            //                };
 
-                #region 4x MSAA
-                else if (combo_MSAA.SelectedIndex == 2)
-                {
-                    //Checks the header for each file to ensure that it can be safely decompiled.
-                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
-                    {
-                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
-                        {
-                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+            //                var Patch1 = Process.Start(patch);
+            //                Patch1.WaitForExit();
+            //                Patch1.Close();
 
-                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                            {
-                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
-
-                            var Patch1 = Process.Start(patch);
-                            Patch1.WaitForExit();
-                            Patch1.Close();
-
-                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
-                        }
-                    }
-
-                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("MSAAType = \""))
-                            lines[i] = "MSAAType = \"4x\"";
-                        if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
-                            lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
-                    }
-                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
-                }
-                #endregion
-            }
+            //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+            //            }
+            //            else
+            //            {
+            //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+            //                for (int i = 0; i < lines.Length; i++)
+            //                {
+            //                    if (lines[i].Contains("MSAAType = \""))
+            //                        lines[i] = "MSAAType = \"4x\"";
+            //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+            //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
+            //                }
+            //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+            //            }
+            //        }
+            //    }
+            //    #endregion
+            //}
+            #endregion
 
             if (combo_Reflections.Enabled)
             {
@@ -3273,15 +3399,15 @@ namespace Sonic_06_Mod_Manager
 
                             File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
                         }
-                    }
 
-                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("EnableReflection ="))
-                            lines[i] = "EnableReflection = false";
+                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            if (lines[i].Contains("EnableReflection ="))
+                                lines[i] = "EnableReflection = false";
+                        }
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                     }
-                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                 }
                 #endregion
 
@@ -3307,19 +3433,19 @@ namespace Sonic_06_Mod_Manager
 
                             File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
                         }
-                    }
 
-                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("EnableReflection ="))
-                            lines[i] = "EnableReflection = true";
-                        if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
-                            lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 4";
-                        if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
-                            lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 4";
+                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            if (lines[i].Contains("EnableReflection ="))
+                                lines[i] = "EnableReflection = true";
+                            if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                                lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 4";
+                            if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                                lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 4";
+                        }
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                     }
-                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                 }
                 #endregion
 
@@ -3332,7 +3458,7 @@ namespace Sonic_06_Mod_Manager
                         if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
                         {
                             File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
-
+                            
                             patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
                             {
                                 WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
@@ -3345,19 +3471,19 @@ namespace Sonic_06_Mod_Manager
 
                             File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
                         }
-                    }
 
-                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("EnableReflection ="))
-                            lines[i] = "EnableReflection = true";
-                        if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
-                            lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 2";
-                        if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
-                            lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 2";
+                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            if (lines[i].Contains("EnableReflection ="))
+                                lines[i] = "EnableReflection = true";
+                            if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                                lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 2";
+                            if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                                lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 2";
+                        }
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                     }
-                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                 }
                 #endregion
 
@@ -3383,173 +3509,26 @@ namespace Sonic_06_Mod_Manager
 
                             File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
                         }
-                    }
 
-                    string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("EnableReflection ="))
-                            lines[i] = "EnableReflection = true";
-                        if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
-                            lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")";
-                        if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
-                            lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")";
-                    }
-                    File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
-                }
-                #endregion
-            }
-
-            foreach (var item in checkedPatchesList)
-            {
-                #region Disable Shadows
-                if (item == "Disable Shadows")
-                {
-                    if (patchesList.GetItemChecked(0))
-                    {
-                        //Checks the header for each file to ensure that it can be safely decompiled.
-                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub"))
+                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                        for (int i = 0; i < lines.Length; i++)
                         {
-                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub")[0].Contains("LuaP"))
-                            {
-                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode.lub", true);
-
-                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                                {
-                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                };
-
-                                var Patch1 = Process.Start(patch);
-                                Patch1.WaitForExit();
-                                Patch1.Close();
-
-                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", true);
-                            }
+                            if (lines[i].Contains("EnableReflection ="))
+                                lines[i] = "EnableReflection = true";
+                            if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                                lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")";
+                            if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                                lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")";
                         }
-
-                        //Checks the header for each file to ensure that it can be safely decompiled.
-                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub"))
-                        {
-                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub")[0].Contains("LuaP"))
-                            {
-                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_title.lub", true);
-
-                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                                {
-                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                };
-
-                                var Patch1 = Process.Start(patch);
-                                Patch1.WaitForExit();
-                                Patch1.Close();
-
-                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_title.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", true);
-                            }
-                        }
-
-                        string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
-                        for (int i = 0; i < gamemodeLines.Length; i++)
-                        {
-                            if (gamemodeLines[i].Contains("CreateCSM(_ARG_0_)"))
-                                gamemodeLines[i] = "  --CreateCSM(_ARG_0_)";
-                            if (gamemodeLines[i].Contains("RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)"))
-                                gamemodeLines[i] = "  --RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)";
-                        }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
-
-                        string[] titleLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub");
-                        for (int i = 0; i < titleLines.Length; i++)
-                        {
-                            if (titleLines[i].Contains("CreateCSM(_ARG_0_)"))
-                                titleLines[i] = "  --CreateCSM(_ARG_0_)";
-                        }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
-                    }
-                    else
-                    {
-                        //Checks the header for each file to ensure that it can be safely decompiled.
-                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub"))
-                        {
-                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub")[0].Contains("LuaP"))
-                            {
-                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode.lub", true);
-
-                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                                {
-                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                };
-
-                                var Patch1 = Process.Start(patch);
-                                Patch1.WaitForExit();
-                                Patch1.Close();
-
-                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", true);
-                            }
-                        }
-
-                        //Checks the header for each file to ensure that it can be safely decompiled.
-                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub"))
-                        {
-                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub")[0].Contains("LuaP"))
-                            {
-                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_title.lub", true);
-
-                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                                {
-                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                };
-
-                                var Patch1 = Process.Start(patch);
-                                Patch1.WaitForExit();
-                                Patch1.Close();
-
-                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_title.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", true);
-                            }
-                        }
-
-                        string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
-                        for (int i = 0; i < gamemodeLines.Length; i++)
-                        {
-                            if (gamemodeLines[i].Contains("--CreateCSM(_ARG_0_)"))
-                                gamemodeLines[i] = "  CreateCSM(_ARG_0_)";
-                            if (gamemodeLines[i].Contains("--RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)"))
-                                gamemodeLines[i] = "  RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)";
-                        }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
-
-                        string[] titleLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub");
-                        for (int i = 0; i < titleLines.Length; i++)
-                        {
-                            if (titleLines[i].Contains("--CreateCSM(_ARG_0_)"))
-                                titleLines[i] = "  CreateCSM(_ARG_0_)";
-                        }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
-                    }
-                }
-                #endregion
-
-                #region Vulkan API Compatibility
-                else if (item == "Vulkan API Compatibility")
-                {
-                    if (patchesList.GetItemChecked(1))
-                    {
-                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", Properties.Resources.vulkanRenderTitle);
-                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", Properties.Resources.vulkanRenderGamemode);
-                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", Properties.Resources.vulkanRenderMain);
-                    }
-                    else
-                    {
-                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", Properties.Resources.originalRenderTitle);
-                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", Properties.Resources.originalRenderGamemode);
-                        File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", Properties.Resources.originalRenderMain);
+                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                     }
                 }
                 #endregion
             }
+
+            if (patchesList.GetItemChecked(0)) { Tools.Patch.Disable_Shadows(tempPath); }
+            Tools.Patch.Viewport(tempPath, Convert.ToInt32(viewportX.Value), Convert.ToInt32(viewportY.Value));
+            if (patchesList.GetItemChecked(2)) { Tools.Patch.Vulkan_API_Compatibility(tempPath); }
 
             patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
             {
@@ -3585,73 +3564,215 @@ namespace Sonic_06_Mod_Manager
             if (s06Path != string.Empty)
             {
                 Console.WriteLine("Applying patches...");
+                if (s06Path != string.Empty)
+                {
+                    var mods = Directory.GetFiles(s06Path, "*.*", SearchOption.AllDirectories)
+                    .Where(s => s.EndsWith(".arc_orig"));
+
+                    foreach (var mod in mods)
+                    {
+                        if (File.Exists(mod.ToString().Remove(mod.Length - 5)))
+                        {
+                            File.Delete(mod.ToString().Remove(mod.Length - 5));
+                        }
+                        File.Move(mod.ToString(), mod.ToString().Remove(mod.Length - 5));
+                        Console.WriteLine("Removing: " + mod.ToString().Remove(mod.Length - 5));
+                    }
+                }
                 PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc");
             }
             else { MessageBox.Show("Please set your Game Directory! We can't patch (or even mod) the game without it...", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
-        private void Btn_Patches_Apply_Click(object sender, EventArgs e)
+        private void HardTextureRAM_ValueChanged(object sender, EventArgs e)
         {
-            checkedPatchesList.Clear();
-            for (int i = patchesList.Items.Count - 1; i >= 0; i--)
-            {
-                if (patchesList.GetItemChecked(i))
-                {
-                    checkedPatchesList.Add(patchesList.Items[i].ToString());
-                }
-            }
-            checkedPatchesList.ForEach(i => Console.Write("{0}\n", i));
+            Properties.Settings.Default.hardTextureCache = Convert.ToInt32(HardTextureRAM.Value);
+            Properties.Settings.Default.Save();
+        }
 
-            try { CleanUpMods(); }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Tools.Notification.Dispose();
-                return;
-            }
+        private void SoftTextureRAM_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.softTextureCache = Convert.ToInt32(SoftTextureRAM.Value);
+            Properties.Settings.Default.Save();
+        }
 
-            if (!check_FTP.Checked)
-            {
-                if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
-                {
-                    SaveChecks();
-                    RefreshMods();
-                }
-            }
-            SaveChecks();
-            RefreshMods();
+        private void SoftCacheLifetime_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.softCacheLifetime = Convert.ToInt32(SoftCacheLifetime.Value);
+            Properties.Settings.Default.Save();
+        }
 
+        private void Check_Debug_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.debug = check_Debug.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        #region Information Text
+        private void Combo_System_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option tells Sonic '06 Mod Manager what type of system it's connecting to\n for the correct paths to the files."; }
+        private void Combo_System_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void ModsBox_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This is the path to your mods directory... Or at least, we think it is."; }
+        private void ModsBox_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void ModsButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "I think this button lets you browse for a mods directory."; }
+        private void ModsButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void S06PathBox_MouseEnter(object sender, EventArgs e)
+        {
+            lbl_SettingsInformation.Text = "This should be the path to your game directory. If it's not pointing to the folder\ncontaining 'default.xex' or 'EBOOT.BIN,' you're doing it wrong. =P";
+            if (!check_manUninstall.Checked) tm_CheckLabel.Start();
+        }
+        private void Tm_CheckLabel_Tick(object sender, EventArgs e)
+        {
+            lbl_SettingsInformation.Text = "This should be the path to your game directory. If it's not pointing to the folder\ncontaining 'default.xex' or 'EBOOT.BIN,' you're doing it wrong. =P\n\nOkay, well... 'EBOOT.BIN' isn't used on the Xbox 360, but you get the point.";
+            tm_CheckLabel.Stop();
+        }
+        private void S06PathBox_MouseLeave(object sender, EventArgs e)
+        {
+            lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information.";
+            tm_CheckLabel.Stop();
+        }
+
+        private void S06PathButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This might be the button to browse for your game directory."; }
+        private void S06PathButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void XeniaBox_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This is the path to your executable file for Xenia. You can have up to two separate\nexecutables, one for Vulkan and one for DirectX 12."; }
+        private void XeniaBox_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void XeniaButton_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "There's a very high chance that this button lets you browse for Xenia."; }
+        private void XeniaButton_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void label4_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "We apologise for the amount of silly information tags. Those responsible have\nbeen sacked."; }
+        private void label4_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Button2_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Opens the About section for Sonic '06 Mod Manager."; }
+        private void Button2_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void FtpLocationBox_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This should be the path to your game directory on the FTP server. If it's not\npointing to the folder containing 'default.xex' or 'EBOOT.BIN,' you're doing it\nwrong. =P"; }
+        private void FtpLocationBox_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void UserField_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "The username for your FTP server. This field is typically left empty for the\nPlayStation 3."; }
+        private void UserField_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void PassField_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "The password for your FTP server. This field is typically left empty for the\nPlayStation 3."; }
+        private void PassField_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_FTP_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option is for transferring mods to real hardware via an FTP server. Enable\nthis to make Sonic '06 Mod Manager work with a modded Xbox 360 or\nPlayStation 3 remotely."; }
+        private void Check_FTP_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_manUninstall_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option is for both Xenia users and those who want to use real hardware\nwithout an Internet connection.\n\n- For Xenia users, this allows for a more permanent mod installation solution.\n- For those on real hardware, this will be the option for you to install the mods to\n  the game on an external drive."; }
+        private void Check_manUninstall_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Btn_SaveMods_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will save your selected mods."; }
+        private void Btn_SaveMods_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void PlayButton_MouseEnter(object sender, EventArgs e)
+        {
+            if (check_FTP.Checked && playButton.Text != "Test Connection")
+            {
+                lbl_SettingsInformation.Text = "This button will install your selected mods to the specified FTP server.";
+            }
+            else if (check_FTP.Checked && playButton.Text == "Test Connection")
+            {
+                lbl_SettingsInformation.Text = "This button will attempt to establish a connection to your FTP server.";
+            }
+            else if (check_manUninstall.Checked)
+            {
+                lbl_SettingsInformation.Text = "This button will install your selected mods.";
+            }
+            else
+            {
+                lbl_SettingsInformation.Text = "This button will install your selected mods and launch Xenia.";
+            }
+        }
+        private void PlayButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void StopButton_MouseEnter(object sender, EventArgs e)
+        {
             if (check_FTP.Checked)
             {
-                if (ftpLocationBox.Text.StartsWith("ftp://"))
-                {
-                    if (ftpLocationBox.Text.EndsWith("/"))
-                    {
-                        InstallPatches();
-                    }
-                    else
-                    {
-                        ftpLocationBox.AppendText("/");
-                        InstallPatches();
-                    }
-                }
-                else
-                {
-                    if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
-                    ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
-
-                    if (ftpLocationBox.Text.EndsWith("/"))
-                    {
-                        InstallPatches();
-                    }
-                    else
-                    {
-                        ftpLocationBox.AppendText("/");
-                        InstallPatches();
-                    }
-                }
+                lbl_SettingsInformation.Text = "This button will uninstall all mods in the specified FTP server.";
             }
-            else { InstallPatches(); }
+            else
+            {
+                lbl_SettingsInformation.Text = "This button will uninstall all mods in the specified game directory.";
+            }
+        }
+        private void StopButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void LaunchXeniaButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will launch Xenia."; }
+        private void LaunchXeniaButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void CreateButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will reveal the Mod Creator window."; }
+        private void CreateButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Button1_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will display information about the selected mod."; }
+        private void Button1_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void RefreshButton_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This button will refresh the mods list."; }
+        private void RefreshButton_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Radio_All_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option will display all mods in the mods list."; }
+        private void Radio_All_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Radio_Xbox_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option will display only Xbox 360 mods in the mods list."; }
+        private void Radio_Xbox_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Radio_PlayStation_MouseEnter(object sender, EventArgs e) { lbl_SettingsInformation.Text = "This option will display only PlayStation 3 mods in the mods list."; }
+        private void Radio_PlayStation_MouseLeave(object sender, EventArgs e) { lbl_SettingsInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Combo_API_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This is where you specify what API the selected build of Xenia uses."; }
+        private void Combo_API_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_RTV_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Render Target Views are default on Xenia if your GPU doesn't support\nRasteriser Ordered Views. Rasteriser Ordered Views typically perform better\nthan Render Target Views if your hardware supports it.\n\nIf unsure, leave this unchecked."; }
+        private void Check_RTV_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_2xRes_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option will double the internal resolution.\n\nIf unsure, leave this unchecked."; }
+        private void Check_2xRes_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_VSync_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Self-explanatory; this option will enable/disable V-Sync. Disabling V-Sync typically\nleads to unstable framerates, as in most cases it removes the framerate cap.\n\nRecommended for SONIC THE HEDGEHOG (2006)."; }
+        private void Check_VSync_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_VulkanOnDX12_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option will use the Vulkan API if the selected build of Xenia uses DirectX 12\nby default.\n\nIf unsure, leave this unchecked."; }
+        private void Check_VulkanOnDX12_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_ProtectZero_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Protect Zero is the default memory protection mode for Xenia. Disabling this will\nchange how memory protection works.\n\nIf unsure, leave this checked."; }
+        private void Check_ProtectZero_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void label6_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "We apologise for the amount of silly information tags. Those responsible have\nbeen sacked."; }
+        private void label6_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_Gamma_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option will enable gamma for accurate colours. May not be supported on\nolder Vulkan builds.\n\nRecommended for SONIC THE HEDGEHOG (2006)."; }
+        private void Check_Gamma_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Lbl_HardCache_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option sets the hard texture cache limit.\n\nIf unsure, use 512."; }
+        private void Lbl_HardCache_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Lbl_SoftCache_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option sets the soft texture cache limit.\n\nIf unsure, use 1024."; }
+        private void Lbl_SoftCache_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Lbl_SoftLifetime_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option sets the soft texture cache lifetime.\n\nIf unsure, leave this set to 0."; }
+        private void Lbl_SoftLifetime_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+
+        private void Check_Debug_MouseEnter(object sender, EventArgs e) { lbl_XeniaInformation.Text = "This option will enable debug mode in Xenia. Once the emulator is closed, you will\nbe provided with error and warning information.\n\nIf unsure, leave this unchecked."; }
+        private void Check_Debug_MouseLeave(object sender, EventArgs e) { lbl_XeniaInformation.Text = "Nothing to see here... Hover over an option for more information."; }
+        #endregion
+
+        private void ViewportX_ValueChanged(object sender, EventArgs e)
+        {
+            if (viewportX.Value != 1280) { label10.Text = "Experimental"; }
+            else { label10.Text = "Default"; }
+            Properties.Settings.Default.viewportX = Convert.ToInt32(viewportX.Value);
+            Properties.Settings.Default.Save();
+        }
+
+        private void ViewportY_ValueChanged(object sender, EventArgs e)
+        {
+            if (viewportY.Value != 720) { label9.Text = "Experimental"; }
+            else { label9.Text = "Default"; }
+            Properties.Settings.Default.viewportY = Convert.ToInt32(viewportY.Value);
+            Properties.Settings.Default.Save();
         }
     }
 }

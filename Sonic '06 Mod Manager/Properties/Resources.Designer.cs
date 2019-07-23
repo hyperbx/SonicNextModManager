@@ -162,29 +162,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] originalRenderGamemode {
+        internal static byte[] omegaBlurFix {
             get {
-                object obj = ResourceManager.GetObject("originalRenderGamemode", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] originalRenderMain {
-            get {
-                object obj = ResourceManager.GetObject("originalRenderMain", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] originalRenderTitle {
-            get {
-                object obj = ResourceManager.GetObject("originalRenderTitle", resourceCulture);
+                object obj = ResourceManager.GetObject("omegaBlurFix", resourceCulture);
                 return ((byte[])(obj));
             }
         }

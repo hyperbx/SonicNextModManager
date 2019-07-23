@@ -3332,12 +3332,13 @@ Shadow LAG - Sonic '06 SDK (Lua decompiler)
 xose - ARC Unpacker
 g0ldenlink - ARC Repacker
 SuperSonic16 - GameBanana API for C#
+SEGA Carnival - Software Update Hosting
+NonamiEight - Windows Software Tester and Omega Blur Fix
 
 Testers:
 sharu6262- Xbox Hardware Tester
 Melpontro - Xbox Hardware Tester
-ChrisHighwind - Linux Software Tester
-NonamiEight - Windows Software Tester</value>
+ChrisHighwind - Linux Software Tester</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

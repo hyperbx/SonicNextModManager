@@ -47,6 +47,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows" />
@@ -135,6 +136,7 @@
     <None Include="Resources\orig_render_gamemode.lub" />
     <None Include="Resources\orig_render_main.lub" />
     <None Include="Resources\orig_render_title.lub" />
+    <None Include="Resources\player_omega.arc" />
     <None Include="Resources\render_gamemode.lub" />
     <None Include="Resources\render_main.lub" />
     <None Include="Resources\render_title.lub" />

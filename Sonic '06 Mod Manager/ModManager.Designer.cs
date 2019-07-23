@@ -59,6 +59,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.lbl_XeniaInformation = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.check_Debug = new System.Windows.Forms.CheckBox();
+            this.lbl_SoftLifetime = new System.Windows.Forms.Label();
+            this.SoftCacheLifetime = new System.Windows.Forms.NumericUpDown();
+            this.lbl_SoftCache = new System.Windows.Forms.Label();
+            this.lbl_HardCache = new System.Windows.Forms.Label();
+            this.SoftTextureRAM = new System.Windows.Forms.NumericUpDown();
+            this.HardTextureRAM = new System.Windows.Forms.NumericUpDown();
             this.check_Gamma = new System.Windows.Forms.CheckBox();
             this.check_ProtectZero = new System.Windows.Forms.CheckBox();
             this.check_VulkanOnDX12 = new System.Windows.Forms.CheckBox();
@@ -72,14 +79,19 @@
             this.lbl_XeniaExecutable = new System.Windows.Forms.Label();
             this.xeniaBox = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btn_Patches_RestoreDefaults = new System.Windows.Forms.Button();
-            this.btn_Patches_Apply = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.viewportY = new System.Windows.Forms.NumericUpDown();
+            this.viewportX = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.lbl_Reflectionsdef = new System.Windows.Forms.Label();
-            this.lbl_MSAAdef = new System.Windows.Forms.Label();
             this.combo_Reflections = new System.Windows.Forms.ComboBox();
             this.combo_MSAA = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lbl_MSAAdef = new System.Windows.Forms.Label();
             this.patchesList = new System.Windows.Forms.CheckedListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -105,8 +117,14 @@
             this.tabPage4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SoftCacheLifetime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SoftTextureRAM)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HardTextureRAM)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.viewportY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.viewportX)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.group_FTPsettings.SuspendLayout();
@@ -463,6 +481,13 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.check_Debug);
+            this.groupBox4.Controls.Add(this.lbl_SoftLifetime);
+            this.groupBox4.Controls.Add(this.SoftCacheLifetime);
+            this.groupBox4.Controls.Add(this.lbl_SoftCache);
+            this.groupBox4.Controls.Add(this.lbl_HardCache);
+            this.groupBox4.Controls.Add(this.SoftTextureRAM);
+            this.groupBox4.Controls.Add(this.HardTextureRAM);
             this.groupBox4.Controls.Add(this.check_Gamma);
             this.groupBox4.Controls.Add(this.check_ProtectZero);
             this.groupBox4.Controls.Add(this.check_VulkanOnDX12);
@@ -475,6 +500,101 @@
             this.groupBox4.TabIndex = 59;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Settings";
+            // 
+            // check_Debug
+            // 
+            this.check_Debug.AutoSize = true;
+            this.check_Debug.Location = new System.Drawing.Point(339, 132);
+            this.check_Debug.Name = "check_Debug";
+            this.check_Debug.Size = new System.Drawing.Size(58, 17);
+            this.check_Debug.TabIndex = 12;
+            this.check_Debug.Text = "Debug";
+            this.check_Debug.UseVisualStyleBackColor = true;
+            this.check_Debug.CheckedChanged += new System.EventHandler(this.Check_Debug_CheckedChanged);
+            this.check_Debug.MouseEnter += new System.EventHandler(this.Check_Debug_MouseEnter);
+            this.check_Debug.MouseLeave += new System.EventHandler(this.Check_Debug_MouseLeave);
+            // 
+            // lbl_SoftLifetime
+            // 
+            this.lbl_SoftLifetime.AutoSize = true;
+            this.lbl_SoftLifetime.Location = new System.Drawing.Point(245, 66);
+            this.lbl_SoftLifetime.Name = "lbl_SoftLifetime";
+            this.lbl_SoftLifetime.Size = new System.Drawing.Size(102, 13);
+            this.lbl_SoftLifetime.TabIndex = 11;
+            this.lbl_SoftLifetime.Text = "Soft Cache Lifetime:";
+            this.lbl_SoftLifetime.MouseEnter += new System.EventHandler(this.Lbl_SoftLifetime_MouseEnter);
+            this.lbl_SoftLifetime.MouseLeave += new System.EventHandler(this.Lbl_SoftLifetime_MouseLeave);
+            // 
+            // SoftCacheLifetime
+            // 
+            this.SoftCacheLifetime.Location = new System.Drawing.Point(349, 63);
+            this.SoftCacheLifetime.Maximum = new decimal(new int[] {
+            4096,
+            0,
+            0,
+            0});
+            this.SoftCacheLifetime.Name = "SoftCacheLifetime";
+            this.SoftCacheLifetime.Size = new System.Drawing.Size(48, 20);
+            this.SoftCacheLifetime.TabIndex = 10;
+            this.SoftCacheLifetime.ValueChanged += new System.EventHandler(this.SoftCacheLifetime_ValueChanged);
+            // 
+            // lbl_SoftCache
+            // 
+            this.lbl_SoftCache.AutoSize = true;
+            this.lbl_SoftCache.Location = new System.Drawing.Point(260, 44);
+            this.lbl_SoftCache.Name = "lbl_SoftCache";
+            this.lbl_SoftCache.Size = new System.Drawing.Size(87, 13);
+            this.lbl_SoftCache.TabIndex = 9;
+            this.lbl_SoftCache.Text = "Soft Cache Limit:";
+            this.lbl_SoftCache.MouseEnter += new System.EventHandler(this.Lbl_SoftCache_MouseEnter);
+            this.lbl_SoftCache.MouseLeave += new System.EventHandler(this.Lbl_SoftCache_MouseLeave);
+            // 
+            // lbl_HardCache
+            // 
+            this.lbl_HardCache.AutoSize = true;
+            this.lbl_HardCache.Location = new System.Drawing.Point(256, 21);
+            this.lbl_HardCache.Name = "lbl_HardCache";
+            this.lbl_HardCache.Size = new System.Drawing.Size(91, 13);
+            this.lbl_HardCache.TabIndex = 8;
+            this.lbl_HardCache.Text = "Hard Cache Limit:";
+            this.lbl_HardCache.MouseEnter += new System.EventHandler(this.Lbl_HardCache_MouseEnter);
+            this.lbl_HardCache.MouseLeave += new System.EventHandler(this.Lbl_HardCache_MouseLeave);
+            // 
+            // SoftTextureRAM
+            // 
+            this.SoftTextureRAM.Increment = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.SoftTextureRAM.Location = new System.Drawing.Point(349, 41);
+            this.SoftTextureRAM.Maximum = new decimal(new int[] {
+            4096,
+            0,
+            0,
+            0});
+            this.SoftTextureRAM.Name = "SoftTextureRAM";
+            this.SoftTextureRAM.Size = new System.Drawing.Size(48, 20);
+            this.SoftTextureRAM.TabIndex = 7;
+            this.SoftTextureRAM.ValueChanged += new System.EventHandler(this.SoftTextureRAM_ValueChanged);
+            // 
+            // HardTextureRAM
+            // 
+            this.HardTextureRAM.Increment = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.HardTextureRAM.Location = new System.Drawing.Point(349, 19);
+            this.HardTextureRAM.Maximum = new decimal(new int[] {
+            4096,
+            0,
+            0,
+            0});
+            this.HardTextureRAM.Name = "HardTextureRAM";
+            this.HardTextureRAM.Size = new System.Drawing.Size(48, 20);
+            this.HardTextureRAM.TabIndex = 6;
+            this.HardTextureRAM.ValueChanged += new System.EventHandler(this.HardTextureRAM_ValueChanged);
             // 
             // check_Gamma
             // 
@@ -630,14 +750,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.btn_Patches_RestoreDefaults);
-            this.tabPage2.Controls.Add(this.btn_Patches_Apply);
-            this.tabPage2.Controls.Add(this.lbl_Reflectionsdef);
-            this.tabPage2.Controls.Add(this.lbl_MSAAdef);
-            this.tabPage2.Controls.Add(this.combo_Reflections);
-            this.tabPage2.Controls.Add(this.combo_MSAA);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.groupBox6);
             this.tabPage2.Controls.Add(this.patchesList);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -647,54 +760,119 @@
             this.tabPage2.Text = "Patches";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // btn_Patches_RestoreDefaults
+            // groupBox6
             // 
-            this.btn_Patches_RestoreDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Patches_RestoreDefaults.BackColor = System.Drawing.Color.Tomato;
-            this.btn_Patches_RestoreDefaults.FlatAppearance.BorderSize = 0;
-            this.btn_Patches_RestoreDefaults.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Patches_RestoreDefaults.Location = new System.Drawing.Point(247, 373);
-            this.btn_Patches_RestoreDefaults.Name = "btn_Patches_RestoreDefaults";
-            this.btn_Patches_RestoreDefaults.Size = new System.Drawing.Size(135, 23);
-            this.btn_Patches_RestoreDefaults.TabIndex = 66;
-            this.btn_Patches_RestoreDefaults.Text = "Restore Defaults";
-            this.btn_Patches_RestoreDefaults.UseVisualStyleBackColor = false;
-            this.btn_Patches_RestoreDefaults.Click += new System.EventHandler(this.Btn_Patches_RestoreDefaults_Click);
+            this.groupBox6.Controls.Add(this.label9);
+            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Controls.Add(this.viewportY);
+            this.groupBox6.Controls.Add(this.viewportX);
+            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.label7);
+            this.groupBox6.Controls.Add(this.label3);
+            this.groupBox6.Controls.Add(this.lbl_Reflectionsdef);
+            this.groupBox6.Controls.Add(this.combo_Reflections);
+            this.groupBox6.Controls.Add(this.combo_MSAA);
+            this.groupBox6.Controls.Add(this.label1);
+            this.groupBox6.Controls.Add(this.lbl_MSAAdef);
+            this.groupBox6.Location = new System.Drawing.Point(3, 279);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(408, 125);
+            this.groupBox6.TabIndex = 67;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Tweaks";
             // 
-            // btn_Patches_Apply
+            // label9
             // 
-            this.btn_Patches_Apply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Patches_Apply.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btn_Patches_Apply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Patches_Apply.Location = new System.Drawing.Point(247, 345);
-            this.btn_Patches_Apply.Name = "btn_Patches_Apply";
-            this.btn_Patches_Apply.Size = new System.Drawing.Size(135, 23);
-            this.btn_Patches_Apply.TabIndex = 65;
-            this.btn_Patches_Apply.Text = "Apply Patches";
-            this.btn_Patches_Apply.UseVisualStyleBackColor = false;
-            this.btn_Patches_Apply.Click += new System.EventHandler(this.Btn_Patches_Apply_Click);
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(162, 95);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 13);
+            this.label9.TabIndex = 70;
+            this.label9.Text = "Default";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(162, 68);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(41, 13);
+            this.label10.TabIndex = 69;
+            this.label10.Text = "Default";
+            // 
+            // viewportY
+            // 
+            this.viewportY.Location = new System.Drawing.Point(77, 92);
+            this.viewportY.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.viewportY.Name = "viewportY";
+            this.viewportY.Size = new System.Drawing.Size(83, 20);
+            this.viewportY.TabIndex = 68;
+            this.viewportY.Value = new decimal(new int[] {
+            720,
+            0,
+            0,
+            0});
+            this.viewportY.ValueChanged += new System.EventHandler(this.ViewportY_ValueChanged);
+            // 
+            // viewportX
+            // 
+            this.viewportX.Location = new System.Drawing.Point(77, 65);
+            this.viewportX.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.viewportX.Name = "viewportX";
+            this.viewportX.Size = new System.Drawing.Size(83, 20);
+            this.viewportX.TabIndex = 67;
+            this.viewportX.Value = new decimal(new int[] {
+            1280,
+            0,
+            0,
+            0});
+            this.viewportX.ValueChanged += new System.EventHandler(this.ViewportX_ValueChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(14, 95);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.TabIndex = 66;
+            this.label8.Text = "Viewport Y:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(14, 68);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(61, 13);
+            this.label7.TabIndex = 65;
+            this.label7.Text = "Viewport X:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 27);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(63, 13);
+            this.label3.TabIndex = 37;
+            this.label3.Text = "Reflections:";
             // 
             // lbl_Reflectionsdef
             // 
             this.lbl_Reflectionsdef.AutoSize = true;
             this.lbl_Reflectionsdef.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Reflectionsdef.Location = new System.Drawing.Point(172, 379);
+            this.lbl_Reflectionsdef.Location = new System.Drawing.Point(162, 28);
             this.lbl_Reflectionsdef.Name = "lbl_Reflectionsdef";
             this.lbl_Reflectionsdef.Size = new System.Drawing.Size(41, 13);
             this.lbl_Reflectionsdef.TabIndex = 64;
             this.lbl_Reflectionsdef.Text = "Default";
-            // 
-            // lbl_MSAAdef
-            // 
-            this.lbl_MSAAdef.AutoSize = true;
-            this.lbl_MSAAdef.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_MSAAdef.Location = new System.Drawing.Point(172, 350);
-            this.lbl_MSAAdef.Name = "lbl_MSAAdef";
-            this.lbl_MSAAdef.Size = new System.Drawing.Size(41, 13);
-            this.lbl_MSAAdef.TabIndex = 63;
-            this.lbl_MSAAdef.Text = "Default";
             // 
             // combo_Reflections
             // 
@@ -705,7 +883,7 @@
             "Quarter",
             "Half",
             "Full"});
-            this.combo_Reflections.Location = new System.Drawing.Point(87, 375);
+            this.combo_Reflections.Location = new System.Drawing.Point(77, 24);
             this.combo_Reflections.Name = "combo_Reflections";
             this.combo_Reflections.Size = new System.Drawing.Size(83, 21);
             this.combo_Reflections.TabIndex = 62;
@@ -719,29 +897,33 @@
             "Disabled",
             "2x MSAA",
             "4x MSAA"});
-            this.combo_MSAA.Location = new System.Drawing.Point(87, 346);
+            this.combo_MSAA.Location = new System.Drawing.Point(77, 24);
             this.combo_MSAA.Name = "combo_MSAA";
             this.combo_MSAA.Size = new System.Drawing.Size(83, 21);
             this.combo_MSAA.TabIndex = 61;
+            this.combo_MSAA.Visible = false;
             this.combo_MSAA.SelectedIndexChanged += new System.EventHandler(this.Combo_MSAA_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 378);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
-            this.label3.TabIndex = 37;
-            this.label3.Text = "Reflections:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(45, 351);
+            this.label1.Location = new System.Drawing.Point(35, 27);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 13);
             this.label1.TabIndex = 36;
             this.label1.Text = "MSAA:";
+            this.label1.Visible = false;
+            // 
+            // lbl_MSAAdef
+            // 
+            this.lbl_MSAAdef.AutoSize = true;
+            this.lbl_MSAAdef.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_MSAAdef.Location = new System.Drawing.Point(162, 28);
+            this.lbl_MSAAdef.Name = "lbl_MSAAdef";
+            this.lbl_MSAAdef.Size = new System.Drawing.Size(41, 13);
+            this.lbl_MSAAdef.TabIndex = 63;
+            this.lbl_MSAAdef.Text = "Default";
+            this.lbl_MSAAdef.Visible = false;
             // 
             // patchesList
             // 
@@ -749,10 +931,11 @@
             this.patchesList.FormattingEnabled = true;
             this.patchesList.Items.AddRange(new object[] {
             "Disable Shadows",
+            "Omega Blur Fix",
             "Vulkan API Compatibility"});
             this.patchesList.Location = new System.Drawing.Point(3, 3);
             this.patchesList.Name = "patchesList";
-            this.patchesList.Size = new System.Drawing.Size(408, 334);
+            this.patchesList.Size = new System.Drawing.Size(408, 274);
             this.patchesList.TabIndex = 35;
             this.patchesList.SelectedIndexChanged += new System.EventHandler(this.PatchesList_SelectedIndexChanged);
             // 
@@ -1015,10 +1198,16 @@
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SoftCacheLifetime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SoftTextureRAM)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HardTextureRAM)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.viewportY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.viewportX)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -1080,8 +1269,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbl_Reflectionsdef;
         private System.Windows.Forms.Label lbl_MSAAdef;
-        private System.Windows.Forms.Button btn_Patches_RestoreDefaults;
-        private System.Windows.Forms.Button btn_Patches_Apply;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lbl_SettingsInformation;
         private System.Windows.Forms.Timer tm_CheckLabel;
@@ -1103,6 +1290,20 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lbl_XeniaInformation;
         private System.Windows.Forms.CheckBox check_Gamma;
+        private System.Windows.Forms.NumericUpDown HardTextureRAM;
+        private System.Windows.Forms.NumericUpDown SoftTextureRAM;
+        private System.Windows.Forms.Label lbl_SoftCache;
+        private System.Windows.Forms.Label lbl_HardCache;
+        private System.Windows.Forms.Label lbl_SoftLifetime;
+        private System.Windows.Forms.NumericUpDown SoftCacheLifetime;
+        private System.Windows.Forms.CheckBox check_Debug;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown viewportY;
+        private System.Windows.Forms.NumericUpDown viewportX;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
     }
 }
 

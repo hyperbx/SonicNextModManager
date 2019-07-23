@@ -50,12 +50,12 @@ namespace Sonic_06_Mod_Manager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string xeniaPath {
+        public string dx12XeniaPath {
             get {
-                return ((string)(this["xeniaPath"]));
+                return ((string)(this["dx12XeniaPath"]));
             }
             set {
-                this["xeniaPath"] = value;
+                this["dx12XeniaPath"] = value;
             }
         }
         
@@ -248,6 +248,90 @@ namespace Sonic_06_Mod_Manager.Properties {
             }
             set {
                 this["gamma"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("512")]
+        public int hardTextureCache {
+            get {
+                return ((int)(this["hardTextureCache"]));
+            }
+            set {
+                this["hardTextureCache"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1024")]
+        public int softTextureCache {
+            get {
+                return ((int)(this["softTextureCache"]));
+            }
+            set {
+                this["softTextureCache"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int softCacheLifetime {
+            get {
+                return ((int)(this["softCacheLifetime"]));
+            }
+            set {
+                this["softCacheLifetime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool debug {
+            get {
+                return ((bool)(this["debug"]));
+            }
+            set {
+                this["debug"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string vkXeniaPath {
+            get {
+                return ((string)(this["vkXeniaPath"]));
+            }
+            set {
+                this["vkXeniaPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1280")]
+        public int viewportX {
+            get {
+                return ((int)(this["viewportX"]));
+            }
+            set {
+                this["viewportX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("720")]
+        public int viewportY {
+            get {
+                return ((int)(this["viewportY"]));
+            }
+            set {
+                this["viewportY"] = value;
             }
         }
     }

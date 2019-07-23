@@ -104,5 +104,10 @@ namespace Sonic_06_Mod_Manager
         {
             Process.Start("https://github.com/thesupersonic16");
         }
+
+        private void LinkLabel7_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://www.segacarnival.com/forum/index.php");
+        }
     }
 }

@@ -2,8 +2,12 @@
 using System.IO;
 using System.Net;
 using System.Linq;
-using System.Collections.Generic;
+using System.Management;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Text;
+using System.Timers;
+using System.Diagnostics;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -30,7 +34,7 @@ using System.Windows.Forms;
  * SOFTWARE.
  */
 
-namespace Tools
+namespace Sonic_06_Mod_Manager.Tools
 {
     class List
     {
@@ -358,6 +362,251 @@ namespace Tools
             var objWebRequest = base.GetWebRequest(address);
             objWebRequest.Timeout = Timeout;
             return objWebRequest;
+        }
+    }
+
+    public class XeniaException
+    {
+        public static void GetErrors()
+        {
+            var errors = new StringBuilder();
+            if (Properties.Settings.Default.api == 0)
+            {
+                using (StreamReader sr = new StreamReader(Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.vkXeniaPath), "xenia.log")))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var line = sr.ReadLine();
+                        if (String.IsNullOrEmpty(line)) continue;
+                        if (line.IndexOf("!>", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                        {
+                            errors.Append($"{line.Substring(3)}\n");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                using (StreamReader sr = new StreamReader(Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.dx12XeniaPath), "xenia.log")))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var line = sr.ReadLine();
+                        if (String.IsNullOrEmpty(line)) continue;
+                        if (line.IndexOf("!>", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                        {
+                            errors.Append($"{line.Substring(3)}\n");
+                        }
+                    }
+                }
+            }
+
+            if (errors.ToString() != string.Empty) MessageBox.Show(errors.ToString(), "Xenia Errors", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static void GetWarnings()
+        {
+            var warnings = new StringBuilder();
+            if (Properties.Settings.Default.api == 0)
+            {
+                using (StreamReader sr = new StreamReader(Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.vkXeniaPath), "xenia.log")))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var line = sr.ReadLine();
+                        if (String.IsNullOrEmpty(line)) continue;
+                        if (line.IndexOf("w>", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                        {
+                            warnings.Append($"{line.Substring(3)}\n");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                using (StreamReader sr = new StreamReader(Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.dx12XeniaPath), "xenia.log")))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var line = sr.ReadLine();
+                        if (String.IsNullOrEmpty(line)) continue;
+                        if (line.IndexOf("w>", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                        {
+                            warnings.Append($"{line.Substring(3)}\n");
+                        }
+                    }
+                }
+            }
+
+            if (warnings.ToString() != string.Empty)
+            {
+                MessageBox.Show(warnings.ToString(), "Xenia Warnings", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("For more information, see the log in your Xenia directory.", "Xenia Log", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+    }
+
+    public class Patch
+    {
+        public static void Disable_Shadows(string tempPath)
+        {
+            ProcessStartInfo patch;
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", true);
+                }
+            }
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_title.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_title.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", true);
+                }
+            }
+
+            string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
+            for (int i = 0; i < gamemodeLines.Length; i++)
+            {
+                if (gamemodeLines[i].Contains("RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)"))
+                    gamemodeLines[i] = "  --RenderCSM(_ARG_0_, GenerateCSMLevels, GenerateCSMObjects)";
+            }
+            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
+
+            string[] titleLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub");
+            for (int i = 0; i < titleLines.Length; i++)
+            {
+                if (titleLines[i].Contains("CreateCSM(_ARG_0_)"))
+                    titleLines[i] = "  --CreateCSM(_ARG_0_)";
+            }
+            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
+        }
+
+        public static void Viewport(string tempPath, int X, int Y)
+        {
+            ProcessStartInfo patch;
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", true);
+                }
+            }
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_title.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_title.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", true);
+                }
+            }
+
+            if (X != 1280 ^ Y != 720)
+            {
+                string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
+                for (int i = 0; i < gamemodeLines.Length; i++)
+                {
+                    if (gamemodeLines[i].Contains("SetViewport(_ARG_0_, 0, 0,"))
+                        gamemodeLines[i] = $"  SetViewport(_ARG_0_, 0, 0, {X}, {Y})";
+                }
+                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
+
+                string[] titleLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub");
+                for (int i = 0; i < titleLines.Length; i++)
+                {
+                    if (titleLines[i].Contains("SetViewport(_ARG_0_, 0, 0,"))
+                        titleLines[i] = $"  SetViewport(_ARG_0_, 0, 0, {X}, {Y})";
+                }
+                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
+            }
+            else
+            {
+                string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
+                for (int i = 0; i < gamemodeLines.Length; i++)
+                {
+                    if (gamemodeLines[i].Contains("SetViewport(_ARG_0_, 0, 0,"))
+                        gamemodeLines[i] = $"  SetViewport(_ARG_0_, 0, 0, GetSurfaceWidth(_ARG_0_, \"framebuffer0\"), (GetSurfaceHeight(_ARG_0_, \"framebuffer0\")))";
+                }
+                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
+
+                string[] titleLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub");
+                for (int i = 0; i < titleLines.Length; i++)
+                {
+                    if (titleLines[i].Contains("SetViewport(_ARG_0_, 0, 0,"))
+                        titleLines[i] = $"  SetViewport(_ARG_0_, 0, 0, SCREEN_W, SCREEN_H)";
+                }
+                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
+            }
+        }
+
+        public static void Omega_Blur_Fix()
+        {
+            var originalFile = Path.Combine(Properties.Settings.Default.s06Path, "win32\\archives\\player_omega.arc");
+            if (!File.Exists($"{originalFile}_orig")) { File.Move(originalFile, $"{originalFile}_orig"); }
+            File.WriteAllBytes(originalFile, Properties.Resources.omegaBlurFix);
+        }
+
+        public static void Vulkan_API_Compatibility(string tempPath)
+        {
+            File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", Properties.Resources.vulkanRenderTitle);
+            File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", Properties.Resources.vulkanRenderGamemode);
+            File.WriteAllBytes($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", Properties.Resources.vulkanRenderMain);
         }
     }
 }
