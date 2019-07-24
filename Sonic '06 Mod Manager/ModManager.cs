@@ -66,7 +66,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.09";
+        public static string versionNumber = "Version 1.1";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -286,6 +286,7 @@ namespace Sonic_06_Mod_Manager
             }
 
             userField.Text = Properties.Settings.Default.username;
+            createButton.Width = 207;
         }
 
         private void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath)
@@ -365,6 +366,8 @@ namespace Sonic_06_Mod_Manager
             btn_UpperPriority.Enabled = false;
             btn_DownerPriority.Enabled = false;
             button1.Enabled = false;
+            editModButton.Visible = false;
+            createButton.Width = 207;
 
             if (modArray != null)
             {
@@ -645,9 +648,7 @@ namespace Sonic_06_Mod_Manager
 
         private void CreateButton_Click(object sender, EventArgs e)
         {
-            ModCreate ModCreateWindow = new ModCreate(modsPath);
-            ModCreateWindow.ShowDialog();
-
+            new ModCreate(modsPath, string.Empty, false).ShowDialog();
             RefreshMods();
         }
 
@@ -1679,6 +1680,7 @@ namespace Sonic_06_Mod_Manager
             var parentTop = Top + ((Height - convertDialog.Height) / 2);
             convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
             convertDialog.Show();
+
             foreach (var item in names)
             {
                 if (File.Exists($"{modsPath}\\{item}\\mod.ini"))
@@ -1740,12 +1742,13 @@ namespace Sonic_06_Mod_Manager
                                         }
                                         else
                                         {
+                                            Console.WriteLine("Skipped " + mod);
                                             skippedMods.Add($"\n► {item} (failed because a patch was already installed on file: {Path.GetFileName(mod)})");
                                         }
                                     }
                                     else
                                     {
-                                        if ((!File.Exists(targetArcPath) || !File.Exists(patchArcPath)) == false)
+                                        if ((File.Exists(targetArcPath) || File.Exists(patchArcPath)) == false)
                                         {
                                             Console.WriteLine("Copying " + mod);
                                             if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
@@ -1754,7 +1757,7 @@ namespace Sonic_06_Mod_Manager
                                         else
                                         {
                                             Console.WriteLine("Skipped " + mod);
-                                            if (Path.GetExtension(mod).Contains(".arc"))
+                                            if (Path.GetExtension(mod) == ".arc")
                                             {
                                                 if (File.Exists(targetArcPath))
                                                 {
@@ -1779,7 +1782,7 @@ namespace Sonic_06_Mod_Manager
                                 }
                                 else
                                 {
-                                    if ((!File.Exists(targetArcPath) || !File.Exists(patchArcPath)) == false)
+                                    if ((File.Exists(targetArcPath) || File.Exists(patchArcPath)) == false)
                                     {
                                         Console.WriteLine("Copying " + mod);
                                         if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
@@ -1788,7 +1791,7 @@ namespace Sonic_06_Mod_Manager
                                     else
                                     {
                                         Console.WriteLine("Skipped " + mod);
-                                        if (Path.GetExtension(mod).Contains(".arc"))
+                                        if (Path.GetExtension(mod) == ".arc")
                                         {
                                             if (File.Exists(targetArcPath))
                                             {
@@ -1819,7 +1822,7 @@ namespace Sonic_06_Mod_Manager
                         }
                         else
                         {
-                            if ((!File.Exists(targetArcPath) || !File.Exists(patchArcPath)) == false)
+                            if ((File.Exists(targetArcPath) || File.Exists(patchArcPath)) == false)
                             {
                                 Console.WriteLine("Copying " + mod);
                                 if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
@@ -1828,7 +1831,7 @@ namespace Sonic_06_Mod_Manager
                             else
                             {
                                 Console.WriteLine("Skipped " + mod);
-                                if (Path.GetExtension(mod).Contains(".arc"))
+                                if (Path.GetExtension(mod) == ".arc")
                                 {
                                     if (File.Exists(targetArcPath))
                                     {
@@ -2699,10 +2702,7 @@ namespace Sonic_06_Mod_Manager
                 patchesList.Enabled = false;
                 label1.Enabled = false;
                 label3.Enabled = false;
-                combo_MSAA.Enabled = false;
-                combo_Reflections.Enabled = false;
-                lbl_MSAAdef.Enabled = false;
-                lbl_Reflectionsdef.Enabled = false;
+                groupBox6.Enabled = false;
 
                 if (ftpPath == string.Empty) { ftpLocationBox.Text = "ftp://"; }
                 else { ftpLocationBox.Text = ftpPath; }
@@ -2739,6 +2739,7 @@ namespace Sonic_06_Mod_Manager
                 combo_Reflections.Enabled = true;
                 lbl_MSAAdef.Enabled = true;
                 lbl_Reflectionsdef.Enabled = true;
+                groupBox6.Enabled = true;
 
                 Properties.Settings.Default.ftp = false;
             }
@@ -2873,6 +2874,8 @@ namespace Sonic_06_Mod_Manager
         private void ModList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.button1.Enabled = this.modList.SelectedIndex >= 0;
+            this.editModButton.Visible = this.modList.SelectedIndex >= 0;
+            this.createButton.Width = 101;
             this.btn_UpperPriority.Enabled = this.modList.SelectedIndex > 0;
             this.btn_DownerPriority.Enabled = this.modList.SelectedIndex >= 0 && this.modList.SelectedIndex < this.modList.Items.Count - 1;
         }
@@ -3086,6 +3089,8 @@ namespace Sonic_06_Mod_Manager
 
             modList.ClearSelected();
             patchesList.ClearSelected();
+            editModButton.Visible = false;
+            createButton.Width = 207;
         }
 
         private void PatchesList_SelectedIndexChanged(object sender, EventArgs e)
@@ -3773,6 +3778,13 @@ namespace Sonic_06_Mod_Manager
             else { label9.Text = "Default"; }
             Properties.Settings.Default.viewportY = Convert.ToInt32(viewportY.Value);
             Properties.Settings.Default.Save();
+        }
+
+        private void EditModButton_Click(object sender, EventArgs e)
+        {
+            string getItem = modList.GetItemText(modList.SelectedItem);
+            new ModCreate(modsPath, getItem, true).ShowDialog();
+            RefreshMods();
         }
     }
 }

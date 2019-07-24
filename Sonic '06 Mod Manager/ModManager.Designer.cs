@@ -112,6 +112,7 @@
             this.s06PathBox = new System.Windows.Forms.TextBox();
             this.btn_SaveMods = new System.Windows.Forms.Button();
             this.tm_CheckLabel = new System.Windows.Forms.Timer(this.components);
+            this.editModButton = new System.Windows.Forms.Button();
             this.tab_Section.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -262,7 +263,7 @@
             this.createButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.createButton.Location = new System.Drawing.Point(107, 467);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(207, 23);
+            this.createButton.Size = new System.Drawing.Size(101, 23);
             this.createButton.TabIndex = 36;
             this.createButton.Text = "Create New Mod";
             this.createButton.UseVisualStyleBackColor = false;
@@ -1168,11 +1169,26 @@
             this.tm_CheckLabel.Interval = 5000;
             this.tm_CheckLabel.Tick += new System.EventHandler(this.Tm_CheckLabel_Tick);
             // 
+            // editModButton
+            // 
+            this.editModButton.BackColor = System.Drawing.Color.SkyBlue;
+            this.editModButton.FlatAppearance.BorderSize = 0;
+            this.editModButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.editModButton.Location = new System.Drawing.Point(213, 467);
+            this.editModButton.Name = "editModButton";
+            this.editModButton.Size = new System.Drawing.Size(101, 23);
+            this.editModButton.TabIndex = 54;
+            this.editModButton.Text = "Edit Mod";
+            this.editModButton.UseVisualStyleBackColor = false;
+            this.editModButton.Visible = false;
+            this.editModButton.Click += new System.EventHandler(this.EditModButton_Click);
+            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(420, 498);
+            this.Controls.Add(this.editModButton);
             this.Controls.Add(this.radio_All);
             this.Controls.Add(this.radio_PlayStation);
             this.Controls.Add(this.radio_Xbox);
@@ -1304,6 +1320,7 @@
         private System.Windows.Forms.NumericUpDown viewportX;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button editModButton;
     }
 }
 
