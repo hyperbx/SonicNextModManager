@@ -2,6 +2,7 @@
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Sonic_06_Mod_Manager
 {
@@ -54,67 +55,83 @@ namespace Sonic_06_Mod_Manager
             modAuthor = modAuthorBox.Text;
         }
 
+        public static bool FilePathHasInvalidChars(string path)
+        {
+            return (!string.IsNullOrEmpty(path) && path.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0);
+        }
+
         private void CreateButton_Click(object sender, EventArgs e)
         {
             if (editMode)
             {
-                Console.WriteLine(Path.Combine(modPathTrue, modName));
-                if (Directory.Exists(Path.Combine(modPathTrue, modName)) && modName != modNameTrue)
+                if (!FilePathHasInvalidChars(modName))
                 {
-                    MessageBox.Show("A mod called '" + modName + "' already exists.", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                else
-                {
-                    try
+                    Console.WriteLine(Path.Combine(modPathTrue, modName));
+                    if (Directory.Exists(Path.Combine(modPathTrue, modName)) && modName != modNameTrue)
                     {
-                        if (modName != modNameTrue) Directory.Move(Path.Combine(modPathTrue, modNameTrue), Path.Combine(modPathTrue, modName));
-                        using (Stream modINILocation = File.Open(Path.Combine(modPathTrue, modName, "mod.ini"), FileMode.Create))
-                        using (StreamWriter modINI = new StreamWriter(modINILocation))
-                        {
-                            modINI.WriteLine("Title=\"" + modName + "\"");
-                            if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
-                            if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
-                            if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
-                            modINI.WriteLine("Platform=\"" + combo_System.Text + "\"");
-                            modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
-                            if (modCopy != "") { modINI.WriteLine("Read-only=\"" + modCopy + "\""); }
-                            modINI.Close();
-                        }
+                        MessageBox.Show("A mod called '" + modName + "' already exists.", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
-                    catch { MessageBox.Show("An error occurred when creating the directory. Please check for invalid characters in your mod name.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                    else
+                    {
+                        try
+                        {
+
+                            if (modName != modNameTrue) Directory.Move(Path.Combine(modPathTrue, modNameTrue), Path.Combine(modPathTrue, modName));
+                            using (Stream modINILocation = File.Open(Path.Combine(modPathTrue, modName, "mod.ini"), FileMode.Create))
+                            using (StreamWriter modINI = new StreamWriter(modINILocation))
+                            {
+                                modINI.WriteLine("Title=\"" + modName + "\"");
+                                if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
+                                if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
+                                if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
+                                modINI.WriteLine("Platform=\"" + combo_System.Text + "\"");
+                                modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
+                                if (modCopy != "") { modINI.WriteLine("Read-only=\"" + modCopy + "\""); }
+                                modINI.Close();
+                            }
+                        }
+                        catch { MessageBox.Show("An error occurred when creating the directory.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                    }
                 }
+                else { MessageBox.Show("Please check for invalid characters in your mod name.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+
                 ModManager.isCreatorDisposed = true;
                 Close();
             }
             else
             {
-                Console.WriteLine(modPathTrue + "\\" + modName);
-                if (Directory.Exists(modPathTrue + "\\" + modName))
+                if (!FilePathHasInvalidChars(modName))
                 {
-                    MessageBox.Show("A mod called '" + modName + "' already exists.", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                else
-                {
-                    try
+                    Console.WriteLine(Path.Combine(modPathTrue, modName));
+                    if (Directory.Exists(Path.Combine(modPathTrue, modName)))
                     {
-                        Directory.CreateDirectory(modPathTrue + "\\" + modName);
-                        using (Stream modINILocation = File.Open(modPathTrue + "\\" + modName + "\\mod.ini", FileMode.Create))
-                        using (StreamWriter modINI = new StreamWriter(modINILocation))
-                        {
-                            modINI.WriteLine("Title=\"" + modName + "\"");
-                            if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
-                            if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
-                            if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
-                            modINI.WriteLine("Platform=\"" + combo_System.Text + "\"");
-                            modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
-                            if (modCopy != "") { modINI.WriteLine("Read-only=\"" + modCopy + "\""); }
-                            modINI.Close();
-                        }
+                        MessageBox.Show("A mod called '" + modName + "' already exists.", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
-                    catch { MessageBox.Show("An error occurred when creating the directory. Please check for invalid characters in your mod name.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                    else
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(Path.Combine(modPathTrue, modName));
+                            using (Stream modINILocation = File.Open(Path.Combine(modPathTrue, modName, "mod.ini"), FileMode.Create))
+                            using (StreamWriter modINI = new StreamWriter(modINILocation))
+                            {
+                                modINI.WriteLine("Title=\"" + modName + "\"");
+                                if (modVersion != "") { modINI.WriteLine("Version=\"" + modVersion + "\""); }
+                                if (modDate != "") { modINI.WriteLine("Date=\"" + modDate + "\""); }
+                                if (modAuthor != "") { modINI.WriteLine("Author=\"" + modAuthor + "\""); }
+                                modINI.WriteLine("Platform=\"" + combo_System.Text + "\"");
+                                modINI.WriteLine("Merge=\"" + modMerge.ToString() + "\"");
+                                if (modCopy != "") { modINI.WriteLine("Read-only=\"" + modCopy + "\""); }
+                                modINI.Close();
+                            }
+                        }
+                        catch { MessageBox.Show("An error occurred when creating the directory.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                    }
                 }
+                else { MessageBox.Show("Please check for invalid characters in your mod name.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+
                 ModManager.isCreatorDisposed = true;
                 Close();
             }
@@ -147,6 +164,7 @@ namespace Sonic_06_Mod_Manager
                 Text = "Mod Editor";
                 createButton.Text = "Edit Mod";
                 createButton.BackColor = Color.SkyBlue;
+                deleteMod.Visible = true;
 
                 if (File.Exists($"{Path.Combine(modPathTrue, modNameTrue)}\\mod.ini"))
                 {
@@ -194,6 +212,12 @@ namespace Sonic_06_Mod_Manager
                                 if (bool.TryParse(entryValue, out bool getBool)) { check_Merge.Checked = getBool; }
                                 else { check_Merge.Checked = false; }
                             }
+                            if (line.Contains("Read-only=\""))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                modCopyBox.Text = entryValue;
+                            }
                         }
                     }
                 }
@@ -205,6 +229,7 @@ namespace Sonic_06_Mod_Manager
                 createButton.Text = "Create Mod";
                 createButton.BackColor = Color.LightGreen;
                 combo_System.SelectedIndex = 0;
+                deleteMod.Visible = false;
             }
         }
 
@@ -216,6 +241,38 @@ namespace Sonic_06_Mod_Manager
         private void ReadonlyButtonHelp_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This parameter tells the Mod Manager not to merge files marked as 'read-only.' Files must be listed as comma separated values (e.g. 'cache.arc,player.arc,object.arc').", "Read-only", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void DeleteMod_Click(object sender, EventArgs e)
+        {
+            DialogResult confirmation = MessageBox.Show("Are you sure you want to delete '" + modNameTrue + "?'", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            switch (confirmation)
+            {
+                case DialogResult.Yes:
+                    var tempData = new DirectoryInfo(Path.Combine(modPathTrue, modNameTrue));
+
+                    try
+                    {
+                        if (Directory.Exists(Path.Combine(modPathTrue, modNameTrue)))
+                        {
+                            foreach (FileInfo file in tempData.GetFiles())
+                            {
+                                file.Delete();
+                            }
+                            foreach (DirectoryInfo directory in tempData.GetDirectories())
+                            {
+                                directory.Delete(true);
+                            }
+
+                            Directory.Delete(Path.Combine(modPathTrue, modNameTrue));
+                        }
+                    }
+                    catch { MessageBox.Show("Failed to delete '" + modNameTrue + ".' Please ensure that nothing is accessing that mod's directory, or delete it manually.", "Deletion Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+
+                    Close();
+                    break;
+            }
         }
     }
 }

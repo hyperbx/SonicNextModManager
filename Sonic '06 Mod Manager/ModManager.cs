@@ -221,8 +221,6 @@ namespace Sonic_06_Mod_Manager
             RefreshMods();
             if (Directory.Exists(s06Path) && Properties.Settings.Default.manUninstall == false) CleanUpMods();
 
-            tm_CreatorDisposal.Start();
-
             if (Properties.Settings.Default.ftp == true)
             {
                 check_manUninstall.Enabled = false;
@@ -287,6 +285,7 @@ namespace Sonic_06_Mod_Manager
 
             userField.Text = Properties.Settings.Default.username;
             createButton.Width = 207;
+            tm_CheckTab.Start();
         }
 
         private void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath)
@@ -2653,20 +2652,6 @@ namespace Sonic_06_Mod_Manager
             new About().ShowDialog();
         }
 
-        private void Tm_CreatorDisposal_Tick(object sender, EventArgs e)
-        {
-            if (isCreatorDisposed == true)
-            {
-                RefreshMods();
-                isCreatorDisposed = false;
-            }
-
-            if (modList.CheckedItems.Count == 0 && check_FTP.Checked) { playButton.Text = "Test Connection"; }
-            else if (check_FTP.Checked && tab_Section.SelectedIndex != 2 || check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Install Mods"; stopButton.Text = "Uninstall Mods"; }
-            else if (!check_FTP.Checked && tab_Section.SelectedIndex != 2 || !check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Save and Play"; }
-            else { playButton.Text = "Apply Patches"; stopButton.Text = "Restore Defaults"; }
-        }
-
         private void Lbl_ModsDirectory_Click(object sender, EventArgs e)
         {
             Process.Start(modsPath);
@@ -2935,6 +2920,7 @@ namespace Sonic_06_Mod_Manager
 
         private void LaunchXeniaButton_Click(object sender, EventArgs e)
         {
+            RefreshMods();
             LaunchXenia();
         }
 
@@ -3785,6 +3771,14 @@ namespace Sonic_06_Mod_Manager
             string getItem = modList.GetItemText(modList.SelectedItem);
             new ModCreate(modsPath, getItem, true).ShowDialog();
             RefreshMods();
+        }
+
+        private void Tm_CheckTab_Tick(object sender, EventArgs e)
+        {
+            if (modList.CheckedItems.Count == 0 && check_FTP.Checked) { playButton.Text = "Test Connection"; }
+            else if (check_FTP.Checked && tab_Section.SelectedIndex != 2 || check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Install Mods"; stopButton.Text = "Uninstall Mods"; }
+            else if (!check_FTP.Checked && tab_Section.SelectedIndex != 2 || !check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Save and Play"; }
+            else { playButton.Text = "Apply Patches"; stopButton.Text = "Restore Defaults"; }
         }
     }
 }

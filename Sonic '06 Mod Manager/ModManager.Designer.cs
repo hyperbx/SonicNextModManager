@@ -42,7 +42,6 @@
             this.createButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
             this.modList = new System.Windows.Forms.CheckedListBox();
-            this.tm_CreatorDisposal = new System.Windows.Forms.Timer(this.components);
             this.lbl_ModsDirectory = new System.Windows.Forms.Label();
             this.lbl_GameDirectory = new System.Windows.Forms.Label();
             this.check_manUninstall = new System.Windows.Forms.CheckBox();
@@ -113,6 +112,7 @@
             this.btn_SaveMods = new System.Windows.Forms.Button();
             this.tm_CheckLabel = new System.Windows.Forms.Timer(this.components);
             this.editModButton = new System.Windows.Forms.Button();
+            this.tm_CheckTab = new System.Windows.Forms.Timer(this.components);
             this.tab_Section.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -295,10 +295,6 @@
             this.modList.Size = new System.Drawing.Size(408, 364);
             this.modList.TabIndex = 34;
             this.modList.SelectedIndexChanged += new System.EventHandler(this.ModList_SelectedIndexChanged);
-            // 
-            // tm_CreatorDisposal
-            // 
-            this.tm_CreatorDisposal.Tick += new System.EventHandler(this.Tm_CreatorDisposal_Tick);
             // 
             // lbl_ModsDirectory
             // 
@@ -1183,6 +1179,10 @@
             this.editModButton.Visible = false;
             this.editModButton.Click += new System.EventHandler(this.EditModButton_Click);
             // 
+            // tm_CheckTab
+            // 
+            this.tm_CheckTab.Tick += new System.EventHandler(this.Tm_CheckTab_Tick);
+            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1243,7 +1243,6 @@
         private System.Windows.Forms.Button createButton;
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.CheckedListBox modList;
-        private System.Windows.Forms.Timer tm_CreatorDisposal;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button btn_DownerPriority;
         private System.Windows.Forms.Button btn_UpperPriority;
@@ -1321,6 +1320,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button editModButton;
+        private System.Windows.Forms.Timer tm_CheckTab;
     }
 }
 

@@ -46,6 +46,7 @@
             this.lbl_Copy = new System.Windows.Forms.Label();
             this.modCopyBox = new System.Windows.Forms.TextBox();
             this.readonlyButtonHelp = new System.Windows.Forms.Button();
+            this.deleteMod = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -216,11 +217,27 @@
             this.readonlyButtonHelp.UseVisualStyleBackColor = false;
             this.readonlyButtonHelp.Click += new System.EventHandler(this.ReadonlyButtonHelp_Click);
             // 
+            // deleteMod
+            // 
+            this.deleteMod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.deleteMod.BackColor = System.Drawing.Color.Tomato;
+            this.deleteMod.FlatAppearance.BorderSize = 0;
+            this.deleteMod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deleteMod.Location = new System.Drawing.Point(200, 169);
+            this.deleteMod.Name = "deleteMod";
+            this.deleteMod.Size = new System.Drawing.Size(75, 23);
+            this.deleteMod.TabIndex = 67;
+            this.deleteMod.Text = "Delete Mod";
+            this.deleteMod.UseVisualStyleBackColor = false;
+            this.deleteMod.Visible = false;
+            this.deleteMod.Click += new System.EventHandler(this.DeleteMod_Click);
+            // 
             // ModCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(365, 200);
+            this.Controls.Add(this.deleteMod);
             this.Controls.Add(this.readonlyButtonHelp);
             this.Controls.Add(this.lbl_Copy);
             this.Controls.Add(this.modCopyBox);
@@ -267,5 +284,6 @@
         private System.Windows.Forms.Label lbl_Copy;
         private System.Windows.Forms.TextBox modCopyBox;
         private System.Windows.Forms.Button readonlyButtonHelp;
+        private System.Windows.Forms.Button deleteMod;
     }
 }
