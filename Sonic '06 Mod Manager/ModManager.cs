@@ -66,7 +66,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.1";
+        public static string versionNumber = "Version 1.11-indev";
         public static string updateState;
         public static string serverStatus;
         public static string installState;

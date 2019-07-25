@@ -557,7 +557,7 @@ namespace Sonic_06_Mod_Manager.Tools
                 }
             }
 
-            if (X != 1280 ^ Y != 720)
+            if ((X == 1280 && Y == 720) == false)
             {
                 string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
                 for (int i = 0; i < gamemodeLines.Length; i++)
