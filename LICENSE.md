@@ -1,5 +1,4 @@
-Sonic '06 Mod Manager is licensed under the MIT License by Knuxfan24 and HyperPolygon64
-=======================================================================================
+<h1 align="center">Sonic '06 Mod Manager is licensed under the MIT License</h1>
 
 Copyright (c) 2019 Knuxfan24 & HyperPolygon64
 
@@ -23,8 +22,7 @@ SOFTWARE.
 
 
 
-   GameBanana API handling code is licensed under the MIT License by thesupersonic16
-=======================================================================================
+<h1 align="center">GameBanana API handler is licensed under the MIT License</h1>
 
 Copyright (c) 2017 thesupersonic16
 
