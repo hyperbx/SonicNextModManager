@@ -80,5 +80,8 @@
     <Setting Name="viewportY" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">720</Value>
     </Setting>
+    <Setting Name="cameraDistance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">650</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

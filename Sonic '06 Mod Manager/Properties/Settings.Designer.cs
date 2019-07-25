@@ -334,5 +334,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["viewportY"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("650")]
+        public int cameraDistance {
+            get {
+                return ((int)(this["cameraDistance"]));
+            }
+            set {
+                this["cameraDistance"] = value;
+            }
+        }
     }
 }

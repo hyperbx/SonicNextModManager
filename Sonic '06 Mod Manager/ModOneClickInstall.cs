@@ -89,22 +89,29 @@ namespace Sonic_06_Mod_Manager
             else { description.DocumentText = $"<html><body><style>{Properties.Resources.GBStyleSheet}</style>{Regex.Replace(item.Body, @"Â", "")}</body></html>"; }
 
             // Loads an Image if the submission contains one
-            if (item.ScreenshotURL != null)
+            if (mod == 8021)
             {
-                try
-                {
-                    var request = WebRequest.Create(item.ScreenshotURL);
-
-                    using (var response = request.GetResponse())
-                    using (var stream = response.GetResponseStream())
-                    {
-                        pictureBox1.BackgroundImage = Bitmap.FromStream(stream);
-                        pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-                    }
-                }
-                catch { pictureBox1.BackgroundImage = Properties.Resources.logo_image_not_found; }
+                pictureBox1.BackgroundImage = Properties.Resources.los_logo;
             }
-            else { pictureBox1.BackgroundImage = Properties.Resources.logo_image_not_found; }
+            else
+            {
+                if (item.ScreenshotURL != null)
+                {
+                    try
+                    {
+                        var request = WebRequest.Create(item.ScreenshotURL);
+
+                        using (var response = request.GetResponse())
+                        using (var stream = response.GetResponseStream())
+                        {
+                            pictureBox1.BackgroundImage = Bitmap.FromStream(stream);
+                            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+                        }
+                    }
+                    catch { pictureBox1.BackgroundImage = Properties.Resources.logo_image_not_found; }
+                }
+                else { pictureBox1.BackgroundImage = Properties.Resources.logo_image_not_found; }
+            }
         }
 
         public static string applicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -219,26 +226,95 @@ namespace Sonic_06_Mod_Manager
             dl_Progress.Visible = true;
             btn_Decline.Text = "Cancel";
 
-            try
+            if (mod == 8021)
             {
-                var request = (HttpWebRequest)WebRequest.Create(downloadURL);
-                var response = request.GetResponse();
-                var URI = response.ResponseUri;
-                response.Close();
-
-                Directory.CreateDirectory(cache);
-
-                using (WebClient wc = new WebClient())
+                try
                 {
-                    wc.DownloadProgressChanged += wc_DownloadProgressChanged;
-                    wc.DownloadFileCompleted += wc_DownloadFileCompleted;
-                    wc.DownloadFileAsync(URI, $"{cache}\\{Path.GetFileName(downloadURL)}.bin");
+                    var downloads = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/mods/legacy-of-solaris.sonic06mm");
+                    string[] lines = downloads.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        var request = (HttpWebRequest)WebRequest.Create(lines[i]);
+                        var response = request.GetResponse();
+                        var URI = response.ResponseUri;
+                        response.Close();
+
+                        using (WebClient wc = new WebClient())
+                        {
+                            wc.DownloadProgressChanged += wc_DownloadProgressChanged;
+
+                            string getFile = URI.Segments.Last();
+                            string modFolder = Path.Combine(Properties.Settings.Default.modsPath, "Legacy of Solaris");
+                            string x_archives = Path.Combine(Properties.Settings.Default.modsPath, "Legacy of Solaris", "xenon", "archives"); Directory.CreateDirectory(x_archives);
+                            string x_sound = Path.Combine(Properties.Settings.Default.modsPath, "Legacy of Solaris", "xenon", "sound"); Directory.CreateDirectory(x_sound);
+                            string w_archives = Path.Combine(Properties.Settings.Default.modsPath, "Legacy of Solaris", "win32", "archives"); Directory.CreateDirectory(w_archives);
+
+                            if (getFile == "mod.ini")
+                            {
+                                wc.DownloadFileAsync(URI, Path.Combine(modFolder, getFile));
+                            }
+                            else if (getFile == "object.arc" || 
+                                getFile == "player.arc" || 
+                                getFile == "scripts.arc" || 
+                                getFile == "stage.arc" || 
+                                getFile == "text.arc")
+                            {
+                                wc.DownloadFileAsync(URI, Path.Combine(x_archives, getFile));
+                            }
+                            else if (getFile == "title_loop_GBn.wmv")
+                            {
+                                wc.DownloadFileAsync(URI, Path.Combine(x_sound, getFile));
+                            }
+                            else if (getFile == "player_silver.arc" ||
+                                     getFile == "player_sonic.arc" ||
+                                     getFile == "sprite.arc" ||
+                                     getFile == "stage_e0023.arc" ||
+                                     getFile == "stage_e0026.arc" ||
+                                     getFile == "stage_e0104.arc" ||
+                                     getFile == "stage_e0125.arc" ||
+                                     getFile == "stage_kdv_a.arc" ||
+                                     getFile == "stage_kdv_b.arc" ||
+                                     getFile == "stage_kdv_c.arc" ||
+                                     getFile == "stage_kdv_d.arc")
+                            {
+                                wc.DownloadFileAsync(URI, Path.Combine(w_archives, getFile));
+                            }
+                        }
+                    }
+
+                    MessageBox.Show($"{Item.ModName} has been installed in your mods directory.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to establish a connection to GitHub.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Close();
                 }
             }
-            catch
+            else
             {
-                MessageBox.Show("Unable to establish a connection to GameBanana.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Close();
+                try
+                {
+                    var request = (HttpWebRequest)WebRequest.Create(downloadURL);
+                    var response = request.GetResponse();
+                    var URI = response.ResponseUri;
+                    response.Close();
+
+                    Directory.CreateDirectory(cache);
+
+                    using (WebClient wc = new WebClient())
+                    {
+                        wc.DownloadProgressChanged += wc_DownloadProgressChanged;
+                        wc.DownloadFileCompleted += wc_DownloadFileCompleted;
+                        wc.DownloadFileAsync(URI, $"{cache}\\{Path.GetFileName(downloadURL)}.bin");
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to establish a connection to GameBanana.", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Close();
+                }
             }
         }
 
@@ -284,10 +360,15 @@ namespace Sonic_06_Mod_Manager
                 try
                 {
                     var getArchiveList = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString($"https://api.gamebanana.com/Core/Item/Data?itemtype=File&itemid={downloadID}&fields=Metadata().aArchiveFilesList()");
-                    if (!getArchiveList.Contains("mod.ini")) { MessageBox.Show("This mod may not be compatible with Sonic '06 Mod Manager.", "Missing Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                    if (!getArchiveList.Contains("mod.ini") && mod != 8021) { MessageBox.Show("This mod may not be compatible with Sonic '06 Mod Manager.", "Missing Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                 }
                 catch { }
             }
+        }
+
+        private void ModOneClickInstall_Load(object sender, EventArgs e)
+        {
+            if (title.Width >= MinimumSize.Width) { Width = title.Width + 100; }
         }
     }
 }

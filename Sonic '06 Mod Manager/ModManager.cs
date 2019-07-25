@@ -66,7 +66,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.11-indev";
+        public static string versionNumber = "Version 1.11";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -126,14 +126,7 @@ namespace Sonic_06_Mod_Manager
                                     {
                                         if (File.Exists(Application.ExecutablePath))
                                         {
-                                            var clientApplication = new WebClient();
-                                            clientApplication.DownloadFileAsync(new Uri(newVersionDownloadLink), Application.ExecutablePath + ".pak");
-                                            clientApplication.DownloadFileCompleted += (s, e) =>
-                                            {
-                                                File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
-                                                Process.Start(Application.ExecutablePath);
-                                                Application.Exit();
-                                            };
+                                            new UpdateForm(latestVersion, newVersionDownloadLink, true).ShowDialog();
                                         }
                                         else { MessageBox.Show("Sonic '06 Mod Manager doesn't exist... What?!", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                                     }
@@ -249,7 +242,6 @@ namespace Sonic_06_Mod_Manager
             combo_System.SelectedIndex = Properties.Settings.Default.ftpSystem;
             combo_API.SelectedIndex = Properties.Settings.Default.api;
             combo_Priority.SelectedIndex = Properties.Settings.Default.priority;
-            combo_MSAA.SelectedIndex = Properties.Settings.Default.msaaLevel;
             combo_Reflections.SelectedIndex = Properties.Settings.Default.reflectionLevel;
             check_VulkanOnDX12.Checked = Properties.Settings.Default.vulkanOnDX12;
             check_VSync.Checked = Properties.Settings.Default.vsync;
@@ -263,6 +255,7 @@ namespace Sonic_06_Mod_Manager
             check_Debug.Checked = Properties.Settings.Default.debug;
             viewportX.Value = Properties.Settings.Default.viewportX;
             viewportY.Value = Properties.Settings.Default.viewportY;
+            distanceUpDown.Value = Properties.Settings.Default.cameraDistance;
 
             if (Properties.Settings.Default.filter == 0)
             {
@@ -846,17 +839,6 @@ namespace Sonic_06_Mod_Manager
                     {
                         SaveChecks();
                         RefreshMods();
-
-                        try
-                        {
-                            if (patchesList.CheckedItems.Count != 0 || combo_MSAA.SelectedIndex != 1 || combo_Reflections.SelectedIndex != 1) InstallPatches();
-                        }
-                        catch (Exception ex3)
-                        {
-                            MessageBox.Show($"Please refer to the following error for more information:\n\n{ex3}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Tools.Notification.Dispose();
-                            return;
-                        }
 
                         if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
                     }
@@ -2553,13 +2535,21 @@ namespace Sonic_06_Mod_Manager
                 if (patchesList.SelectedIndex == -1) return;
                 else
                 {
-                    if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Disable Shadows")
+                    if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Disable HUD")
+                    {
+                        MessageBox.Show("This patch will disable the heads-up display for single player and multiplayer modes.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Disable Shadows")
                     {
                         MessageBox.Show("This patch will disable all real-time shadows. This can provide a minor performance boost and will make the game render darkness by vertex colouring.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Omega Blur Fix")
                     {
                         MessageBox.Show("This patch will replace Omega's shaders to prevent the sprites from becoming blurry on Xenia.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Use Dynamic Bones for Sonic's Snowboard State")
+                    {
+                        MessageBox.Show("This patch will enable Sonic's dynamic bones when in the snowboard state.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Vulkan API Compatibility")
                     {
@@ -2685,8 +2675,6 @@ namespace Sonic_06_Mod_Manager
                 groupBox4.Enabled = false;
                 groupBox5.Enabled = false;
                 patchesList.Enabled = false;
-                label1.Enabled = false;
-                label3.Enabled = false;
                 groupBox6.Enabled = false;
 
                 if (ftpPath == string.Empty) { ftpLocationBox.Text = "ftp://"; }
@@ -2718,12 +2706,8 @@ namespace Sonic_06_Mod_Manager
                 groupBox4.Enabled = true;
                 groupBox5.Enabled = true;
                 patchesList.Enabled = true;
-                label1.Enabled = true;
                 label3.Enabled = true;
-                combo_MSAA.Enabled = true;
                 combo_Reflections.Enabled = true;
-                lbl_MSAAdef.Enabled = true;
-                lbl_Reflectionsdef.Enabled = true;
                 groupBox6.Enabled = true;
 
                 Properties.Settings.Default.ftp = false;
@@ -2775,10 +2759,10 @@ namespace Sonic_06_Mod_Manager
             {
                 try
                 {
-                    combo_MSAA.SelectedIndex = 1;
                     combo_Reflections.SelectedIndex = 1;
                     viewportX.Value = 1280;
                     viewportY.Value = 720;
+                    distanceUpDown.Value = 650;
 
                     //Unchecks all available checkboxes.
                     for (int i = 0; i < patchesList.Items.Count; i++) patchesList.SetItemChecked(i, false);
@@ -3023,12 +3007,10 @@ namespace Sonic_06_Mod_Manager
         {
             if (combo_Reflections.SelectedIndex != 1)
             {
-                lbl_Reflectionsdef.Visible = false;
                 Properties.Settings.Default.reflectionLevel = combo_Reflections.SelectedIndex;
             }
             else
             {
-                lbl_Reflectionsdef.Visible = true;
                 Properties.Settings.Default.reflectionLevel = combo_Reflections.SelectedIndex;
             }
             Properties.Settings.Default.Save();
@@ -3222,330 +3204,427 @@ namespace Sonic_06_Mod_Manager
             var parentTop = Top + ((Height - convertDialog.Height) / 2);
             convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
             convertDialog.Show();
-
-            if (patchesList.GetItemChecked(1)) { Tools.Patch.Omega_Blur_Fix(); }
-
-            string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
-            var tempData = new DirectoryInfo(tempPath);
-            Directory.CreateDirectory(tempPath);
-            File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
-            if (!File.Exists($"{arc}_orig")) File.Move(arc, $"{arc}_orig");
-
             ProcessStartInfo patch;
 
-            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"")
+            if (Path.GetFileName(arc) == "cache.arc")
             {
-                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+                string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                var tempData = new DirectoryInfo(tempPath);
+                Directory.CreateDirectory(tempPath);
+                File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
+                if (!File.Exists($"{arc}_orig")) File.Move(arc, $"{arc}_orig");
 
-            var Unpack1 = Process.Start(patch);
-            Unpack1.WaitForExit();
-            Unpack1.Close();
-
-            WriteDecompiler();
-
-            //Unused MSAA Code - Lua decompiler appears to break 'render_main.lub,' so this won't be possible
-            //(it's pointless anyway, as the game crashes with anything other than 2x).
-            #region Unused MSAA Code
-            //if (combo_MSAA.Enabled)
-            //{
-            //    #region No MSAA
-            //    if (combo_MSAA.SelectedIndex == 0)
-            //    {
-            //        //Checks the header for each file to ensure that it can be safely decompiled.
-            //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
-            //        {
-            //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
-            //            {
-            //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
-
-            //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-            //                {
-            //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-            //                    WindowStyle = ProcessWindowStyle.Hidden
-            //                };
-
-            //                var Patch1 = Process.Start(patch);
-            //                Patch1.WaitForExit();
-            //                Patch1.Close();
-
-            //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
-            //            }
-            //            else
-            //            {
-            //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
-            //                for (int i = 0; i < lines.Length; i++)
-            //                {
-            //                    if (lines[i].Contains("MSAAType = \""))
-            //                        lines[i] = "MSAAType = \"0x\"";
-            //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
-            //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0)";
-            //                }
-            //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
-            //            }
-            //        }
-            //    }
-            //    #endregion
-
-            //    #region 2x MSAA
-            //    else if (combo_MSAA.SelectedIndex == 1)
-            //    {
-            //        //Checks the header for each file to ensure that it can be safely decompiled.
-            //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
-            //        {
-            //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
-            //            {
-            //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
-
-            //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-            //                {
-            //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-            //                    WindowStyle = ProcessWindowStyle.Hidden
-            //                };
-
-            //                var Patch1 = Process.Start(patch);
-            //                Patch1.WaitForExit();
-            //                Patch1.Close();
-
-            //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
-            //            }
-            //            else
-            //            {
-            //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
-            //                for (int i = 0; i < lines.Length; i++)
-            //                {
-            //                    if (lines[i].Contains("MSAAType = \""))
-            //                        lines[i] = "MSAAType = \"2x\"";
-            //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
-            //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
-            //                }
-            //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
-            //            }
-            //        }
-            //    }
-            //    #endregion
-
-            //    #region 4x MSAA
-            //    else if (combo_MSAA.SelectedIndex == 2)
-            //    {
-            //        //Checks the header for each file to ensure that it can be safely decompiled.
-            //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
-            //        {
-            //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
-            //            {
-            //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
-
-            //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-            //                {
-            //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-            //                    WindowStyle = ProcessWindowStyle.Hidden
-            //                };
-
-            //                var Patch1 = Process.Start(patch);
-            //                Patch1.WaitForExit();
-            //                Patch1.Close();
-
-            //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
-            //            }
-            //            else
-            //            {
-            //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
-            //                for (int i = 0; i < lines.Length; i++)
-            //                {
-            //                    if (lines[i].Contains("MSAAType = \""))
-            //                        lines[i] = "MSAAType = \"4x\"";
-            //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
-            //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
-            //                }
-            //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
-            //            }
-            //        }
-            //    }
-            //    #endregion
-            //}
-            #endregion
-
-            if (combo_Reflections.Enabled)
-            {
-                #region No Reflections
-                if (combo_Reflections.SelectedIndex == 0)
+                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"")
                 {
-                    //Checks the header for each file to ensure that it can be safely decompiled.
-                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
-                    {
-                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
-                        {
-                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
 
-                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                            {
-                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
+                var Unpack1 = Process.Start(patch);
+                Unpack1.WaitForExit();
+                Unpack1.Close();
 
-                            var Patch1 = Process.Start(patch);
-                            Patch1.WaitForExit();
-                            Patch1.Close();
+                WriteDecompiler();
 
-                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
-                        }
+                //Unused MSAA Code - Lua decompiler appears to break 'render_main.lub,' so this won't be possible
+                //(it's pointless anyway, as the game crashes with anything other than 2x).
+                #region Unused MSAA Code
+                //if (combo_MSAA.Enabled)
+                //{
+                //    #region No MSAA
+                //    if (combo_MSAA.SelectedIndex == 0)
+                //    {
+                //        //Checks the header for each file to ensure that it can be safely decompiled.
+                //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+                //        {
+                //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+                //            {
+                //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
 
-                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                        for (int i = 0; i < lines.Length; i++)
-                        {
-                            if (lines[i].Contains("EnableReflection ="))
-                                lines[i] = "EnableReflection = false";
-                        }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
-                    }
-                }
+                //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                //                {
+                //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                //                    WindowStyle = ProcessWindowStyle.Hidden
+                //                };
+
+                //                var Patch1 = Process.Start(patch);
+                //                Patch1.WaitForExit();
+                //                Patch1.Close();
+
+                //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+                //            }
+                //            else
+                //            {
+                //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+                //                for (int i = 0; i < lines.Length; i++)
+                //                {
+                //                    if (lines[i].Contains("MSAAType = \""))
+                //                        lines[i] = "MSAAType = \"0x\"";
+                //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+                //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0)";
+                //                }
+                //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+                //            }
+                //        }
+                //    }
+                //    #endregion
+
+                //    #region 2x MSAA
+                //    else if (combo_MSAA.SelectedIndex == 1)
+                //    {
+                //        //Checks the header for each file to ensure that it can be safely decompiled.
+                //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+                //        {
+                //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+                //            {
+                //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+
+                //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                //                {
+                //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                //                    WindowStyle = ProcessWindowStyle.Hidden
+                //                };
+
+                //                var Patch1 = Process.Start(patch);
+                //                Patch1.WaitForExit();
+                //                Patch1.Close();
+
+                //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+                //            }
+                //            else
+                //            {
+                //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+                //                for (int i = 0; i < lines.Length; i++)
+                //                {
+                //                    if (lines[i].Contains("MSAAType = \""))
+                //                        lines[i] = "MSAAType = \"2x\"";
+                //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+                //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
+                //                }
+                //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+                //            }
+                //        }
+                //    }
+                //    #endregion
+
+                //    #region 4x MSAA
+                //    else if (combo_MSAA.SelectedIndex == 2)
+                //    {
+                //        //Checks the header for each file to ensure that it can be safely decompiled.
+                //        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub"))
+                //        {
+                //            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub")[0].Contains("LuaP"))
+                //            {
+                //                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_main.lub", true);
+
+                //                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                //                {
+                //                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                //                    WindowStyle = ProcessWindowStyle.Hidden
+                //                };
+
+                //                var Patch1 = Process.Start(patch);
+                //                Patch1.WaitForExit();
+                //                Patch1.Close();
+
+                //                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_main.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", true);
+                //            }
+                //            else
+                //            {
+                //                string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub");
+                //                for (int i = 0; i < lines.Length; i++)
+                //                {
+                //                    if (lines[i].Contains("MSAAType = \""))
+                //                        lines[i] = "MSAAType = \"4x\"";
+                //                    if (lines[i].Contains("SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0"))
+                //                        lines[i] = "    SetFrameBufferObject(_ARG_0_, \"framebuffer_hdr\", _ARG_2_ .. \"_texture\", \"all\", 0, 0, 0, 0, MSAAType)";
+                //                }
+                //                File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_main.lub", lines);
+                //            }
+                //        }
+                //    }
+                //    #endregion
+                //}
                 #endregion
 
-                #region Quarter Reflections
-                else if (combo_Reflections.SelectedIndex == 1)
+                if (combo_Reflections.Enabled)
                 {
-                    //Checks the header for each file to ensure that it can be safely decompiled.
-                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
+                    #region No Reflections
+                    if (combo_Reflections.SelectedIndex == 0)
                     {
-                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
                         {
-                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
-
-                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
                             {
-                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
 
-                            var Patch1 = Process.Start(patch);
-                            Patch1.WaitForExit();
-                            Patch1.Close();
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
 
-                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                            }
+
+                            string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                if (lines[i].Contains("EnableReflection ="))
+                                    lines[i] = "EnableReflection = false";
+                            }
+                            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                         }
+                    }
+                    #endregion
 
-                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                        for (int i = 0; i < lines.Length; i++)
+                    #region Quarter Reflections
+                    else if (combo_Reflections.SelectedIndex == 1)
+                    {
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
                         {
-                            if (lines[i].Contains("EnableReflection ="))
-                                lines[i] = "EnableReflection = true";
-                            if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
-                                lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 4";
-                            if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
-                                lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 4";
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                            {
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                            }
+
+                            string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                if (lines[i].Contains("EnableReflection ="))
+                                    lines[i] = "EnableReflection = true";
+                                if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                                    lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 4";
+                                if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                                    lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 4";
+                            }
+                            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
                         }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
+                    }
+                    #endregion
+
+                    #region Half Reflections
+                    else if (combo_Reflections.SelectedIndex == 2)
+                    {
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
+                        {
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                            {
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                            }
+
+                            string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                if (lines[i].Contains("EnableReflection ="))
+                                    lines[i] = "EnableReflection = true";
+                                if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                                    lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 2";
+                                if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                                    lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 2";
+                            }
+                            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
+                        }
+                    }
+                    #endregion
+
+                    #region Full Reflections
+                    else if (combo_Reflections.SelectedIndex == 3)
+                    {
+                        //Checks the header for each file to ensure that it can be safely decompiled.
+                        if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
+                        {
+                            if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
+                            {
+                                File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
+
+                                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                                {
+                                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+
+                                var Patch1 = Process.Start(patch);
+                                Patch1.WaitForExit();
+                                Patch1.Close();
+
+                                File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
+                            }
+
+                            string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                if (lines[i].Contains("EnableReflection ="))
+                                    lines[i] = "EnableReflection = true";
+                                if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
+                                    lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")";
+                                if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
+                                    lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")";
+                            }
+                            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
+                        }
+                    }
+                    #endregion
+                }
+
+                if (patchesList.GetItemChecked(0)) { Tools.Patch.Disable_HUD(tempPath); }
+                if (patchesList.GetItemChecked(1)) { Tools.Patch.Disable_Shadows(tempPath); }
+                Tools.Patch.Viewport(tempPath, Convert.ToInt32(viewportX.Value), Convert.ToInt32(viewportY.Value));
+                if (patchesList.GetItemChecked(4)) { Tools.Patch.Vulkan_API_Compatibility(tempPath); }
+
+                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
+                {
+                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var Repack1 = Process.Start(patch);
+                Repack1.WaitForExit();
+                Repack1.Close();
+
+                try
+                {
+                    if (Directory.Exists(tempPath))
+                    {
+                        foreach (FileInfo file in tempData.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        foreach (DirectoryInfo directory in tempData.GetDirectories())
+                        {
+                            directory.Delete(true);
+                        }
                     }
                 }
-                #endregion
-
-                #region Half Reflections
-                else if (combo_Reflections.SelectedIndex == 2)
-                {
-                    //Checks the header for each file to ensure that it can be safely decompiled.
-                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
-                    {
-                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
-                        {
-                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
-                            
-                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                            {
-                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
-
-                            var Patch1 = Process.Start(patch);
-                            Patch1.WaitForExit();
-                            Patch1.Close();
-
-                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
-                        }
-
-                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                        for (int i = 0; i < lines.Length; i++)
-                        {
-                            if (lines[i].Contains("EnableReflection ="))
-                                lines[i] = "EnableReflection = true";
-                            if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
-                                lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\") / 2";
-                            if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
-                                lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\") / 2";
-                        }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
-                    }
-                }
-                #endregion
-
-                #region Full Reflections
-                else if (combo_Reflections.SelectedIndex == 3)
-                {
-                    //Checks the header for each file to ensure that it can be safely decompiled.
-                    if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub"))
-                    {
-                        if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub")[0].Contains("LuaP"))
-                        {
-                            File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_reflection.lub", true);
-
-                            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
-                            {
-                                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
-
-                            var Patch1 = Process.Start(patch);
-                            Patch1.WaitForExit();
-                            Patch1.Close();
-
-                            File.Copy($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_reflection.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", true);
-                        }
-
-                        string[] lines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub");
-                        for (int i = 0; i < lines.Length; i++)
-                        {
-                            if (lines[i].Contains("EnableReflection ="))
-                                lines[i] = "EnableReflection = true";
-                            if (lines[i].Contains("texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")"))
-                                lines[i] = "texture_width = GetSurfaceWidth(_ARG_0_, \"backbuffer\")";
-                            if (lines[i].Contains("texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")"))
-                                lines[i] = "texture_height = GetSurfaceHeight(_ARG_0_, \"backbuffer\")";
-                        }
-                        File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\core\\render_reflection.lub", lines);
-                    }
-                }
-                #endregion
+                catch { return; }
             }
-
-            if (patchesList.GetItemChecked(0)) { Tools.Patch.Disable_Shadows(tempPath); }
-            Tools.Patch.Viewport(tempPath, Convert.ToInt32(viewportX.Value), Convert.ToInt32(viewportY.Value));
-            if (patchesList.GetItemChecked(2)) { Tools.Patch.Vulkan_API_Compatibility(tempPath); }
-
-            patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
+            else if (Path.GetFileName(arc) == "game.arc")
             {
-                WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+                string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                var tempData = new DirectoryInfo(tempPath);
+                Directory.CreateDirectory(tempPath);
+                File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
+                if (!File.Exists($"{arc}_orig")) File.Move(arc, $"{arc}_orig");
 
-            var Repack1 = Process.Start(patch);
-            Repack1.WaitForExit();
-            Repack1.Close();
-
-            try
-            {
-                if (Directory.Exists(tempPath))
+                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"")
                 {
-                    foreach (FileInfo file in tempData.GetFiles())
+                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var Unpack1 = Process.Start(patch);
+                Unpack1.WaitForExit();
+                Unpack1.Close();
+
+                WriteDecompiler();
+
+                Tools.Patch.Camera_Distance(tempPath, Convert.ToInt32(distanceUpDown.Value));
+
+                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
+                {
+                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var Repack1 = Process.Start(patch);
+                Repack1.WaitForExit();
+                Repack1.Close();
+
+                try
+                {
+                    if (Directory.Exists(tempPath))
                     {
-                        file.Delete();
-                    }
-                    foreach (DirectoryInfo directory in tempData.GetDirectories())
-                    {
-                        directory.Delete(true);
+                        foreach (FileInfo file in tempData.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        foreach (DirectoryInfo directory in tempData.GetDirectories())
+                        {
+                            directory.Delete(true);
+                        }
                     }
                 }
+                catch { return; }
             }
-            catch { return; }
+            else if (Path.GetFileName(arc) == "player.arc")
+            {
+                string tempPath = $"{applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                var tempData = new DirectoryInfo(tempPath);
+                Directory.CreateDirectory(tempPath);
+                File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
+                if (!File.Exists($"{arc}_orig")) File.Move(arc, $"{arc}_orig");
+
+                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"")
+                {
+                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var Unpack1 = Process.Start(patch);
+                Unpack1.WaitForExit();
+                Unpack1.Close();
+
+                WriteDecompiler();
+
+                Tools.Patch.Use_Dynamic_Bones(tempPath);
+
+                patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
+                {
+                    WorkingDirectory = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var Repack1 = Process.Start(patch);
+                Repack1.WaitForExit();
+                Repack1.Close();
+
+                try
+                {
+                    if (Directory.Exists(tempPath))
+                    {
+                        foreach (FileInfo file in tempData.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        foreach (DirectoryInfo directory in tempData.GetDirectories())
+                        {
+                            directory.Delete(true);
+                        }
+                    }
+                }
+                catch { return; }
+            }
 
             convertDialog.Close();
         }
@@ -3570,7 +3649,41 @@ namespace Sonic_06_Mod_Manager
                         Console.WriteLine("Removing: " + mod.ToString().Remove(mod.Length - 5));
                     }
                 }
-                PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc");
+
+                if (patchesList.GetItemChecked(2)) { Tools.Patch.Omega_Blur_Fix(); }
+
+                if (patchesList.GetItemChecked(0) ||
+                    patchesList.GetItemChecked(1) ||
+                    patchesList.GetItemChecked(4) ||
+                    combo_Reflections.SelectedIndex != 1 ||
+                    (viewportX.Value == 1280 && viewportY.Value == 720) == false)
+                { PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc"); }
+                else
+                {
+                    if (File.Exists($"{s06Path}\\xenon\\archives\\cache.arc_orig"))
+                    {
+                        File.Move($"{s06Path}\\xenon\\archives\\cache.arc_orig", $"{s06Path}\\xenon\\archives\\cache.arc");
+                    }
+                }
+
+                if (patchesList.GetItemChecked(3))
+                { PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc"); }
+                else
+                {
+                    if (File.Exists($"{s06Path}\\xenon\\archives\\player.arc_orig"))
+                    {
+                        File.Move($"{s06Path}\\xenon\\archives\\player.arc_orig", $"{s06Path}\\xenon\\archives\\player.arc");
+                    }
+                }
+
+                if (distanceUpDown.Value != 650) { PatchARC($"{s06Path}\\xenon\\archives\\game.arc", $"{s06Path}\\xenon\\archives\\game.arc"); }
+                else
+                {
+                    if (File.Exists($"{s06Path}\\xenon\\archives\\game.arc_orig"))
+                    {
+                        File.Move($"{s06Path}\\xenon\\archives\\game.arc_orig", $"{s06Path}\\xenon\\archives\\game.arc");
+                    }
+                }
             }
             else { MessageBox.Show("Please set your Game Directory! We can't patch (or even mod) the game without it...", "Stupid Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
@@ -3752,16 +3865,12 @@ namespace Sonic_06_Mod_Manager
 
         private void ViewportX_ValueChanged(object sender, EventArgs e)
         {
-            if (viewportX.Value != 1280) { label10.Text = "Experimental"; }
-            else { label10.Text = "Default"; }
             Properties.Settings.Default.viewportX = Convert.ToInt32(viewportX.Value);
             Properties.Settings.Default.Save();
         }
 
         private void ViewportY_ValueChanged(object sender, EventArgs e)
         {
-            if (viewportY.Value != 720) { label9.Text = "Experimental"; }
-            else { label9.Text = "Default"; }
             Properties.Settings.Default.viewportY = Convert.ToInt32(viewportY.Value);
             Properties.Settings.Default.Save();
         }
@@ -3779,6 +3888,32 @@ namespace Sonic_06_Mod_Manager
             else if (check_FTP.Checked && tab_Section.SelectedIndex != 2 || check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Install Mods"; stopButton.Text = "Uninstall Mods"; }
             else if (!check_FTP.Checked && tab_Section.SelectedIndex != 2 || !check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Save and Play"; }
             else { playButton.Text = "Apply Patches"; stopButton.Text = "Restore Defaults"; }
+        }
+
+        private void DistanceUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.cameraDistance = Convert.ToInt32(distanceUpDown.Value);
+            Properties.Settings.Default.Save();
+        }
+
+        private void Btn_ResetReflections_Click(object sender, EventArgs e)
+        {
+            combo_Reflections.SelectedIndex = 1;
+        }
+
+        private void Btn_ResetViewportX_Click(object sender, EventArgs e)
+        {
+            viewportX.Value = 1280;
+        }
+
+        private void Btn_ResetCamera_Click(object sender, EventArgs e)
+        {
+            distanceUpDown.Value = 650;
+        }
+
+        private void Btn_ResetViewportY_Click(object sender, EventArgs e)
+        {
+            viewportY.Value = 720;
         }
     }
 }

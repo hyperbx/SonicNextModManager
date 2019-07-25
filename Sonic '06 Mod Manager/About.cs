@@ -109,5 +109,10 @@ namespace Sonic_06_Mod_Manager
         {
             Process.Start("https://www.segacarnival.com/forum/index.php");
         }
+
+        private void LinkLabel8_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://gamebanana.com/members/1447045");
+        }
     }
 }

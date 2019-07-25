@@ -55,7 +55,9 @@ namespace Sonic_06_Mod_Manager
 
                     foreach (var item in getIDs)
                     {
-                        if (i == 0) { int.TryParse(item, out downloadID);
+                        if (i == 0)
+                        {
+                            int.TryParse(item, out downloadID);
                             { i++; }
                         }
                         else if (i == 1)
@@ -63,7 +65,9 @@ namespace Sonic_06_Mod_Manager
                             modType = item;
                             i++;
                         }
-                        else if (i == 2) { int.TryParse(item, out modID);
+                        else if (i == 2)
+                        {
+                            int.TryParse(item, out modID);
                             { i++; }
                         }
                     }

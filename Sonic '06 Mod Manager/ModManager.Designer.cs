@@ -79,18 +79,14 @@
             this.xeniaBox = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.distanceUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
             this.viewportY = new System.Windows.Forms.NumericUpDown();
             this.viewportX = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.lbl_Reflectionsdef = new System.Windows.Forms.Label();
             this.combo_Reflections = new System.Windows.Forms.ComboBox();
-            this.combo_MSAA = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lbl_MSAAdef = new System.Windows.Forms.Label();
             this.patchesList = new System.Windows.Forms.CheckedListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -113,6 +109,11 @@
             this.tm_CheckLabel = new System.Windows.Forms.Timer(this.components);
             this.editModButton = new System.Windows.Forms.Button();
             this.tm_CheckTab = new System.Windows.Forms.Timer(this.components);
+            this.tool_BasicInfo = new System.Windows.Forms.ToolTip(this.components);
+            this.btn_ResetCamera = new System.Windows.Forms.Button();
+            this.btn_ResetViewportY = new System.Windows.Forms.Button();
+            this.btn_ResetReflections = new System.Windows.Forms.Button();
+            this.btn_ResetViewportX = new System.Windows.Forms.Button();
             this.tab_Section.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -124,6 +125,7 @@
             this.groupBox3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.distanceUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewportY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewportX)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -759,18 +761,18 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label9);
-            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Controls.Add(this.btn_ResetViewportX);
+            this.groupBox6.Controls.Add(this.btn_ResetReflections);
+            this.groupBox6.Controls.Add(this.btn_ResetViewportY);
+            this.groupBox6.Controls.Add(this.btn_ResetCamera);
+            this.groupBox6.Controls.Add(this.distanceUpDown);
+            this.groupBox6.Controls.Add(this.label11);
             this.groupBox6.Controls.Add(this.viewportY);
             this.groupBox6.Controls.Add(this.viewportX);
             this.groupBox6.Controls.Add(this.label8);
             this.groupBox6.Controls.Add(this.label7);
             this.groupBox6.Controls.Add(this.label3);
-            this.groupBox6.Controls.Add(this.lbl_Reflectionsdef);
             this.groupBox6.Controls.Add(this.combo_Reflections);
-            this.groupBox6.Controls.Add(this.combo_MSAA);
-            this.groupBox6.Controls.Add(this.label1);
-            this.groupBox6.Controls.Add(this.lbl_MSAAdef);
             this.groupBox6.Location = new System.Drawing.Point(3, 279);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(408, 125);
@@ -778,29 +780,39 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Tweaks";
             // 
-            // label9
+            // distanceUpDown
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(162, 95);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 13);
-            this.label9.TabIndex = 70;
-            this.label9.Text = "Default";
+            this.distanceUpDown.Location = new System.Drawing.Point(230, 38);
+            this.distanceUpDown.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.distanceUpDown.Name = "distanceUpDown";
+            this.distanceUpDown.Size = new System.Drawing.Size(83, 20);
+            this.distanceUpDown.TabIndex = 72;
+            this.tool_BasicInfo.SetToolTip(this.distanceUpDown, "This changes the distance the camera has away from Sonic (in centimetres).\r\nIf un" +
+        "sure, set this to 650.");
+            this.distanceUpDown.Value = new decimal(new int[] {
+            650,
+            0,
+            0,
+            0});
+            this.distanceUpDown.ValueChanged += new System.EventHandler(this.DistanceUpDown_ValueChanged);
             // 
-            // label10
+            // label11
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(162, 68);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 13);
-            this.label10.TabIndex = 69;
-            this.label10.Text = "Default";
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(228, 22);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(88, 13);
+            this.label11.TabIndex = 71;
+            this.label11.Text = "Camera Distance";
             // 
             // viewportY
             // 
-            this.viewportY.Location = new System.Drawing.Point(77, 92);
+            this.viewportY.Location = new System.Drawing.Point(230, 89);
             this.viewportY.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -809,6 +821,7 @@
             this.viewportY.Name = "viewportY";
             this.viewportY.Size = new System.Drawing.Size(83, 20);
             this.viewportY.TabIndex = 68;
+            this.tool_BasicInfo.SetToolTip(this.viewportY, "This changes the height of the viewport.\r\nIf unsure, set this to 720.");
             this.viewportY.Value = new decimal(new int[] {
             720,
             0,
@@ -818,7 +831,7 @@
             // 
             // viewportX
             // 
-            this.viewportX.Location = new System.Drawing.Point(77, 65);
+            this.viewportX.Location = new System.Drawing.Point(96, 89);
             this.viewportX.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -827,6 +840,7 @@
             this.viewportX.Name = "viewportX";
             this.viewportX.Size = new System.Drawing.Size(83, 20);
             this.viewportX.TabIndex = 67;
+            this.tool_BasicInfo.SetToolTip(this.viewportX, "This changes the width of the viewport.\r\nIf unsure, set this to 1280.");
             this.viewportX.Value = new decimal(new int[] {
             1280,
             0,
@@ -837,39 +851,32 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 95);
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(243, 73);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.Size = new System.Drawing.Size(58, 13);
             this.label8.TabIndex = 66;
-            this.label8.Text = "Viewport Y:";
+            this.label8.Text = "Viewport Y";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 68);
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(109, 73);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 13);
+            this.label7.Size = new System.Drawing.Size(58, 13);
             this.label7.TabIndex = 65;
-            this.label7.Text = "Viewport X:";
+            this.label7.Text = "Viewport X";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 27);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(108, 22);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
+            this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 37;
-            this.label3.Text = "Reflections:";
-            // 
-            // lbl_Reflectionsdef
-            // 
-            this.lbl_Reflectionsdef.AutoSize = true;
-            this.lbl_Reflectionsdef.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Reflectionsdef.Location = new System.Drawing.Point(162, 28);
-            this.lbl_Reflectionsdef.Name = "lbl_Reflectionsdef";
-            this.lbl_Reflectionsdef.Size = new System.Drawing.Size(41, 13);
-            this.lbl_Reflectionsdef.TabIndex = 64;
-            this.lbl_Reflectionsdef.Text = "Default";
+            this.label3.Text = "Reflections";
             // 
             // combo_Reflections
             // 
@@ -880,55 +887,22 @@
             "Quarter",
             "Half",
             "Full"});
-            this.combo_Reflections.Location = new System.Drawing.Point(77, 24);
+            this.combo_Reflections.Location = new System.Drawing.Point(96, 38);
             this.combo_Reflections.Name = "combo_Reflections";
             this.combo_Reflections.Size = new System.Drawing.Size(83, 21);
             this.combo_Reflections.TabIndex = 62;
+            this.tool_BasicInfo.SetToolTip(this.combo_Reflections, "This changes the reflection resolution scale.\r\nIf unsure, select Quarter.");
             this.combo_Reflections.SelectedIndexChanged += new System.EventHandler(this.Combo_Reflections_SelectedIndexChanged);
-            // 
-            // combo_MSAA
-            // 
-            this.combo_MSAA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.combo_MSAA.FormattingEnabled = true;
-            this.combo_MSAA.Items.AddRange(new object[] {
-            "Disabled",
-            "2x MSAA",
-            "4x MSAA"});
-            this.combo_MSAA.Location = new System.Drawing.Point(77, 24);
-            this.combo_MSAA.Name = "combo_MSAA";
-            this.combo_MSAA.Size = new System.Drawing.Size(83, 21);
-            this.combo_MSAA.TabIndex = 61;
-            this.combo_MSAA.Visible = false;
-            this.combo_MSAA.SelectedIndexChanged += new System.EventHandler(this.Combo_MSAA_SelectedIndexChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(35, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 13);
-            this.label1.TabIndex = 36;
-            this.label1.Text = "MSAA:";
-            this.label1.Visible = false;
-            // 
-            // lbl_MSAAdef
-            // 
-            this.lbl_MSAAdef.AutoSize = true;
-            this.lbl_MSAAdef.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_MSAAdef.Location = new System.Drawing.Point(162, 28);
-            this.lbl_MSAAdef.Name = "lbl_MSAAdef";
-            this.lbl_MSAAdef.Size = new System.Drawing.Size(41, 13);
-            this.lbl_MSAAdef.TabIndex = 63;
-            this.lbl_MSAAdef.Text = "Default";
-            this.lbl_MSAAdef.Visible = false;
             // 
             // patchesList
             // 
             this.patchesList.Dock = System.Windows.Forms.DockStyle.Top;
             this.patchesList.FormattingEnabled = true;
             this.patchesList.Items.AddRange(new object[] {
+            "Disable HUD",
             "Disable Shadows",
             "Omega Blur Fix",
+            "Use Dynamic Bones for Sonic\'s Snowboard State",
             "Vulkan API Compatibility"});
             this.patchesList.Location = new System.Drawing.Point(3, 3);
             this.patchesList.Name = "patchesList";
@@ -1183,6 +1157,70 @@
             // 
             this.tm_CheckTab.Tick += new System.EventHandler(this.Tm_CheckTab_Tick);
             // 
+            // tool_BasicInfo
+            // 
+            this.tool_BasicInfo.AutoPopDelay = 8000;
+            this.tool_BasicInfo.InitialDelay = 500;
+            this.tool_BasicInfo.ReshowDelay = 100;
+            this.tool_BasicInfo.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.tool_BasicInfo.ToolTipTitle = "Information...";
+            // 
+            // btn_ResetCamera
+            // 
+            this.btn_ResetCamera.FlatAppearance.BorderSize = 0;
+            this.btn_ResetCamera.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetCamera.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetCamera.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetCamera.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCamera.Image")));
+            this.btn_ResetCamera.Location = new System.Drawing.Point(314, 38);
+            this.btn_ResetCamera.Name = "btn_ResetCamera";
+            this.btn_ResetCamera.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetCamera.TabIndex = 73;
+            this.btn_ResetCamera.UseVisualStyleBackColor = true;
+            this.btn_ResetCamera.Click += new System.EventHandler(this.Btn_ResetCamera_Click);
+            // 
+            // btn_ResetViewportY
+            // 
+            this.btn_ResetViewportY.FlatAppearance.BorderSize = 0;
+            this.btn_ResetViewportY.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportY.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportY.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetViewportY.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportY.Image")));
+            this.btn_ResetViewportY.Location = new System.Drawing.Point(314, 89);
+            this.btn_ResetViewportY.Name = "btn_ResetViewportY";
+            this.btn_ResetViewportY.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetViewportY.TabIndex = 74;
+            this.btn_ResetViewportY.UseVisualStyleBackColor = true;
+            this.btn_ResetViewportY.Click += new System.EventHandler(this.Btn_ResetViewportY_Click);
+            // 
+            // btn_ResetReflections
+            // 
+            this.btn_ResetReflections.FlatAppearance.BorderSize = 0;
+            this.btn_ResetReflections.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetReflections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetReflections.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetReflections.Image")));
+            this.btn_ResetReflections.Location = new System.Drawing.Point(180, 38);
+            this.btn_ResetReflections.Name = "btn_ResetReflections";
+            this.btn_ResetReflections.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetReflections.TabIndex = 75;
+            this.btn_ResetReflections.UseVisualStyleBackColor = true;
+            this.btn_ResetReflections.Click += new System.EventHandler(this.Btn_ResetReflections_Click);
+            // 
+            // btn_ResetViewportX
+            // 
+            this.btn_ResetViewportX.FlatAppearance.BorderSize = 0;
+            this.btn_ResetViewportX.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportX.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetViewportX.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportX.Image")));
+            this.btn_ResetViewportX.Location = new System.Drawing.Point(180, 89);
+            this.btn_ResetViewportX.Name = "btn_ResetViewportX";
+            this.btn_ResetViewportX.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetViewportX.TabIndex = 76;
+            this.btn_ResetViewportX.UseVisualStyleBackColor = true;
+            this.btn_ResetViewportX.Click += new System.EventHandler(this.Btn_ResetViewportX_Click);
+            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1222,6 +1260,7 @@
             this.tabPage2.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.distanceUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewportY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewportX)).EndInit();
             this.tabPage3.ResumeLayout(false);
@@ -1279,11 +1318,7 @@
         private System.Windows.Forms.ComboBox combo_Priority;
         private System.Windows.Forms.Button btn_SaveMods;
         private System.Windows.Forms.ComboBox combo_Reflections;
-        private System.Windows.Forms.ComboBox combo_MSAA;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lbl_Reflectionsdef;
-        private System.Windows.Forms.Label lbl_MSAAdef;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lbl_SettingsInformation;
         private System.Windows.Forms.Timer tm_CheckLabel;
@@ -1313,14 +1348,19 @@
         private System.Windows.Forms.NumericUpDown SoftCacheLifetime;
         private System.Windows.Forms.CheckBox check_Debug;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown viewportY;
         private System.Windows.Forms.NumericUpDown viewportX;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button editModButton;
         private System.Windows.Forms.Timer tm_CheckTab;
+        private System.Windows.Forms.NumericUpDown distanceUpDown;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ToolTip tool_BasicInfo;
+        private System.Windows.Forms.Button btn_ResetCamera;
+        private System.Windows.Forms.Button btn_ResetViewportX;
+        private System.Windows.Forms.Button btn_ResetReflections;
+        private System.Windows.Forms.Button btn_ResetViewportY;
     }
 }
 

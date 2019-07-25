@@ -96,6 +96,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameBanana.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="UpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateForm.Designer.cs">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
@@ -121,6 +127,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UpdateForm.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -154,6 +163,7 @@
     <None Include="Resources\GBStyleSheet.css" />
     <None Include="bin\Debug\Newtonsoft.Json.dll" />
     <None Include="Resources\logo_image_not_found.png" />
+    <None Include="Resources\logo.png" />
     <Content Include="Resources\sonic__06_mod_manager_logo_beJ_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

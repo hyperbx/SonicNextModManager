@@ -223,6 +223,7 @@
             this.Name = "ModOneClickInstall";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameBanana - 1-Click Mod Install";
+            this.Load += new System.EventHandler(this.ModOneClickInstall_Load);
             this.Shown += new System.EventHandler(this.ModOneClickInstall_Shown);
             this.pnl_Backdrop.ResumeLayout(false);
             this.pnl_Backdrop.PerformLayout();

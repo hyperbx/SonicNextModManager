@@ -2,12 +2,10 @@
 using System.IO;
 using System.Net;
 using System.Linq;
-using System.Management;
+using System.Text;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Text;
-using System.Timers;
-using System.Diagnostics;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -448,6 +446,103 @@ namespace Sonic_06_Mod_Manager.Tools
 
     public class Patch
     {
+        public static void Camera_Distance(string tempPath, int distance)
+        {
+            ProcessStartInfo patch;
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\game\\xenon\\cameraparam.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\game\\xenon\\cameraparam.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\game\\xenon\\cameraparam.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\cameraparam.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\cameraparam.lub", $"{tempPath}\\game\\xenon\\cameraparam.lub", true);
+                }
+            }
+
+            string[] distanceLines = File.ReadAllLines($"{tempPath}\\game\\xenon\\cameraparam.lub");
+            for (int i = 0; i < distanceLines.Length; i++)
+            {
+                if (distanceLines[i].Contains("distance ="))
+                    distanceLines[i] = $"distance = {decimal.Divide(distance, 100)} * meter";
+            }
+            File.WriteAllLines($"{tempPath}\\game\\xenon\\cameraparam.lub", distanceLines);
+        }
+
+        public static void Disable_HUD(string tempPath)
+        {
+            ProcessStartInfo patch;
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", true);
+                }
+            }
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode_multi.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode_multi.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode_multi.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\render_gamemode_multi.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\render_gamemode_multi.lub", $"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode_multi.lub", true);
+                }
+            }
+
+            string[] gamemodeLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub");
+            for (int i = 0; i < gamemodeLines.Length; i++)
+            {
+                if (gamemodeLines[i].Contains("Render2D(_ARG_0_)"))
+                    gamemodeLines[i] = "  --Render2D(_ARG_0_)";
+            }
+            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode.lub", gamemodeLines);
+
+            string[] gamemodeMultiLines = File.ReadAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode_multi.lub");
+            for (int i = 0; i < gamemodeMultiLines.Length; i++)
+            {
+                if (gamemodeMultiLines[i].Contains("Render2D(_ARG_0_)"))
+                    gamemodeMultiLines[i] = "  --Render2D(_ARG_0_)";
+            }
+            File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_gamemode_multi.lub", gamemodeMultiLines);
+        }
+
         public static void Disable_Shadows(string tempPath)
         {
             ProcessStartInfo patch;
@@ -509,6 +604,76 @@ namespace Sonic_06_Mod_Manager.Tools
                     titleLines[i] = "  --CreateCSM(_ARG_0_)";
             }
             File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
+        }
+
+        public static void Omega_Blur_Fix()
+        {
+            var originalFile = Path.Combine(Properties.Settings.Default.s06Path, "win32\\archives\\player_omega.arc");
+            if (!File.Exists($"{originalFile}_orig")) { File.Move(originalFile, $"{originalFile}_orig"); }
+            File.WriteAllBytes(originalFile, Properties.Resources.omegaBlurFix);
+        }
+
+        public static void Use_Dynamic_Bones(string tempPath)
+        {
+            ProcessStartInfo patch;
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\player\\xenon\\player\\snow_board.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\player\\xenon\\player\\snow_board.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\snow_board.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\snow_board.lub", $"{tempPath}\\player\\xenon\\player\\snow_board.lub", true);
+                }
+            }
+
+            //Checks the header for each file to ensure that it can be safely decompiled.
+            if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub"))
+            {
+                if (File.ReadAllLines($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub")[0].Contains("LuaP"))
+                {
+                    File.Copy($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub", $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs\\snow_board_wap.lub", true);
+
+                    patch = new ProcessStartInfo($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.bat")
+                    {
+                        WorkingDirectory = $"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var Patch1 = Process.Start(patch);
+                    Patch1.WaitForExit();
+                    Patch1.Close();
+
+                    File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\snow_board_wap.lub", $"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub", true);
+                }
+            }
+
+            string[] snowboardLines = File.ReadAllLines($"{tempPath}\\player\\xenon\\player\\snow_board.lub");
+            for (int i = 0; i < snowboardLines.Length; i++)
+            {
+                if (snowboardLines[i].Contains("c_module_impulse = "))
+                    snowboardLines[i] = "c_module_impulse = impulse_module_snowboard\nc_hair = {\n\"TopHair\",\n\"HighLeftHair\",\n\"HighRightHair\",\n\"LowLeftHair\",\n\"LowRightHair\",\n\"MiddleHair\"\n}";
+            }
+            File.WriteAllLines($"{tempPath}\\player\\xenon\\player\\snow_board.lub", snowboardLines);
+
+            string[] snowboardWapLines = File.ReadAllLines($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub");
+            for (int i = 0; i < snowboardWapLines.Length; i++)
+            {
+                if (snowboardWapLines[i].Contains("c_module_impulse = "))
+                    snowboardWapLines[i] = "c_module_impulse = impulse_module_snowboard\nc_hair = {\n\"TopHair\",\n\"HighLeftHair\",\n\"HighRightHair\",\n\"LowLeftHair\",\n\"LowRightHair\",\n\"MiddleHair\"\n}";
+            }
+            File.WriteAllLines($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub", snowboardWapLines);
         }
 
         public static void Viewport(string tempPath, int X, int Y)
@@ -593,13 +758,6 @@ namespace Sonic_06_Mod_Manager.Tools
                 }
                 File.WriteAllLines($"{tempPath}\\cache\\xenon\\scripts\\render\\render_title.lub", titleLines);
             }
-        }
-
-        public static void Omega_Blur_Fix()
-        {
-            var originalFile = Path.Combine(Properties.Settings.Default.s06Path, "win32\\archives\\player_omega.arc");
-            if (!File.Exists($"{originalFile}_orig")) { File.Move(originalFile, $"{originalFile}_orig"); }
-            File.WriteAllBytes(originalFile, Properties.Resources.omegaBlurFix);
         }
 
         public static void Vulkan_API_Compatibility(string tempPath)
