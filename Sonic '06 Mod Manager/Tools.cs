@@ -363,6 +363,22 @@ namespace Sonic_06_Mod_Manager.Tools
         }
     }
 
+    public class ARC_Manager
+    {
+        public static bool Check_Dynamic_Bone_Patch()
+        {
+            byte[] bytes;
+            bytes = File.ReadAllBytes($"{Properties.Settings.Default.s06Path}\\xenon\\archives\\player.arc").ToArray();
+            var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+            if (hexString.Contains("73 6E 6F 77 5F 62 6F 61 72 64 2E 6C 75 62 5F 73 6F 6E 69 63 30 36 6D 6D") ||
+                hexString.Contains("73 6E 6F 77 5F 62 6F 61 72 64 5F 77 61 70 2E 6C 75 62 5F 73 6F 6E 69 63 30 36 6D 6D"))
+            {
+                return true;
+            }
+            else { return false; }
+        }
+    }
+
     public class XeniaException
     {
         public static void GetErrors()
@@ -658,6 +674,9 @@ namespace Sonic_06_Mod_Manager.Tools
                     File.Copy($"{ModManager.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\luas\\snow_board_wap.lub", $"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub", true);
                 }
             }
+
+            if (!File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm")) File.Copy($"{tempPath}\\player\\xenon\\player\\snow_board.lub", $"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm");
+            if (!File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm")) File.Copy($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub", $"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm");
 
             string[] snowboardLines = File.ReadAllLines($"{tempPath}\\player\\xenon\\player\\snow_board.lub");
             for (int i = 0; i < snowboardLines.Length; i++)

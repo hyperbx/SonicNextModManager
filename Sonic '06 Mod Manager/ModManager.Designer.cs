@@ -79,6 +79,10 @@
             this.xeniaBox = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btn_ResetViewportX = new System.Windows.Forms.Button();
+            this.btn_ResetReflections = new System.Windows.Forms.Button();
+            this.btn_ResetViewportY = new System.Windows.Forms.Button();
+            this.btn_ResetCamera = new System.Windows.Forms.Button();
             this.distanceUpDown = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.viewportY = new System.Windows.Forms.NumericUpDown();
@@ -110,10 +114,6 @@
             this.editModButton = new System.Windows.Forms.Button();
             this.tm_CheckTab = new System.Windows.Forms.Timer(this.components);
             this.tool_BasicInfo = new System.Windows.Forms.ToolTip(this.components);
-            this.btn_ResetCamera = new System.Windows.Forms.Button();
-            this.btn_ResetViewportY = new System.Windows.Forms.Button();
-            this.btn_ResetReflections = new System.Windows.Forms.Button();
-            this.btn_ResetViewportX = new System.Windows.Forms.Button();
             this.tab_Section.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -780,6 +780,62 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Tweaks";
             // 
+            // btn_ResetViewportX
+            // 
+            this.btn_ResetViewportX.FlatAppearance.BorderSize = 0;
+            this.btn_ResetViewportX.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportX.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetViewportX.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportX.Image")));
+            this.btn_ResetViewportX.Location = new System.Drawing.Point(180, 89);
+            this.btn_ResetViewportX.Name = "btn_ResetViewportX";
+            this.btn_ResetViewportX.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetViewportX.TabIndex = 76;
+            this.btn_ResetViewportX.UseVisualStyleBackColor = true;
+            this.btn_ResetViewportX.Click += new System.EventHandler(this.Btn_ResetViewportX_Click);
+            // 
+            // btn_ResetReflections
+            // 
+            this.btn_ResetReflections.FlatAppearance.BorderSize = 0;
+            this.btn_ResetReflections.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetReflections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetReflections.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetReflections.Image")));
+            this.btn_ResetReflections.Location = new System.Drawing.Point(180, 38);
+            this.btn_ResetReflections.Name = "btn_ResetReflections";
+            this.btn_ResetReflections.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetReflections.TabIndex = 75;
+            this.btn_ResetReflections.UseVisualStyleBackColor = true;
+            this.btn_ResetReflections.Click += new System.EventHandler(this.Btn_ResetReflections_Click);
+            // 
+            // btn_ResetViewportY
+            // 
+            this.btn_ResetViewportY.FlatAppearance.BorderSize = 0;
+            this.btn_ResetViewportY.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportY.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetViewportY.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetViewportY.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportY.Image")));
+            this.btn_ResetViewportY.Location = new System.Drawing.Point(314, 89);
+            this.btn_ResetViewportY.Name = "btn_ResetViewportY";
+            this.btn_ResetViewportY.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetViewportY.TabIndex = 74;
+            this.btn_ResetViewportY.UseVisualStyleBackColor = true;
+            this.btn_ResetViewportY.Click += new System.EventHandler(this.Btn_ResetViewportY_Click);
+            // 
+            // btn_ResetCamera
+            // 
+            this.btn_ResetCamera.FlatAppearance.BorderSize = 0;
+            this.btn_ResetCamera.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetCamera.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetCamera.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetCamera.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCamera.Image")));
+            this.btn_ResetCamera.Location = new System.Drawing.Point(314, 38);
+            this.btn_ResetCamera.Name = "btn_ResetCamera";
+            this.btn_ResetCamera.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetCamera.TabIndex = 73;
+            this.btn_ResetCamera.UseVisualStyleBackColor = true;
+            this.btn_ResetCamera.Click += new System.EventHandler(this.Btn_ResetCamera_Click);
+            // 
             // distanceUpDown
             // 
             this.distanceUpDown.Location = new System.Drawing.Point(230, 38);
@@ -1164,62 +1220,6 @@
             this.tool_BasicInfo.ReshowDelay = 100;
             this.tool_BasicInfo.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tool_BasicInfo.ToolTipTitle = "Information...";
-            // 
-            // btn_ResetCamera
-            // 
-            this.btn_ResetCamera.FlatAppearance.BorderSize = 0;
-            this.btn_ResetCamera.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetCamera.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetCamera.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ResetCamera.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCamera.Image")));
-            this.btn_ResetCamera.Location = new System.Drawing.Point(314, 38);
-            this.btn_ResetCamera.Name = "btn_ResetCamera";
-            this.btn_ResetCamera.Size = new System.Drawing.Size(21, 20);
-            this.btn_ResetCamera.TabIndex = 73;
-            this.btn_ResetCamera.UseVisualStyleBackColor = true;
-            this.btn_ResetCamera.Click += new System.EventHandler(this.Btn_ResetCamera_Click);
-            // 
-            // btn_ResetViewportY
-            // 
-            this.btn_ResetViewportY.FlatAppearance.BorderSize = 0;
-            this.btn_ResetViewportY.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportY.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportY.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ResetViewportY.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportY.Image")));
-            this.btn_ResetViewportY.Location = new System.Drawing.Point(314, 89);
-            this.btn_ResetViewportY.Name = "btn_ResetViewportY";
-            this.btn_ResetViewportY.Size = new System.Drawing.Size(21, 20);
-            this.btn_ResetViewportY.TabIndex = 74;
-            this.btn_ResetViewportY.UseVisualStyleBackColor = true;
-            this.btn_ResetViewportY.Click += new System.EventHandler(this.Btn_ResetViewportY_Click);
-            // 
-            // btn_ResetReflections
-            // 
-            this.btn_ResetReflections.FlatAppearance.BorderSize = 0;
-            this.btn_ResetReflections.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetReflections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ResetReflections.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetReflections.Image")));
-            this.btn_ResetReflections.Location = new System.Drawing.Point(180, 38);
-            this.btn_ResetReflections.Name = "btn_ResetReflections";
-            this.btn_ResetReflections.Size = new System.Drawing.Size(21, 20);
-            this.btn_ResetReflections.TabIndex = 75;
-            this.btn_ResetReflections.UseVisualStyleBackColor = true;
-            this.btn_ResetReflections.Click += new System.EventHandler(this.Btn_ResetReflections_Click);
-            // 
-            // btn_ResetViewportX
-            // 
-            this.btn_ResetViewportX.FlatAppearance.BorderSize = 0;
-            this.btn_ResetViewportX.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportX.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ResetViewportX.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportX.Image")));
-            this.btn_ResetViewportX.Location = new System.Drawing.Point(180, 89);
-            this.btn_ResetViewportX.Name = "btn_ResetViewportX";
-            this.btn_ResetViewportX.Size = new System.Drawing.Size(21, 20);
-            this.btn_ResetViewportX.TabIndex = 76;
-            this.btn_ResetViewportX.UseVisualStyleBackColor = true;
-            this.btn_ResetViewportX.Click += new System.EventHandler(this.Btn_ResetViewportX_Click);
             // 
             // ModManager
             // 

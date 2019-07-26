@@ -156,15 +156,14 @@
   </data>
   <data name="btn_ResetCamera.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAF/SURBVDhPhZJPasJAFMbTA1S6KbUn6AlcFLpyERI8gklv
-        EL2KIG4sXRRCKVm48ADi1ktEGhI3rnWRzfT9xjepaEoffDjz/ZtJjHc8Hs0/uPN0ZH2vy9/B1O/3W7Hf
-        75sC+e0ICsGX4NaGGdm0hsFFwdtyuTSLxQJu05RQgDHLsj8LBP5utzODwcDyWvLpCoKyLE0YhlaczWZt
-        BS+Hw6FwWhAEJs9ztGcK3qfTqRVGo5ER41WBHtQVrUySxGqTyQTtAyGP49iSq9UKsrWAkfUrHrThcIhW
-        QBrf9y1ZVZUtIAi4zUXBIx53AF7I2hXwomT/ROgMN5rH28WDl4zsa8htFEWWXK/XkLH6rwYND14yZCHn
-        7iWOx2Ou/S3cg2aagUPDg5cMWYReURT2r3GClsSCriKGcwfhJUPWtad8ZYjuJlyV5wWs3ckALxkbZmTD
-        d75BcDdpA5qG+ZQ7Gj+NlqRcjavyknjTgDWcXju9Cp+PiD3BXLAV1ArWcKdnbsbzfgBcDFfiqqXprQAA
-        AABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAX9JREFUOE+Fkk9qwkAUxtMDVLoptSfoCVwUunIREjyCSW8QvYogbixdFEIpWbjw
+        AOLWS0QaEjeudZHN9P3GN6loSh98OPP9m0mMdzwezT+483Rkfa/L38HU7/dbsd/vmwL57QgKwZfg1oYZ
+        2bSGwUXB23K5NIvFAm7TlFCAMcuyPwsE/m63M4PBwPJa8ukKgrIsTRiGVpzNZm0FL4fDoXBaEAQmz3O0
+        Zwrep9OpFUajkRHjVYEe1BWtTJLEapPJBO0DIY/j2JKr1QqytYCR9SsetOFwiFZAGt/3LVlVlS0gCLjN
+        RcEjHncAXsjaFfCiZP9E6Aw3msfbxYOXjOxryG0URZZcr9eQsfqvBg0PXjJkIefuJY7HY679LdyDZpqB
+        Q8ODlwxZhF5RFPavcYKWxIKuIoZzB+ElQ9a1p3xliO4mXJXnBazdyQAvGRtmZMN3vkFwN2kDmob5lDsa
+        P42WpFyNq/KSeNOANZxeO70Kn4+IPcFcsBXUCtZwp2duxvN+AFwMV+KqpemtAAAAAElFTkSuQmCC
 </value>
   </data>
   <metadata name="tool_BasicInfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -175,6 +174,9 @@
   </metadata>
   <metadata name="tm_CheckTab.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>308, 17</value>
+  </metadata>
+  <metadata name="tool_BasicInfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>432, 17</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

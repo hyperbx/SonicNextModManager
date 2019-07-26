@@ -66,7 +66,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.11";
+        public static string versionNumber = "Version 1.11_01";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -709,9 +709,23 @@ namespace Sonic_06_Mod_Manager
                                     }
                                 }
                             }
-                            else { InstallMods(); }
+                            else
+                            {
+                                InstallMods();
+                            }
 
-                            if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
+                            if (!check_FTP.Checked && !check_manUninstall.Checked)
+                            {
+                                if (patchesList.GetItemChecked(3))
+                                {
+                                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch() == false)
+                                    {
+                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                                    }
+                                }
+
+                                LaunchXenia();
+                            }
                         }
                         else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                     }
@@ -752,9 +766,23 @@ namespace Sonic_06_Mod_Manager
                                     }
                                 }
                             }
-                            else { InstallMods(); }
+                            else
+                            {
+                                InstallMods();
+                            }
 
-                            if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
+                            if (!check_FTP.Checked && !check_manUninstall.Checked)
+                            {
+                                if (patchesList.GetItemChecked(3))
+                                {
+                                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch() == false)
+                                    {
+                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                                    }
+                                }
+
+                                LaunchXenia();
+                            }
                         }
                         else { MessageBox.Show("Please specify the required paths.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                     }
@@ -840,7 +868,18 @@ namespace Sonic_06_Mod_Manager
                         SaveChecks();
                         RefreshMods();
 
-                        if (!check_FTP.Checked && !check_manUninstall.Checked) LaunchXenia();
+                        if (!check_FTP.Checked && !check_manUninstall.Checked)
+                        {
+                            if (patchesList.GetItemChecked(3))
+                            {
+                                if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch() == false)
+                                {
+                                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                                }
+                            }
+
+                            LaunchXenia();
+                        }
                     }
                 }
             }
@@ -864,48 +903,16 @@ namespace Sonic_06_Mod_Manager
                     return;
                 }
 
-                if (!check_FTP.Checked)
-                {
-                    if (modsBox.Text != string.Empty && s06PathBox.Text != string.Empty && xeniaBox.Text != string.Empty)
-                    {
-                        SaveChecks();
-                        RefreshMods();
-                    }
-                }
                 SaveChecks();
                 RefreshMods();
 
-                if (check_FTP.Checked)
+                try { InstallPatches(); }
+                catch (Exception ex)
                 {
-                    if (ftpLocationBox.Text.StartsWith("ftp://"))
-                    {
-                        if (ftpLocationBox.Text.EndsWith("/"))
-                        {
-                            InstallPatches();
-                        }
-                        else
-                        {
-                            ftpLocationBox.AppendText("/");
-                            InstallPatches();
-                        }
-                    }
-                    else
-                    {
-                        if (ftpLocationBox.Text.StartsWith("/")) { ftpLocationBox.Text = ftpLocationBox.Text.Substring(1); }
-                        ftpLocationBox.Text = $"ftp://{ftpLocationBox.Text}";
-
-                        if (ftpLocationBox.Text.EndsWith("/"))
-                        {
-                            InstallPatches();
-                        }
-                        else
-                        {
-                            ftpLocationBox.AppendText("/");
-                            InstallPatches();
-                        }
-                    }
+                    MessageBox.Show($"Please refer to the following error for more information:\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Tools.Notification.Dispose();
+                    return;
                 }
-                else { InstallPatches(); }
             }
         }
 
@@ -1031,6 +1038,7 @@ namespace Sonic_06_Mod_Manager
             var parentTop = Top + ((Height - convertDialog.Height) / 2);
             convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
             convertDialog.Show();
+
             if (!check_FTP.Checked)
             {
                 if (s06Path != string.Empty)
@@ -1047,6 +1055,11 @@ namespace Sonic_06_Mod_Manager
                         File.Move(mod.ToString(), mod.ToString().Remove(mod.Length - 5));
                         Console.WriteLine("Removing: " + mod.ToString().Remove(mod.Length - 5));
                     }
+                }
+
+                if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
+                {
+                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", false);
                 }
             }
             else
@@ -2549,7 +2562,7 @@ namespace Sonic_06_Mod_Manager
                     }
                     else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Use Dynamic Bones for Sonic's Snowboard State")
                     {
-                        MessageBox.Show("This patch will enable Sonic's dynamic bones when in the snowboard state.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("This patch will enable Sonic's dynamic bones when in the snowboard state. This is applied after your mods are installed to ensure it's added with the selected mods.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Vulkan API Compatibility")
                     {
@@ -2782,6 +2795,12 @@ namespace Sonic_06_Mod_Manager
                             Console.WriteLine("Removing: " + mod.ToString().Remove(mod.Length - 5));
                         }
                     }
+
+                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
+                    {
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", false);
+                    }
+
                     File.Delete($"{modsPath}\\patches.ini");
                     MessageBox.Show("Patch uninstall complete.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -3196,14 +3215,19 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        private void PatchARC(string arc, string output)
+        private void PatchARC(string arc, string output, bool state)
         {
-            installState = "patch";
             var convertDialog = new ModStatus();
-            var parentLeft = Left + ((Width - convertDialog.Width) / 2);
-            var parentTop = Top + ((Height - convertDialog.Height) / 2);
-            convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
-            convertDialog.Show();
+
+            if (state)
+            {
+                installState = "patch";
+                var parentLeft = Left + ((Width - convertDialog.Width) / 2);
+                var parentTop = Top + ((Height - convertDialog.Height) / 2);
+                convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
+                convertDialog.Show();
+            }
+
             ProcessStartInfo patch;
 
             if (Path.GetFileName(arc) == "cache.arc")
@@ -3583,7 +3607,6 @@ namespace Sonic_06_Mod_Manager
                 var tempData = new DirectoryInfo(tempPath);
                 Directory.CreateDirectory(tempPath);
                 File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
-                if (!File.Exists($"{arc}_orig")) File.Move(arc, $"{arc}_orig");
 
                 patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"")
                 {
@@ -3597,7 +3620,21 @@ namespace Sonic_06_Mod_Manager
 
                 WriteDecompiler();
 
-                Tools.Patch.Use_Dynamic_Bones(tempPath);
+                if (state) { Tools.Patch.Use_Dynamic_Bones(tempPath); }
+                else
+                {
+                    if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm"))
+                    {
+                        File.Delete($"{tempPath}\\player\\xenon\\player\\snow_board.lub");
+                        File.Move($"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm", $"{tempPath}\\player\\xenon\\player\\snow_board.lub");
+                    }
+
+                    if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm"))
+                    {
+                        File.Delete($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub");
+                        File.Move($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm", $"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub");
+                    }
+                }
 
                 patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
                 {
@@ -3657,7 +3694,7 @@ namespace Sonic_06_Mod_Manager
                     patchesList.GetItemChecked(4) ||
                     combo_Reflections.SelectedIndex != 1 ||
                     (viewportX.Value == 1280 && viewportY.Value == 720) == false)
-                { PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc"); }
+                { PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc", true); }
                 else
                 {
                     if (File.Exists($"{s06Path}\\xenon\\archives\\cache.arc_orig"))
@@ -3667,16 +3704,21 @@ namespace Sonic_06_Mod_Manager
                 }
 
                 if (patchesList.GetItemChecked(3))
-                { PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc"); }
+                {
+                    if (!Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
+                    {
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                    }
+                }
                 else
                 {
-                    if (File.Exists($"{s06Path}\\xenon\\archives\\player.arc_orig"))
+                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
                     {
-                        File.Move($"{s06Path}\\xenon\\archives\\player.arc_orig", $"{s06Path}\\xenon\\archives\\player.arc");
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", false);
                     }
                 }
 
-                if (distanceUpDown.Value != 650) { PatchARC($"{s06Path}\\xenon\\archives\\game.arc", $"{s06Path}\\xenon\\archives\\game.arc"); }
+                if (distanceUpDown.Value != 650) { PatchARC($"{s06Path}\\xenon\\archives\\game.arc", $"{s06Path}\\xenon\\archives\\game.arc", true); }
                 else
                 {
                     if (File.Exists($"{s06Path}\\xenon\\archives\\game.arc_orig"))
