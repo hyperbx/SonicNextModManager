@@ -95,8 +95,6 @@ namespace Sonic_06_Mod_Manager
                     }
                 }
                 else { MessageBox.Show("Please check for invalid characters in your mod name.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-
-                ModManager.isCreatorDisposed = true;
                 Close();
             }
             else
@@ -131,8 +129,6 @@ namespace Sonic_06_Mod_Manager
                     }
                 }
                 else { MessageBox.Show("Please check for invalid characters in your mod name.", "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-
-                ModManager.isCreatorDisposed = true;
                 Close();
             }
         }

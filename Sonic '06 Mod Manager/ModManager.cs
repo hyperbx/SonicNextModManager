@@ -66,11 +66,10 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.11_01";
+        public static string versionNumber = "Version 1.11_02";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
-        public static bool isCreatorDisposed;
         public static string username;
         public static string password;
         string[] modArray;
@@ -108,8 +107,21 @@ namespace Sonic_06_Mod_Manager
         {
             try
             {
-                var latestVersion = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString(versionInfoLink);
-                var changeLogs = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt");
+                string latestVersion;
+                string changeLogs;
+
+                try
+                {
+                    latestVersion = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString(versionInfoLink);
+                }
+                catch { return; }
+
+                try
+                {
+                    changeLogs = new Tools.TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt");
+                }
+                catch { changeLogs = "► Allan please add details"; }
+
                 if (latestVersion.Contains("Version"))
                 {
                     if (latestVersion != currentVersion)
@@ -279,6 +291,14 @@ namespace Sonic_06_Mod_Manager
             userField.Text = Properties.Settings.Default.username;
             createButton.Width = 207;
             tm_CheckTab.Start();
+
+            if (!Tools.Patch.JavaCheck())
+            {
+                Tools.Global.Java = false;
+                patchesList.Enabled = false;
+                groupBox6.Enabled = false;
+            }
+            else { Tools.Global.Java = true; }
         }
 
         private void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath)
@@ -718,9 +738,16 @@ namespace Sonic_06_Mod_Manager
                             {
                                 if (patchesList.GetItemChecked(3))
                                 {
-                                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch() == false)
+                                    if (!Tools.ARC_Manager.Check_ARC_For_Patch("mid-air"))
                                     {
-                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "mid-air", true);
+                                    }
+                                }
+                                if (patchesList.GetItemChecked(4))
+                                {
+                                    if (!Tools.ARC_Manager.Check_ARC_For_Patch("dynamic_bones"))
+                                    {
+                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "dynamic_bones", true);
                                     }
                                 }
 
@@ -775,9 +802,16 @@ namespace Sonic_06_Mod_Manager
                             {
                                 if (patchesList.GetItemChecked(3))
                                 {
-                                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch() == false)
+                                    if (!Tools.ARC_Manager.Check_ARC_For_Patch("mid-air"))
                                     {
-                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "mid-air", true);
+                                    }
+                                }
+                                if (patchesList.GetItemChecked(4))
+                                {
+                                    if (!Tools.ARC_Manager.Check_ARC_For_Patch("dynamic_bones"))
+                                    {
+                                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "dynamic_bones", true);
                                     }
                                 }
 
@@ -872,9 +906,16 @@ namespace Sonic_06_Mod_Manager
                         {
                             if (patchesList.GetItemChecked(3))
                             {
-                                if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch() == false)
+                                if (!Tools.ARC_Manager.Check_ARC_For_Patch("mid-air"))
                                 {
-                                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "mid-air", true);
+                                }
+                            }
+                            if (patchesList.GetItemChecked(4))
+                            {
+                                if (!Tools.ARC_Manager.Check_ARC_For_Patch("dynamic_bones"))
+                                {
+                                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "dynamic_bones", true);
                                 }
                             }
 
@@ -1032,15 +1073,15 @@ namespace Sonic_06_Mod_Manager
         private void CleanUpMods()
         {
             skippedMods.Clear();
-            installState = "cleanup";
-            var convertDialog = new ModStatus();
-            var parentLeft = Left + ((Width - convertDialog.Width) / 2);
-            var parentTop = Top + ((Height - convertDialog.Height) / 2);
-            convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
-            convertDialog.Show();
 
             if (!check_FTP.Checked)
             {
+                installState = "cleanup";
+                var cleanupDialog = new ModStatus();
+                var cleanupParentLeft = Left + ((Width - cleanupDialog.Width) / 2);
+                var cleanupParentTop = Top + ((Height - cleanupDialog.Height) / 2);
+                cleanupDialog.Location = new System.Drawing.Point(cleanupParentLeft, cleanupParentTop);
+                cleanupDialog.Show();
                 if (s06Path != string.Empty)
                 {
                     var mods = Directory.GetFiles(s06Path, "*.*", SearchOption.AllDirectories)
@@ -1056,11 +1097,23 @@ namespace Sonic_06_Mod_Manager
                         Console.WriteLine("Removing: " + mod.ToString().Remove(mod.Length - 5));
                     }
                 }
+                cleanupDialog.Close();
 
-                if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
+                installState = "unpatch";
+                var unpatchDialog = new ModStatus();
+                var unpatchParentLeft = Left + ((Width - unpatchDialog.Width) / 2);
+                var unpatchParentTop = Top + ((Height - unpatchDialog.Height) / 2);
+                unpatchDialog.Location = new System.Drawing.Point(unpatchParentLeft, unpatchParentTop);
+                unpatchDialog.Show();
+                if (Tools.ARC_Manager.Check_ARC_For_Patch("dynamic_bones"))
                 {
-                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", false);
+                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "dynamic_bones", false);
                 }
+                if (Tools.ARC_Manager.Check_ARC_For_Patch("mid-air"))
+                {
+                    PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "mid-air", false);
+                }
+                unpatchDialog.Close();
             }
             else
             {
@@ -1658,7 +1711,6 @@ namespace Sonic_06_Mod_Manager
                     }
                 }
             }
-            convertDialog.Close();
         }
 
         private void CopyMods()
@@ -2560,6 +2612,10 @@ namespace Sonic_06_Mod_Manager
                     {
                         MessageBox.Show("This patch will replace Omega's shaders to prevent the sprites from becoming blurry on Xenia.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
+                    else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Unlock Mid-air Momentum")
+                    {
+                        MessageBox.Show("This patch will disable mid-air momentum for all characters. This provides better control in the air when jumping at awkward angles or using the bounce bracelet.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     else if (patchesList.Items[patchesList.SelectedIndex].ToString() == "Use Dynamic Bones for Sonic's Snowboard State")
                     {
                         MessageBox.Show("This patch will enable Sonic's dynamic bones when in the snowboard state. This is applied after your mods are installed to ensure it's added with the selected mods.", patchesList.Items[patchesList.SelectedIndex].ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2738,6 +2794,12 @@ namespace Sonic_06_Mod_Manager
         {
             if (stopButton.Text == "Uninstall Mods")
             {
+                installState = "cleanup";
+                var convertDialog = new ModStatus();
+                var parentLeft = Left + ((Width - convertDialog.Width) / 2);
+                var parentTop = Top + ((Height - convertDialog.Height) / 2);
+                convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
+                convertDialog.Show();
                 try
                 {
                     if (check_FTP.Checked)
@@ -2767,9 +2829,16 @@ namespace Sonic_06_Mod_Manager
                     Tools.Notification.Dispose();
                     return;
                 }
+                convertDialog.Close();
             }
             else
             {
+                installState = "unpatch";
+                var convertDialog = new ModStatus();
+                var parentLeft = Left + ((Width - convertDialog.Width) / 2);
+                var parentTop = Top + ((Height - convertDialog.Height) / 2);
+                convertDialog.Location = new System.Drawing.Point(parentLeft, parentTop);
+                convertDialog.Show();
                 try
                 {
                     combo_Reflections.SelectedIndex = 1;
@@ -2796,12 +2865,18 @@ namespace Sonic_06_Mod_Manager
                         }
                     }
 
-                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
+                    if (Tools.ARC_Manager.Check_ARC_For_Patch("dynamic_bones"))
                     {
-                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", false);
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "dynamic_bones", false);
+                    }
+                    else if (Tools.ARC_Manager.Check_ARC_For_Patch("mid-air"))
+                    {
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "mid-air", false);
                     }
 
                     File.Delete($"{modsPath}\\patches.ini");
+
+                    convertDialog.Close();
                     MessageBox.Show("Patch uninstall complete.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
@@ -3037,27 +3112,6 @@ namespace Sonic_06_Mod_Manager
 
         private void Tab_Section_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tab_Section.SelectedIndex == 2)
-            {
-                button1.Text = "Patch Info";
-                playButton.Text = "Apply Patches";
-                playButton.Width = 101;
-                stopButton.Text = "Restore Defaults";
-                stopButton.Visible = true;
-            }
-            else
-            {
-                button1.Text = "Mod Info";
-                if (check_manUninstall.Checked) playButton.Text = "Install Mods";
-                else
-                {
-                    playButton.Text = "Save and Play";
-                    playButton.Width = 207;
-                    stopButton.Text = "Uninstall Mods";
-                    stopButton.Visible = false;
-                }
-            }
-
             if (tab_Section.SelectedIndex != 0) { refreshButton.Enabled = false; }
             else { refreshButton.Enabled = true; }
 
@@ -3072,6 +3126,57 @@ namespace Sonic_06_Mod_Manager
                 radio_All.Visible = false;
                 radio_Xbox.Visible = false;
                 radio_PlayStation.Visible = false;
+            }
+
+            if (tab_Section.SelectedIndex == 2)
+            {
+                if (check_FTP.Checked)
+                {
+                    playButton.Text = "Test Connection";
+                    playButton.Width = 207;
+                    stopButton.Text = "Uninstall Mods";
+                    stopButton.Visible = false;
+                }
+                else
+                {
+                    if (Tools.Global.Java)
+                    {
+                        button1.Text = "Patch Info";
+                        playButton.Text = "Apply Patches";
+                        playButton.Width = 101;
+                        stopButton.Text = "Restore Defaults";
+                        stopButton.Visible = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please install Java to use the patches.", "Java Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                button1.Text = "Mod Info";
+                if (check_manUninstall.Checked)
+                {
+                    playButton.Text = "Install Mods";
+                    playButton.Width = 101;
+                    stopButton.Text = "Uninstall Mods";
+                    stopButton.Visible = true;
+                }
+                else if (check_FTP.Checked)
+                {
+                    playButton.Text = "Test Connection";
+                    playButton.Width = 101;
+                    stopButton.Text = "Uninstall Mods";
+                    stopButton.Visible = true;
+                }
+                else
+                {
+                    playButton.Text = "Save and Play";
+                    playButton.Width = 207;
+                    stopButton.Text = "Uninstall Mods";
+                    stopButton.Visible = false;
+                }
             }
 
             modList.ClearSelected();
@@ -3215,7 +3320,7 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        private void PatchARC(string arc, string output, bool state)
+        private void PatchARC(string arc, string output, string type, bool state)
         {
             var convertDialog = new ModStatus();
 
@@ -3522,10 +3627,11 @@ namespace Sonic_06_Mod_Manager
                     #endregion
                 }
 
-                if (patchesList.GetItemChecked(0)) { Tools.Patch.Disable_HUD(tempPath); }
                 if (patchesList.GetItemChecked(1)) { Tools.Patch.Disable_Shadows(tempPath); }
+                if (patchesList.GetItemChecked(5)) { Tools.Patch.Vulkan_API_Compatibility(tempPath); }
+                if (patchesList.GetItemChecked(0)) { Tools.Patch.Disable_HUD(tempPath); }
+
                 Tools.Patch.Viewport(tempPath, Convert.ToInt32(viewportX.Value), Convert.ToInt32(viewportY.Value));
-                if (patchesList.GetItemChecked(4)) { Tools.Patch.Vulkan_API_Compatibility(tempPath); }
 
                 patch = new ProcessStartInfo($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc))}\" -c \"{output}\"")
                 {
@@ -3620,19 +3726,39 @@ namespace Sonic_06_Mod_Manager
 
                 WriteDecompiler();
 
-                if (state) { Tools.Patch.Use_Dynamic_Bones(tempPath); }
-                else
+                if (type == "dynamic_bones")
                 {
-                    if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm"))
+                    if (state) { Tools.Patch.Use_Dynamic_Bones(tempPath); }
+                    else
                     {
-                        File.Delete($"{tempPath}\\player\\xenon\\player\\snow_board.lub");
-                        File.Move($"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm", $"{tempPath}\\player\\xenon\\player\\snow_board.lub");
-                    }
+                        if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm"))
+                        {
+                            File.Delete($"{tempPath}\\player\\xenon\\player\\snow_board.lub");
+                            File.Move($"{tempPath}\\player\\xenon\\player\\snow_board.lub_sonic06mm", $"{tempPath}\\player\\xenon\\player\\snow_board.lub");
+                        }
 
-                    if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm"))
+                        if (File.Exists($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm"))
+                        {
+                            File.Delete($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub");
+                            File.Move($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm", $"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub");
+                        }
+                    }
+                }
+                else if (type == "mid-air")
+                {
+                    string[] files = { "amy.lub", "blaze.lub", "boss_shadow.lub", "boss_silver.lub", "boss_sonic.lub", "knuckles.lub", "omega.lub", "princess.lub", "rouge.lub", "shadow.lub", "silver.lub", "sonic_new.lub", "tails.lub" };
+
+                    foreach (var item in files)
                     {
-                        File.Delete($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub");
-                        File.Move($"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub_sonic06mm", $"{tempPath}\\player\\xenon\\player\\snow_board_wap.lub");
+                        if (state) { Tools.Patch.Disable_Midair_Momentum(tempPath, item); }
+                        else
+                        {
+                            if (File.Exists($"{tempPath}\\player\\xenon\\player\\{item}_sonic06mm"))
+                            {
+                                File.Delete($"{tempPath}\\player\\xenon\\player\\{item}");
+                                File.Move($"{tempPath}\\player\\xenon\\player\\{item}_sonic06mm", $"{tempPath}\\player\\xenon\\player\\{item}");
+                            }
+                        }
                     }
                 }
 
@@ -3691,10 +3817,10 @@ namespace Sonic_06_Mod_Manager
 
                 if (patchesList.GetItemChecked(0) ||
                     patchesList.GetItemChecked(1) ||
-                    patchesList.GetItemChecked(4) ||
+                    patchesList.GetItemChecked(5) ||
                     combo_Reflections.SelectedIndex != 1 ||
                     (viewportX.Value == 1280 && viewportY.Value == 720) == false)
-                { PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc", true); }
+                { PatchARC($"{s06Path}\\xenon\\archives\\cache.arc", $"{s06Path}\\xenon\\archives\\cache.arc", string.Empty, true); }
                 else
                 {
                     if (File.Exists($"{s06Path}\\xenon\\archives\\cache.arc_orig"))
@@ -3705,20 +3831,35 @@ namespace Sonic_06_Mod_Manager
 
                 if (patchesList.GetItemChecked(3))
                 {
-                    if (!Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
+                    if (!Tools.ARC_Manager.Check_ARC_For_Patch("mid-air"))
                     {
-                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", true);
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "mid-air", true);
                     }
                 }
                 else
                 {
-                    if (Tools.ARC_Manager.Check_Dynamic_Bone_Patch())
+                    if (Tools.ARC_Manager.Check_ARC_For_Patch("mid-air"))
                     {
-                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", false);
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "mid-air", false);
                     }
                 }
 
-                if (distanceUpDown.Value != 650) { PatchARC($"{s06Path}\\xenon\\archives\\game.arc", $"{s06Path}\\xenon\\archives\\game.arc", true); }
+                if (patchesList.GetItemChecked(4))
+                {
+                    if (!Tools.ARC_Manager.Check_ARC_For_Patch("dynamic_bones"))
+                    {
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "dynamic_bones", true);
+                    }
+                }
+                else
+                {
+                    if (Tools.ARC_Manager.Check_ARC_For_Patch("dynamic_bones"))
+                    {
+                        PatchARC($"{s06Path}\\xenon\\archives\\player.arc", $"{s06Path}\\xenon\\archives\\player.arc", "dynamic_bones", false);
+                    }
+                }
+
+                if (distanceUpDown.Value != 650) { PatchARC($"{s06Path}\\xenon\\archives\\game.arc", $"{s06Path}\\xenon\\archives\\game.arc", string.Empty, true); }
                 else
                 {
                     if (File.Exists($"{s06Path}\\xenon\\archives\\game.arc_orig"))
@@ -3926,10 +4067,11 @@ namespace Sonic_06_Mod_Manager
 
         private void Tm_CheckTab_Tick(object sender, EventArgs e)
         {
-            if (modList.CheckedItems.Count == 0 && check_FTP.Checked) { playButton.Text = "Test Connection"; }
-            else if (check_FTP.Checked && tab_Section.SelectedIndex != 2 || check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Install Mods"; stopButton.Text = "Uninstall Mods"; }
-            else if (!check_FTP.Checked && tab_Section.SelectedIndex != 2 || !check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Save and Play"; }
-            else { playButton.Text = "Apply Patches"; stopButton.Text = "Restore Defaults"; }
+            if (modList.CheckedItems.Count == 0 && check_FTP.Checked) { playButton.Text = "Test Connection"; playButton.Enabled = true; stopButton.Enabled = true; }
+            else if (check_FTP.Checked && tab_Section.SelectedIndex != 2 || check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Install Mods"; stopButton.Text = "Uninstall Mods"; playButton.Enabled = true; stopButton.Enabled = true; }
+            else if (!check_FTP.Checked && tab_Section.SelectedIndex != 2 || !check_manUninstall.Checked && tab_Section.SelectedIndex != 2) { playButton.Text = "Save and Play"; playButton.Enabled = true; stopButton.Enabled = true; }
+            else if (Tools.Global.Java) { playButton.Text = "Apply Patches"; stopButton.Text = "Restore Defaults"; playButton.Enabled = true; stopButton.Enabled = true; }
+            else { playButton.Text = "None"; stopButton.Text = "None"; playButton.Enabled = false; stopButton.Enabled = false; }
         }
 
         private void DistanceUpDown_ValueChanged(object sender, EventArgs e)

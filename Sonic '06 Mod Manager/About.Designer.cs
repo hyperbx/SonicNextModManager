@@ -55,7 +55,7 @@
             this.pic_Logo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pic_Logo.Location = new System.Drawing.Point(-1, -1);
             this.pic_Logo.Name = "pic_Logo";
-            this.pic_Logo.Size = new System.Drawing.Size(229, 375);
+            this.pic_Logo.Size = new System.Drawing.Size(229, 389);
             this.pic_Logo.TabIndex = 0;
             this.pic_Logo.TabStop = false;
             this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
@@ -86,7 +86,7 @@
             this.lbl_Contributors.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Contributors.Location = new System.Drawing.Point(233, 48);
             this.lbl_Contributors.Name = "lbl_Contributors";
-            this.lbl_Contributors.Size = new System.Drawing.Size(378, 225);
+            this.lbl_Contributors.Size = new System.Drawing.Size(378, 240);
             this.lbl_Contributors.TabIndex = 3;
             this.lbl_Contributors.Text = resources.GetString("lbl_Contributors.Text");
             // 
@@ -95,7 +95,7 @@
             this.btn_GitHub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(218)))), ((int)(((byte)(240)))));
             this.btn_GitHub.FlatAppearance.BorderSize = 0;
             this.btn_GitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_GitHub.Location = new System.Drawing.Point(234, 341);
+            this.btn_GitHub.Location = new System.Drawing.Point(234, 355);
             this.btn_GitHub.Name = "btn_GitHub";
             this.btn_GitHub.Size = new System.Drawing.Size(377, 23);
             this.btn_GitHub.TabIndex = 4;
@@ -108,7 +108,7 @@
             this.button1.BackColor = System.Drawing.Color.Tomato;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(234, 312);
+            this.button1.Location = new System.Drawing.Point(234, 326);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(377, 23);
             this.button1.TabIndex = 5;
@@ -147,7 +147,7 @@
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel3.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel3.Location = new System.Drawing.Point(233, 214);
+            this.linkLabel3.Location = new System.Drawing.Point(233, 229);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(62, 14);
             this.linkLabel3.TabIndex = 8;
@@ -160,7 +160,7 @@
             this.button2.BackColor = System.Drawing.Color.LightGreen;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(234, 283);
+            this.button2.Location = new System.Drawing.Point(234, 297);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(377, 23);
             this.button2.TabIndex = 9;
@@ -173,7 +173,7 @@
             this.linkLabel4.AutoSize = true;
             this.linkLabel4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel4.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel4.Location = new System.Drawing.Point(233, 229);
+            this.linkLabel4.Location = new System.Drawing.Point(233, 244);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(64, 14);
             this.linkLabel4.TabIndex = 10;
@@ -225,7 +225,7 @@
             this.linkLabel8.AutoSize = true;
             this.linkLabel8.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel8.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel8.Location = new System.Drawing.Point(233, 259);
+            this.linkLabel8.Location = new System.Drawing.Point(233, 274);
             this.linkLabel8.Name = "linkLabel8";
             this.linkLabel8.Size = new System.Drawing.Size(30, 14);
             this.linkLabel8.TabIndex = 14;
@@ -237,7 +237,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(617, 371);
+            this.ClientSize = new System.Drawing.Size(617, 385);
             this.Controls.Add(this.linkLabel8);
             this.Controls.Add(this.linkLabel7);
             this.Controls.Add(this.linkLabel6);

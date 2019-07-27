@@ -958,6 +958,7 @@
             "Disable HUD",
             "Disable Shadows",
             "Omega Blur Fix",
+            "Unlock Mid-air Momentum",
             "Use Dynamic Bones for Sonic\'s Snowboard State",
             "Vulkan API Compatibility"});
             this.patchesList.Location = new System.Drawing.Point(3, 3);
