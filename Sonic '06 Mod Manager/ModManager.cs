@@ -67,7 +67,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.12-indev";
+        public static string versionNumber = "Version 1.12";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -1771,13 +1771,31 @@ namespace Sonic_06_Mod_Manager
                                             if (string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)))
                                             {
                                                 Console.WriteLine("Copying " + mod);
-                                                if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                                File.Copy(mod, origArcPath, true);
+
+                                                if (File.Exists(origArcPath))
+                                                {
+                                                    if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                                    File.Copy(mod, origArcPath, true);
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Skipped " + mod);
+                                                    skippedMods.Add($"\n► {item} (failed because '{Path.GetFileName(origArcPath)}' does not exist in path: {Path.GetDirectoryName(origArcPath)})");
+                                                }
                                             }
                                             else
                                             {
                                                 Console.WriteLine("Merging " + mod);
-                                                MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
+
+                                                if (File.Exists(origArcPath))
+                                                {
+                                                    MergeARCs(origArcPath, mod, origArcPath, false, string.Empty);
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Skipped " + mod);
+                                                    skippedMods.Add($"\n► {item} (failed because '{Path.GetFileName(origArcPath)}' does not exist in path: {Path.GetDirectoryName(origArcPath)})");
+                                                }
                                             }
                                         }
                                         else
@@ -1791,8 +1809,17 @@ namespace Sonic_06_Mod_Manager
                                         if ((File.Exists(targetArcPath) || File.Exists(patchArcPath)) == false)
                                         {
                                             Console.WriteLine("Copying " + mod);
-                                            if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                            File.Copy(mod, origArcPath, true);
+
+                                            if (File.Exists(origArcPath))
+                                            {
+                                                if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                                File.Copy(mod, origArcPath, true);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Skipped " + mod);
+                                                skippedMods.Add($"\n► {item} (failed because '{Path.GetFileName(origArcPath)}' does not exist in path: {Path.GetDirectoryName(origArcPath)})");
+                                            }
                                         }
                                         else
                                         {
@@ -1825,8 +1852,17 @@ namespace Sonic_06_Mod_Manager
                                     if ((File.Exists(targetArcPath) || File.Exists(patchArcPath)) == false)
                                     {
                                         Console.WriteLine("Copying " + mod);
-                                        if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                        File.Copy(mod, origArcPath, true);
+
+                                        if (File.Exists(origArcPath))
+                                        {
+                                            if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                            File.Copy(mod, origArcPath, true);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Skipped " + mod);
+                                            skippedMods.Add($"\n► {item} (failed because '{Path.GetFileName(origArcPath)}' does not exist in path: {Path.GetDirectoryName(origArcPath)})");
+                                        }
                                     }
                                     else
                                     {
@@ -1865,8 +1901,17 @@ namespace Sonic_06_Mod_Manager
                             if ((File.Exists(targetArcPath) || File.Exists(patchArcPath)) == false)
                             {
                                 Console.WriteLine("Copying " + mod);
-                                if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                                File.Copy(mod, origArcPath, true);
+
+                                if (File.Exists(origArcPath))
+                                {
+                                    if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                                    File.Copy(mod, origArcPath, true);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Skipped " + mod);
+                                    skippedMods.Add($"\n► {item} (failed because '{Path.GetFileName(origArcPath)}' does not exist in path: {Path.GetDirectoryName(origArcPath)})");
+                                }
                             }
                             else
                             {

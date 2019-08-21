@@ -40,6 +40,8 @@ namespace Sonic_06_Mod_Manager
         [STAThread]
         static void Main(string[] args)
         {
+            WritePrerequisites();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
