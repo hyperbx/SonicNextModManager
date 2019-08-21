@@ -182,6 +182,16 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Ookii_Dialogs {
+            get {
+                object obj = ResourceManager.GetObject("Ookii_Dialogs", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] unarcphp {
             get {
                 object obj = ResourceManager.GetObject("unarcphp", resourceCulture);

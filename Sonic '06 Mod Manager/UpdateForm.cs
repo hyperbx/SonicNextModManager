@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Sonic_06_Mod_Manager

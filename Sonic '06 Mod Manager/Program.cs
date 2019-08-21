@@ -81,15 +81,11 @@ namespace Sonic_06_Mod_Manager
                         {
                             try
                             {
-                                if (!File.Exists(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll")))
-                                {
-                                    File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
-                                }
                                 Application.Run(new ModManager(args));
                             }
                             catch
                             {
-                                File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+                                WritePrerequisites();
                             }
                         }
                     }
@@ -101,18 +97,39 @@ namespace Sonic_06_Mod_Manager
                 {
                     try
                     {
-                        if (!File.Exists(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll")))
-                        {
-                            File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
-                        }
                         Application.Run(new ModManager(args));
                     }
                     catch
                     {
-                        File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+                        WritePrerequisites();
                     }
                 }
             }
+        }
+
+        public static void WritePrerequisites()
+        {
+            if (!File.Exists(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll")))
+            {
+                try
+                {
+                    File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+                    MessageBox.Show("Newtonsoft.Json.dll was written to the application path.", "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex) { MessageBox.Show($"Failed to write Newtonsoft.Json.dll. Please reinstall Sonic '06 Mod Manager.\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error); Application.Exit(); }
+            }
+
+            if (!File.Exists(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll")))
+            {
+                try
+                {
+                    File.WriteAllBytes(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll"), Properties.Resources.Ookii_Dialogs);
+                    MessageBox.Show("Ookii.Dialogs.dll was written to the application path.", "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex) { MessageBox.Show($"Failed to write Ookii.Dialogs.dll. Please reinstall Sonic '06 Mod Manager.\n\n{ex}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error); Application.Exit(); }
+            }
+
+            Application.Exit();
         }
 
         public static bool RunningAsAdmin()

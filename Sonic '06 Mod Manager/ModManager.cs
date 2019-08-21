@@ -4,11 +4,12 @@ using System.Net;
 using System.Linq;
 using System.Data;
 using System.Text;
+using Ookii.Dialogs;
+using Microsoft.Win32;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Microsoft.Win32;
 
 // Welcome to Sonic '06 Mod Manager!
 
@@ -66,7 +67,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.11_02";
+        public static string versionNumber = "Version 1.12-indev";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -75,8 +76,6 @@ namespace Sonic_06_Mod_Manager
         string[] modArray;
         string modsPath;
         string s06Path;
-        string vkXeniaPath;
-        string dx12XeniaPath;
         string arcPath;
         string ftpPath;
         string origArcPath;
@@ -96,8 +95,6 @@ namespace Sonic_06_Mod_Manager
             ftpPath = Properties.Settings.Default.ftpPath;
             ftpLocationBox.Text = Properties.Settings.Default.ftpPath;
             s06PathBox.Text = Properties.Settings.Default.s06Path;
-            vkXeniaPath = Properties.Settings.Default.vkXeniaPath;
-            dx12XeniaPath = Properties.Settings.Default.dx12XeniaPath;
             xeniaBox.Text = Properties.Settings.Default.dx12XeniaPath;
         }
 
@@ -647,7 +644,7 @@ namespace Sonic_06_Mod_Manager
 
         private void S06PathButton_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog s06PathBrowser = new FolderBrowserDialog();
+            VistaFolderBrowserDialog s06PathBrowser = new VistaFolderBrowserDialog();
             s06PathBrowser.Description = "Select your SONIC THE HEDGEHOG (2006) Game directory...";
             if (s06PathBrowser.ShowDialog() == DialogResult.OK)
             {
@@ -990,10 +987,10 @@ namespace Sonic_06_Mod_Manager
         {
             if (xeniaBox.Text != string.Empty)
             {
-                string args;
-                string[] launchArgs;
+                string args = string.Empty;
                 List<string> xeniaParameters = new List<string>() { };
-                if (File.Exists($"{s06Path}\\default.xex")) { args = $"\"{s06Path}\\default.xex\""; xeniaParameters.Add(args); }
+
+                if (File.Exists(Path.Combine(s06Path, "default.xex"))) { args = $"\"{Path.Combine(s06Path, "default.xex")}\""; xeniaParameters.Add(args); }
                 else { args = string.Empty; }
 
                 if (check_RTV.Enabled && check_RTV.Checked) { xeniaParameters.Add("--d3d12_edram_rov=false"); }
@@ -1007,29 +1004,26 @@ namespace Sonic_06_Mod_Manager
                 if (SoftCacheLifetime.Enabled && SoftCacheLifetime.Value != 0) { xeniaParameters.Add($"--d3d12_texture_cache_limit_soft_lifetime={SoftCacheLifetime.Value}"); }
                 if (check_Debug.Enabled && check_Debug.Checked) { xeniaParameters.Add("--debug"); }
 
-                launchArgs = xeniaParameters.ToArray();
-
                 Console.WriteLine($"\nStarting Xenia <{combo_API.Text}>\n");
-                Console.WriteLine($"Parameters:\n");
-                //xeniaParameters.ForEach(i => Console.Write("{0}\n", i));
-                Console.WriteLine(string.Join(" ", xeniaParameters.ToArray()));
+
                 ProcessStartInfo xeniaExec;
-                if (combo_API.SelectedIndex == 0)
+
+                if (xeniaParameters.ToArray().Length > 0)
                 {
-                    xeniaExec = new ProcessStartInfo(vkXeniaPath)
+                    xeniaExec = new ProcessStartInfo(xeniaBox.Text)
                     {
-                        WorkingDirectory = Path.GetDirectoryName(vkXeniaPath),
+                        WorkingDirectory = Path.GetDirectoryName(xeniaBox.Text),
                         Arguments = string.Join(" ", xeniaParameters.ToArray())
                     };
                 }
                 else
                 {
-                    xeniaExec = new ProcessStartInfo(dx12XeniaPath)
+                    xeniaExec = new ProcessStartInfo(xeniaBox.Text)
                     {
-                        WorkingDirectory = Path.GetDirectoryName(dx12XeniaPath),
-                        Arguments = string.Join(" ", xeniaParameters.ToArray())
+                        WorkingDirectory = Path.GetDirectoryName(xeniaBox.Text),
                     };
                 }
+
                 var xenia = Process.Start(xeniaExec);
                 xenia.WaitForExit();
 
@@ -2690,7 +2684,7 @@ namespace Sonic_06_Mod_Manager
 
         private void ModsButton_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog modPathBrowser = new FolderBrowserDialog();
+            VistaFolderBrowserDialog modPathBrowser = new VistaFolderBrowserDialog();
             modPathBrowser.Description = "Select your SONIC THE HEDGEHOG (2006) Mods directory...";
             if (modPathBrowser.ShowDialog() == DialogResult.OK)
             {
