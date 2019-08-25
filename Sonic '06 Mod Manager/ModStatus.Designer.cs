@@ -78,6 +78,7 @@
             this.Controls.Add(this.pnl_windowCheck);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ModStatus";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Status";
             this.Load += new System.EventHandler(this.ModStatus_Load);

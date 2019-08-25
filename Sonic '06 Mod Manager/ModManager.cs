@@ -67,7 +67,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public static string versionNumber = "Version 1.12";
+        public static string versionNumber = "Version 1.13";
         public static string updateState;
         public static string serverStatus;
         public static string installState;
@@ -418,6 +418,7 @@ namespace Sonic_06_Mod_Manager
                 foreach (string mod in modArray)
                 {
                     var modName = mod.Remove(0, Path.GetDirectoryName(mod).Length);
+                    var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, modName)}\\mod.ini");
                     modName = modName.Replace("\\", "");
                     if (Properties.Settings.Default.filter == 0)
                     {
@@ -427,7 +428,6 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (File.Exists($"{Path.Combine(modsPath, modName)}\\mod.ini"))
                         {
-                            var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, modName)}\\mod.ini");
                             if (getPlatform.Contains("Platform=\"Xbox 360\""))
                             {
                                 modList.Items.Add(modName);
@@ -438,7 +438,6 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (File.Exists($"{Path.Combine(modsPath, modName)}\\mod.ini"))
                         {
-                            var getPlatform = File.ReadAllText($"{Path.Combine(modsPath, modName)}\\mod.ini");
                             if (getPlatform.Contains("Platform=\"PlayStation 3\""))
                             {
                                 modList.Items.Add(modName);
@@ -1731,6 +1730,7 @@ namespace Sonic_06_Mod_Manager
                         string entryValue;
                         while ((line = configFile.ReadLine()) != null)
                         {
+                            filesToCopyList.Clear();
                             if (line.Contains("Read-only=\""))
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
@@ -1770,6 +1770,7 @@ namespace Sonic_06_Mod_Manager
                                         {
                                             if (string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)))
                                             {
+                                                Console.WriteLine(string.Join(" ", filesToCopyList.ToArray()).Contains(Path.GetFileName(mod)));
                                                 Console.WriteLine("Copying " + mod);
 
                                                 if (File.Exists(origArcPath))
@@ -3083,24 +3084,11 @@ namespace Sonic_06_Mod_Manager
         private void Btn_SaveMods_Click(object sender, EventArgs e)
         {
             checkedModsList.Clear();
-            if (combo_Priority.SelectedIndex == 0)
+            for (int i = 0; i < modList.Items.Count; i++)
             {
-                for (int i = modList.Items.Count - 1; i >= 0; i--)
+                if (modList.GetItemChecked(i))
                 {
-                    if (modList.GetItemChecked(i))
-                    {
-                        checkedModsList.Add(modList.Items[i].ToString());
-                    }
-                }
-            }
-            else if (combo_Priority.SelectedIndex == 1)
-            {
-                for (int i = 0; i < modList.Items.Count; i++)
-                {
-                    if (modList.GetItemChecked(i))
-                    {
-                        checkedModsList.Add(modList.Items[i].ToString());
-                    }
+                    checkedModsList.Add(modList.Items[i].ToString());
                 }
             }
             checkedModsList.ForEach(i => Console.Write("{0}\n", i));
