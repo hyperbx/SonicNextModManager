@@ -2,9 +2,11 @@
 using System.IO;
 using Ookii.Dialogs;
 using Unify.Messages;
+using Microsoft.Win32;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.IO.Compression;
 using System.Threading.Tasks;
 
 // Project Unify is licensed under the MIT License:
@@ -162,6 +164,104 @@ namespace Unify.Tools
             {
                 process.Exited -= Process_Exited;
             }
+        }
+    }
+
+    public static class GB_Registry
+    {
+        public static string protocol = "sonic06mm";
+        public static RegistryKey sonic06mmKey = Registry.ClassesRoot.OpenSubKey($"{protocol}\\shell\\open\\command");
+
+        public static void AddRegistry()
+        {
+            sonic06mmKey = Registry.ClassesRoot.OpenSubKey(protocol, true);
+            if (sonic06mmKey == null)
+                sonic06mmKey = Registry.ClassesRoot.CreateSubKey(protocol);
+            sonic06mmKey.SetValue("", "URL:Sonic '06 Mod Manager");
+            sonic06mmKey.SetValue("URL Protocol", "");
+            var prevkey = sonic06mmKey;
+            sonic06mmKey = sonic06mmKey.OpenSubKey("shell", true);
+            if (sonic06mmKey == null)
+                sonic06mmKey = prevkey.CreateSubKey("shell");
+            prevkey = sonic06mmKey;
+            sonic06mmKey = sonic06mmKey.OpenSubKey("open", true);
+            if (sonic06mmKey == null)
+                sonic06mmKey = prevkey.CreateSubKey("open");
+            prevkey = sonic06mmKey;
+            sonic06mmKey = sonic06mmKey.OpenSubKey("command", true);
+            if (sonic06mmKey == null)
+                sonic06mmKey = prevkey.CreateSubKey("command");
+
+            sonic06mmKey.SetValue("", $"\"{Application.ExecutablePath}\" \"-banana\" \"%1\"");
+            sonic06mmKey.Close();
+        }
+
+        public static void RemoveRegistry()
+        {
+            // Delete the key instead of trying to change it
+            var CurrentUser = Registry.ClassesRoot;
+            CurrentUser.DeleteSubKeyTree(protocol, false);
+            CurrentUser.Close();
+        }
+    }
+
+    public static class Archives
+    {
+        public static void InstallFromZip(string ZipPath, string cache) {
+            try {
+                // Extracts all contents inside of the zip file
+                ZipFile.ExtractToDirectory(ZipPath, Sonic_06_Mod_Manager.Properties.Settings.Default.modsDirectory);
+
+                // Deletes the temp folder with all of its contents
+                Directory.Delete(cache, true);
+            }
+            catch { InstallFrom7zArchive(ZipPath, cache); }
+        }
+
+        // Requires 7-Zip to be installed.
+        public static void InstallFrom7zArchive(string ArchivePath, string cache) {
+            // Gets 7-Zip's Registry Key.
+            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\7-Zip");
+            // If null then try get it from the 64-bit Registry.
+            if (key == null)
+                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+                    .OpenSubKey("SOFTWARE\\7-Zip");
+            // Checks if 7-Zip is installed by checking if the key and path value exists.
+            if (key != null && key.GetValue("Path") is string path) {
+                // Path to 7z.exe.
+                string exe = Path.Combine(path, "7z.exe");
+
+                // Extracts the archive to the temp folder.
+                var psi = new ProcessStartInfo(exe, $"x \"{ArchivePath}\" -o\"{Sonic_06_Mod_Manager.Properties.Settings.Default.modsDirectory}\" -y");
+                psi.CreateNoWindow = true;
+                Process.Start(psi).WaitForExit(1000 * 60 * 5);
+
+                // Deletes the temp folder with all of its contents.
+                Directory.Delete(cache, true);
+                key.Close();
+            }
+            else { InstallFromWinRAR(ArchivePath, cache); }
+
+        }
+
+        // Requires WinRAR to be installed.
+        public static void InstallFromWinRAR(string ArchivePath, string cache) {
+            // Gets WinRAR's Registry Key.
+            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
+            // If null then try to get it from the 64-bit registry.
+            if (key == null)
+                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("SOFTWARE\\WinRAR");
+            if (key != null && key.GetValue("exe64") is string path) {
+                // Extracts the archive to the temp folder.
+                var psi = new ProcessStartInfo(path, $"x \"{ArchivePath}\" \"{Sonic_06_Mod_Manager.Properties.Settings.Default.modsDirectory}\"");
+                psi.CreateNoWindow = true;
+                Process.Start(psi).WaitForExit(1000 * 60 * 5);
+
+                // Deletes the temp folder with all of its contents.
+                Directory.Delete(cache, true);
+                key.Close();
+
+            } else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, SystemMessages.tl_ExtractError, "OK", "Error"); }
         }
     }
 }

@@ -6,6 +6,7 @@ using Unify.Patcher;
 using Ookii.Dialogs;
 using Unify.Messages;
 using System.Drawing;
+using Microsoft.Win32;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -41,8 +42,8 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 0.1a";
-        public static List<string> configs = new List<string>() { };
+        public readonly string versionNumber = "Version 2.0"; // Defines the version number to be used globally
+        public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
 
         public ModManager(string[] args) {
             InitializeComponent();
@@ -85,20 +86,113 @@ namespace Sonic_06_Mod_Manager
             check_Fullscreen.Checked = Properties.Settings.Default.emulator_Fullscreen;
             check_Discord.Checked = Properties.Settings.Default.emulator_Discord;
             combo_Reflections.SelectedIndex = Properties.Settings.Default.patches_Reflections;
-            #endregion
 
-            Text = $"Project Unify ({versionNumber})";
-            btn_About.Text = $"About Project Unify ({versionNumber})";
+            switch (Properties.Settings.Default.priority)
+            {
+                case false:
+                    btn_Priority.Text = "Priority: Top to Bottom";
+                    break;
+                case true:
+                    btn_Priority.Text = "Priority: Bottom to Top";
+                    break;
+            }
+
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(GB_Registry.protocol, false); // Open the Sonic '06 Mod Manager protocol key
+            if (key == null) // If the key does not exist, keep the checkbox unchecked.
+                check_GameBanana.Checked = false;
+            else
+                check_GameBanana.Checked = true;
+            #endregion
         }
 
         public string Status { set { statuslbl_Status.Text = value; } }
-        private void ModManager_Shown(object sender, EventArgs e) {
-            GetMods();
-            ARC.CleanupMods();
+        private void ModManager_Shown(object sender, EventArgs e) { // Using the Shown method is cleaner, as it waits for the main window to appear before performing tasks
+            GetMods(); // Basically just refreshes and clears up mods on launch
+            if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualInstall.Checked) ARC.CleanupMods(); // Ensures manual install is disabled first
         }
 
         #region Mods
-        private void Btn_Priority_Click(object sender, EventArgs e) {
+        private void Btn_ModInfo_Click(object sender, EventArgs e) {
+            Status = SystemMessages.msg_ModInfo;
+            new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void Btn_EditMod_Click(object sender, EventArgs e) {
+            Status = SystemMessages.msg_EditMod;
+            new src.ModCreator(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex]), true).ShowDialog();
+            Status = SystemMessages.msg_DefaultStatus;
+            GetMods();
+        }
+
+        private void Btn_SaveAndPlay_Click(object sender, EventArgs e) {
+            try {
+                ARC.CleanupMods();
+
+                if (Properties.Settings.Default.priority == false) {
+                    //Top to Bottom Priority
+                    for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) {
+                        if (clb_ModsList.GetItemChecked(i)) {
+                            Status = SystemMessages.msg_InstallingMod(clb_ModsList.Items[i].ToString());
+                            ARC.InstallMods(Path.GetDirectoryName(configs[i]));
+                        }
+                    }
+                } else {
+                    //Bottom to Top Priority
+                    foreach (object mod in clb_ModsList.CheckedItems) {
+                        Status = SystemMessages.msg_InstallingMod(clb_ModsList.GetItemText(mod));
+                        ARC.InstallMods(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]));
+                    }
+                }
+
+                //Show a MessageBox explaining what mods were skipped due to failing to copy.
+                if (ARC.skippedMods.ToString() != string.Empty) {
+                    StringBuilder getString = new StringBuilder();
+                    foreach (var modName in ARC.skippedMods)
+                        getString.Append(modName);
+
+                    if (getString.Length > 0)
+                        UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning");
+                }
+                if (!check_ManualInstall.Checked) {
+                    if (combo_Emulator_System.SelectedIndex == 0) {
+                        Status = SystemMessages.msg_LaunchXenia;
+                        LaunchXenia();
+                    }
+                    if (combo_Emulator_System.SelectedIndex == 1) {
+                        Status = SystemMessages.msg_LaunchRPCS3;
+                        LaunchRPCS3();
+                    }
+                }
+            }
+            catch (Exception ex) {
+                UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
+                unifytb_Main.SelectedIndex = 3;
+                ARC.CleanupMods();
+            }
+        }
+
+        private void Btn_UninstallMods_Click(object sender, EventArgs e) { ARC.CleanupMods(); }
+
+        private void Btn_RefreshMods_Click(object sender, EventArgs e) { GetMods(); }
+
+        private void Btn_Save_Click(object sender, EventArgs e) {
+            Properties.Settings.Default.emulator_RTV = check_RTV.Checked;
+            Properties.Settings.Default.emulator_2xRes = check_2xRes.Checked;
+            Properties.Settings.Default.emulator_VSync = check_VSync.Checked;
+            Properties.Settings.Default.emulator_ProtectZero = check_ProtectZero.Checked;
+            Properties.Settings.Default.emulator_Gamma = check_Gamma.Checked;
+            Properties.Settings.Default.emulator_Debug = check_Debug.Checked;
+            Properties.Settings.Default.emulator_Fullscreen = check_Fullscreen.Checked;
+            Properties.Settings.Default.emulator_Discord = check_Discord.Checked;
+
+            SaveChecks();
+            GetMods();
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void Btn_Priority_Click(object sender, EventArgs e) { // Switches priority - cleaner than using a combo box in this case
             if (!Properties.Settings.Default.priority) {
                 btn_Priority.Text = "Priority: Bottom to Top";
                 Properties.Settings.Default.priority = true;
@@ -119,7 +213,7 @@ namespace Sonic_06_Mod_Manager
 
             //Ask the user for a mod directory if the textbox for it is empty/the specified path doesn't exist.
             if (text_ModsDirectory.Text == string.Empty || !Directory.Exists(text_ModsDirectory.Text)) {
-                MessageBox.Show(ModsMessages.msg_NoModDirectory, SystemMessages.tl_DefaultTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UnifyMessages.UnifyMessage.Show(ModsMessages.msg_NoModDirectory, SystemMessages.tl_DefaultTitle, "OK", "Information");
 
                 VistaFolderBrowserDialog mods = new VistaFolderBrowserDialog {
                     Description = SettingsMessages.msg_LocateMods,
@@ -131,7 +225,7 @@ namespace Sonic_06_Mod_Manager
                     Properties.Settings.Default.modsDirectory = mods.SelectedPath;
                     Properties.Settings.Default.Save();
                 }
-                else Application.Exit();
+                else Application.Exit(); // Close the program if no mods directory is set. Why? Because it's redundant.
             }
 
             try {
@@ -146,7 +240,7 @@ namespace Sonic_06_Mod_Manager
                             while ((line = configFile.ReadLine()) != null) {
                                 if (line.Contains("Title=\"")) {
                                     entryValue = line.Substring(line.IndexOf("=") + 2);
-                                    modName = entryValue.Remove(entryValue.Length - 1);
+                                    modName = entryValue.Remove(entryValue.Length - 1); // Gets title directly from 'mod.ini'
                                 }
 
                                 //Handle Platforms based on Radio Buttons.
@@ -159,7 +253,7 @@ namespace Sonic_06_Mod_Manager
                                         configs.Add(mod);
                                     }
 
-                                    if (!radio_Xbox360.Checked && entryValue.Contains("PlayStation 3")) { 
+                                    if (!radio_Xbox360.Checked && entryValue.Contains("PlayStation 3")) {
                                         clb_ModsList.Items.Add(modName);
                                         configs.Add(mod);
                                     }
@@ -169,29 +263,89 @@ namespace Sonic_06_Mod_Manager
                         catch { }
                     }
                 }
+
+                GetModsChecks();
             }
-            catch (Exception ex) { MessageBox.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", ModsMessages.tl_ListError, MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", SystemMessages.tl_ListError, "OK", "Error"); }
         }
 
-        private void Radio_All_CheckedChanged(object sender, EventArgs e) {
+        private void GetModsChecks()
+        {
+            string line = string.Empty; // Declare empty string for StreamReader
+
+            using (StreamReader mods = new StreamReader(Path.Combine(Properties.Settings.Default.modsDirectory, "mods.ini"))) { // Read 'mods.ini'
+                mods.ReadLine(); // Skip [Main] line
+                while ((line = mods.ReadLine()) != null) { // Read all lines until null
+                    if (clb_ModsList.Items.Contains(line)) { // If the mods list contains what's on the current line...
+                        int checkedIndex = clb_ModsList.Items.IndexOf(line); // Get the index of the mod already in the mods list
+                        string cachePath = configs[checkedIndex]; // Get the index of the mod in the configs list
+
+                        clb_ModsList.Items.RemoveAt(checkedIndex); // Remove the mod already in the mods list
+                        configs.Remove(cachePath); // Remove the config location from the configs list
+
+                        clb_ModsList.Items.Insert(checkedIndex - checkedIndex, line); // Insert the mod by the name provided in 'mods.ini', given it's at least present in the list
+                        configs.Insert(checkedIndex - checkedIndex, cachePath); // Insert the mod at the top of the configs list to re-arrange the information
+                        clb_ModsList.SetItemChecked(checkedIndex - checkedIndex, true); // Set the new item to the checked state
+                    }
+                }
+            }
+        }
+
+        private void SaveChecks()
+        {
+            //Save the names of the selected mods and the indexes of the selected patches to their appropriate ini files
+            string modCheckList = Path.Combine(text_ModsDirectory.Text, "mods.ini");
+            string patchCheckList = Path.Combine(text_ModsDirectory.Text, "patches.ini");
+
+            using (StreamWriter sw = File.CreateText(modCheckList))
+            {
+                sw.WriteLine("[Main]"); //Header
+            }
+
+            for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) // Writes in reverse so the mods list writes it in it's preferred order
+            {
+                if (clb_ModsList.GetItemChecked(i))
+                {
+                    using (StreamWriter sw = File.AppendText(modCheckList))
+                    {
+                        sw.WriteLine(clb_ModsList.Items[i].ToString()); //Mod Name
+                    }
+                }
+            }
+
+            using (StreamWriter sw = File.CreateText(patchCheckList))
+            {
+                sw.WriteLine("[Main]"); //Header
+            }
+
+            foreach (var item in clb_PatchesList.CheckedItems)
+            {
+                using (StreamWriter sw = File.AppendText(patchCheckList))
+                {
+                    sw.WriteLine(clb_PatchesList.Items.IndexOf(item)); //Patch Index
+                }
+            }
+        }
+
+        private void Radio_All_CheckedChanged(object sender, EventArgs e) { // Refreshes mods list based on All filter
             Properties.Settings.Default.filter = 0;
             Properties.Settings.Default.Save();
             GetMods();
         }
 
-        private void Radio_Xbox360_CheckedChanged(object sender, EventArgs e) {
+        private void Radio_Xbox360_CheckedChanged(object sender, EventArgs e) { // Refreshes mods list based on Xbox 360 filter
             Properties.Settings.Default.filter = 1;
             Properties.Settings.Default.Save();
             GetMods();
         }
 
-        private void Radio_PlayStation3_CheckedChanged(object sender, EventArgs e) {
+        private void Radio_PlayStation3_CheckedChanged(object sender, EventArgs e) { // Refreshes mods list based on PlayStation 3 filter
             Properties.Settings.Default.filter = 2;
             Properties.Settings.Default.Save();
             GetMods();
         }
 
-        private void Btn_Play_Click(object sender, EventArgs e) {
+        private void Btn_Play_Click(object sender, EventArgs e) { // Launches the emulator respective to what system is chosen
             if (combo_Emulator_System.SelectedIndex == 0) {
                 Status = SystemMessages.msg_LaunchXenia;
                 LaunchXenia();
@@ -213,55 +367,51 @@ namespace Sonic_06_Mod_Manager
             btn_EditMod.Visible = false;
         }
 
-        private void Btn_UpperPriority_Click(object sender, EventArgs e) {
-            int selectedIndex = clb_ModsList.SelectedIndex;
-            object selectedItem = clb_ModsList.SelectedItem;
+        private void Btn_UpperPriority_Click(object sender, EventArgs e) { // Moves selected checkbox up the list
+            int selectedIndex = clb_ModsList.SelectedIndex; // Declares the selected index
+            object selectedItem = clb_ModsList.SelectedItem; // Selected checkbox
+            string cachePath = configs[selectedIndex]; // Info based on selectedIndex
+            bool check = false; // Check state bool
 
-            if (clb_ModsList.GetItemCheckState(selectedIndex) == CheckState.Checked) {
-                clb_ModsList.Items.RemoveAt(selectedIndex);
-                selectedIndex -= 1;
-                clb_ModsList.Items.Insert(selectedIndex, selectedItem);
-                clb_ModsList.SelectedIndex = selectedIndex;
-                clb_ModsList.SetItemChecked(selectedIndex, true);
-            }
-            else {
-                clb_ModsList.Items.RemoveAt(selectedIndex);
-                selectedIndex -= 1;
-                clb_ModsList.Items.Insert(selectedIndex, selectedItem);
-                clb_ModsList.SelectedIndex = selectedIndex;
-                clb_ModsList.SetItemChecked(selectedIndex, false);
-            }
+            if (clb_ModsList.GetItemCheckState(selectedIndex) == CheckState.Checked) { check = true; } // Checks if the checkbox was checked
+
+            clb_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
+            configs.Remove(cachePath); // Remove the selected item's info from the configs list
+            selectedIndex -= 1; // Move index up the list
+
+            clb_ModsList.Items.Insert(selectedIndex, selectedItem); // Insert checkbox at selectedIndex
+            configs.Insert(selectedIndex, cachePath); // Shifts the moved checkbox's info up the configs list
+            clb_ModsList.SelectedIndex = selectedIndex; // Selects the recently moved checkbox
+            clb_ModsList.SetItemChecked(selectedIndex, check); // Calls the 'check' bool and sets the checked state
         }
 
-        private void Btn_DownerPriority_Click(object sender, EventArgs e) {
-            int selectedIndex = clb_ModsList.SelectedIndex;
-            object selectedItem = clb_ModsList.SelectedItem;
+        private void Btn_DownerPriority_Click(object sender, EventArgs e) { // Moves selected checkbox down the list
+            int selectedIndex = clb_ModsList.SelectedIndex; // Declares the selected index
+            object selectedItem = clb_ModsList.SelectedItem; // Selected checkbox
+            string cachePath = configs[selectedIndex]; // Info based on selectedIndex
+            bool check = false; // Check state bool
 
-            if (clb_ModsList.GetItemCheckState(selectedIndex) == CheckState.Checked) {
-                clb_ModsList.Items.RemoveAt(selectedIndex);
-                selectedIndex += 1;
-                clb_ModsList.Items.Insert(selectedIndex, selectedItem);
-                clb_ModsList.SelectedIndex = selectedIndex;
-                clb_ModsList.SetItemChecked(selectedIndex, true);
-            }
-            else {
-                clb_ModsList.Items.RemoveAt(selectedIndex);
-                selectedIndex += 1;
-                clb_ModsList.Items.Insert(selectedIndex, selectedItem);
-                clb_ModsList.SelectedIndex = selectedIndex;
-                clb_ModsList.SetItemChecked(selectedIndex, false);
-            }
+            if (clb_ModsList.GetItemCheckState(selectedIndex) == CheckState.Checked) { check = true; } // Checks if the checkbox was checked
+
+            clb_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
+            configs.Remove(cachePath); // Remove the selected item's info from the configs list
+            selectedIndex += 1; // Move index down the list
+
+            clb_ModsList.Items.Insert(selectedIndex, selectedItem); // Insert checkbox at selectedIndex
+            configs.Insert(selectedIndex, cachePath); // Shifts the moved checkbox's info up the configs list
+            clb_ModsList.SelectedIndex = selectedIndex; // Selects the recently moved checkbox
+            clb_ModsList.SetItemChecked(selectedIndex, check); // Calls the 'check' bool and sets the checked state
         }
 
         private void Clb_ModsList_SelectedIndexChanged(object sender, EventArgs e) {
-            btn_ModInfo.Enabled = clb_ModsList.SelectedIndex >= 0;
-            btn_EditMod.Visible = clb_ModsList.SelectedIndex >= 0; btn_EditMod.Enabled = clb_ModsList.SelectedIndex >= 0;
-            btn_CreateNewMod.Width = 120;
-            btn_UpperPriority.Enabled = clb_ModsList.SelectedIndex > 0;
-            btn_DownerPriority.Enabled = clb_ModsList.SelectedIndex >= 0 && clb_ModsList.SelectedIndex < clb_ModsList.Items.Count - 1;
+            btn_ModInfo.Enabled = clb_ModsList.SelectedIndex >= 0; // Enables/disables the Mod Info button depending on if a checkbox is selected
+            btn_EditMod.Visible = clb_ModsList.SelectedIndex >= 0; btn_EditMod.Enabled = clb_ModsList.SelectedIndex >= 0; // Enables/disables the Edit Mod button depending on if a checkbox is selected
+            btn_CreateNewMod.Width = 120; // Sets Create New Mod button width to fit the Edit Mod button
+            btn_UpperPriority.Enabled = clb_ModsList.SelectedIndex > 0; // Enables/disables the Upper Priority button depending on if a checkbox is selected
+            btn_DownerPriority.Enabled = clb_ModsList.SelectedIndex >= 0 && clb_ModsList.SelectedIndex < clb_ModsList.Items.Count - 1; // Enables/disables the Downer Priority button depending on if a checkbox is selected
         }
 
-        private void Btn_CreateNewMod_Click(object sender, EventArgs e) {
+        private void Btn_CreateNewMod_Click(object sender, EventArgs e) { // Opens the Mod Creator form - refreshes upon exit
             Status = SystemMessages.msg_CreateNewMod;
             new src.ModCreator(string.Empty, false).ShowDialog();
             Status = SystemMessages.msg_DefaultStatus;
@@ -273,8 +423,6 @@ namespace Sonic_06_Mod_Manager
         private void LaunchXenia() {
             if (text_GameDirectory.Text == string.Empty) {
                 //Select game directory and save if we don't have one specified.
-                MessageBox.Show(EmulatorMessages.msg_LocateGame, SystemMessages.tl_DefaultTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 VistaFolderBrowserDialog game = new VistaFolderBrowserDialog {
                     Description = EmulatorMessages.msg_LocateGame,
                     UseDescriptionForTitle = true,
@@ -295,17 +443,18 @@ namespace Sonic_06_Mod_Manager
                 if (File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex"))) { xeniaParameters.Add($"\"{Path.Combine(text_GameDirectory.Text, "default.xex")}\""); }
 
                 if (combo_API.SelectedIndex == 1) { //Make sure we're using DX12 before adding the D3D12 Parameters.
-                    if (check_RTV.Checked) xeniaParameters.Add("--d3d12_edram_rov=false");
-                    if (check_2xRes.Checked) xeniaParameters.Add("--d3d12_resolution_scale=2");
+                    if (check_RTV.Checked) xeniaParameters.Add("--d3d12_edram_rov=false"); // Render Target Views
+                    if (check_2xRes.Checked) xeniaParameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
                 }
-                if (combo_API.SelectedIndex == 0) xeniaParameters.Add("--gpu=vulkan");
-                if (!check_VSync.Checked) xeniaParameters.Add("--vsync=false");
-                if (!check_ProtectZero.Checked) xeniaParameters.Add("--protect_zero=false");
-                if (check_Gamma.Checked) xeniaParameters.Add("--kernel_display_gamma_type=2");
-                if (check_Debug.Checked) xeniaParameters.Add("--debug");
-                if (check_Fullscreen.Checked) xeniaParameters.Add("--fullscreen");
-                if (!check_Discord.Checked) xeniaParameters.Add("--discord=false");
+                if (combo_API.SelectedIndex == 0) xeniaParameters.Add("--gpu=vulkan"); // Vulkan
+                if (!check_VSync.Checked) xeniaParameters.Add("--vsync=false"); // V-Sync
+                if (!check_ProtectZero.Checked) xeniaParameters.Add("--protect_zero=false"); // Protect Zero
+                if (check_Gamma.Checked) xeniaParameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
+                if (check_Debug.Checked) xeniaParameters.Add("--debug"); // Debug
+                if (check_Fullscreen.Checked) xeniaParameters.Add("--fullscreen"); // Launch in Fullscreen
+                if (!check_Discord.Checked) xeniaParameters.Add("--discord=false"); // Discord Rich Presence
 
+                // Saves selected settings
                 Properties.Settings.Default.emulator_RTV = check_RTV.Checked;
                 Properties.Settings.Default.emulator_2xRes = check_2xRes.Checked;
                 Properties.Settings.Default.emulator_VSync = check_VSync.Checked;
@@ -316,6 +465,7 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.emulator_Discord = check_Discord.Checked;
                 Properties.Settings.Default.Save();
 
+                // Checks if the array is populated before applying arguments
                 if (xeniaParameters.ToArray().Length > 0) {
                     xeniaExec = new ProcessStartInfo(text_EmulatorPath.Text) {
                         WorkingDirectory = Path.GetDirectoryName(text_EmulatorPath.Text),
@@ -327,15 +477,14 @@ namespace Sonic_06_Mod_Manager
                     { WorkingDirectory = Path.GetDirectoryName(text_EmulatorPath.Text) };
                 }
 
-                var xenia = Process.Start(xeniaExec);
+                var xenia = Process.Start(xeniaExec); // Launch Xenia
                 Status = SystemMessages.msg_XeniaExitCall;
-                xenia.WaitForExit();
+                xenia.WaitForExit(); // Wait for Xenia to exit
                 if (!check_ManualInstall.Checked) ARC.CleanupMods();
                 Status = SystemMessages.msg_DefaultStatus;
             }
-            else
-            {
-                text_EmulatorPath.Text = Locations.LocateEmulator();
+            else {
+                text_EmulatorPath.Text = Locations.LocateEmulator(); // Relocate Xenia if the emulator path is not set
                 LaunchXenia();
             }
         }
@@ -344,8 +493,6 @@ namespace Sonic_06_Mod_Manager
         {
             if (text_GameDirectory.Text == string.Empty) {
                 //Select game directory and save if we don't have one specified.
-                MessageBox.Show(EmulatorMessages.msg_LocateGame, SystemMessages.tl_DefaultTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 VistaFolderBrowserDialog game = new VistaFolderBrowserDialog {
                     Description = EmulatorMessages.msg_LocateGame,
                     UseDescriptionForTitle = true,
@@ -365,6 +512,7 @@ namespace Sonic_06_Mod_Manager
 
                 if (File.Exists(Path.Combine(text_GameDirectory.Text, "EBOOT.BIN"))) { RPCS3Parameters.Add($"\"{Path.Combine(text_GameDirectory.Text, "EBOOT.BIN")}\""); }
 
+                // Checks if the array is populated before applying arguments
                 if (RPCS3Parameters.ToArray().Length > 0) {
                     RPCS3Exec = new ProcessStartInfo(text_EmulatorPath.Text) {
                         WorkingDirectory = Path.GetDirectoryName(text_EmulatorPath.Text),
@@ -376,19 +524,19 @@ namespace Sonic_06_Mod_Manager
                     { WorkingDirectory = Path.GetDirectoryName(text_EmulatorPath.Text) };
                 }
 
-                var RPCS3 = Process.Start(RPCS3Exec);
+                var RPCS3 = Process.Start(RPCS3Exec); // Launch RPCS3
                 Status = SystemMessages.msg_RPCS3ExitCall;
-                RPCS3.WaitForExit();
+                RPCS3.WaitForExit(); // Wait for RPCS3 to exit
                 if (!check_ManualInstall.Checked) ARC.CleanupMods();
                 Status = SystemMessages.msg_DefaultStatus;
             }
             else {
-                text_EmulatorPath.Text = Locations.LocateEmulator();
+                text_EmulatorPath.Text = Locations.LocateEmulator(); // Relocate RPCS3 if the emulator path is not set
                 LaunchRPCS3();
             }
         }
 
-        private void Btn_EmulatorPath_Click(object sender, EventArgs e) { text_EmulatorPath.Text = Locations.LocateEmulator(); }
+        private void Btn_EmulatorPath_Click(object sender, EventArgs e) { text_EmulatorPath.Text = Locations.LocateEmulator(); } // Locate the emulator of choice
 
         private void Combo_Emulator_System_SelectedIndexChanged(object sender, EventArgs e) {
             //Depending on the selected system and theme, change text to disabled colour.
@@ -444,6 +592,7 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void Combo_API_SelectedIndexChanged(object sender, EventArgs e) {
+            //Depending on the selected API and theme, change text to disabled colour.
             if (combo_API.SelectedIndex == 0) {
                 check_RTV.Enabled = false;
                 check_2xRes.Enabled = false;
@@ -481,36 +630,36 @@ namespace Sonic_06_Mod_Manager
         #endregion
 
         #region Patches
-        private void Combo_Reflections_SelectedIndexChanged(object sender, EventArgs e) {
+        private void Combo_Reflections_SelectedIndexChanged(object sender, EventArgs e) { // Save Reflections value
             Properties.Settings.Default.patches_Reflections = combo_Reflections.SelectedIndex;
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_ResetReflections_Click(object sender, EventArgs e) {
+        private void Btn_ResetReflections_Click(object sender, EventArgs e) { // Default Reflections to Quarter
             combo_Reflections.SelectedIndex = 1;
             Properties.Settings.Default.patches_Reflections = 1;
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_ResetViewportX_Click(object sender, EventArgs e) {
+        private void Btn_ResetViewportX_Click(object sender, EventArgs e) { // Default Viewport X to 1280
             nud_ViewportX.Value = 1280;
             Properties.Settings.Default.patches_ViewportX = 1280;
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_ResetViewportY_Click(object sender, EventArgs e) {
+        private void Btn_ResetViewportY_Click(object sender, EventArgs e) { // Default Viewport Y to 720
             nud_ViewportY.Value = 720;
             Properties.Settings.Default.patches_ViewportY = 720;
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_ResetCameraDistance_Click(object sender, EventArgs e) {
+        private void Btn_ResetCameraDistance_Click(object sender, EventArgs e) { // Default Camera Distance to 650
             nud_CameraDistance.Value = 650;
             Properties.Settings.Default.patches_CameraDistance = 650;
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_ResetCameraHeight_Click(object sender, EventArgs e) {
+        private void Btn_ResetCameraHeight_Click(object sender, EventArgs e) { // Default Camera Height to ???
             nud_CameraHeight.Value = 0;
             Properties.Settings.Default.patches_CameraHeight = 0;
             Properties.Settings.Default.Save();
@@ -518,14 +667,14 @@ namespace Sonic_06_Mod_Manager
         #endregion
 
         #region Settings
-        private void Combo_FTP_System_SelectedIndexChanged(object sender, EventArgs e) {
+        private void Combo_FTP_System_SelectedIndexChanged(object sender, EventArgs e) { // Save FTP value
             Properties.Settings.Default.ftpSystem = combo_FTP_System.SelectedIndex;
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_ModsFolder_Click(object sender, EventArgs e) { text_ModsDirectory.Text = Locations.LocateMods(); }
+        private void Btn_ModsFolder_Click(object sender, EventArgs e) { text_ModsDirectory.Text = Locations.LocateMods(); } // Locate Mods folder
 
-        private void Btn_GameFolder_Click(object sender, EventArgs e) { text_GameDirectory.Text = Locations.LocateGame(); }
+        private void Btn_GameFolder_Click(object sender, EventArgs e) { text_GameDirectory.Text = Locations.LocateGame(); } // Locate Game folder
 
         private void Btn_ColourPicker_Click(object sender, System.EventArgs e) {
             //Create the Colour Picker, with the Custom Colours menu open and the colour set to the one from settings.
@@ -550,13 +699,13 @@ namespace Sonic_06_Mod_Manager
 
         private void Unifytb_Main_SelectedIndexChanged(object sender, System.EventArgs e) {
             clb_ModsList.ClearSelected();
-            btn_CreateNewMod.Width = 245;
+            clb_PatchesList.ClearSelected();
+            btn_CreateNewMod.Width = 245; // Reset Create New Mod button size from Edit Mod compacted size
             btn_EditMod.Visible = false;
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
         }
 
-        private void Btn_ColourPicker_Default_Click(object sender, System.EventArgs e) {
-            //Reset accent colour to default.
+        private void Btn_ColourPicker_Default_Click(object sender, System.EventArgs e) { // Default Accent Colour to RGB: (186, 0, 0)
             Properties.Settings.Default.accentColour = Color.FromArgb(186, 0, 0);
             Properties.Settings.Default.Save();
             ChangeAccentColours();
@@ -760,48 +909,37 @@ namespace Sonic_06_Mod_Manager
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
         }
 
-        private void Btn_GitHub_Click(object sender, EventArgs e) {
-            Process.Start("https://github.com/Knuxfan24/Sonic-06-Mod-Manager"); //Navigate to the GitHub page in the default web browser.
-        }
+        //Navigate to the GitHub page in the default web browser.
+        private void Btn_GitHub_Click(object sender, EventArgs e) { Process.Start("https://github.com/Knuxfan24/Sonic-06-Mod-Manager"); }
 
-        private void Btn_About_Click(object sender, EventArgs e) {
-            new src.AboutForm(versionNumber).ShowDialog(); //Show About Form, passing the Version Number in to be displayed.
-        }
+        //Show About Form, passing the Version Number in to be displayed.
+        private void Btn_About_Click(object sender, EventArgs e) { new src.AboutForm(versionNumber).ShowDialog(); }
 
         private void Btn_Reset_Click(object sender, EventArgs e) {
             //Read the message box text if you're confused.
-            DialogResult resetConfirmation = MessageBox.Show(SettingsMessages.msg_Reset, SystemMessages.tl_DefaultTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            string resetConfirmation = UnifyMessages.UnifyMessage.Show(SettingsMessages.msg_Reset, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
 
-            if (resetConfirmation == DialogResult.Yes) {
+            if (resetConfirmation == "Yes") {
                 Properties.Settings.Default.Reset();
                 Application.Restart();
             }
         }
-        #endregion
 
-        private void Btn_ModInfo_Click(object sender, EventArgs e) {
-            Status = SystemMessages.msg_ModInfo;
-            new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
-            Status = SystemMessages.msg_DefaultStatus;
-        }
+        private void Btn_ReportBug_Click(object sender, EventArgs e) { Process.Start("https://github.com/Knuxfan24/Sonic-06-Mod-Manager/issues"); }
 
-        private void Lbl_ModsDirectory_Click(object sender, EventArgs e) { Process.Start(Properties.Settings.Default.modsDirectory); }
+        private void Lbl_ModsDirectory_Click(object sender, EventArgs e) { Process.Start(Properties.Settings.Default.modsDirectory); } // Open Mods directory shortcut
 
-        private void Lbl_GameDirectory_Click(object sender, EventArgs e) { Process.Start(Properties.Settings.Default.gameDirectory); }
+        private void Lbl_GameDirectory_Click(object sender, EventArgs e) { Process.Start(Properties.Settings.Default.gameDirectory); } // Open Game directory shortcut
 
-        private void Check_ManualInstall_CheckedChanged(object sender, EventArgs e)
-        {
-            if (check_ManualInstall.Checked)
-            {
+        private void Check_ManualInstall_CheckedChanged(object sender, EventArgs e) {
+            if (check_ManualInstall.Checked) {
                 Properties.Settings.Default.manualInstall = true;
                 check_FTP.Enabled = false;
                 lbl_FTP.ForeColor = SystemColors.GrayText;
                 btn_SaveAndPlay.Text = "Install Mods";
                 btn_SaveAndPlay.Width = 120;
                 btn_UninstallMods.Visible = true;
-            }
-            else
-            {
+            } else {
                 Properties.Settings.Default.manualInstall = false;
                 check_FTP.Enabled = true;
                 if (!Properties.Settings.Default.theme)
@@ -817,17 +955,14 @@ namespace Sonic_06_Mod_Manager
 
         private void Check_FTP_CheckedChanged(object sender, EventArgs e)
         {
-            if (check_FTP.Checked)
-            {
+            if (check_FTP.Checked) {
                 Properties.Settings.Default.FTP = true;
                 check_ManualInstall.Enabled = false;
                 lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                 btn_SaveAndPlay.Text = "Install Mods";
                 btn_SaveAndPlay.Width = 120;
                 btn_UninstallMods.Visible = true;
-            }
-            else
-            {
+            } else {
                 Properties.Settings.Default.FTP = false;
                 check_ManualInstall.Enabled = true;
                 if (!Properties.Settings.Default.theme)
@@ -841,50 +976,57 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_EditMod_Click(object sender, EventArgs e) {
-            Status = SystemMessages.msg_EditMod;
-            new src.ModCreator(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex]), true).ShowDialog();
-            Status = SystemMessages.msg_DefaultStatus;
-            GetMods();
-        }
+        private void Check_GameBanana_CheckedChanged(object sender, EventArgs e) {
+            if (check_GameBanana.Checked) {
+                try {
+                    var Protocol = "sonic06mm";
+                    var key = Registry.ClassesRoot.OpenSubKey($"{Protocol}\\shell\\open\\command");
 
-        private void Btn_SaveAndPlay_Click(object sender, EventArgs e) {
-            try {
-                ARC.CleanupMods();
-                foreach (object mod in clb_ModsList.CheckedItems) {
-                    Status = SystemMessages.msg_InstallingMod(clb_ModsList.GetItemText(mod));
-                    ARC.InstallMods(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]));
-                }
-                //Show a MessageBox explaining what mods were skipped due to failing to copy.
-                if (ARC.skippedMods.ToString() != string.Empty)
-                {
-                    StringBuilder getString = new StringBuilder();
-                    foreach (var modName in ARC.skippedMods)
-                    {
-                        getString.Append(modName);
-                    }
-                    if (getString.ToString() != string.Empty) MessageBox.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), ModsMessages.tl_SuccessWarn, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                if (!check_ManualInstall.Checked) {
-                    if (combo_Emulator_System.SelectedIndex == 0) {
-                        Status = SystemMessages.msg_LaunchXenia;
-                        LaunchXenia();
-                    }
-                    if (combo_Emulator_System.SelectedIndex == 1) {
-                        Status = SystemMessages.msg_LaunchRPCS3;
-                        LaunchRPCS3();
+                    if (key == null) {
+                        if (!Program.RunningAsAdmin()) {
+                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
+
+                            switch (registry) {
+                                case "Yes":
+                                    var runAsAdmin = new ProcessStartInfo(Application.ExecutablePath, "-registry_add");
+                                    runAsAdmin.Verb = "runas";
+                                    if (Process.Start(runAsAdmin) != null) { Application.Exit(); }
+                                    break;
+                                case "No":
+                                    check_GameBanana.Checked = false;
+                                    break;
+                            }
+                        }
+                        else GB_Registry.AddRegistry();
                     }
                 }
+                catch { }
+            } else {
+                try {
+                    var Protocol = "sonic06mm";
+                    var key = Registry.ClassesRoot.OpenSubKey(Protocol);
+
+                    if (key != null) {
+                        if (!Program.RunningAsAdmin()) {
+                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
+
+                            switch (registry) {
+                                case "Yes":
+                                    var runAsAdmin = new ProcessStartInfo(Application.ExecutablePath, "-registry_remove");
+                                    runAsAdmin.Verb = "runas";
+                                    if (Process.Start(runAsAdmin) != null) { Application.Exit(); }
+                                    break;
+                                case "No":
+                                    check_GameBanana.Checked = true;
+                                    break;
+                            }
+                        }
+                        else GB_Registry.RemoveRegistry();
+                    }
+                }
+                catch { }
             }
-            catch (Exception ex) {
-                MessageBox.Show($"{ModsMessages.ex_ModInstallFailure}\n\n{ex}", ModsMessages.tl_FileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                unifytb_Main.SelectedIndex = 3;
-                ARC.CleanupMods();
-            }
         }
-
-        private void Btn_UninstallMods_Click(object sender, EventArgs e) { ARC.CleanupMods(); }
-
-        private void Btn_RefreshMods_Click(object sender, EventArgs e) { GetMods(); }
+        #endregion
     }
 }

@@ -56,6 +56,7 @@ namespace Sonic_06_Mod_Manager.src
                         entryValue = line.Substring(line.IndexOf("=") + 2);
                         entryValue = entryValue.Remove(entryValue.Length - 1);
                         lbl_Title.Text = entryValue;
+                        Text = entryValue;
                     }
                     if (line.StartsWith("Version")) {
                         entryValue = line.Substring(line.IndexOf("=") + 2);

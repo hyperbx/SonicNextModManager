@@ -56,36 +56,20 @@ namespace Sonic_06_Mod_Manager.src
             }
         }
 
-        private void Link_Knuxfan24_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://github.com/Knuxfan24");
-        }
+        private void Link_Knuxfan24_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/Knuxfan24"); }
 
-        private void Link_Hyper_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://github.com/HyperPolygon64");
-        }
+        private void Link_Hyper_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/HyperPolygon64"); }
 
-        private void Link_SuperSonic16_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://github.com/thesupersonic16");
-        }
+        private void Link_SuperSonic16_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/thesupersonic16"); }
 
-        private void Link_SEGACarnival_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://www.segacarnival.com/forum/index.php");
-        }
+        private void Link_SEGACarnival_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.segacarnival.com/forum/index.php"); }
 
-        private void Link_Nonami_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://www.youtube.com/channel/UC35wsF1NUwoUWmw2DLz6uJg");
-        }
+        private void Link_Nonami_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.youtube.com/channel/UC35wsF1NUwoUWmw2DLz6uJg"); }
 
-        private void Link_sharu6262_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://twitter.com/sharu6262");
-        }
+        private void Link_sharu6262_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://twitter.com/sharu6262"); }
 
-        private void Link_Melpontro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://www.youtube.com/user/Melpontro");
-        }
+        private void Link_Melpontro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.youtube.com/user/Melpontro"); }
 
-        private void Link_acro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://gamebanana.com/members/1447045");
-        }
+        private void Link_acro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://gamebanana.com/members/1447045"); }
     }
 }

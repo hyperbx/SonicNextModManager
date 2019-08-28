@@ -54,6 +54,7 @@ namespace Sonic_06_Mod_Manager.src
                 group_DescriptionField.BackColor = Color.FromArgb(45, 45, 48); group_DescriptionField.ForeColor = SystemColors.Control;
                 tb_Description.BackColor = Color.FromArgb(45, 45, 48); tb_Description.ForeColor = SystemColors.Control;
                 btn_RemoveThumbnail.BackColor = SystemColors.ControlLightLight;
+                btn_Browse.FlatAppearance.BorderSize = 0;
 
                 foreach (Control x in this.Controls)
                 {
@@ -158,9 +159,7 @@ namespace Sonic_06_Mod_Manager.src
             if (!FilePathHasInvalidChars(text_Title.Text))
             {
                 if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, text_Title.Text)) && !edit)
-                {
-                    MessageBox.Show($"A mod called '{text_Title.Text}' already exists.", "Name Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(text_Title.Text), SystemMessages.tl_NameError, "OK", "Error");
                 else
                 {
                     string newPath = Path.Combine(Properties.Settings.Default.modsDirectory, text_Title.Text);
@@ -194,7 +193,7 @@ namespace Sonic_06_Mod_Manager.src
                         foreach (var img in getThumbnail)
                             if (File.Exists(img)) File.Delete(img);
                         }
-                        catch (Exception ex) { MessageBox.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", ModsMessages.tl_FileError, MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                        catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error"); }
                     }
 
                     Close();

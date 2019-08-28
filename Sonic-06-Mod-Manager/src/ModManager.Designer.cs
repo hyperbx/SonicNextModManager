@@ -51,6 +51,7 @@
             this.btn_SelectAll = new System.Windows.Forms.Button();
             this.clb_ModsList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Emulator = new System.Windows.Forms.TabPage();
+            this.lbl_SettingsOverlay = new System.Windows.Forms.Label();
             this.lbl_Debug = new System.Windows.Forms.Label();
             this.lbl_Discord = new System.Windows.Forms.Label();
             this.lbl_Fullscreen = new System.Windows.Forms.Label();
@@ -96,6 +97,10 @@
             this.clb_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
+            this.btn_ReportBug = new System.Windows.Forms.Button();
+            this.lbl_GameBanana = new System.Windows.Forms.Label();
+            this.check_GameBanana = new System.Windows.Forms.CheckBox();
+            this.btn_Update = new System.Windows.Forms.Button();
             this.lbl_ManualInstall = new System.Windows.Forms.Label();
             this.btn_Reset = new System.Windows.Forms.Button();
             this.btn_GitHub = new System.Windows.Forms.Button();
@@ -123,11 +128,6 @@
             this.text_ModsDirectory = new System.Windows.Forms.TextBox();
             this.lbl_GameDirectory = new System.Windows.Forms.Label();
             this.lbl_ModsDirectory = new System.Windows.Forms.Label();
-            this.btn_Update = new System.Windows.Forms.Button();
-            this.lbl_GameBanana = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.lbl_SettingsOverlay = new System.Windows.Forms.Label();
-            this.status_Main.SuspendLayout();
             this.unifytb_Main.SuspendLayout();
             this.unifytb_Tab_Mods.SuspendLayout();
             this.unifytb_Tab_Emulator.SuspendLayout();
@@ -169,6 +169,7 @@
             this.btn_Save.TabIndex = 43;
             this.btn_Save.Text = "Save";
             this.btn_Save.UseVisualStyleBackColor = false;
+            this.btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
             // 
             // btn_Play
             // 
@@ -225,8 +226,6 @@
             // status_Main
             // 
             this.status_Main.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.status_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statuslbl_Status});
             this.status_Main.Location = new System.Drawing.Point(0, 579);
             this.status_Main.Name = "status_Main";
             this.status_Main.Size = new System.Drawing.Size(538, 22);
@@ -449,6 +448,17 @@
             this.unifytb_Tab_Emulator.Size = new System.Drawing.Size(530, 483);
             this.unifytb_Tab_Emulator.TabIndex = 1;
             this.unifytb_Tab_Emulator.Text = "Emulator";
+            // 
+            // lbl_SettingsOverlay
+            // 
+            this.lbl_SettingsOverlay.AutoSize = true;
+            this.lbl_SettingsOverlay.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_SettingsOverlay.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_SettingsOverlay.Location = new System.Drawing.Point(10, 128);
+            this.lbl_SettingsOverlay.Name = "lbl_SettingsOverlay";
+            this.lbl_SettingsOverlay.Size = new System.Drawing.Size(49, 15);
+            this.lbl_SettingsOverlay.TabIndex = 17;
+            this.lbl_SettingsOverlay.Text = "Settings";
             // 
             // lbl_Debug
             // 
@@ -1000,8 +1010,9 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Options.Controls.Add(this.btn_ReportBug);
             this.group_Options.Controls.Add(this.lbl_GameBanana);
-            this.group_Options.Controls.Add(this.checkBox1);
+            this.group_Options.Controls.Add(this.check_GameBanana);
             this.group_Options.Controls.Add(this.btn_Update);
             this.group_Options.Controls.Add(this.lbl_ManualInstall);
             this.group_Options.Controls.Add(this.btn_Reset);
@@ -1019,6 +1030,57 @@
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
+            // 
+            // btn_ReportBug
+            // 
+            this.btn_ReportBug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_ReportBug.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_ReportBug.FlatAppearance.BorderSize = 0;
+            this.btn_ReportBug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ReportBug.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_ReportBug.Location = new System.Drawing.Point(14, 130);
+            this.btn_ReportBug.Name = "btn_ReportBug";
+            this.btn_ReportBug.Size = new System.Drawing.Size(119, 23);
+            this.btn_ReportBug.TabIndex = 94;
+            this.btn_ReportBug.Text = "Report a bug";
+            this.btn_ReportBug.UseVisualStyleBackColor = false;
+            this.btn_ReportBug.Click += new System.EventHandler(this.Btn_ReportBug_Click);
+            // 
+            // lbl_GameBanana
+            // 
+            this.lbl_GameBanana.AutoSize = true;
+            this.lbl_GameBanana.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_GameBanana.Location = new System.Drawing.Point(32, 49);
+            this.lbl_GameBanana.Name = "lbl_GameBanana";
+            this.lbl_GameBanana.Size = new System.Drawing.Size(151, 15);
+            this.lbl_GameBanana.TabIndex = 93;
+            this.lbl_GameBanana.Text = "GameBanana 1-Click Install";
+            // 
+            // check_GameBanana
+            // 
+            this.check_GameBanana.AutoSize = true;
+            this.check_GameBanana.ForeColor = System.Drawing.SystemColors.Control;
+            this.check_GameBanana.Location = new System.Drawing.Point(15, 50);
+            this.check_GameBanana.Name = "check_GameBanana";
+            this.check_GameBanana.Size = new System.Drawing.Size(15, 14);
+            this.check_GameBanana.TabIndex = 92;
+            this.check_GameBanana.UseVisualStyleBackColor = true;
+            this.check_GameBanana.CheckedChanged += new System.EventHandler(this.Check_GameBanana_CheckedChanged);
+            // 
+            // btn_Update
+            // 
+            this.btn_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Update.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_Update.FlatAppearance.BorderSize = 0;
+            this.btn_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Update.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_Update.Location = new System.Drawing.Point(139, 130);
+            this.btn_Update.Name = "btn_Update";
+            this.btn_Update.Size = new System.Drawing.Size(245, 23);
+            this.btn_Update.TabIndex = 91;
+            this.btn_Update.Text = "Check for Updates";
+            this.btn_Update.UseVisualStyleBackColor = false;
             // 
             // lbl_ManualInstall
             // 
@@ -1366,52 +1428,6 @@
             this.lbl_ModsDirectory.Text = "Mods Directory:";
             this.lbl_ModsDirectory.Click += new System.EventHandler(this.Lbl_ModsDirectory_Click);
             // 
-            // btn_Update
-            // 
-            this.btn_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Update.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btn_Update.FlatAppearance.BorderSize = 0;
-            this.btn_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Update.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Update.Location = new System.Drawing.Point(139, 130);
-            this.btn_Update.Name = "btn_Update";
-            this.btn_Update.Size = new System.Drawing.Size(245, 23);
-            this.btn_Update.TabIndex = 91;
-            this.btn_Update.Text = "Check for Updates";
-            this.btn_Update.UseVisualStyleBackColor = false;
-            // 
-            // lbl_GameBanana
-            // 
-            this.lbl_GameBanana.AutoSize = true;
-            this.lbl_GameBanana.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_GameBanana.Location = new System.Drawing.Point(32, 49);
-            this.lbl_GameBanana.Name = "lbl_GameBanana";
-            this.lbl_GameBanana.Size = new System.Drawing.Size(151, 15);
-            this.lbl_GameBanana.TabIndex = 93;
-            this.lbl_GameBanana.Text = "GameBanana 1-Click Install";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.ForeColor = System.Drawing.SystemColors.Control;
-            this.checkBox1.Location = new System.Drawing.Point(15, 50);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 92;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // lbl_SettingsOverlay
-            // 
-            this.lbl_SettingsOverlay.AutoSize = true;
-            this.lbl_SettingsOverlay.BackColor = System.Drawing.Color.Transparent;
-            this.lbl_SettingsOverlay.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_SettingsOverlay.Location = new System.Drawing.Point(10, 128);
-            this.lbl_SettingsOverlay.Name = "lbl_SettingsOverlay";
-            this.lbl_SettingsOverlay.Size = new System.Drawing.Size(49, 15);
-            this.lbl_SettingsOverlay.TabIndex = 17;
-            this.lbl_SettingsOverlay.Text = "Settings";
-            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1439,8 +1455,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";
             this.Shown += new System.EventHandler(this.ModManager_Shown);
-            this.status_Main.ResumeLayout(false);
-            this.status_Main.PerformLayout();
             this.unifytb_Main.ResumeLayout(false);
             this.unifytb_Tab_Mods.ResumeLayout(false);
             this.unifytb_Tab_Emulator.ResumeLayout(false);
@@ -1565,8 +1579,9 @@
         private System.Windows.Forms.Label lbl_ManualInstall;
         private System.Windows.Forms.Label lbl_FTP;
         private System.Windows.Forms.Label lbl_GameBanana;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox check_GameBanana;
         private System.Windows.Forms.Button btn_Update;
         private System.Windows.Forms.Label lbl_SettingsOverlay;
+        private System.Windows.Forms.Button btn_ReportBug;
     }
 }

@@ -68,9 +68,8 @@
             // btn_Browse
             // 
             this.btn_Browse.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btn_Browse.FlatAppearance.BorderSize = 0;
             this.btn_Browse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Browse.Location = new System.Drawing.Point(12, 214);
+            this.btn_Browse.Location = new System.Drawing.Point(12, 213);
             this.btn_Browse.Name = "btn_Browse";
             this.btn_Browse.Size = new System.Drawing.Size(348, 23);
             this.btn_Browse.TabIndex = 46;

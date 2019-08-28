@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using Unify.Messages;
+using Unify.Tools;
+using System.Linq;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Security.Principal;
@@ -41,73 +42,6 @@ namespace Sonic_06_Mod_Manager
 
         static void Main(string[] args)
         {
-            WritePrerequisites();
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            if (args.Length > 0)
-            {
-                if (args[0] == "-banana")
-                {
-                    string[] getIDs = args[1].Remove(0, 40).Split(',');
-                    string modType = string.Empty;
-                    int downloadID = 0;
-                    int modID = 0;
-                    int i = 0;
-
-                    foreach (var item in getIDs)
-                    {
-                        if (i == 0)
-                        {
-                            int.TryParse(item, out downloadID);
-                            { i++; }
-                        }
-                        else if (i == 1)
-                        {
-                            modType = item;
-                            i++;
-                        }
-                        else if (i == 2)
-                        {
-                            int.TryParse(item, out modID);
-                            { i++; }
-                        }
-                    }
-
-                    var mod = new GBAPIItemDataBasic(modType, modID);
-                    if (GBAPI.RequestItemData(mod)) {
-                        new src.ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog();
-
-                        if (PriorProcess() == null)
-                            try {  Application.Run(new ModManager(args)); } catch { WritePrerequisites(); }
-                    }
-                }
-            } else {
-                if (PriorProcess() == null) {
-                    try { Application.Run(new ModManager(args)); } catch { WritePrerequisites(); }
-                }
-            }
-        }
-
-        public static void WritePrerequisites()
-        {
-            if (!File.Exists(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"))) {
-                try {
-                    File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
-                    MessageBox.Show(SystemMessages.msg_Prereq_Newtonsoft, SystemMessages.tl_DefaultTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex) { MessageBox.Show(SystemMessages.ex_Prereq_Newtonsoft_WriteFailure(ex), SystemMessages.tl_FatalError, MessageBoxButtons.OK, MessageBoxIcon.Error); Application.Exit(); }
-            }
-
-            if (!File.Exists(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll"))) {
-                try {
-                    File.WriteAllBytes(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll"), Properties.Resources.Ookii_Dialogs);
-                    MessageBox.Show(SystemMessages.msg_Prereq_Ookii, SystemMessages.tl_DefaultTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex) { MessageBox.Show(SystemMessages.ex_Prereq_Ookii_WriteFailure(ex), SystemMessages.tl_FatalError, MessageBoxButtons.OK, MessageBoxIcon.Error); Application.Exit(); }
-            }
-
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool"))
                 Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
 
@@ -116,6 +50,12 @@ namespace Sonic_06_Mod_Manager
 
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs"))
                 Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\lubs");
+
+            if (!File.Exists(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll")))
+                File.WriteAllBytes(Path.Combine(Application.StartupPath, "Newtonsoft.Json.dll"), Properties.Resources.Newtonsoft_Json);
+
+            if (!File.Exists(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll")))
+                File.WriteAllBytes(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll"), Properties.Resources.Ookii_Dialogs);
 
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php"))
                 File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php", Properties.Resources.arctoolphp);
@@ -132,22 +72,64 @@ namespace Sonic_06_Mod_Manager
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar"))
                 File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar", Properties.Resources.unlub);
 
-            Application.Exit();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            if ((Process.GetProcessesByName(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1) == false) {
+                if (args.Length > 0) {
+                    if (args[0] == "-registry_add") {
+                        GB_Registry.AddRegistry();
+                        Application.Run(new ModManager(args));
+                    }
+                        
+                    if (args[0] == "-registry_remove") {
+                        GB_Registry.RemoveRegistry();
+                        Application.Run(new ModManager(args));
+                    }
+                        
+                    if (args[0] == "-banana") {
+                        string[] getIDs = args[1].Remove(0, 40).Split(',');
+                        string modType = string.Empty;
+                        int downloadID = 0;
+                        int modID = 0;
+                        int i = 0;
+
+                        foreach (var item in getIDs) {
+                            if (i == 0) { int.TryParse(item, out downloadID); { i++; } }
+                            else if (i == 1) { modType = item; i++; }
+                            else if (i == 2) { int.TryParse(item, out modID); { i++; } }
+                        }
+
+                        var mod = new GBAPIItemDataBasic(modType, modID);
+                        if (GBAPI.RequestItemData(mod)) {
+                            new src.ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog();
+                            Application.Run(new ModManager(args));
+                        }
+                    }
+                } else Application.Run(new ModManager(args));
+            }
+            else if (args[0] == "-banana") {
+                string[] getIDs = args[1].Remove(0, 40).Split(',');
+                string modType = string.Empty;
+                int downloadID = 0;
+                int modID = 0;
+                int i = 0;
+
+                foreach (var item in getIDs) {
+                    if (i == 0) { int.TryParse(item, out downloadID); { i++; } }
+                    else if (i == 1) { modType = item; i++; }
+                    else if (i == 2) { int.TryParse(item, out modID); { i++; } }
+                }
+
+                var mod = new GBAPIItemDataBasic(modType, modID);
+                if (GBAPI.RequestItemData(mod)) {
+                    new src.ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog();
+                }
+            }
         }
 
         public static bool RunningAsAdmin() {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
-        public static Process PriorProcess() {
-            Process curr = Process.GetCurrentProcess();
-            Process[] procs = Process.GetProcessesByName(curr.ProcessName);
-            foreach (Process p in procs) {
-                if ((p.Id != curr.Id) &&
-                    (p.MainModule.FileName == curr.MainModule.FileName))
-                    return p;
-            }
-            return null;
         }
     }
 }

@@ -91,6 +91,16 @@ namespace Sonic_06_Mod_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon error {
+            get {
+                object obj = ResourceManager.GetObject("error", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to body
         ///{
         ///    background-color: #2D2D30;
@@ -122,9 +132,47 @@ namespace Sonic_06_Mod_Manager.Properties {
         ///    color: #FF4E4E;
         ///}.
         /// </summary>
-        internal static string GBStyleSheet {
+        internal static string GBStyleSheetDark {
             get {
-                return ResourceManager.GetString("GBStyleSheet", resourceCulture);
+                return ResourceManager.GetString("GBStyleSheetDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to body
+        ///{
+        ///    background-color: #2D2D30;
+        ///    color: #e2e2e2;
+        ///    font-family: sans-serif;
+        ///}
+        ///
+        ///a
+        ///{
+        ///    color: #FFE033;
+        ///    text-decoration: none;
+        ///    vertical-align: baseline;
+        ///}
+        ///
+        ///h1
+        ///{
+        ///    font-size: 18px;
+        ///    margin: 0 0 0.75em;
+        ///    padding: 0 0 0.25em 0;
+        ///}
+        ///
+        ///li
+        ///{
+        ///    list-style-type: square;
+        ///}
+        ///
+        ///span.RedColor
+        ///{
+        ///    color: #FF4E4E;
+        ///}.
+        /// </summary>
+        internal static string GBStyleSheetLight {
+            get {
+                return ResourceManager.GetString("GBStyleSheetLight", resourceCulture);
             }
         }
         
@@ -144,6 +192,26 @@ namespace Sonic_06_Mod_Manager.Properties {
         internal static System.Drawing.Bitmap logo_exception {
             get {
                 object obj = ResourceManager.GetObject("logo_exception", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo_gamebanana {
+            get {
+                object obj = ResourceManager.GetObject("logo_gamebanana", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo_legacy {
+            get {
+                object obj = ResourceManager.GetObject("logo_legacy", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

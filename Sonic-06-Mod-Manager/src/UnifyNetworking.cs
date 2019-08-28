@@ -35,6 +35,19 @@ namespace Unify.Networking
     class FTP
     {
     }
+
+    public class TimedWebClient : WebClient
+    {
+        public int Timeout { get; set; }
+
+        public TimedWebClient() { Timeout = 100000; }
+
+        protected override WebRequest GetWebRequest(Uri address) {
+            var objWebRequest = base.GetWebRequest(address);
+            objWebRequest.Timeout = Timeout;
+            return objWebRequest;
+        }
+    }
 }
 
 // GameBanana API code is licensed under the MIT License:
@@ -201,6 +214,20 @@ namespace Unify.Networking.GameBanana
             {
                 return null;
             }
+        }
+
+        public static string ProcessCredits(GBAPICreditGroup[] groups)
+        {
+            string s = "";
+            foreach (var group in groups)
+            {
+                s += $"{group.GroupName}\n";
+                for (int i = 0; i < group.Credits.Length; ++i)
+                {
+                    s += $"  - {group.Credits[i].MemberName}\n     {group.Credits[i].Role}\n";
+                }
+            }
+            return s;
         }
 
         public static object XMLtoObject(Type type, XElement element)

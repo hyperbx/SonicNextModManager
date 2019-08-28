@@ -127,14 +127,26 @@
   <data name="arctoolphp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\arctool.php;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="GBStyleSheet" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\GBStyleSheet.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\error.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GBStyleSheetDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\GBStyleSheetDark.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="GBStyleSheetLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\GBStyleSheetLight.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_exception" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\logo_exception.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_gamebanana" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\logo_gamebanana.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_legacy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\logo_legacy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_main" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\logo_main.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

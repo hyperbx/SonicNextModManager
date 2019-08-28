@@ -208,6 +208,8 @@ namespace Unify.Patcher
 
         public static void CleanupMods()
         {
+            if (!Directory.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory)) return;
+
             var files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_back", SearchOption.AllDirectories);
 
             modManager.Status = SystemMessages.msg_Cleanup;
