@@ -33,9 +33,10 @@
             this.pnl_ButtonBackdrop = new System.Windows.Forms.Panel();
             this.btn_Abort = new System.Windows.Forms.Button();
             this.btn_OK = new System.Windows.Forms.Button();
-            this.btn_No = new System.Windows.Forms.Button();
             this.btn_Yes = new System.Windows.Forms.Button();
+            this.btn_No = new System.Windows.Forms.Button();
             this.pic_Icon = new System.Windows.Forms.PictureBox();
+            this.rtb_Message = new System.Windows.Forms.RichTextBox();
             this.pnl_ButtonBackdrop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Icon)).BeginInit();
             this.SuspendLayout();
@@ -49,6 +50,7 @@
             this.lbl_Description.Size = new System.Drawing.Size(35, 13);
             this.lbl_Description.TabIndex = 0;
             this.lbl_Description.Text = "None";
+            this.lbl_Description.Visible = false;
             // 
             // pnl_ButtonBackdrop
             // 
@@ -95,22 +97,6 @@
             this.btn_OK.UseVisualStyleBackColor = false;
             this.btn_OK.Click += new System.EventHandler(this.Btn_OK_Click);
             // 
-            // btn_No
-            // 
-            this.btn_No.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_No.BackColor = System.Drawing.Color.Tomato;
-            this.btn_No.FlatAppearance.BorderSize = 0;
-            this.btn_No.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_No.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_No.Location = new System.Drawing.Point(97, 10);
-            this.btn_No.Name = "btn_No";
-            this.btn_No.Size = new System.Drawing.Size(75, 23);
-            this.btn_No.TabIndex = 3;
-            this.btn_No.Text = "No";
-            this.btn_No.UseVisualStyleBackColor = false;
-            this.btn_No.Visible = false;
-            this.btn_No.Click += new System.EventHandler(this.Btn_No_Click);
-            // 
             // btn_Yes
             // 
             this.btn_Yes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -127,6 +113,22 @@
             this.btn_Yes.Visible = false;
             this.btn_Yes.Click += new System.EventHandler(this.Btn_Yes_Click);
             // 
+            // btn_No
+            // 
+            this.btn_No.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_No.BackColor = System.Drawing.Color.Tomato;
+            this.btn_No.FlatAppearance.BorderSize = 0;
+            this.btn_No.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_No.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_No.Location = new System.Drawing.Point(97, 10);
+            this.btn_No.Name = "btn_No";
+            this.btn_No.Size = new System.Drawing.Size(75, 23);
+            this.btn_No.TabIndex = 3;
+            this.btn_No.Text = "No";
+            this.btn_No.UseVisualStyleBackColor = false;
+            this.btn_No.Visible = false;
+            this.btn_No.Click += new System.EventHandler(this.Btn_No_Click);
+            // 
             // pic_Icon
             // 
             this.pic_Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -136,7 +138,24 @@
             this.pic_Icon.TabIndex = 2;
             this.pic_Icon.TabStop = false;
             // 
-            // UnifyMessenger
+            // rtb_Message
+            // 
+            this.rtb_Message.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtb_Message.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.rtb_Message.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtb_Message.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rtb_Message.DetectUrls = false;
+            this.rtb_Message.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtb_Message.Location = new System.Drawing.Point(64, 25);
+            this.rtb_Message.Name = "rtb_Message";
+            this.rtb_Message.ReadOnly = true;
+            this.rtb_Message.Size = new System.Drawing.Size(191, 36);
+            this.rtb_Message.TabIndex = 3;
+            this.rtb_Message.Text = "None";
+            // 
+            // UnifyMessages
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -145,11 +164,12 @@
             this.Controls.Add(this.pic_Icon);
             this.Controls.Add(this.pnl_ButtonBackdrop);
             this.Controls.Add(this.lbl_Description);
+            this.Controls.Add(this.rtb_Message);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "UnifyMessenger";
+            this.Name = "UnifyMessages";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -170,5 +190,6 @@
         private System.Windows.Forms.Button btn_Yes;
         private System.Windows.Forms.Button btn_Abort;
         private System.Windows.Forms.Button btn_No;
+        private System.Windows.Forms.RichTextBox rtb_Message;
     }
 }

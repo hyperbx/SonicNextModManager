@@ -129,7 +129,7 @@ namespace Sonic_06_Mod_Manager.Properties {
         ///
         ///span.RedColor
         ///{
-        ///    color: #FF4E4E;
+        ///    color: #D61111;
         ///}.
         /// </summary>
         internal static string GBStyleSheetDark {
@@ -141,14 +141,14 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized string similar to body
         ///{
-        ///    background-color: #2D2D30;
-        ///    color: #e2e2e2;
+        ///    background-color: #FFFFFF;
+        ///    color: #000000;
         ///    font-family: sans-serif;
         ///}
         ///
         ///a
         ///{
-        ///    color: #FFE033;
+        ///    color: #3e00db;
         ///    text-decoration: none;
         ///    vertical-align: baseline;
         ///}
@@ -167,7 +167,7 @@ namespace Sonic_06_Mod_Manager.Properties {
         ///
         ///span.RedColor
         ///{
-        ///    color: #FF4E4E;
+        ///    color: #D61111;
         ///}.
         /// </summary>
         internal static string GBStyleSheetLight {
@@ -183,6 +183,26 @@ namespace Sonic_06_Mod_Manager.Properties {
             get {
                 object obj = ResourceManager.GetObject("icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon icon_aldi {
+            get {
+                object obj = ResourceManager.GetObject("icon_aldi", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo_aldi {
+            get {
+                object obj = ResourceManager.GetObject("logo_aldi", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -239,9 +259,59 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] omega_Root_Fix {
+            get {
+                object obj = ResourceManager.GetObject("omega_Root_Fix", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] omega_Root_Retail {
+            get {
+                object obj = ResourceManager.GetObject("omega_Root_Retail", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Ookii_Dialogs {
             get {
                 object obj = ResourceManager.GetObject("Ookii_Dialogs", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] retail_render_gamemode {
+            get {
+                object obj = ResourceManager.GetObject("retail_render_gamemode", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] retail_render_main {
+            get {
+                object obj = ResourceManager.GetObject("retail_render_main", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] retail_render_title {
+            get {
+                object obj = ResourceManager.GetObject("retail_render_title", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -262,6 +332,36 @@ namespace Sonic_06_Mod_Manager.Properties {
         internal static byte[] unlub {
             get {
                 object obj = ResourceManager.GetObject("unlub", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkan_render_gamemode {
+            get {
+                object obj = ResourceManager.GetObject("vulkan_render_gamemode", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkan_render_main {
+            get {
+                object obj = ResourceManager.GetObject("vulkan_render_main", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkan_render_title {
+            get {
+                object obj = ResourceManager.GetObject("vulkan_render_title", resourceCulture);
                 return ((byte[])(obj));
             }
         }

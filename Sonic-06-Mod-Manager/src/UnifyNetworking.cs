@@ -1,8 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Linq;
+using Unify.Messages;
 using System.Xml.Linq;
 using System.Reflection;
+using System.Diagnostics;
+using System.Windows.Forms;
 using System.Collections.Generic;
 
 // Project Unify is licensed under the MIT License:
@@ -32,6 +36,45 @@ using System.Collections.Generic;
 
 namespace Unify.Networking
 {
+    class Updater
+    {
+        public static string serverStatus = string.Empty;
+
+        public static void CheckForUpdates(string currentVersion, string newVersionDownloadLink, string versionInfoLink, string updateState)
+        {
+            try
+            {
+                string latestVersion = string.Empty;
+                string changeLogs = string.Empty;
+
+                try { latestVersion = new TimedWebClient { Timeout = 100000 }.DownloadString(versionInfoLink); }
+                catch { return; }
+
+                try { changeLogs = new TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt"); }
+                catch { changeLogs = "► Allan please add details"; }
+
+                if (latestVersion.Contains("Version")) {
+                    if (latestVersion != currentVersion) {
+                        string confirmUpdate = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateAvailable(latestVersion, changeLogs), SystemMessages.tl_Update, "YesNo", "Question");
+                        switch (confirmUpdate) {
+                            case "Yes":
+                                var exists = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1;
+                                if (exists) { UnifyMessages.UnifyMessage.Show(SystemMessages.warn_CloseProcesses, SystemMessages.tl_ProcessError, "OK", "Error"); }
+                                else {
+                                    try {
+                                        if (File.Exists(Application.ExecutablePath)) new Sonic_06_Mod_Manager.src.UnifyUpdater(latestVersion, newVersionDownloadLink, true).ShowDialog();
+                                        else return;
+                                    }
+                                    catch { UnifyMessages.UnifyMessage.Show(SystemMessages.ex_UpdateFailedUnknown, SystemMessages.tl_FatalError, "OK", "Error"); }
+                                }
+                                break;
+                        }
+                    } else if (updateState == "user") UnifyMessages.UnifyMessage.Show(SystemMessages.msg_NoUpdates, SystemMessages.tl_DefaultTitle, "OK", "Information");
+                } else { serverStatus = "down"; }
+            } catch { serverStatus = "offline"; } updateState = null;
+        }
+    }
+
     class FTP
     {
     }

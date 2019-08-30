@@ -301,7 +301,7 @@ namespace Sonic_06_Mod_Manager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int patches_CameraHeight {
             get {
                 return ((int)(this["patches_CameraHeight"]));
@@ -332,6 +332,18 @@ namespace Sonic_06_Mod_Manager.Properties {
             }
             set {
                 this["FTP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool manualPatches {
+            get {
+                return ((bool)(this["manualPatches"]));
+            }
+            set {
+                this["manualPatches"] = value;
             }
         }
     }

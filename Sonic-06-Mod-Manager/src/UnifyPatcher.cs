@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Linq;
+using Unify.Tools;
 using Unify.Messages;
 using System.Diagnostics;
 using Sonic_06_Mod_Manager;
@@ -206,6 +207,61 @@ namespace Unify.Patcher
             }
         }
 
+        public static string UnpackARC(string arc)
+        {
+            ProcessStartInfo unpack;
+
+            string tempPath = $"{Program.applicationData}\\Temp\\{Path.GetRandomFileName()}";
+            Directory.CreateDirectory(tempPath);
+            File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
+
+            unpack = new ProcessStartInfo($"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"") {
+                WorkingDirectory = $"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            var Unpack = Process.Start(unpack);
+            Unpack.WaitForExit();
+            Unpack.Close();
+
+            return tempPath;
+        }
+
+        public static string RepackARC(string arc, string output)
+        {
+            ProcessStartInfo repack;
+
+            string tempPath = arc;
+            var tempData = new DirectoryInfo(tempPath);
+
+            repack = new ProcessStartInfo($"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(output))}\" -c \"{output}\"") {
+                WorkingDirectory = $"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            var Repack = Process.Start(repack);
+            Repack.WaitForExit();
+            Repack.Close();
+
+            try
+            {
+                if (Directory.Exists(tempPath))
+                {
+                    foreach (FileInfo file in tempData.GetFiles())
+                    {
+                        file.Delete();
+                    }
+                    foreach (DirectoryInfo directory in tempData.GetDirectories())
+                    {
+                        directory.Delete(true);
+                    }
+                }
+            }
+            catch { return tempPath; }
+
+            return tempPath;
+        }
+
         public static void CleanupMods()
         {
             if (!Directory.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory)) return;
@@ -225,10 +281,179 @@ namespace Unify.Patcher
             }
             modManager.Status = SystemMessages.msg_DefaultStatus;
         }
+
+        public static void CleanupPatches()
+        {
+            if (!Directory.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory)) return;
+
+            var files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_orig", SearchOption.AllDirectories);
+
+            modManager.Status = SystemMessages.msg_Cleanup;
+            foreach (var file in files)
+            {
+                if (File.Exists(file.ToString().Remove(file.Length - 5)))
+                {
+                    Console.WriteLine("Removing: " + file);
+                    File.Delete(file.ToString().Remove(file.Length - 5));
+                }
+
+                File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
+            }
+            modManager.Status = SystemMessages.msg_DefaultStatus;
+        }
     }
 
     class Lua
     {
+        public static void Decompile(string filepath)
+        {
+            string luaName = Path.Combine(Path.GetDirectoryName(filepath), $"{Path.GetFileNameWithoutExtension(filepath)}.lua"); //Get the name of the Lub with the file extension changed to Lua
+            string[] readText = File.ReadAllLines(filepath); //Read the Lub into an array
 
+            //Check if the array contains the LuaP string used to determine if the Lua is compiled. Decompile if true
+            if (readText[0].Contains("LuaP")) {
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "cmd.exe",
+                    Arguments = $"/C java.exe -jar \"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar\" \"{filepath}\" > \"{luaName}\""
+                };
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+
+                //Rename from .Lua to .Lub
+                File.Delete(filepath);
+                File.Move(luaName, filepath);
+            }
+        }
+
+        public static void CameraDistance(string directoryRoot, int distance)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua) {
+                if (line.StartsWith("distance")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    tempLine[2] = decimal.Divide(distance, 100).ToString(); //Replace the 2nd section (the original number) with our new number divided by 100
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
+        public static void CameraHeight(string directoryRoot, int distance)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua)
+            {
+                if (line.StartsWith("altitude"))
+                {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    tempLine[2] = distance.ToString(); //Replace the 2nd section (the original number)
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
+        public static void Reflections(string directoryRoot, int scale)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua)
+            {
+                if (line.StartsWith("EnableReflection")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (scale == 0)
+                        tempLine[2] = "false"; //Replace the 2nd section (the original number)
+                    else
+                        tempLine[2] = "true"; //Replace the 2nd section (the original number)
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+
+                if (line.StartsWith("  texture_width") || line.StartsWith("  texture_height")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (scale == 1)
+                        tempLine[7] = "4"; //Replace the 2nd section (the original number)
+                    else if (scale == 2)
+                        tempLine[7] = "2"; //Replace the 2nd section (the original number)
+                    else if (scale == 3) {
+                        tempLine[6] = tempLine[7] = string.Empty; //Replace the 2nd section (the original number)
+                    }
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
+        public static void DisableHUD(string directoryRoot, bool enabled)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua)
+            {
+                if (line.Contains("Render2D"))
+                {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (!enabled)
+                    {
+                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                    }
+                    else {
+                        if (tempLine[2].StartsWith("--")) {
+                            tempLine[2] = tempLine[2].Substring(2);
+                        }
+                    }
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
+        public static void DisableShadows(string directoryRoot, bool enabled)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua)
+            {
+                if (line.Contains("RenderCSM"))
+                {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (!enabled)
+                    {
+                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                    }
+                    else
+                    {
+                        if (tempLine[2].StartsWith("--"))
+                        {
+                            tempLine[2] = tempLine[2].Substring(2);
+                        }
+                    }
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
     }
 }

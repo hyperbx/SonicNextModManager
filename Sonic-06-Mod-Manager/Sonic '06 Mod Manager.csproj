@@ -102,6 +102,12 @@
     <Compile Include="src\UnifyTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="src\UnifyUpdater.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\UnifyUpdater.Designer.cs">
+      <DependentUpon>UnifyUpdater.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -130,6 +136,9 @@
     <EmbeddedResource Include="src\UnifyMessages.resx">
       <DependentUpon>UnifyMessages.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="src\UnifyUpdater.resx">
+      <DependentUpon>UnifyUpdater.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -139,6 +148,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="res\vulkan_render_gamemode.lub" />
+    <None Include="res\vulkan_render_main.lub" />
+    <None Include="res\vulkan_render_title.lub" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -147,6 +159,15 @@
     <None Include="res\icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\omega_Root.xno" />
+    <None Include="res\omega_Root_Fix.xno" />
+    <None Include="res\omega_Root_Retail.xno" />
+    <None Include="res\orig_render_gamemode.lub" />
+    <None Include="res\orig_render_main.lub" />
+    <None Include="res\orig_render_title.lub" />
+    <None Include="res\retail_render_gamemode.lub" />
+    <None Include="res\retail_render_main.lub" />
+    <None Include="res\retail_render_title.lub" />
     <None Include="res\unlub.jar" />
     <None Include="res\unarc.php" />
     <None Include="res\Newtonsoft.Json.dll" />
@@ -156,6 +177,8 @@
     <None Include="res\arcc.php" />
     <None Include="res\error.ico" />
     <None Include="res\GBStyleSheetLight.css" />
+    <None Include="res\icon_aldi.ico" />
+    <None Include="res\logo_aldi.png" />
     <Content Include="res\logo_exception.png" />
     <None Include="res\logo_gamebanana.png" />
     <None Include="res\logo_legacy.png" />

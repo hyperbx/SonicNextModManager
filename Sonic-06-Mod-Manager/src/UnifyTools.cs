@@ -264,4 +264,37 @@ namespace Unify.Tools
             } else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, SystemMessages.tl_ExtractError, "OK", "Error"); }
         }
     }
+
+    public class Prerequisites
+    {
+        public static bool JavaCheck()
+        {
+            try {
+                var javaArg = new ProcessStartInfo("java", "-version") {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+                var javaProcess = new Process { StartInfo = javaArg };
+                javaProcess.Start();
+
+                return true;
+            }
+            catch { return false; }
+        }
+    }
+
+    public class Bytes
+    {
+        public static byte[] StringToByteArray(string hex)
+        {
+            int NumberChars = hex.Length;
+            byte[] bytes = new byte[NumberChars / 2];
+            for (int i = 0; i < NumberChars; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            return bytes;
+        }
+    }
 }

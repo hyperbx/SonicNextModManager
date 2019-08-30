@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.Linq;
 using System.Media;
 using System.Drawing;
 using System.Windows.Forms;
@@ -46,14 +48,16 @@ namespace Unify.Messages
             InitializeComponent();
 
             Text = caption;
+            rtb_Message.Text = text;
 
             if (text.Length > 65) {
                 lbl_Description.Text = SpliceText(text, 65);
-                Height += lbl_Description.Height - 35;
+                Height += lbl_Description.Height - 30;
             }
             else {
                 lbl_Description.Text = text;
                 lbl_Description.Top += 7;
+                rtb_Message.Top += 7;
                 Height -= 7;
             }
 
@@ -116,6 +120,8 @@ namespace Unify.Messages
                 lbl_Description.ForeColor = SystemColors.Control;
                 pic_Icon.BackColor = Color.FromArgb(45, 45, 48);
                 pnl_ButtonBackdrop.BackColor = Color.FromArgb(59, 59, 63);
+                rtb_Message.BackColor = Color.FromArgb(45, 45, 48);
+                rtb_Message.ForeColor = SystemColors.Control;
             }
 
             Width = lbl_Description.Width + 100;
@@ -134,20 +140,6 @@ namespace Unify.Messages
 
         private static extern int ExtractIconEx(string sFile, int iIndex, out IntPtr piLargeVersion, out IntPtr piSmallVersion, int amountIcons);
 
-        public string SpliceText(string text, int lineLength)
-        {
-            string pattern = "(.{" + lineLength + "})";
-            Regex rgx = new Regex(pattern);
-            string sentence = text;
-
-            foreach (Match match in rgx.Matches(sentence)) {
-                lbl_Description.Top -= 1;
-                pic_Icon.Top += 1;
-            }
-
-            return Regex.Replace(text, "(.{" + lineLength + "})", "$1" + Environment.NewLine);
-        }
-
         public static class UnifyMessage
         {
             public static string Show(string text, string caption, string buttons, string icon) {
@@ -156,6 +148,11 @@ namespace Unify.Messages
 
                 return Accept;
             }
+        }
+
+        public static string SpliceText(string text, int lineLength)
+        {
+            return Regex.Replace(text, "(.{" + lineLength + "})", "$1" + Environment.NewLine);
         }
 
         private void Btn_OK_Click(object sender, EventArgs e) { Accept = btn_OK.Text; Close(); }
@@ -179,13 +176,13 @@ namespace Unify.Messages
         public static string msg_CreateNewMod = "Creating new mod...";
         public static string msg_EditMod = "Editing mod...";
         public static string msg_ModInfo = "Previewing mod info...";
-        public static string msg_Cleanup = "Cleaning up mods...";
+        public static string msg_Cleanup = "Cleaning up...";
         public static string msg_Prereq_Newtonsoft = "Newtonsoft.Json.dll was written to the application path.";
         public static string tl_FatalError = "Fatal Error";
         public static string msg_Prereq_Ookii = "Ookii.Dialogs.dll was written to the application path.";
-        public static string msg_GameBananaRegistry = "Do you want to run Sonic '06 Mod Manager as an administrator to install the GameBanana 1-Click Install key?";
+        public static string msg_GameBananaRegistry = $"Do you want to run {tl_DefaultTitle} as an administrator to install the GameBanana 1-Click Install key?";
         public static string tl_MissingRegistry = "Missing Registry";
-        public static string msg_GameBananaRegistryUninstall = "Do you want to run Sonic '06 Mod Manager as an administrator to uninstall the GameBanana 1-Click Install key?";
+        public static string msg_GameBananaRegistryUninstall = $"Do you want to run {tl_DefaultTitle} as an administrator to uninstall the GameBanana 1-Click Install key?";
         public static string tl_AreYouSure = "Are you sure?";
         public static string tl_ServerError = "Server Error";
         public static string tl_FileError = "File Error";
@@ -194,17 +191,30 @@ namespace Unify.Messages
         public static string tl_Success = "Success";
         public static string tl_SuccessWarn = "Success, but errors occurred...";
         public static string tl_ExtractError = "Extract Error";
+        public static string msg_NoUpdates = "There are currently no updates available.";
+        public static string ex_UpdateFailedUnknown = $"An error occurred when updating {tl_DefaultTitle}.";
+        public static string warn_CloseProcesses = $"Please close any other instances of {tl_DefaultTitle} and try again.";
+        public static string tl_ProcessError = "Process Error";
+        public static string tl_Update = "New update available!";
+        public static string msg_UpdateComplete = $"Update complete! Please restart {tl_DefaultTitle}.";
+        public static string msg_PatchingRenderer = "Patching Renderer...";
+        public static string msg_PatchingReflections = "Patching Reflections...";
+        public static string msg_PatchingHUD = "Patching HUD...";
+        public static string msg_PatchingShadows = "Patching Shadows...";
+        public static string msg_PatchingCamera = "Patching Camera...";
+        public static string msg_PatchingOmega = "Patching Omega...";
 
-        public static string ex_Prereq_Newtonsoft_WriteFailure(Exception exception) { return $"Failed to write Newtonsoft.Json.dll. Please reinstall Sonic '06 Mod Manager.\n\n{exception}"; }
-        public static string ex_Prereq_Ookii_WriteFailure(Exception exception) { return $"Failed to write Ookii.Dialogs.dll. Please reinstall Sonic '06 Mod Manager.\n\n{exception}"; }
+        public static string ex_Prereq_Newtonsoft_WriteFailure(Exception exception) { return $"Failed to write Newtonsoft.Json.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }
+        public static string ex_Prereq_Ookii_WriteFailure(Exception exception) { return $"Failed to write Ookii.Dialogs.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }
         public static string msg_InstallingMod(string mod) { return $"Installing {mod}..."; }
         public static string msg_CopyingMod(string mod) { return $"Copying {mod}..."; }
         public static string msg_MergingMod(string mod) { return $"Merging {mod}..."; }
+        public static string msg_UpdateAvailable(string latestVersion, string changeLogs) { return $"{tl_DefaultTitle} - {latestVersion} is now available!\n\nChangelogs:\n{changeLogs}\n\nDo you wish to download it?"; }
     }
 
     class ModsMessages
     {
-        public static string msg_NoModDirectory = "No mods directory specified, or the specified directory is\ninvalid - please select your Sonic '06 mods directory...";
+        public static string msg_NoModDirectory = "No mods directory specified, or the specified directory is invalid - please select your Sonic '06 mods directory...";
         public static string ex_ModListError = "An error occurred whilst retrieving the mods list.";
         public static string msg_LocateARCs = "Please select ARC files to make read-only...";
         public static string msg_ThumbnailDeleteError = "An error occurred whilst removing the thumbnail.";
@@ -238,6 +248,6 @@ namespace Unify.Messages
     class SettingsMessages
     {
         public static string msg_LocateMods = "Please specify your mods directory...";
-        public static string msg_Reset = "This will clear all of the settings for Sonic '06 Mod Manager.\nAre you sure you want to continue?";
+        public static string msg_Reset = $"This will clear all of the settings for {SystemMessages.tl_DefaultTitle}. Are you sure you want to continue?";
     }
 }

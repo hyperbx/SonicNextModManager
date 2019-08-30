@@ -36,12 +36,16 @@
             this.btn_CreateNewMod = new System.Windows.Forms.Button();
             this.btn_ModInfo = new System.Windows.Forms.Button();
             this.status_Main = new System.Windows.Forms.StatusStrip();
+            this.lbl_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.statuslbl_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.radio_All = new System.Windows.Forms.RadioButton();
             this.radio_Xbox360 = new System.Windows.Forms.RadioButton();
             this.radio_PlayStation3 = new System.Windows.Forms.RadioButton();
             this.btn_UninstallMods = new System.Windows.Forms.Button();
             this.btn_EditMod = new System.Windows.Forms.Button();
+            this.lbl_MainStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbl_SetStatus = new System.Windows.Forms.Label();
+            this.sonic06mm_Aldi = new System.Windows.Forms.Button();
             this.unifytb_Main = new UnifyTabControl.UnifyTabControl();
             this.unifytb_Tab_Mods = new System.Windows.Forms.TabPage();
             this.btn_Priority = new System.Windows.Forms.Button();
@@ -82,21 +86,16 @@
             this.btn_ResetCameraHeight = new System.Windows.Forms.Button();
             this.nud_CameraHeight = new System.Windows.Forms.NumericUpDown();
             this.lbl_CameraHeight = new System.Windows.Forms.Label();
-            this.btn_ResetViewportX = new System.Windows.Forms.Button();
             this.btn_ResetReflections = new System.Windows.Forms.Button();
-            this.btn_ResetViewportY = new System.Windows.Forms.Button();
             this.btn_ResetCameraDistance = new System.Windows.Forms.Button();
             this.nud_CameraDistance = new System.Windows.Forms.NumericUpDown();
             this.lbl_CameraDistance = new System.Windows.Forms.Label();
-            this.nud_ViewportY = new System.Windows.Forms.NumericUpDown();
-            this.nud_ViewportX = new System.Windows.Forms.NumericUpDown();
-            this.lbl_ViewportY = new System.Windows.Forms.Label();
-            this.lbl_ViewportX = new System.Windows.Forms.Label();
             this.lbl_Reflections = new System.Windows.Forms.Label();
             this.combo_Reflections = new System.Windows.Forms.ComboBox();
             this.clb_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
+            this.Debug = new System.Windows.Forms.Button();
             this.btn_ReportBug = new System.Windows.Forms.Button();
             this.lbl_GameBanana = new System.Windows.Forms.Label();
             this.check_GameBanana = new System.Windows.Forms.CheckBox();
@@ -110,6 +109,8 @@
             this.btn_ColourPicker = new System.Windows.Forms.Button();
             this.check_ManualInstall = new System.Windows.Forms.CheckBox();
             this.btn_Theme = new System.Windows.Forms.Button();
+            this.lbl_ManualPatches = new System.Windows.Forms.Label();
+            this.check_ManualPatches = new System.Windows.Forms.CheckBox();
             this.group_FTP = new System.Windows.Forms.GroupBox();
             this.lbl_FTP = new System.Windows.Forms.Label();
             this.check_FTP = new System.Windows.Forms.CheckBox();
@@ -137,8 +138,6 @@
             this.group_Tweaks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_ViewportY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_ViewportX)).BeginInit();
             this.unifytb_Tab_Settings.SuspendLayout();
             this.group_Options.SuspendLayout();
             this.group_FTP.SuspendLayout();
@@ -231,6 +230,14 @@
             this.status_Main.Size = new System.Drawing.Size(538, 22);
             this.status_Main.SizingGrip = false;
             this.status_Main.TabIndex = 49;
+            this.status_Main.Text = "Ready.";
+            // 
+            // lbl_Status
+            // 
+            this.lbl_Status.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_Status.Name = "lbl_Status";
+            this.lbl_Status.Size = new System.Drawing.Size(42, 17);
+            this.lbl_Status.Text = "Ready.";
             // 
             // statuslbl_Status
             // 
@@ -303,6 +310,36 @@
             this.btn_EditMod.UseVisualStyleBackColor = false;
             this.btn_EditMod.Visible = false;
             this.btn_EditMod.Click += new System.EventHandler(this.Btn_EditMod_Click);
+            // 
+            // lbl_MainStatus
+            // 
+            this.lbl_MainStatus.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_MainStatus.Name = "lbl_MainStatus";
+            this.lbl_MainStatus.Size = new System.Drawing.Size(42, 17);
+            this.lbl_MainStatus.Text = "Ready.";
+            // 
+            // lbl_SetStatus
+            // 
+            this.lbl_SetStatus.AutoSize = true;
+            this.lbl_SetStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.lbl_SetStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_SetStatus.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_SetStatus.Location = new System.Drawing.Point(3, 582);
+            this.lbl_SetStatus.Name = "lbl_SetStatus";
+            this.lbl_SetStatus.Size = new System.Drawing.Size(42, 15);
+            this.lbl_SetStatus.TabIndex = 55;
+            this.lbl_SetStatus.Text = "Ready.";
+            // 
+            // sonic06mm_Aldi
+            // 
+            this.sonic06mm_Aldi.FlatAppearance.BorderSize = 0;
+            this.sonic06mm_Aldi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.sonic06mm_Aldi.Location = new System.Drawing.Point(535, -20);
+            this.sonic06mm_Aldi.Name = "sonic06mm_Aldi";
+            this.sonic06mm_Aldi.Size = new System.Drawing.Size(75, 23);
+            this.sonic06mm_Aldi.TabIndex = 56;
+            this.sonic06mm_Aldi.UseVisualStyleBackColor = true;
+            this.sonic06mm_Aldi.Click += new System.EventHandler(this.Aldi);
             // 
             // unifytb_Main
             // 
@@ -754,16 +791,10 @@
             this.group_Tweaks.Controls.Add(this.btn_ResetCameraHeight);
             this.group_Tweaks.Controls.Add(this.nud_CameraHeight);
             this.group_Tweaks.Controls.Add(this.lbl_CameraHeight);
-            this.group_Tweaks.Controls.Add(this.btn_ResetViewportX);
             this.group_Tweaks.Controls.Add(this.btn_ResetReflections);
-            this.group_Tweaks.Controls.Add(this.btn_ResetViewportY);
             this.group_Tweaks.Controls.Add(this.btn_ResetCameraDistance);
             this.group_Tweaks.Controls.Add(this.nud_CameraDistance);
             this.group_Tweaks.Controls.Add(this.lbl_CameraDistance);
-            this.group_Tweaks.Controls.Add(this.nud_ViewportY);
-            this.group_Tweaks.Controls.Add(this.nud_ViewportX);
-            this.group_Tweaks.Controls.Add(this.lbl_ViewportY);
-            this.group_Tweaks.Controls.Add(this.lbl_ViewportX);
             this.group_Tweaks.Controls.Add(this.lbl_Reflections);
             this.group_Tweaks.Controls.Add(this.combo_Reflections);
             this.group_Tweaks.ForeColor = System.Drawing.SystemColors.Control;
@@ -781,7 +812,7 @@
             this.btn_ResetCameraHeight.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraHeight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraHeight.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraHeight.Image")));
-            this.btn_ResetCameraHeight.Location = new System.Drawing.Point(227, 148);
+            this.btn_ResetCameraHeight.Location = new System.Drawing.Point(227, 96);
             this.btn_ResetCameraHeight.Name = "btn_ResetCameraHeight";
             this.btn_ResetCameraHeight.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraHeight.TabIndex = 91;
@@ -790,7 +821,7 @@
             // 
             // nud_CameraHeight
             // 
-            this.nud_CameraHeight.Location = new System.Drawing.Point(143, 148);
+            this.nud_CameraHeight.Location = new System.Drawing.Point(143, 96);
             this.nud_CameraHeight.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -799,30 +830,21 @@
             this.nud_CameraHeight.Name = "nud_CameraHeight";
             this.nud_CameraHeight.Size = new System.Drawing.Size(83, 23);
             this.nud_CameraHeight.TabIndex = 90;
+            this.nud_CameraHeight.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
             // 
             // lbl_CameraHeight
             // 
             this.lbl_CameraHeight.AutoSize = true;
             this.lbl_CameraHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_CameraHeight.Location = new System.Drawing.Point(141, 130);
+            this.lbl_CameraHeight.Location = new System.Drawing.Point(141, 78);
             this.lbl_CameraHeight.Name = "lbl_CameraHeight";
             this.lbl_CameraHeight.Size = new System.Drawing.Size(87, 15);
             this.lbl_CameraHeight.TabIndex = 89;
             this.lbl_CameraHeight.Text = "Camera Height";
-            // 
-            // btn_ResetViewportX
-            // 
-            this.btn_ResetViewportX.FlatAppearance.BorderSize = 0;
-            this.btn_ResetViewportX.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportX.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ResetViewportX.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportX.Image")));
-            this.btn_ResetViewportX.Location = new System.Drawing.Point(99, 95);
-            this.btn_ResetViewportX.Name = "btn_ResetViewportX";
-            this.btn_ResetViewportX.Size = new System.Drawing.Size(21, 20);
-            this.btn_ResetViewportX.TabIndex = 88;
-            this.btn_ResetViewportX.UseVisualStyleBackColor = true;
-            this.btn_ResetViewportX.Click += new System.EventHandler(this.Btn_ResetViewportX_Click);
             // 
             // btn_ResetReflections
             // 
@@ -838,20 +860,6 @@
             this.btn_ResetReflections.UseVisualStyleBackColor = true;
             this.btn_ResetReflections.Click += new System.EventHandler(this.Btn_ResetReflections_Click);
             // 
-            // btn_ResetViewportY
-            // 
-            this.btn_ResetViewportY.FlatAppearance.BorderSize = 0;
-            this.btn_ResetViewportY.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportY.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_ResetViewportY.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ResetViewportY.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetViewportY.Image")));
-            this.btn_ResetViewportY.Location = new System.Drawing.Point(227, 95);
-            this.btn_ResetViewportY.Name = "btn_ResetViewportY";
-            this.btn_ResetViewportY.Size = new System.Drawing.Size(21, 20);
-            this.btn_ResetViewportY.TabIndex = 86;
-            this.btn_ResetViewportY.UseVisualStyleBackColor = true;
-            this.btn_ResetViewportY.Click += new System.EventHandler(this.Btn_ResetViewportY_Click);
-            // 
             // btn_ResetCameraDistance
             // 
             this.btn_ResetCameraDistance.FlatAppearance.BorderSize = 0;
@@ -859,7 +867,7 @@
             this.btn_ResetCameraDistance.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraDistance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraDistance.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraDistance.Image")));
-            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(99, 148);
+            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(99, 96);
             this.btn_ResetCameraDistance.Name = "btn_ResetCameraDistance";
             this.btn_ResetCameraDistance.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraDistance.TabIndex = 85;
@@ -868,7 +876,7 @@
             // 
             // nud_CameraDistance
             // 
-            this.nud_CameraDistance.Location = new System.Drawing.Point(15, 148);
+            this.nud_CameraDistance.Location = new System.Drawing.Point(15, 96);
             this.nud_CameraDistance.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -887,65 +895,11 @@
             // 
             this.lbl_CameraDistance.AutoSize = true;
             this.lbl_CameraDistance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_CameraDistance.Location = new System.Drawing.Point(9, 130);
+            this.lbl_CameraDistance.Location = new System.Drawing.Point(9, 78);
             this.lbl_CameraDistance.Name = "lbl_CameraDistance";
             this.lbl_CameraDistance.Size = new System.Drawing.Size(96, 15);
             this.lbl_CameraDistance.TabIndex = 83;
             this.lbl_CameraDistance.Text = "Camera Distance";
-            // 
-            // nud_ViewportY
-            // 
-            this.nud_ViewportY.Location = new System.Drawing.Point(143, 95);
-            this.nud_ViewportY.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.nud_ViewportY.Name = "nud_ViewportY";
-            this.nud_ViewportY.Size = new System.Drawing.Size(83, 23);
-            this.nud_ViewportY.TabIndex = 82;
-            this.nud_ViewportY.Value = new decimal(new int[] {
-            720,
-            0,
-            0,
-            0});
-            // 
-            // nud_ViewportX
-            // 
-            this.nud_ViewportX.Location = new System.Drawing.Point(15, 95);
-            this.nud_ViewportX.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.nud_ViewportX.Name = "nud_ViewportX";
-            this.nud_ViewportX.Size = new System.Drawing.Size(83, 23);
-            this.nud_ViewportX.TabIndex = 81;
-            this.nud_ViewportX.Value = new decimal(new int[] {
-            1280,
-            0,
-            0,
-            0});
-            // 
-            // lbl_ViewportY
-            // 
-            this.lbl_ViewportY.AutoSize = true;
-            this.lbl_ViewportY.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_ViewportY.Location = new System.Drawing.Point(140, 77);
-            this.lbl_ViewportY.Name = "lbl_ViewportY";
-            this.lbl_ViewportY.Size = new System.Drawing.Size(64, 15);
-            this.lbl_ViewportY.TabIndex = 80;
-            this.lbl_ViewportY.Text = "Viewport Y";
-            // 
-            // lbl_ViewportX
-            // 
-            this.lbl_ViewportX.AutoSize = true;
-            this.lbl_ViewportX.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_ViewportX.Location = new System.Drawing.Point(12, 77);
-            this.lbl_ViewportX.Name = "lbl_ViewportX";
-            this.lbl_ViewportX.Size = new System.Drawing.Size(64, 15);
-            this.lbl_ViewportX.TabIndex = 79;
-            this.lbl_ViewportX.Text = "Viewport X";
             // 
             // lbl_Reflections
             // 
@@ -985,8 +939,6 @@
             "Disable HUD",
             "Disable Shadows",
             "Omega Blur Fix",
-            "Unlock Mid-air Momentum",
-            "Use Dynamic Bones for Snowboarding",
             "Vulkan API Compatibility"});
             this.clb_PatchesList.Location = new System.Drawing.Point(4, 9);
             this.clb_PatchesList.Name = "clb_PatchesList";
@@ -1010,6 +962,7 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Options.Controls.Add(this.Debug);
             this.group_Options.Controls.Add(this.btn_ReportBug);
             this.group_Options.Controls.Add(this.lbl_GameBanana);
             this.group_Options.Controls.Add(this.check_GameBanana);
@@ -1023,6 +976,8 @@
             this.group_Options.Controls.Add(this.btn_ColourPicker);
             this.group_Options.Controls.Add(this.check_ManualInstall);
             this.group_Options.Controls.Add(this.btn_Theme);
+            this.group_Options.Controls.Add(this.lbl_ManualPatches);
+            this.group_Options.Controls.Add(this.check_ManualPatches);
             this.group_Options.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Options.Location = new System.Drawing.Point(4, 283);
             this.group_Options.Name = "group_Options";
@@ -1030,6 +985,22 @@
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
+            // 
+            // Debug
+            // 
+            this.Debug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Debug.BackColor = System.Drawing.Color.Tomato;
+            this.Debug.FlatAppearance.BorderSize = 0;
+            this.Debug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Debug.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Debug.Location = new System.Drawing.Point(390, 101);
+            this.Debug.Name = "Debug";
+            this.Debug.Size = new System.Drawing.Size(119, 23);
+            this.Debug.TabIndex = 95;
+            this.Debug.Text = "Debug";
+            this.Debug.UseVisualStyleBackColor = false;
+            this.Debug.Visible = false;
+            this.Debug.Click += new System.EventHandler(this.Debug_Click);
             // 
             // btn_ReportBug
             // 
@@ -1050,7 +1021,7 @@
             // 
             this.lbl_GameBanana.AutoSize = true;
             this.lbl_GameBanana.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_GameBanana.Location = new System.Drawing.Point(32, 49);
+            this.lbl_GameBanana.Location = new System.Drawing.Point(32, 72);
             this.lbl_GameBanana.Name = "lbl_GameBanana";
             this.lbl_GameBanana.Size = new System.Drawing.Size(151, 15);
             this.lbl_GameBanana.TabIndex = 93;
@@ -1060,7 +1031,7 @@
             // 
             this.check_GameBanana.AutoSize = true;
             this.check_GameBanana.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_GameBanana.Location = new System.Drawing.Point(15, 50);
+            this.check_GameBanana.Location = new System.Drawing.Point(15, 73);
             this.check_GameBanana.Name = "check_GameBanana";
             this.check_GameBanana.Size = new System.Drawing.Size(15, 14);
             this.check_GameBanana.TabIndex = 92;
@@ -1081,6 +1052,7 @@
             this.btn_Update.TabIndex = 91;
             this.btn_Update.Text = "Check for Updates";
             this.btn_Update.UseVisualStyleBackColor = false;
+            this.btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
             // 
             // lbl_ManualInstall
             // 
@@ -1202,6 +1174,27 @@
             this.btn_Theme.Text = "Theme: None";
             this.btn_Theme.UseVisualStyleBackColor = false;
             this.btn_Theme.Click += new System.EventHandler(this.Btn_Theme_Click);
+            // 
+            // lbl_ManualPatches
+            // 
+            this.lbl_ManualPatches.AutoSize = true;
+            this.lbl_ManualPatches.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_ManualPatches.Location = new System.Drawing.Point(32, 48);
+            this.lbl_ManualPatches.Name = "lbl_ManualPatches";
+            this.lbl_ManualPatches.Size = new System.Drawing.Size(141, 15);
+            this.lbl_ManualPatches.TabIndex = 97;
+            this.lbl_ManualPatches.Text = "Manual patch installation";
+            // 
+            // check_ManualPatches
+            // 
+            this.check_ManualPatches.AutoSize = true;
+            this.check_ManualPatches.ForeColor = System.Drawing.SystemColors.Control;
+            this.check_ManualPatches.Location = new System.Drawing.Point(15, 49);
+            this.check_ManualPatches.Name = "check_ManualPatches";
+            this.check_ManualPatches.Size = new System.Drawing.Size(15, 14);
+            this.check_ManualPatches.TabIndex = 96;
+            this.check_ManualPatches.UseVisualStyleBackColor = true;
+            this.check_ManualPatches.CheckedChanged += new System.EventHandler(this.Check_ManualPatches_CheckedChanged);
             // 
             // group_FTP
             // 
@@ -1434,6 +1427,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(538, 601);
+            this.Controls.Add(this.sonic06mm_Aldi);
+            this.Controls.Add(this.lbl_SetStatus);
             this.Controls.Add(this.btn_EditMod);
             this.Controls.Add(this.btn_UninstallMods);
             this.Controls.Add(this.radio_PlayStation3);
@@ -1468,8 +1463,6 @@
             this.group_Tweaks.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_ViewportY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_ViewportX)).EndInit();
             this.unifytb_Tab_Settings.ResumeLayout(false);
             this.group_Options.ResumeLayout(false);
             this.group_Options.PerformLayout();
@@ -1508,16 +1501,10 @@
         private System.Windows.Forms.Button btn_ResetCameraHeight;
         private System.Windows.Forms.NumericUpDown nud_CameraHeight;
         private System.Windows.Forms.Label lbl_CameraHeight;
-        private System.Windows.Forms.Button btn_ResetViewportX;
         private System.Windows.Forms.Button btn_ResetReflections;
-        private System.Windows.Forms.Button btn_ResetViewportY;
         private System.Windows.Forms.Button btn_ResetCameraDistance;
         private System.Windows.Forms.NumericUpDown nud_CameraDistance;
         private System.Windows.Forms.Label lbl_CameraDistance;
-        private System.Windows.Forms.NumericUpDown nud_ViewportY;
-        private System.Windows.Forms.NumericUpDown nud_ViewportX;
-        private System.Windows.Forms.Label lbl_ViewportY;
-        private System.Windows.Forms.Label lbl_ViewportX;
         private System.Windows.Forms.Label lbl_Reflections;
         private System.Windows.Forms.ComboBox combo_Reflections;
         private System.Windows.Forms.GroupBox group_Directories;
@@ -1583,5 +1570,12 @@
         private System.Windows.Forms.Button btn_Update;
         private System.Windows.Forms.Label lbl_SettingsOverlay;
         private System.Windows.Forms.Button btn_ReportBug;
+        private System.Windows.Forms.ToolStripStatusLabel lbl_Status;
+        private System.Windows.Forms.Button Debug;
+        private System.Windows.Forms.Label lbl_ManualPatches;
+        private System.Windows.Forms.CheckBox check_ManualPatches;
+        private System.Windows.Forms.ToolStripStatusLabel lbl_MainStatus;
+        private System.Windows.Forms.Label lbl_SetStatus;
+        private System.Windows.Forms.Button sonic06mm_Aldi;
     }
 }

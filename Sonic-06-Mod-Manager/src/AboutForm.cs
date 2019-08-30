@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Unify.Messages;
+using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -35,6 +36,11 @@ namespace Sonic_06_Mod_Manager.src
         {
             InitializeComponent();
             lbl_versionNumber.Text = versionNumber;
+
+            if (ModManager.debugMode) {
+                lbl_Title.Text = SystemMessages.tl_DefaultTitle;
+                pic_Logo.BackgroundImage = Properties.Resources.logo_aldi;
+            }
 
             if (Properties.Settings.Default.theme)
             {
