@@ -89,6 +89,7 @@
             this.btn_Delete.Text = "Delete Mod";
             this.btn_Delete.UseVisualStyleBackColor = false;
             this.btn_Delete.Visible = false;
+            this.btn_Delete.Click += new System.EventHandler(this.Btn_Delete_Click);
             // 
             // btn_ReadOnlyBrowser
             // 

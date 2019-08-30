@@ -141,6 +141,7 @@ namespace Sonic_06_Mod_Manager.src
                 }
                 btn_Create.Text = "Edit Mod";
                 btn_Create.BackColor = Color.SkyBlue;
+                btn_Delete.Visible = true;
 
                 string[] getThumbnail = Directory.GetFiles(modPath, "thumbnail*", SearchOption.TopDirectoryOnly);
                 foreach (var img in getThumbnail)
@@ -256,6 +257,28 @@ namespace Sonic_06_Mod_Manager.src
             pic_Thumbnail.BackgroundImage.Dispose();
             pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception;
             modThumbnail = string.Empty;
+        }
+
+        private void Btn_Delete_Click(object sender, EventArgs e)
+        {
+            string confirmation = UnifyMessages.UnifyMessage.Show(ModsMessages.warn_ModDeleteWarn(Path.GetFileName(modPath)), SystemMessages.tl_AreYouSure, "YesNo", "Question");
+
+            switch (confirmation)
+            {
+                case "Yes":
+                    var tempData = new DirectoryInfo(modPath);
+
+                    try {
+                        if (Directory.Exists(modPath)) {
+                            foreach (FileInfo file in tempData.GetFiles())
+                                file.Delete();
+                            foreach (DirectoryInfo directory in tempData.GetDirectories())
+                                directory.Delete(true);
+                            Directory.Delete(modPath);
+                        }
+                    } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModDeleteError(Path.GetFileName(modPath)), SystemMessages.tl_DirectoryError, "OK", "Error"); } Close();
+                    break;
+            }
         }
     }
 }

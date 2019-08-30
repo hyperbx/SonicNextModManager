@@ -186,6 +186,7 @@ namespace Unify.Messages
         public static string tl_AreYouSure = "Are you sure?";
         public static string tl_ServerError = "Server Error";
         public static string tl_FileError = "File Error";
+        public static string tl_DirectoryError = "Directory Error";
         public static string tl_ListError = "List Error";
         public static string tl_NameError = "Name Error";
         public static string tl_Success = "Success";
@@ -231,6 +232,8 @@ namespace Unify.Messages
         public static string ex_SkippedModsTally(string failedMods) { return $"Mod installation completed, but the following mods were skipped:\n{failedMods}"; }
         public static string ex_IncorrectTarget(string mod, string platform) { return $"\n► {mod} (failed because the mod was not targeted for the {platform})"; }
         public static string ex_ModExists(string mod) { return $"A mod called '{mod}' already exists."; }
+        public static string warn_ModDeleteWarn(string mod) { return $"Are you sure you want to delete '{mod}?'"; }
+        public static string ex_ModDeleteError(string mod) { return $"Failed to delete '{mod}.' Please ensure that nothing is accessing that mod's directory, or delete it manually."; }
     }
 
     class EmulatorMessages

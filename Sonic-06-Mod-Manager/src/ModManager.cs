@@ -135,6 +135,9 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void Btn_SaveAndPlay_Click(object sender, EventArgs e) {
+            SaveChecks();
+            GetMods();
+
             if ((btn_SaveAndPlay.Text == "Save and Play" || btn_SaveAndPlay.Text == "Install Mods") && !check_FTP.Checked)
             {
                 try
