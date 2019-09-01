@@ -77,6 +77,14 @@ namespace Unify.Networking
 
     class FTP
     {
+        public static void UploadFile(string server, string file, string username, string password) {
+            using (WebClient uploader = new WebClient()) {
+                uploader.UseDefaultCredentials = true;
+                uploader.Credentials = new NetworkCredential(username, password);
+
+                uploader.UploadFile(server, WebRequestMethods.Ftp.UploadFile, file);
+            }
+        }
     }
 
     public class TimedWebClient : WebClient

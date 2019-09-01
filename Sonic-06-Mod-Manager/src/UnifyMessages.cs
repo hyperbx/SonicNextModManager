@@ -203,7 +203,7 @@ namespace Unify.Messages
         public static string msg_PatchingHUD = "Patching HUD...";
         public static string msg_PatchingShadows = "Patching Shadows...";
         public static string msg_PatchingCamera = "Patching Camera...";
-        public static string msg_PatchingOmega = "Patching Omega...";
+        public static string msg_PatchingCharacters = "Patching Characters...";
 
         public static string ex_Prereq_Newtonsoft_WriteFailure(Exception exception) { return $"Failed to write Newtonsoft.Json.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }
         public static string ex_Prereq_Ookii_WriteFailure(Exception exception) { return $"Failed to write Ookii.Dialogs.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }

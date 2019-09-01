@@ -138,30 +138,22 @@ namespace Sonic_06_Mod_Manager
             SaveChecks();
             GetMods();
 
-            if ((btn_SaveAndPlay.Text == "Save and Play" || btn_SaveAndPlay.Text == "Install Mods") && !check_FTP.Checked)
-            {
-                try
-                {
+            if ((btn_SaveAndPlay.Text == "Save and Play" || btn_SaveAndPlay.Text == "Install Mods") && !check_FTP.Checked) {
+                try {
                     ARC.CleanupMods();
 
-                    if (Properties.Settings.Default.priority == false)
-                    {
+                    if (Properties.Settings.Default.priority == false) {
                         //Top to Bottom Priority
-                        for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--)
-                        {
-                            if (clb_ModsList.GetItemChecked(i))
-                            {
+                        for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) {
+                            if (clb_ModsList.GetItemChecked(i)) {
                                 Status = SystemMessages.msg_InstallingMod(clb_ModsList.Items[i].ToString());
                                 ARC.InstallMods(Path.GetDirectoryName(configs[i]));
                                 Status = SystemMessages.msg_DefaultStatus;
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         //Bottom to Top Priority
-                        foreach (object mod in clb_ModsList.CheckedItems)
-                        {
+                        foreach (object mod in clb_ModsList.CheckedItems) {
                             Status = SystemMessages.msg_InstallingMod(clb_ModsList.GetItemText(mod));
                             ARC.InstallMods(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]));
                             Status = SystemMessages.msg_DefaultStatus;
@@ -171,8 +163,7 @@ namespace Sonic_06_Mod_Manager
                     if (!check_ManualPatches.Checked) PatchAll();
 
                     //Show a MessageBox explaining what mods were skipped due to failing to copy.
-                    if (ARC.skippedMods.ToString() != string.Empty)
-                    {
+                    if (ARC.skippedMods.ToString() != string.Empty) {
                         StringBuilder getString = new StringBuilder();
                         foreach (var modName in ARC.skippedMods)
                             getString.Append(modName);
@@ -180,24 +171,21 @@ namespace Sonic_06_Mod_Manager
                         if (getString.Length > 0)
                             UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning");
                     }
-                    if (!check_ManualInstall.Checked)
-                    {
-                        if (combo_Emulator_System.SelectedIndex == 0)
-                        {
+
+                    if (!check_ManualInstall.Checked) {
+                        if (combo_Emulator_System.SelectedIndex == 0) {
                             Status = SystemMessages.msg_LaunchXenia;
                             LaunchXenia();
                             Status = SystemMessages.msg_DefaultStatus;
                         }
-                        if (combo_Emulator_System.SelectedIndex == 1)
-                        {
+                        if (combo_Emulator_System.SelectedIndex == 1) {
                             Status = SystemMessages.msg_LaunchRPCS3;
                             LaunchRPCS3();
                             Status = SystemMessages.msg_DefaultStatus;
                         }
                     }
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
                     unifytb_Main.SelectedIndex = 3;
                     ARC.CleanupMods();
@@ -205,19 +193,19 @@ namespace Sonic_06_Mod_Manager
                 }
             }
             else if (btn_SaveAndPlay.Text == "Apply Patches") PatchAll();
+            else {
+                FTP.UploadFile(text_FTPLocation.Text, Path.Combine(Properties.Settings.Default.modsDirectory, "mods.ini"), text_Username.Text, text_Password.Text);
+            }
         }
 
 
         private void PatchAll()
         {
-            var files = Directory.GetFiles(Properties.Settings.Default.gameDirectory, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".arc"));
+            var files = Directory.GetFiles(Properties.Settings.Default.gameDirectory, "*.arc", SearchOption.AllDirectories);
 
-            foreach (var arc in files)
-            {
-                if (Path.GetFileName(arc) == "cache.arc")
-                {
-                    if (clb_PatchesList.GetItemChecked(3))
-                    {
+            foreach (var arc in files) {
+                if (Path.GetFileName(arc) == "cache.arc") {
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Vulkan API Compatibility"))) {
                         Status = SystemMessages.msg_PatchingRenderer;
                         if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                         string unpack = ARC.UnpackARC(arc);
@@ -226,9 +214,7 @@ namespace Sonic_06_Mod_Manager
                         File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
-                    }
-                    else
-                    {
+                    } else {
                         Status = SystemMessages.msg_PatchingRenderer;
                         if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                         string unpack = ARC.UnpackARC(arc);
@@ -238,10 +224,8 @@ namespace Sonic_06_Mod_Manager
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
-
-                    if (combo_Reflections.SelectedIndex != 1)
-                    {
-                        Status = SystemMessages.msg_PatchingReflections;
+                    if (combo_Reflections.SelectedIndex != Properties.Settings.Default.patches_Reflections) {
+                        Status = SystemMessages.msg_PatchingRenderer;
                         if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                         string unpack = ARC.UnpackARC(arc);
                         Lua.Reflections(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
@@ -249,24 +233,22 @@ namespace Sonic_06_Mod_Manager
                         Status = SystemMessages.msg_DefaultStatus;
                     }
 
-                    Status = SystemMessages.msg_PatchingHUD;
+                    Status = SystemMessages.msg_PatchingRenderer;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string disableHUD = ARC.UnpackARC(arc);
-                    Lua.DisableHUD(Path.Combine(disableHUD, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(0));
+                    Lua.DisableHUD(Path.Combine(disableHUD, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
                     ARC.RepackARC(disableHUD, arc);
                     Status = SystemMessages.msg_DefaultStatus;
 
-                    Status = SystemMessages.msg_PatchingShadows;
+                    Status = SystemMessages.msg_PatchingRenderer;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string disableShadows = ARC.UnpackARC(arc);
-                    Lua.DisableShadows(Path.Combine(disableShadows, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(1));
+                    Lua.DisableShadows(Path.Combine(disableShadows, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows")));
                     ARC.RepackARC(disableShadows, arc);
                     Status = SystemMessages.msg_DefaultStatus;
                 }
-                else if (Path.GetFileName(arc) == "game.arc")
-                {
-                    if (nud_CameraDistance.Value != 650)
-                    {
+                else if (Path.GetFileName(arc) == "game.arc") {
+                    if (nud_CameraDistance.Value != Properties.Settings.Default.patches_CameraDistance) {
                         Status = SystemMessages.msg_PatchingCamera;
                         if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                         string unpack = ARC.UnpackARC(arc);
@@ -274,8 +256,7 @@ namespace Sonic_06_Mod_Manager
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
-                    if (nud_CameraHeight.Value != 15)
-                    {
+                    if (nud_CameraHeight.Value != Properties.Settings.Default.patches_CameraHeight) {
                         Status = SystemMessages.msg_PatchingCamera;
                         if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                         string unpack = ARC.UnpackARC(arc);
@@ -284,26 +265,45 @@ namespace Sonic_06_Mod_Manager
                         Status = SystemMessages.msg_DefaultStatus;
                     }
                 }
-                else if (Path.GetFileName(arc) == "player_omega.arc")
-                {
-                    if (clb_PatchesList.GetItemChecked(2))
-                    {
-                        Status = SystemMessages.msg_PatchingOmega;
+                else if (Path.GetFileName(arc) == "player_omega.arc") {
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Omega Blur Fix"))) {
+                        Status = SystemMessages.msg_PatchingCharacters;
                         if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                        string omegaBlurFix = ARC.UnpackARC(arc);
-                        File.WriteAllBytes(Path.Combine(omegaBlurFix, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Fix);
-                        ARC.RepackARC(omegaBlurFix, arc);
+                        string unpack = ARC.UnpackARC(arc);
+                        File.WriteAllBytes(Path.Combine(unpack, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Fix);
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    } else {
+                        Status = SystemMessages.msg_PatchingCharacters;
+                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        string unpack = ARC.UnpackARC(arc);
+                        File.WriteAllBytes(Path.Combine(unpack, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Retail);
+                        ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
-                    else
-                    {
-                        Status = SystemMessages.msg_PatchingOmega;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                        string omegaBlurFix = ARC.UnpackARC(arc);
-                        File.WriteAllBytes(Path.Combine(omegaBlurFix, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Retail);
-                        ARC.RepackARC(omegaBlurFix, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
-                    }
+                }
+                else if (Path.GetFileName(arc) == "player.arc") {
+                    Status = SystemMessages.msg_PatchingCharacters;
+                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                    string actionGaugeFixes = ARC.UnpackARC(arc);
+                    Lua.ActionGaugeFixes(Path.Combine(actionGaugeFixes, "player\\xenon\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")));
+                    ARC.RepackARC(actionGaugeFixes, arc);
+                    Status = SystemMessages.msg_DefaultStatus;
+
+                    Status = SystemMessages.msg_PatchingCharacters;
+                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                    string unlockMidairMomentum = ARC.UnpackARC(arc);
+                    Lua.UnlockMidairMomentum(Path.Combine(unlockMidairMomentum, "player\\xenon\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")));
+                    ARC.RepackARC(unlockMidairMomentum, arc);
+                    Status = SystemMessages.msg_DefaultStatus;
+
+                    Status = SystemMessages.msg_PatchingCharacters;
+                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                    string useDynamicBones = ARC.UnpackARC(arc);
+                    Lua.UseDynamicBonesForSnowboard(Path.Combine(useDynamicBones, "player\\xenon\\player\\snow_board.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
+                    Lua.UseDynamicBonesForSnowboard(Path.Combine(useDynamicBones, "player\\xenon\\player\\snow_board_wap.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
+                    ARC.RepackARC(useDynamicBones, arc);
+                    Status = SystemMessages.msg_DefaultStatus;
                 }
             }
         }

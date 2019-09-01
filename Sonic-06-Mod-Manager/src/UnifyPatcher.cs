@@ -351,10 +351,8 @@ namespace Unify.Patcher
             string[] editedLua = File.ReadAllLines(directoryRoot);
             int lineNum = 0;
 
-            foreach (string line in editedLua)
-            {
-                if (line.StartsWith("altitude"))
-                {
+            foreach (string line in editedLua) {
+                if (line.StartsWith("altitude")) {
                     string[] tempLine = line.Split(' '); //Split line into different sections
                     tempLine[2] = distance.ToString(); //Replace the 2nd section (the original number)
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
@@ -370,8 +368,7 @@ namespace Unify.Patcher
             string[] editedLua = File.ReadAllLines(directoryRoot);
             int lineNum = 0;
 
-            foreach (string line in editedLua)
-            {
+            foreach (string line in editedLua) {
                 if (line.StartsWith("EnableReflection")) {
                     string[] tempLine = line.Split(' '); //Split line into different sections
                     if (scale == 0)
@@ -387,9 +384,8 @@ namespace Unify.Patcher
                         tempLine[7] = "4"; //Replace the 2nd section (the original number)
                     else if (scale == 2)
                         tempLine[7] = "2"; //Replace the 2nd section (the original number)
-                    else if (scale == 3) {
+                    else if (scale == 3)
                         tempLine[6] = tempLine[7] = string.Empty; //Replace the 2nd section (the original number)
-                    }
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
 
@@ -404,19 +400,14 @@ namespace Unify.Patcher
             string[] editedLua = File.ReadAllLines(directoryRoot);
             int lineNum = 0;
 
-            foreach (string line in editedLua)
-            {
-                if (line.Contains("Render2D"))
-                {
+            foreach (string line in editedLua) {
+                if (line.Contains("Render2D")) {
                     string[] tempLine = line.Split(' '); //Split line into different sections
                     if (!enabled)
-                    {
                         tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
-                    }
                     else {
-                        if (tempLine[2].StartsWith("--")) {
+                        if (tempLine[2].StartsWith("--"))
                             tempLine[2] = tempLine[2].Substring(2);
-                        }
                     }
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
@@ -432,24 +423,198 @@ namespace Unify.Patcher
             string[] editedLua = File.ReadAllLines(directoryRoot);
             int lineNum = 0;
 
-            foreach (string line in editedLua)
-            {
-                if (line.Contains("RenderCSM"))
-                {
+            foreach (string line in editedLua) {
+                if (line.Contains("RenderCSM")) {
                     string[] tempLine = line.Split(' '); //Split line into different sections
                     if (!enabled)
-                    {
                         tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
-                    }
-                    else
-                    {
+                    else {
                         if (tempLine[2].StartsWith("--"))
-                        {
                             tempLine[2] = tempLine[2].Substring(2);
-                        }
                     }
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
+        public static void UnlockMidairMomentum(string directoryRoot, bool enabled)
+        {
+            var files = Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories);
+
+            foreach (var lub in files) {
+                Decompile(lub);
+                string[] editedLua = File.ReadAllLines(lub);
+                int lineNum = 0;
+
+                foreach (string line in editedLua) {
+                    if (line.Contains("c_jump_brake")) {
+                        string[] tempLine = line.Split(' '); //Split line into different sections
+                        if (!enabled)
+                            tempLine[2] = "20"; //Replace the 2nd section (the original number)
+                        else {
+                            if (tempLine[2] == "20")
+                                tempLine[2] = "25";
+                        }
+                        editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                    }
+                    if (line.Contains("c_jump_speed_acc")) {
+                        string[] tempLine = line.Split(' '); //Split line into different sections
+                        if (!enabled)
+                            tempLine[2] = "2.5"; //Replace the 2nd section (the original number)
+                        else {
+                            if (tempLine[2] == "2.5")
+                                tempLine[2] = "20";
+                        }
+                        editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                    }
+                    if (line.Contains("c_jump_walk")) {
+                        if (!enabled)
+                            editedLua[lineNum] = "c_jump_walk = 9 * (meter / sec)"; //Replace the 2nd section (the original number)
+                        else {
+                            if (editedLua[lineNum] == "c_jump_walk = 9 * (meter / sec)")
+                                editedLua[lineNum] = "c_jump_walk = HeightAndDistanceToSpeed(l_jump_walk, l_jump_hight)";
+                        }
+                    }
+
+                    lineNum++;
+                }
+                File.WriteAllLines(lub, editedLua); //Resave the Lua
+            }
+        }
+
+        public static void ActionGaugeFixes(string directoryRoot, bool enabled)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua)
+            {
+                if (line.StartsWith("c_gauge_green") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_green";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_green") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_green";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_red") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_red";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_red") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_red";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_blue") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_blue";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_blue") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_blue";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_white") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_white";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_white") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_white";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_sky") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_sky";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_sky") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_sky";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_yellow") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_yellow";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_yellow") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_yellow";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_purple") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_purple";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_purple") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_purple";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_super") && enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_super";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+                else if (line.StartsWith("c_super") && !enabled) {
+                    string[] tempLine = line.Split(' ');
+                    tempLine[0] = "c_gauge_super";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                if (line.StartsWith("c_gauge_heal_delay")) {
+                    string[] tempLine = line.Split(' ');
+                    if (!enabled)
+                        tempLine[2] = "0.5";
+                    else
+                        tempLine[2] = "0";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua);
+        }
+
+        public static void UseDynamicBonesForSnowboard(string directoryRoot, bool enabled)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua)
+            {
+                if (line.StartsWith("c_hair") && !enabled) {
+                    editedLua[lineNum] = string.Empty;
+                    editedLua[lineNum + 1] = string.Empty;
+                    editedLua[lineNum + 2] = string.Empty;
+                    editedLua[lineNum + 3] = string.Empty;
+                    editedLua[lineNum + 4] = string.Empty;
+                    editedLua[lineNum + 5] = string.Empty;
+                    editedLua[lineNum + 6] = string.Empty;
+                    editedLua[lineNum + 7] = string.Empty;
+                }
+                else
+                    editedLua.Append("c_hair = {\n  \"TopHair\",\n  \"HighLeftHair\",\n  \"HighRightHair\",\n  \"LowLeftHair\",\n  \"LowRightHair\",\n  \"MiddleHair\"\n}");
 
                 lineNum++;
             }
