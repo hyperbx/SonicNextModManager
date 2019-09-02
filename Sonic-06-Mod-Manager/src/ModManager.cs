@@ -280,64 +280,89 @@ namespace Sonic_06_Mod_Manager
         private void PatchAll()
         {
             var files = Directory.GetFiles(Properties.Settings.Default.gameDirectory, "*.arc", SearchOption.AllDirectories);
+            string system = "xenon";
+
+            if (combo_Emulator_System.SelectedIndex == 0) system = "xenon";
+            else if (combo_Emulator_System.SelectedIndex == 1) system = "ps3";
 
             foreach (var arc in files) {
                 if (Path.GetFileName(arc) == "cache.arc") {
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Vulkan API Compatibility"))) {
-                        Status = SystemMessages.msg_PatchingRenderer;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                        string unpack = ARC.UnpackARC(arc);
-                        File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
-                        File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
-                        File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
-                        ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
-                    } else {
-                        Status = SystemMessages.msg_PatchingRenderer;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                        string unpack = ARC.UnpackARC(arc);
-                        File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), Properties.Resources.retail_render_gamemode);
-                        File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_title.lub"), Properties.Resources.retail_render_title);
-                        File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_main.lub"), Properties.Resources.retail_render_main);
-                        ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
+                    if (combo_Emulator_System.SelectedIndex == 0) {
+                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Vulkan API Compatibility"))) {
+                            Status = SystemMessages.msg_PatchingRenderer;
+                            if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                            string unpack = ARC.UnpackARC(arc);
+                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
+                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
+                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
+                            ARC.RepackARC(unpack, arc);
+                            Status = SystemMessages.msg_DefaultStatus;
+                        } else {
+                            Status = SystemMessages.msg_PatchingRenderer;
+                            if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                            string unpack = ARC.UnpackARC(arc);
+                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), Properties.Resources.retail_render_gamemode);
+                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_title.lub"), Properties.Resources.retail_render_title);
+                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_main.lub"), Properties.Resources.retail_render_main);
+                            ARC.RepackARC(unpack, arc);
+                            Status = SystemMessages.msg_DefaultStatus;
+                        }
                     }
 
                     Status = SystemMessages.msg_PatchingRenderer;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string reflections = ARC.UnpackARC(arc);
-                    Lua.Reflections(Path.Combine(reflections, "cache\\xenon\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
+                    Lua.Reflections(Path.Combine(reflections, $"cache\\{system}\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
                     ARC.RepackARC(reflections, arc);
                     Status = SystemMessages.msg_DefaultStatus;
 
                     Status = SystemMessages.msg_PatchingRenderer;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string disableHUD = ARC.UnpackARC(arc);
-                    Lua.DisableHUD(Path.Combine(disableHUD, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
+                    Lua.DisableHUD(Path.Combine(disableHUD, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
                     ARC.RepackARC(disableHUD, arc);
                     Status = SystemMessages.msg_DefaultStatus;
 
                     Status = SystemMessages.msg_PatchingRenderer;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string disableShadows = ARC.UnpackARC(arc);
-                    Lua.DisableShadows(Path.Combine(disableShadows, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows")));
+                    Lua.DisableShadows(Path.Combine(disableShadows, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows")));
                     ARC.RepackARC(disableShadows, arc);
                     Status = SystemMessages.msg_DefaultStatus;
+
+                    if (combo_Emulator_System.SelectedIndex == 1)
+                    {
+                        Status = SystemMessages.msg_PatchingCamera;
+                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        string cameraDistance = ARC.UnpackARC(arc);
+                        Lua.CameraDistance(Path.Combine(cameraDistance, $"cache\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
+                        ARC.RepackARC(cameraDistance, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+
+                        Status = SystemMessages.msg_PatchingCamera;
+                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        string cameraHeight = ARC.UnpackARC(arc);
+                        Lua.CameraHeight(Path.Combine(cameraHeight, $"cache\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraHeight.Value));
+                        ARC.RepackARC(cameraHeight, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
                 }
                 else if (Path.GetFileName(arc) == "game.arc") {
-                    Status = SystemMessages.msg_PatchingCamera;
-                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                    string cameraDistance = ARC.UnpackARC(arc);
-                    Lua.CameraDistance(Path.Combine(cameraDistance, "game\\xenon\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
-                    ARC.RepackARC(cameraDistance, arc);
-                    Status = SystemMessages.msg_DefaultStatus;
+                    if (combo_Emulator_System.SelectedIndex == 0) {
+                        Status = SystemMessages.msg_PatchingCamera;
+                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        string cameraDistance = ARC.UnpackARC(arc);
+                        Lua.CameraDistance(Path.Combine(cameraDistance, $"game\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
+                        ARC.RepackARC(cameraDistance, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
 
-                    Status = SystemMessages.msg_PatchingCamera;
-                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                    string cameraHeight = ARC.UnpackARC(arc);
-                    Lua.CameraHeight(Path.Combine(cameraHeight, "game\\xenon\\cameraparam.lub"), decimal.ToInt32(nud_CameraHeight.Value));
-                    ARC.RepackARC(cameraHeight, arc);
-                    Status = SystemMessages.msg_DefaultStatus;
+                        Status = SystemMessages.msg_PatchingCamera;
+                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        string cameraHeight = ARC.UnpackARC(arc);
+                        Lua.CameraHeight(Path.Combine(cameraHeight, $"game\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraHeight.Value));
+                        ARC.RepackARC(cameraHeight, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
                 }
                 else if (Path.GetFileName(arc) == "player_omega.arc") {
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Omega Blur Fix"))) {
@@ -360,22 +385,22 @@ namespace Sonic_06_Mod_Manager
                     Status = SystemMessages.msg_PatchingCharacters;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string actionGaugeFixes = ARC.UnpackARC(arc);
-                    Lua.ActionGaugeFixes(Path.Combine(actionGaugeFixes, "player\\xenon\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")));
+                    Lua.ActionGaugeFixes(Path.Combine(actionGaugeFixes, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")));
                     ARC.RepackARC(actionGaugeFixes, arc);
                     Status = SystemMessages.msg_DefaultStatus;
 
                     Status = SystemMessages.msg_PatchingCharacters;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string unlockMidairMomentum = ARC.UnpackARC(arc);
-                    Lua.UnlockMidairMomentum(Path.Combine(unlockMidairMomentum, "player\\xenon\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")));
+                    Lua.UnlockMidairMomentum(Path.Combine(unlockMidairMomentum, $"player\\{system}\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")));
                     ARC.RepackARC(unlockMidairMomentum, arc);
                     Status = SystemMessages.msg_DefaultStatus;
 
                     Status = SystemMessages.msg_PatchingCharacters;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
                     string useDynamicBones = ARC.UnpackARC(arc);
-                    Lua.UseDynamicBonesForSnowboard(Path.Combine(useDynamicBones, "player\\xenon\\player\\snow_board.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
-                    Lua.UseDynamicBonesForSnowboard(Path.Combine(useDynamicBones, "player\\xenon\\player\\snow_board_wap.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
+                    Lua.UseDynamicBonesForSnowboard(Path.Combine(useDynamicBones, $"player\\{system}\\player\\snow_board.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
+                    Lua.UseDynamicBonesForSnowboard(Path.Combine(useDynamicBones, $"player\\{system}\\player\\snow_board_wap.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
                     ARC.RepackARC(useDynamicBones, arc);
                     Status = SystemMessages.msg_DefaultStatus;
                 }
