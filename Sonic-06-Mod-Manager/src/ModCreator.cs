@@ -131,6 +131,12 @@ namespace Sonic_06_Mod_Manager.src
                             entryValue = entryValue.Remove(entryValue.Length - 1);
                             text_ReadOnly.Text = entryValue;
                         }
+                        if (line.StartsWith("Save"))
+                        {
+                            entryValue = line.Substring(line.IndexOf("=") + 2);
+                            entryValue = entryValue.Remove(entryValue.Length - 1);
+                            text_Save.Text = entryValue;
+                        }
                         if (line.StartsWith("Description"))
                         {
                             entryValue = line.Substring(line.IndexOf("=") + 2);
@@ -160,7 +166,7 @@ namespace Sonic_06_Mod_Manager.src
             if (!FilePathHasInvalidChars(text_Title.Text))
             {
                 if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, text_Title.Text)) && !edit)
-                    UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(text_Title.Text), SystemMessages.tl_NameError, "OK", "Error");
+                    UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(text_Title.Text), SystemMessages.tl_NameError, "OK", "Error", false);
                 else
                 {
                     string newPath = Path.Combine(Properties.Settings.Default.modsDirectory, text_Title.Text);
@@ -181,6 +187,8 @@ namespace Sonic_06_Mod_Manager.src
                         configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
                         configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
                         if (text_ReadOnly.Text != string.Empty) configInfo.WriteLine($"Read-only=\"{text_ReadOnly.Text}\"");
+                        if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 0) configInfo.WriteLine($"Save=\"{Path.Combine(newPath, "savedata.360")}\"");
+                        else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"{Path.Combine(newPath, "savedata.ps3")}\"");
                         if (tb_Description.Text != string.Empty) configInfo.WriteLine($"Description=\"{tb_Description.Text}\"");
                         configInfo.Close();
                     }
@@ -188,13 +196,28 @@ namespace Sonic_06_Mod_Manager.src
                     if (File.Exists(modThumbnail))
                         File.Copy(modThumbnail, Path.Combine(newPath, $"thumbnail{Path.GetExtension(modThumbnail)}"));
 
+                    if (File.Exists(text_Save.Text))
+                        if (combo_System.SelectedIndex == 0)
+                            File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.360"), true);
+                        else if (combo_System.SelectedIndex == 1)
+                            File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.ps3"), true);
+
                     if (modThumbnail == string.Empty && edit) {
                         try {
-                        string[] getThumbnail = Directory.GetFiles(newPath, "thumbnail*", SearchOption.TopDirectoryOnly);
-                        foreach (var img in getThumbnail)
-                            if (File.Exists(img)) File.Delete(img);
+                            string[] getThumbnail = Directory.GetFiles(newPath, "thumbnail*", SearchOption.TopDirectoryOnly);
+                            foreach (var img in getThumbnail)
+                                if (File.Exists(img)) File.Delete(img);
                         }
-                        catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error"); }
+                        catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
+                    }
+
+                    if (text_Save.Text == string.Empty && edit) {
+                        try {
+                            string[] getSaveData = Directory.GetFiles(newPath, "savedata*", SearchOption.TopDirectoryOnly);
+                            foreach (var save in getSaveData)
+                                if (File.Exists(save)) File.Delete(save);
+                        }
+                        catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_SaveDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
                     }
 
                     Close();
@@ -261,7 +284,7 @@ namespace Sonic_06_Mod_Manager.src
 
         private void Btn_Delete_Click(object sender, EventArgs e)
         {
-            string confirmation = UnifyMessages.UnifyMessage.Show(ModsMessages.warn_ModDeleteWarn(Path.GetFileName(modPath)), SystemMessages.tl_AreYouSure, "YesNo", "Question");
+            string confirmation = UnifyMessages.UnifyMessage.Show(ModsMessages.warn_ModDeleteWarn(Path.GetFileName(modPath)), SystemMessages.tl_AreYouSure, "YesNo", "Question", false);
 
             switch (confirmation)
             {
@@ -276,9 +299,11 @@ namespace Sonic_06_Mod_Manager.src
                                 directory.Delete(true);
                             Directory.Delete(modPath);
                         }
-                    } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModDeleteError(Path.GetFileName(modPath)), SystemMessages.tl_DirectoryError, "OK", "Error"); } Close();
+                    } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModDeleteError(Path.GetFileName(modPath)), SystemMessages.tl_DirectoryError, "OK", "Error", false); } Close();
                     break;
             }
         }
+
+        private void Btn_SaveBrowser_Click(object sender, EventArgs e) { text_Save.Text = Locations.LocateSaves(combo_System.SelectedIndex); }
     }
 }

@@ -41,14 +41,12 @@ namespace Unify.Tools
         public static string LocateGame()
         {
             //Select game directory and save.
-            VistaFolderBrowserDialog game = new VistaFolderBrowserDialog
-            {
+            VistaFolderBrowserDialog game = new VistaFolderBrowserDialog {
                 Description = EmulatorMessages.msg_LocateGame,
                 UseDescriptionForTitle = true,
             };
 
-            if (game.ShowDialog() == DialogResult.OK)
-            {
+            if (game.ShowDialog() == DialogResult.OK) {
                 Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory = game.SelectedPath;
                 Sonic_06_Mod_Manager.Properties.Settings.Default.Save();
             }
@@ -59,14 +57,12 @@ namespace Unify.Tools
         public static string LocateMods()
         {
             //Select mods directory and save.
-            VistaFolderBrowserDialog mods = new VistaFolderBrowserDialog
-            {
+            VistaFolderBrowserDialog mods = new VistaFolderBrowserDialog {
                 Description = SettingsMessages.msg_LocateMods,
                 UseDescriptionForTitle = true,
             };
 
-            if (mods.ShowDialog() == DialogResult.OK)
-            {
+            if (mods.ShowDialog() == DialogResult.OK) {
                 Sonic_06_Mod_Manager.Properties.Settings.Default.modsDirectory = mods.SelectedPath;
                 Sonic_06_Mod_Manager.Properties.Settings.Default.Save();
             }
@@ -80,24 +76,17 @@ namespace Unify.Tools
             OpenFileDialog emulator;
 
             if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0)
-            {
-                emulator = new OpenFileDialog
-                {
+                emulator = new OpenFileDialog {
                     Title = EmulatorMessages.msg_LocateXenia,
                     Filter = "Programs (*.exe)|*.exe"
                 };
-            }
             else
-            {
-                emulator = new OpenFileDialog
-                {
+                emulator = new OpenFileDialog {
                     Title = EmulatorMessages.msg_LocateRPCS3,
                     Filter = "Programs (*.exe)|*.exe"
                 };
-            }
 
-            if (emulator.ShowDialog() == DialogResult.OK)
-            {
+            if (emulator.ShowDialog() == DialogResult.OK) {
                 //Depending on the selected system, save to their respective Property.
                 if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0)
                     Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath = emulator.FileName;
@@ -114,23 +103,51 @@ namespace Unify.Tools
             string csvList = string.Empty;
 
             //Select ARCs for Read-only parameters and save.
-            OpenFileDialog readonlyARC = new OpenFileDialog
-            {
+            OpenFileDialog readonlyARC = new OpenFileDialog {
                 Title = ModsMessages.msg_LocateARCs,
                 Filter = "ARC files (*.arc)|*.arc",
                 Multiselect = true
             };
 
             if (readonlyARC.ShowDialog() == DialogResult.OK)
-            {
                 foreach (string name in readonlyARC.FileNames)
-                {
                     csvList += $"{Path.GetFileName(name)},";
-                }
-            }
             else return string.Empty;
 
             return csvList;
+        }
+
+        public static string LocateSaves(int system)
+        {
+            OpenFileDialog save;
+
+            //Select ARCs for Read-only parameters and save.
+            if (system == 0) {
+                save = new OpenFileDialog {
+                    Title = ModsMessages.msg_LocateSaveX,
+                    Filter = "Xbox 360 Save File (*.bin)|*.bin",
+                    Multiselect = true
+                };
+            }
+            else if (system == 1) {
+                save = new OpenFileDialog {
+                    Title = ModsMessages.msg_LocateSavePS,
+                    Filter = "PlayStation 3 Save File|SYS-DATA",
+                    Multiselect = true
+                };
+            }
+            else {
+                save = new OpenFileDialog {
+                    Title = ModsMessages.msg_LocateSave,
+                    Filter = "Xbox 360 Save File (*.bin)|*.bin|PlayStation 3 Save File|SYS-DATA",
+                    Multiselect = true
+                };
+            }
+
+            if (save.ShowDialog() == DialogResult.OK)
+                return save.FileName;
+            else
+                return string.Empty;
         }
     }
 
@@ -261,7 +278,7 @@ namespace Unify.Tools
                 Directory.Delete(cache, true);
                 key.Close();
 
-            } else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, SystemMessages.tl_ExtractError, "OK", "Error"); }
+            } else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, SystemMessages.tl_ExtractError, "OK", "Error", false); }
         }
     }
 

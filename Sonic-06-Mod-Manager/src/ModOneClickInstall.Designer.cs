@@ -222,6 +222,7 @@
             this.Controls.Add(this.mainControls_Split);
             this.Controls.Add(this.pnl_Backdrop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(580, 616);
             this.Name = "ModOneClickInstall";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameBanana - 1-Click Mod Install";

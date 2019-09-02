@@ -43,7 +43,7 @@ namespace Unify.Patcher
         public static string origArcPath = string.Empty; //Original Game ARC File
         public static string arcPath = string.Empty; //Paths to ARC in the game files
 
-        public static void InstallMods(string modPath) {
+        public static void InstallMods(string modPath, string modName) {
             bool merge = false;
             string[] read_only = { };
             string platform = string.Empty;
@@ -74,14 +74,10 @@ namespace Unify.Patcher
             }
 
             //Return if platform is not the desired target
-            if (platform == "Xbox 360" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) { 
+            if (platform == "Xbox 360" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) 
                 skippedMods.Add(ModsMessages.ex_IncorrectTarget(Path.GetFileName(modPath), "PlayStation 3"));
-                return;
-            }
-            if (platform == "PlayStation 3" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
+            if (platform == "PlayStation 3" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0)
                 skippedMods.Add(ModsMessages.ex_IncorrectTarget(Path.GetFileName(modPath), "Xbox 360"));
-                return;
-            }
 
             var files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
             .Where(s => s.EndsWith(".arc") ||
@@ -93,7 +89,7 @@ namespace Unify.Patcher
                         s.EndsWith(".at3"));
 
             foreach (var file in files) {
-                arcPath = file.Remove(0, $"{modPath}".Length);
+                arcPath = file.Remove(0, modPath.Length);
                 if (arcPath.StartsWith(@"\")) //Needed due to Microsoft fucking Path.Combine when the string begins with a \
                     origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath.Substring(1));
                 else
@@ -115,7 +111,7 @@ namespace Unify.Patcher
                         }
                         else {
                             //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
-                            skippedMods.Add(ModsMessages.ex_SkippedMod(Path.GetFileName(modPath), Path.GetFileName(file)));
+                            skippedMods.Add(ModsMessages.ex_SkippedMod(modName, Path.GetFileName(file)));
                         }
                     }
                 }
@@ -128,7 +124,7 @@ namespace Unify.Patcher
                     }
                     else {
                         //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
-                        skippedMods.Add(ModsMessages.ex_SkippedMod(Path.GetFileName(modPath), Path.GetFileName(file)));
+                        skippedMods.Add(ModsMessages.ex_SkippedMod(modName, Path.GetFileName(file)));
                     }
                 }
             }
@@ -300,6 +296,104 @@ namespace Unify.Patcher
                 File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
             }
             modManager.Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        public static void CleanupSaves()
+        {
+            if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0)
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath))) return;
+
+                string[] saves = Array.Empty<string>();
+                if (File.Exists(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "portable.txt")))
+                    saves = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "content"), "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
+                else
+                    saves = Directory.GetFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Xenia", "content"), "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
+
+                modManager.Status = SystemMessages.msg_Cleanup;
+                foreach (var file in saves)
+                {
+                    if (File.Exists(file.ToString().Remove(file.Length - 5)))
+                    {
+                        Console.WriteLine("Removing: " + file);
+                        File.Delete(file.ToString().Remove(file.Length - 5));
+                    }
+
+                    File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
+                }
+                modManager.Status = SystemMessages.msg_DefaultStatus;
+            }
+            else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1)
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path))) return;
+
+                string[] saves = Array.Empty<string>();
+                string getEUSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028");
+                string getEUSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028-0000");
+                string getUSSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008");
+                string getUSSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008-0000");
+
+                if (Directory.Exists(getEUSaveData))
+                    saves = Directory.GetFiles(getEUSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
+                else if (Directory.Exists(getEUSaveData2))
+                    saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
+                else if (Directory.Exists(getUSSaveData))
+                    saves = Directory.GetFiles(getUSSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
+                else if (Directory.Exists(getUSSaveData2))
+                    saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
+
+                modManager.Status = SystemMessages.msg_Cleanup;
+                foreach (var file in saves)
+                {
+                    if (File.Exists(file.ToString().Remove(file.Length - 5)))
+                    {
+                        Console.WriteLine("Removing: " + file);
+                        File.Delete(file.ToString().Remove(file.Length - 5));
+                    }
+
+                    File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
+                }
+                modManager.Status = SystemMessages.msg_DefaultStatus;
+            }
+        }
+
+        public static void RedirectSaves(string modPath, string modName)
+        {
+            string[] saves = Array.Empty<string>();
+            if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
+                if (File.Exists(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "portable.txt")))
+                    saves = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "content"), "SonicNextSaveData.bin", SearchOption.AllDirectories);
+                else
+                    saves = Directory.GetFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Xenia", "content"), "SonicNextSaveData.bin", SearchOption.AllDirectories);
+            }
+            else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
+                string getEUSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028");
+                string getEUSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028-0000");
+                string getUSSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008");
+                string getUSSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008-0000");
+
+                if (Directory.Exists(getEUSaveData))
+                    saves = Directory.GetFiles(getEUSaveData, "SYS-DATA", SearchOption.AllDirectories);
+                else if (Directory.Exists(getEUSaveData2))
+                    saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA", SearchOption.AllDirectories);
+                else if (Directory.Exists(getUSSaveData))
+                    saves = Directory.GetFiles(getUSSaveData, "SYS-DATA", SearchOption.AllDirectories);
+                else if (Directory.Exists(getUSSaveData2))
+                    saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA", SearchOption.AllDirectories);
+            }
+
+            foreach (var save in saves) {
+                if (!File.Exists($"{save}_back")) File.Move(save, $"{save}_back");
+
+                if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
+                    try { File.Copy(Path.Combine(modPath, "savedata.360"), save, true); }
+                    catch { skippedMods.Add(ModsMessages.ex_SkippedSave(modName, "Xbox 360")); }
+                }
+                else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
+                    try { File.Copy(Path.Combine(modPath, "savedata.ps3"), save, true); }
+                    catch { skippedMods.Add(ModsMessages.ex_SkippedSave(modName, "PlayStation 3")); }
+                }
+            }
         }
     }
 
@@ -581,6 +675,15 @@ namespace Unify.Patcher
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
 
+                if (line.StartsWith("c_gauge_heal")) {
+                    string[] tempLine = line.Split(' ');
+                    if (!enabled)
+                        tempLine[2] = "50";
+                    else
+                        tempLine[2] = "5";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
+                }
+
                 if (line.StartsWith("c_gauge_heal_delay")) {
                     string[] tempLine = line.Split(' ');
                     if (!enabled)
@@ -599,22 +702,39 @@ namespace Unify.Patcher
         {
             Decompile(directoryRoot);
             string[] editedLua = File.ReadAllLines(directoryRoot);
+
+            if (enabled)
+                File.WriteAllLines(directoryRoot, editedLua.Append("c_hair = {\n  \"TopHair\",\n  \"HighLeftHair\",\n  \"HighRightHair\",\n  \"LowLeftHair\",\n  \"LowRightHair\",\n  \"MiddleHair\"\n}")); //Resave the Lua
+        }
+
+        public static void MSAA(string directoryRoot, int scale)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
             int lineNum = 0;
 
-            foreach (string line in editedLua)
-            {
-                if (line.StartsWith("c_hair") && !enabled) {
-                    editedLua[lineNum] = string.Empty;
-                    editedLua[lineNum + 1] = string.Empty;
-                    editedLua[lineNum + 2] = string.Empty;
-                    editedLua[lineNum + 3] = string.Empty;
-                    editedLua[lineNum + 4] = string.Empty;
-                    editedLua[lineNum + 5] = string.Empty;
-                    editedLua[lineNum + 6] = string.Empty;
-                    editedLua[lineNum + 7] = string.Empty;
+            foreach (string line in editedLua) {
+                if (line.StartsWith("MSAAType")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (scale == 0)
+                        tempLine[2] = "\"0x\""; //Replace the 2nd section (the original number)
+                    else if (scale == 1)
+                        tempLine[2] = "\"2x\""; //Replace the 2nd section (the original number)
+                    else if (scale == 2)
+                        tempLine[2] = "\"4x\""; //Replace the 2nd section (the original number)
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
-                else
-                    editedLua.Append("c_hair = {\n  \"TopHair\",\n  \"HighLeftHair\",\n  \"HighRightHair\",\n  \"LowLeftHair\",\n  \"LowRightHair\",\n  \"MiddleHair\"\n}");
+
+                if (line.EndsWith("MSAAType)")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (scale == 0) {
+                        tempLine[13] = "0)"; //Replace the 2nd section (the original number)
+                        tempLine[14] = string.Empty; //Replace the 2nd section (the original number)
+                    }
+                    else
+                        tempLine[14] = "MSAAType)"; //Replace the 2nd section (the original number)
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
 
                 lineNum++;
             }

@@ -346,5 +346,41 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["manualPatches"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int patches_MSAA {
+            get {
+                return ((int)(this["patches_MSAA"]));
+            }
+            set {
+                this["patches_MSAA"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ftpLocation {
+            get {
+                return ((string)(this["ftpLocation"]));
+            }
+            set {
+                this["ftpLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ftpUsername {
+            get {
+                return ((string)(this["ftpUsername"]));
+            }
+            set {
+                this["ftpUsername"] = value;
+            }
+        }
     }
 }

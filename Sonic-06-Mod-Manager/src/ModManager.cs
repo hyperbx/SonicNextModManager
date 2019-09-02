@@ -47,6 +47,10 @@ namespace Sonic_06_Mod_Manager
         public readonly string versionNumber = "Version 2.0-indev"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
+        public static int FormHeight = 0;
+        public static int FormWidth = 0;
+        public static int FormLeft = 0;
+        public static int FormTop = 0;
 
         public ModManager(string[] args) {
             InitializeComponent();
@@ -66,6 +70,8 @@ namespace Sonic_06_Mod_Manager
             combo_API.SelectedIndex = Properties.Settings.Default.API;
             text_GameDirectory.Text = Properties.Settings.Default.gameDirectory;
             text_ModsDirectory.Text = Properties.Settings.Default.modsDirectory;
+            text_FTPLocation.Text = Properties.Settings.Default.ftpLocation;
+            text_Username.Text = Properties.Settings.Default.ftpUsername;
 
             switch (Properties.Settings.Default.filter)
             {
@@ -110,14 +116,48 @@ namespace Sonic_06_Mod_Manager
                 check_GameBanana.Checked = false;
             else
                 check_GameBanana.Checked = true;
+
+            FormTop = Top;
+            FormLeft = Left;
+            FormWidth = Width;
+            FormHeight = Height;
             #endregion
         }
 
         public string Status { set { lbl_SetStatus.Text = value; } }
+
         private void ModManager_Shown(object sender, EventArgs e) { // Using the Shown method is cleaner, as it waits for the main window to appear before performing tasks
-            GetMods(); // Basically just refreshes and clears up mods on launch
-            if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualInstall.Checked) ARC.CleanupMods(); // Ensures manual install is disabled first
-            if (!versionNumber.Contains("-indev")) Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
+            //Ask the user for a mod directory if the textbox for it is empty/the specified path doesn't exist.
+            if (text_ModsDirectory.Text == string.Empty || !Directory.Exists(text_ModsDirectory.Text)) {
+                UnifyMessages.UnifyMessage.Show(ModsMessages.msg_NoModDirectory, SystemMessages.tl_DefaultTitle, "OK", "Information", true);
+
+                VistaFolderBrowserDialog mods = new VistaFolderBrowserDialog {
+                    Description = SettingsMessages.msg_LocateMods,
+                    UseDescriptionForTitle = true,
+                };
+
+                if (mods.ShowDialog() == DialogResult.OK) {
+                    text_ModsDirectory.Text = mods.SelectedPath;
+                    Properties.Settings.Default.modsDirectory = mods.SelectedPath;
+                    Properties.Settings.Default.Save();
+
+                    if (Directory.Exists(Properties.Settings.Default.modsDirectory)) GetMods(); // Basically just refreshes and clears up mods on launch
+                    else Application.Exit();
+                }
+                else Application.Exit(); // Close the program if no mods directory is set. Why? Because it's redundant.
+            }
+
+            if (Directory.Exists(Properties.Settings.Default.modsDirectory))
+                GetMods(); // Basically just refreshes and clears up mods on launch
+            if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualInstall.Checked)
+                ARC.CleanupMods(); // Ensures manual mod install is disabled first
+            if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualPatches.Checked)
+                ARC.CleanupPatches(); // Ensures manual patch install is disabled first
+            if ((Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.xeniaPath)) ||
+                 Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.RPCS3Path))) == true && !check_ManualInstall.Checked)
+                ARC.CleanupSaves(); // Ensures manual install is disabled first
+            if (!versionNumber.Contains("-indev"))
+                Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
         }
 
         #region Mods
@@ -141,21 +181,32 @@ namespace Sonic_06_Mod_Manager
             if ((btn_SaveAndPlay.Text == "Save and Play" || btn_SaveAndPlay.Text == "Install Mods") && !check_FTP.Checked) {
                 try {
                     ARC.CleanupMods();
+                    ARC.CleanupSaves();
+                    ARC.CleanupPatches();
 
                     if (Properties.Settings.Default.priority == false) {
                         //Top to Bottom Priority
                         for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) {
                             if (clb_ModsList.GetItemChecked(i)) {
                                 Status = SystemMessages.msg_InstallingMod(clb_ModsList.Items[i].ToString());
-                                ARC.InstallMods(Path.GetDirectoryName(configs[i]));
+                                ARC.InstallMods(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
+                                Status = SystemMessages.msg_DefaultStatus;
+
+                                Status = SystemMessages.msg_RedirectingSave(clb_ModsList.Items[i].ToString());
+                                ARC.RedirectSaves(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
                                 Status = SystemMessages.msg_DefaultStatus;
                             }
                         }
                     } else {
                         //Bottom to Top Priority
-                        foreach (object mod in clb_ModsList.CheckedItems) {
+                        foreach (object mod in clb_ModsList.CheckedItems)
+                        {
                             Status = SystemMessages.msg_InstallingMod(clb_ModsList.GetItemText(mod));
-                            ARC.InstallMods(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]));
+                            ARC.InstallMods(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
+                            Status = SystemMessages.msg_DefaultStatus;
+
+                            Status = SystemMessages.msg_RedirectingSave(clb_ModsList.GetItemText(mod));
+                            ARC.RedirectSaves(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
                             Status = SystemMessages.msg_DefaultStatus;
                         }
                     }
@@ -169,7 +220,7 @@ namespace Sonic_06_Mod_Manager
                             getString.Append(modName);
 
                         if (getString.Length > 0)
-                            UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning");
+                            UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning", false);
                     }
 
                     if (!check_ManualInstall.Checked) {
@@ -186,16 +237,43 @@ namespace Sonic_06_Mod_Manager
                     }
                 }
                 catch (Exception ex) {
-                    UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
+                    UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning", false);
                     unifytb_Main.SelectedIndex = 3;
-                    ARC.CleanupMods();
                     Status = SystemMessages.msg_DefaultStatus;
                 }
             }
-            else if (btn_SaveAndPlay.Text == "Apply Patches") PatchAll();
-            else {
-                FTP.UploadFile(text_FTPLocation.Text, Path.Combine(Properties.Settings.Default.modsDirectory, "mods.ini"), text_Username.Text, text_Password.Text);
+            else if (btn_SaveAndPlay.Text == "Apply Patches") {
+                try {
+                    ARC.CleanupPatches();
+                    PatchAll();
+                }
+                catch (Exception ex) {
+                    UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning", false);
+                    unifytb_Main.SelectedIndex = 3;
+                    Status = SystemMessages.msg_DefaultStatus;
+                }
             }
+
+            // Unfinished FTP stuff - may be deprecated, unless requested.
+            //else {
+            //    if (Properties.Settings.Default.priority == false) {
+            //        //Top to Bottom Priority
+            //        for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) {
+            //            if (clb_ModsList.GetItemChecked(i)) {
+            //                Status = SystemMessages.msg_TransferringMod(clb_ModsList.Items[i].ToString());
+            //                FTP.UploadMods(text_FTPLocation.Text, Path.GetDirectoryName(configs[i]), text_Username.Text, text_Password.Text);
+            //                Status = SystemMessages.msg_DefaultStatus;
+            //            }
+            //        }
+            //    } else {
+            //        //Bottom to Top Priority
+            //        foreach (object mod in clb_ModsList.CheckedItems) {
+            //            Status = SystemMessages.msg_TransferringMod(clb_ModsList.GetItemText(mod));
+            //            FTP.UploadMods(text_FTPLocation.Text, Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), text_Username.Text, text_Password.Text);
+            //            Status = SystemMessages.msg_DefaultStatus;
+            //        }
+            //    }
+            //}
         }
 
 
@@ -224,14 +302,13 @@ namespace Sonic_06_Mod_Manager
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
-                    if (combo_Reflections.SelectedIndex != Properties.Settings.Default.patches_Reflections) {
-                        Status = SystemMessages.msg_PatchingRenderer;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                        string unpack = ARC.UnpackARC(arc);
-                        Lua.Reflections(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
-                        ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
-                    }
+
+                    Status = SystemMessages.msg_PatchingRenderer;
+                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                    string reflections = ARC.UnpackARC(arc);
+                    Lua.Reflections(Path.Combine(reflections, "cache\\xenon\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
+                    ARC.RepackARC(reflections, arc);
+                    Status = SystemMessages.msg_DefaultStatus;
 
                     Status = SystemMessages.msg_PatchingRenderer;
                     if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
@@ -248,22 +325,19 @@ namespace Sonic_06_Mod_Manager
                     Status = SystemMessages.msg_DefaultStatus;
                 }
                 else if (Path.GetFileName(arc) == "game.arc") {
-                    if (nud_CameraDistance.Value != Properties.Settings.Default.patches_CameraDistance) {
-                        Status = SystemMessages.msg_PatchingCamera;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                        string unpack = ARC.UnpackARC(arc);
-                        Lua.CameraDistance(Path.Combine(unpack, "game\\xenon\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
-                        ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
-                    }
-                    if (nud_CameraHeight.Value != Properties.Settings.Default.patches_CameraHeight) {
-                        Status = SystemMessages.msg_PatchingCamera;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
-                        string unpack = ARC.UnpackARC(arc);
-                        Lua.CameraHeight(Path.Combine(unpack, "game\\xenon\\cameraparam.lub"), decimal.ToInt32(nud_CameraHeight.Value));
-                        ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
-                    }
+                    Status = SystemMessages.msg_PatchingCamera;
+                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                    string cameraDistance = ARC.UnpackARC(arc);
+                    Lua.CameraDistance(Path.Combine(cameraDistance, "game\\xenon\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
+                    ARC.RepackARC(cameraDistance, arc);
+                    Status = SystemMessages.msg_DefaultStatus;
+
+                    Status = SystemMessages.msg_PatchingCamera;
+                    if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                    string cameraHeight = ARC.UnpackARC(arc);
+                    Lua.CameraHeight(Path.Combine(cameraHeight, "game\\xenon\\cameraparam.lub"), decimal.ToInt32(nud_CameraHeight.Value));
+                    ARC.RepackARC(cameraHeight, arc);
+                    Status = SystemMessages.msg_DefaultStatus;
                 }
                 else if (Path.GetFileName(arc) == "player_omega.arc") {
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Omega Blur Fix"))) {
@@ -309,8 +383,15 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void Btn_UninstallMods_Click(object sender, EventArgs e) {
-            if (btn_UninstallMods.Text == "Restore Defaults")
+            if (btn_UninstallMods.Text == "Restore Defaults") {
                 ARC.CleanupPatches();
+                nud_CameraDistance.Value = 650; Properties.Settings.Default.patches_CameraDistance = 650;
+                nud_CameraHeight.Value = 15; Properties.Settings.Default.patches_CameraHeight = 15;
+                combo_Reflections.SelectedIndex = 1; Properties.Settings.Default.patches_Reflections = 1;
+                for (int i = 0; i < clb_PatchesList.Items.Count; i++) clb_PatchesList.SetItemChecked(i, false);
+                Properties.Settings.Default.Save();
+                SaveChecks();
+            }
             else
                 ARC.CleanupMods();
         }
@@ -350,23 +431,8 @@ namespace Sonic_06_Mod_Manager
             btn_DownerPriority.Enabled = false;
             btn_ModInfo.Enabled = false;
             btn_EditMod.Enabled = false;
-
-            //Ask the user for a mod directory if the textbox for it is empty/the specified path doesn't exist.
-            if (text_ModsDirectory.Text == string.Empty || !Directory.Exists(text_ModsDirectory.Text)) {
-                UnifyMessages.UnifyMessage.Show(ModsMessages.msg_NoModDirectory, SystemMessages.tl_DefaultTitle, "OK", "Information");
-
-                VistaFolderBrowserDialog mods = new VistaFolderBrowserDialog {
-                    Description = SettingsMessages.msg_LocateMods,
-                    UseDescriptionForTitle = true,
-                };
-
-                if (mods.ShowDialog() == DialogResult.OK) {
-                    text_ModsDirectory.Text = mods.SelectedPath;
-                    Properties.Settings.Default.modsDirectory = mods.SelectedPath;
-                    Properties.Settings.Default.Save();
-                }
-                else Application.Exit(); // Close the program if no mods directory is set. Why? Because it's redundant.
-            }
+            btn_CreateNewMod.Width = 245;
+            btn_EditMod.Visible = false;
 
             try {
                 configs.Clear();
@@ -407,7 +473,7 @@ namespace Sonic_06_Mod_Manager
                 GetModsChecks();
                 GetPatchesChecks();
             }
-            catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", SystemMessages.tl_ListError, "OK", "Error"); }
+            catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", SystemMessages.tl_ListError, "OK", "Error", true); }
         }
 
         private void GetModsChecks()
@@ -476,19 +542,19 @@ namespace Sonic_06_Mod_Manager
         private void Radio_All_CheckedChanged(object sender, EventArgs e) { // Refreshes mods list based on All filter
             Properties.Settings.Default.filter = 0;
             Properties.Settings.Default.Save();
-            GetMods();
+            if (Directory.Exists(Properties.Settings.Default.modsDirectory)) GetMods();
         }
 
         private void Radio_Xbox360_CheckedChanged(object sender, EventArgs e) { // Refreshes mods list based on Xbox 360 filter
             Properties.Settings.Default.filter = 1;
             Properties.Settings.Default.Save();
-            GetMods();
+            if (Directory.Exists(Properties.Settings.Default.modsDirectory)) GetMods();
         }
 
         private void Radio_PlayStation3_CheckedChanged(object sender, EventArgs e) { // Refreshes mods list based on PlayStation 3 filter
             Properties.Settings.Default.filter = 2;
             Properties.Settings.Default.Save();
-            GetMods();
+            if (Directory.Exists(Properties.Settings.Default.modsDirectory)) GetMods();
         }
 
         private void Btn_Play_Click(object sender, EventArgs e) { // Launches the emulator respective to what system is chosen
@@ -627,6 +693,8 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_XeniaExitCall;
                 xenia.WaitForExit(); // Wait for Xenia to exit
                 if (!check_ManualInstall.Checked) ARC.CleanupMods();
+                if (!check_ManualPatches.Checked) ARC.CleanupPatches();
+                ARC.CleanupSaves();
                 Status = SystemMessages.msg_DefaultStatus;
             }
             else {
@@ -674,6 +742,8 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_RPCS3ExitCall;
                 RPCS3.WaitForExit(); // Wait for RPCS3 to exit
                 if (!check_ManualInstall.Checked) ARC.CleanupMods();
+                if (!check_ManualPatches.Checked) ARC.CleanupPatches();
+                ARC.CleanupSaves();
                 Status = SystemMessages.msg_DefaultStatus;
             }
             else {
@@ -801,6 +871,16 @@ namespace Sonic_06_Mod_Manager
         #endregion
 
         #region Settings
+        private void Text_FTPLocation_TextChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.ftpLocation = text_FTPLocation.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Text_Username_TextChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.ftpUsername = text_Username.Text;
+            Properties.Settings.Default.Save();
+        }
+
         private void Check_ManualPatches_CheckedChanged(object sender, EventArgs e) {
             Properties.Settings.Default.manualPatches = check_ManualPatches.Checked;
             Properties.Settings.Default.Save();
@@ -958,6 +1038,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Fullscreen.ForeColor = SystemColors.ControlText;
                     lbl_Discord.ForeColor = SystemColors.ControlText;
                     lbl_Debug.ForeColor = SystemColors.ControlText;
+                    lbl_SettingsOverlay.ForeColor = SystemColors.ControlText;
                 }
                 else {
                     lbl_API.ForeColor = SystemColors.GrayText;
@@ -969,6 +1050,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Fullscreen.ForeColor = SystemColors.GrayText;
                     lbl_Discord.ForeColor = SystemColors.GrayText;
                     lbl_Debug.ForeColor = SystemColors.GrayText;
+                    lbl_SettingsOverlay.ForeColor = SystemColors.GrayText;
                 }
 
                 group_Directories.ForeColor = SystemColors.ControlText;
@@ -1050,6 +1132,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Fullscreen.ForeColor = SystemColors.Control;
                     lbl_Discord.ForeColor = SystemColors.Control;
                     lbl_Debug.ForeColor = SystemColors.Control;
+                    lbl_SettingsOverlay.ForeColor = SystemColors.Control;
                 }
                 else {
                     lbl_API.ForeColor = SystemColors.GrayText;
@@ -1061,6 +1144,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Fullscreen.ForeColor = SystemColors.GrayText;
                     lbl_Discord.ForeColor = SystemColors.GrayText;
                     lbl_Debug.ForeColor = SystemColors.GrayText;
+                    lbl_SettingsOverlay.ForeColor = SystemColors.GrayText;
                 }
 
                 group_Directories.ForeColor = SystemColors.Control;
@@ -1102,7 +1186,7 @@ namespace Sonic_06_Mod_Manager
 
         private void Btn_Reset_Click(object sender, EventArgs e) {
             //Read the message box text if you're confused.
-            string resetConfirmation = UnifyMessages.UnifyMessage.Show(SettingsMessages.msg_Reset, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
+            string resetConfirmation = UnifyMessages.UnifyMessage.Show(SettingsMessages.msg_Reset, SystemMessages.tl_DefaultTitle, "YesNo", "Warning", false);
 
             if (resetConfirmation == "Yes") {
                 Properties.Settings.Default.Reset();
@@ -1169,7 +1253,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (key == null) {
                         if (!Program.RunningAsAdmin()) {
-                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
+                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning", false);
 
                             switch (registry) {
                                 case "Yes":
@@ -1193,7 +1277,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (key != null) {
                         if (!Program.RunningAsAdmin()) {
-                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistryUninstall, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
+                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistryUninstall, SystemMessages.tl_DefaultTitle, "YesNo", "Warning", false);
 
                             switch (registry) {
                                 case "Yes":
@@ -1259,7 +1343,7 @@ namespace Sonic_06_Mod_Manager
         {
 
         }
-              #endregion
+        #endregion
         //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GitHubTimeout, "Test", "OK", "Information");
         //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GameBananaTimeout, "Test", "OK", "Information");
         //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, "Test", "OK", "Information");

@@ -50,6 +50,9 @@
             this.tb_Description = new System.Windows.Forms.RichTextBox();
             this.group_DescriptionField = new System.Windows.Forms.GroupBox();
             this.btn_RemoveThumbnail = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btn_SaveBrowser = new System.Windows.Forms.Button();
+            this.text_Save = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).BeginInit();
             this.group_DescriptionField.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +85,7 @@
             this.btn_Delete.BackColor = System.Drawing.Color.Tomato;
             this.btn_Delete.FlatAppearance.BorderSize = 0;
             this.btn_Delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Delete.Location = new System.Drawing.Point(204, 408);
+            this.btn_Delete.Location = new System.Drawing.Point(204, 435);
             this.btn_Delete.Name = "btn_Delete";
             this.btn_Delete.Size = new System.Drawing.Size(75, 23);
             this.btn_Delete.TabIndex = 83;
@@ -139,7 +142,7 @@
             // check_Merge
             // 
             this.check_Merge.AutoSize = true;
-            this.check_Merge.Location = new System.Drawing.Point(69, 412);
+            this.check_Merge.Location = new System.Drawing.Point(69, 439);
             this.check_Merge.Name = "check_Merge";
             this.check_Merge.Size = new System.Drawing.Size(62, 17);
             this.check_Merge.TabIndex = 77;
@@ -153,7 +156,7 @@
             this.btn_Create.Enabled = false;
             this.btn_Create.FlatAppearance.BorderSize = 0;
             this.btn_Create.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Create.Location = new System.Drawing.Point(285, 408);
+            this.btn_Create.Location = new System.Drawing.Point(285, 435);
             this.btn_Create.Name = "btn_Create";
             this.btn_Create.Size = new System.Drawing.Size(75, 23);
             this.btn_Create.TabIndex = 76;
@@ -248,7 +251,7 @@
             this.tb_Description.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tb_Description.Location = new System.Drawing.Point(3, 16);
             this.tb_Description.Name = "tb_Description";
-            this.tb_Description.Size = new System.Drawing.Size(352, 407);
+            this.tb_Description.Size = new System.Drawing.Size(352, 434);
             this.tb_Description.TabIndex = 85;
             this.tb_Description.Text = "";
             // 
@@ -259,28 +262,63 @@
             this.group_DescriptionField.ForeColor = System.Drawing.SystemColors.ControlText;
             this.group_DescriptionField.Location = new System.Drawing.Point(371, 6);
             this.group_DescriptionField.Name = "group_DescriptionField";
-            this.group_DescriptionField.Size = new System.Drawing.Size(358, 426);
+            this.group_DescriptionField.Size = new System.Drawing.Size(358, 453);
             this.group_DescriptionField.TabIndex = 86;
             this.group_DescriptionField.TabStop = false;
             this.group_DescriptionField.Text = "Description";
             // 
             // btn_RemoveThumbnail
             // 
+            this.btn_RemoveThumbnail.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_RemoveThumbnail.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_RemoveThumbnail.Location = new System.Drawing.Point(337, 12);
             this.btn_RemoveThumbnail.Name = "btn_RemoveThumbnail";
             this.btn_RemoveThumbnail.Size = new System.Drawing.Size(23, 23);
             this.btn_RemoveThumbnail.TabIndex = 87;
             this.btn_RemoveThumbnail.Text = "X";
-            this.btn_RemoveThumbnail.UseVisualStyleBackColor = true;
+            this.btn_RemoveThumbnail.UseVisualStyleBackColor = false;
             this.btn_RemoveThumbnail.Click += new System.EventHandler(this.Btn_RemoveThumbnail_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 410);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 93;
+            this.label1.Text = "Save:";
+            // 
+            // btn_SaveBrowser
+            // 
+            this.btn_SaveBrowser.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_SaveBrowser.FlatAppearance.BorderSize = 0;
+            this.btn_SaveBrowser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_SaveBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_SaveBrowser.Location = new System.Drawing.Point(338, 407);
+            this.btn_SaveBrowser.Name = "btn_SaveBrowser";
+            this.btn_SaveBrowser.Size = new System.Drawing.Size(22, 20);
+            this.btn_SaveBrowser.TabIndex = 92;
+            this.btn_SaveBrowser.Text = "...";
+            this.btn_SaveBrowser.UseVisualStyleBackColor = false;
+            this.btn_SaveBrowser.Click += new System.EventHandler(this.Btn_SaveBrowser_Click);
+            // 
+            // text_Save
+            // 
+            this.text_Save.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.text_Save.Location = new System.Drawing.Point(69, 407);
+            this.text_Save.Name = "text_Save";
+            this.text_Save.Size = new System.Drawing.Size(265, 20);
+            this.text_Save.TabIndex = 91;
             // 
             // ModCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(740, 442);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(740, 467);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btn_SaveBrowser);
+            this.Controls.Add(this.text_Save);
             this.Controls.Add(this.btn_RemoveThumbnail);
             this.Controls.Add(this.group_DescriptionField);
             this.Controls.Add(this.lbl_ReadOnly);
@@ -338,5 +376,8 @@
         private System.Windows.Forms.RichTextBox tb_Description;
         private System.Windows.Forms.GroupBox group_DescriptionField;
         private System.Windows.Forms.Button btn_RemoveThumbnail;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btn_SaveBrowser;
+        private System.Windows.Forms.TextBox text_Save;
     }
 }

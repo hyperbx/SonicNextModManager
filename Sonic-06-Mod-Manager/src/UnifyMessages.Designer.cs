@@ -172,7 +172,7 @@
             this.Name = "UnifyMessages";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Unify Messenger";
             this.pnl_ButtonBackdrop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pic_Icon)).EndInit();

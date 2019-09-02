@@ -83,9 +83,6 @@
             this.lbl_EmulatorEXE = new System.Windows.Forms.Label();
             this.unifytb_Tab_Patches = new System.Windows.Forms.TabPage();
             this.group_Tweaks = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btn_ResetCameraHeight = new System.Windows.Forms.Button();
             this.nud_CameraHeight = new System.Windows.Forms.NumericUpDown();
             this.lbl_CameraHeight = new System.Windows.Forms.Label();
@@ -791,9 +788,6 @@
             this.group_Tweaks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.group_Tweaks.Controls.Add(this.button1);
-            this.group_Tweaks.Controls.Add(this.label1);
-            this.group_Tweaks.Controls.Add(this.comboBox1);
             this.group_Tweaks.Controls.Add(this.btn_ResetCameraHeight);
             this.group_Tweaks.Controls.Add(this.nud_CameraHeight);
             this.group_Tweaks.Controls.Add(this.lbl_CameraHeight);
@@ -810,42 +804,6 @@
             this.group_Tweaks.TabIndex = 2;
             this.group_Tweaks.TabStop = false;
             this.group_Tweaks.Text = "Tweaks";
-            // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(227, 43);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(21, 20);
-            this.button1.TabIndex = 94;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(140, 25);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 15);
-            this.label1.TabIndex = 92;
-            this.label1.Text = "MSAA";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Disabled",
-            "2x MSAA",
-            "4x MSAA"});
-            this.comboBox1.Location = new System.Drawing.Point(143, 43);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(83, 23);
-            this.comboBox1.TabIndex = 93;
             // 
             // btn_ResetCameraHeight
             // 
@@ -895,7 +853,7 @@
             this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetReflections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetReflections.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetReflections.Image")));
-            this.btn_ResetReflections.Location = new System.Drawing.Point(99, 43);
+            this.btn_ResetReflections.Location = new System.Drawing.Point(227, 43);
             this.btn_ResetReflections.Name = "btn_ResetReflections";
             this.btn_ResetReflections.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetReflections.TabIndex = 87;
@@ -964,7 +922,7 @@
             "Full"});
             this.combo_Reflections.Location = new System.Drawing.Point(15, 43);
             this.combo_Reflections.Name = "combo_Reflections";
-            this.combo_Reflections.Size = new System.Drawing.Size(83, 23);
+            this.combo_Reflections.Size = new System.Drawing.Size(211, 23);
             this.combo_Reflections.TabIndex = 78;
             this.combo_Reflections.SelectedIndexChanged += new System.EventHandler(this.Combo_Reflections_SelectedIndexChanged);
             // 
@@ -1024,9 +982,9 @@
             this.group_Options.Controls.Add(this.lbl_ManualPatches);
             this.group_Options.Controls.Add(this.check_ManualPatches);
             this.group_Options.ForeColor = System.Drawing.SystemColors.Control;
-            this.group_Options.Location = new System.Drawing.Point(4, 283);
+            this.group_Options.Location = new System.Drawing.Point(4, 102);
             this.group_Options.Name = "group_Options";
-            this.group_Options.Size = new System.Drawing.Size(522, 197);
+            this.group_Options.Size = new System.Drawing.Size(522, 378);
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
@@ -1038,7 +996,7 @@
             this.Debug.FlatAppearance.BorderSize = 0;
             this.Debug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Debug.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Debug.Location = new System.Drawing.Point(390, 101);
+            this.Debug.Location = new System.Drawing.Point(390, 282);
             this.Debug.Name = "Debug";
             this.Debug.Size = new System.Drawing.Size(119, 23);
             this.Debug.TabIndex = 95;
@@ -1054,7 +1012,7 @@
             this.btn_ReportBug.FlatAppearance.BorderSize = 0;
             this.btn_ReportBug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ReportBug.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_ReportBug.Location = new System.Drawing.Point(14, 130);
+            this.btn_ReportBug.Location = new System.Drawing.Point(14, 311);
             this.btn_ReportBug.Name = "btn_ReportBug";
             this.btn_ReportBug.Size = new System.Drawing.Size(119, 23);
             this.btn_ReportBug.TabIndex = 94;
@@ -1091,7 +1049,7 @@
             this.btn_Update.FlatAppearance.BorderSize = 0;
             this.btn_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Update.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Update.Location = new System.Drawing.Point(139, 130);
+            this.btn_Update.Location = new System.Drawing.Point(139, 311);
             this.btn_Update.Name = "btn_Update";
             this.btn_Update.Size = new System.Drawing.Size(245, 23);
             this.btn_Update.TabIndex = 91;
@@ -1116,7 +1074,7 @@
             this.btn_Reset.FlatAppearance.BorderSize = 0;
             this.btn_Reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Reset.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Reset.Location = new System.Drawing.Point(390, 159);
+            this.btn_Reset.Location = new System.Drawing.Point(390, 340);
             this.btn_Reset.Name = "btn_Reset";
             this.btn_Reset.Size = new System.Drawing.Size(119, 23);
             this.btn_Reset.TabIndex = 90;
@@ -1131,7 +1089,7 @@
             this.btn_GitHub.FlatAppearance.BorderSize = 0;
             this.btn_GitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_GitHub.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_GitHub.Location = new System.Drawing.Point(14, 159);
+            this.btn_GitHub.Location = new System.Drawing.Point(14, 340);
             this.btn_GitHub.Name = "btn_GitHub";
             this.btn_GitHub.Size = new System.Drawing.Size(119, 23);
             this.btn_GitHub.TabIndex = 89;
@@ -1147,7 +1105,7 @@
             this.btn_About.FlatAppearance.BorderSize = 0;
             this.btn_About.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_About.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_About.Location = new System.Drawing.Point(139, 159);
+            this.btn_About.Location = new System.Drawing.Point(139, 340);
             this.btn_About.Name = "btn_About";
             this.btn_About.Size = new System.Drawing.Size(245, 23);
             this.btn_About.TabIndex = 50;
@@ -1207,12 +1165,12 @@
             // 
             // btn_Theme
             // 
-            this.btn_Theme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Theme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Theme.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_Theme.FlatAppearance.BorderSize = 0;
             this.btn_Theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Theme.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Theme.Location = new System.Drawing.Point(390, 130);
+            this.btn_Theme.Location = new System.Drawing.Point(390, 311);
             this.btn_Theme.Name = "btn_Theme";
             this.btn_Theme.Size = new System.Drawing.Size(119, 23);
             this.btn_Theme.TabIndex = 43;
@@ -1342,6 +1300,7 @@
             this.text_Username.Name = "text_Username";
             this.text_Username.Size = new System.Drawing.Size(411, 23);
             this.text_Username.TabIndex = 3;
+            this.text_Username.TextChanged += new System.EventHandler(this.Text_Username_TextChanged);
             // 
             // text_FTPLocation
             // 
@@ -1354,6 +1313,7 @@
             this.text_FTPLocation.Name = "text_FTPLocation";
             this.text_FTPLocation.Size = new System.Drawing.Size(411, 23);
             this.text_FTPLocation.TabIndex = 2;
+            this.text_FTPLocation.TextChanged += new System.EventHandler(this.Text_FTPLocation_TextChanged);
             // 
             // lbl_Username
             // 
@@ -1623,8 +1583,5 @@
         private System.Windows.Forms.ToolStripStatusLabel lbl_MainStatus;
         private System.Windows.Forms.Label lbl_SetStatus;
         private System.Windows.Forms.Button sonic06mm_Aldi;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

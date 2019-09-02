@@ -43,7 +43,7 @@ namespace Unify.Messages
             InitializeComponent();
         }
 
-        public UnifyMessages(string text, string caption, string buttons, string icon)
+        public UnifyMessages(string text, string caption, string buttons, string icon, bool centre)
         {
             InitializeComponent();
 
@@ -99,18 +99,22 @@ namespace Unify.Messages
             {
                 case "Error":
                     pic_Icon.BackgroundImage = Sonic_06_Mod_Manager.Properties.Resources.error.ToBitmap();
+                    TopMost = true;
                     SystemSounds.Hand.Play();
                     break;
                 case "Information":
                     pic_Icon.BackgroundImage = Extract("shell32.dll", 277, true).ToBitmap();
+                    TopMost = false;
                     SystemSounds.Asterisk.Play();
                     break;
                 case "Question":
                     pic_Icon.BackgroundImage = Extract("shell32.dll", 154, true).ToBitmap();
+                    TopMost = false;
                     SystemSounds.Question.Play();
                     break;
                 case "Warning":
                     pic_Icon.BackgroundImage = Extract("shell32.dll", 237, true).ToBitmap();
+                    TopMost = true;
                     SystemSounds.Asterisk.Play();
                     break;
             }
@@ -142,9 +146,14 @@ namespace Unify.Messages
 
         public static class UnifyMessage
         {
-            public static string Show(string text, string caption, string buttons, string icon) {
-                using (var openMessenger = new UnifyMessages(text, caption, buttons, icon))
+            public static string Show(string text, string caption, string buttons, string icon, bool centre) {
+                using (var openMessenger = new UnifyMessages(text, caption, buttons, icon, centre)) {
+                    var parentLeft = Sonic_06_Mod_Manager.ModManager.FormLeft + ((Sonic_06_Mod_Manager.ModManager.FormWidth - openMessenger.Width) / 2);
+                    var parentTop = Sonic_06_Mod_Manager.ModManager.FormTop + ((Sonic_06_Mod_Manager.ModManager.FormHeight - openMessenger.Height) / 2);
+                    if (centre) openMessenger.StartPosition = FormStartPosition.CenterScreen;
+                    else openMessenger.StartPosition = FormStartPosition.CenterParent; //new Point(parentLeft, parentTop);
                     openMessenger.ShowDialog();
+                }
 
                 return Accept;
             }
@@ -210,6 +219,8 @@ namespace Unify.Messages
         public static string msg_InstallingMod(string mod) { return $"Installing {mod}..."; }
         public static string msg_CopyingMod(string mod) { return $"Copying {mod}..."; }
         public static string msg_MergingMod(string mod) { return $"Merging {mod}..."; }
+        public static string msg_TransferringMod(string mod) { return $"Transferring {mod}..."; }
+        public static string msg_RedirectingSave(string mod) { return $"Redirecting save file for {mod}..."; }
         public static string msg_UpdateAvailable(string latestVersion, string changeLogs) { return $"{tl_DefaultTitle} - {latestVersion} is now available!\n\nChangelogs:\n{changeLogs}\n\nDo you wish to download it?"; }
     }
 
@@ -218,7 +229,11 @@ namespace Unify.Messages
         public static string msg_NoModDirectory = "No mods directory specified, or the specified directory is invalid - please select your Sonic '06 mods directory...";
         public static string ex_ModListError = "An error occurred whilst retrieving the mods list.";
         public static string msg_LocateARCs = "Please select ARC files to make read-only...";
+        public static string msg_LocateSaveX = "Please select a Xbox 360 save file...";
+        public static string msg_LocateSavePS = "Please select a PlayStation 3 save file...";
+        public static string msg_LocateSave = "Please select a save file...";
         public static string msg_ThumbnailDeleteError = "An error occurred whilst removing the thumbnail.";
+        public static string msg_SaveDeleteError = "An error occurred whilst removing the save data.";
         public static string ex_ModInstallFailure = "General mod installation failure, please ensure your game directory is set correctly.";
         public static string msg_CancelDownloading = "Are you sure you want to cancel downloading?";
         public static string msg_LoSInstalled = "Legacy of Solaris has been installed in your mods directory.";
@@ -229,6 +244,7 @@ namespace Unify.Messages
         public static string ex_GBExtractFailed(string mod) { return $"Failed to extract {mod}."; }
         public static string msg_GBInstalled(string mod) { return $"{mod} has been installed in your mods directory."; }
         public static string ex_SkippedMod(string mod, string file) { return $"\n► {mod} (failed because a mod was already installed on file: {file} - try merging instead)"; }
+        public static string ex_SkippedSave(string mod, string platform) { return $"\n► {mod} (save redirect failed because the save was not targeted for the {platform})"; }
         public static string ex_SkippedModsTally(string failedMods) { return $"Mod installation completed, but the following mods were skipped:\n{failedMods}"; }
         public static string ex_IncorrectTarget(string mod, string platform) { return $"\n► {mod} (failed because the mod was not targeted for the {platform})"; }
         public static string ex_ModExists(string mod) { return $"A mod called '{mod}' already exists."; }
@@ -245,7 +261,7 @@ namespace Unify.Messages
 
     class PatchesMessages
     {
-
+        public static string ex_PatchInstallFailure = "General patch installation failure, please ensure your game directory is set correctly.";
     }
 
     class SettingsMessages

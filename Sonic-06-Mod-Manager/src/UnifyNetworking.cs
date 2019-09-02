@@ -55,37 +55,61 @@ namespace Unify.Networking
 
                 if (latestVersion.Contains("Version")) {
                     if (latestVersion != currentVersion) {
-                        string confirmUpdate = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateAvailable(latestVersion, changeLogs), SystemMessages.tl_Update, "YesNo", "Question");
+                        string confirmUpdate = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateAvailable(latestVersion, changeLogs), SystemMessages.tl_Update, "YesNo", "Question", true);
                         switch (confirmUpdate) {
                             case "Yes":
                                 var exists = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1;
-                                if (exists) { UnifyMessages.UnifyMessage.Show(SystemMessages.warn_CloseProcesses, SystemMessages.tl_ProcessError, "OK", "Error"); }
+                                if (exists) { UnifyMessages.UnifyMessage.Show(SystemMessages.warn_CloseProcesses, SystemMessages.tl_ProcessError, "OK", "Error", true); }
                                 else {
                                     try {
                                         if (File.Exists(Application.ExecutablePath)) new Sonic_06_Mod_Manager.src.UnifyUpdater(latestVersion, newVersionDownloadLink, true).ShowDialog();
                                         else return;
                                     }
-                                    catch { UnifyMessages.UnifyMessage.Show(SystemMessages.ex_UpdateFailedUnknown, SystemMessages.tl_FatalError, "OK", "Error"); }
+                                    catch { UnifyMessages.UnifyMessage.Show(SystemMessages.ex_UpdateFailedUnknown, SystemMessages.tl_FatalError, "OK", "Error", true); }
                                 }
                                 break;
                         }
-                    } else if (updateState == "user") UnifyMessages.UnifyMessage.Show(SystemMessages.msg_NoUpdates, SystemMessages.tl_DefaultTitle, "OK", "Information");
+                    } else if (updateState == "user") UnifyMessages.UnifyMessage.Show(SystemMessages.msg_NoUpdates, SystemMessages.tl_DefaultTitle, "OK", "Information", false);
                 } else { serverStatus = "down"; }
             } catch { serverStatus = "offline"; } updateState = null;
         }
     }
 
-    class FTP
-    {
-        public static void UploadFile(string server, string file, string username, string password) {
-            using (WebClient uploader = new WebClient()) {
-                uploader.UseDefaultCredentials = true;
-                uploader.Credentials = new NetworkCredential(username, password);
+    // Unfinished FTP stuff - may be deprecated, unless requested.
+    //class FTP
+    //{
+    //    public static string targetArcPath = string.Empty; //Modded ARC File
+    //    public static string origArcPath = string.Empty; //Original Game ARC File
+    //    public static string arcPath = string.Empty; //Paths to ARC in the game files
 
-                uploader.UploadFile(server, WebRequestMethods.Ftp.UploadFile, file);
-            }
-        }
-    }
+    //    public static void UploadMods(string server, string modPath, string username, string password) {
+    //        var files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
+    //        .Where(s => s.EndsWith(".arc") ||
+    //                    s.EndsWith(".wmv") ||
+    //                    s.EndsWith(".xma") ||
+    //                    s.EndsWith(".xex") ||
+    //                    s.EndsWith(".bin") ||
+    //                    s.EndsWith(".pam") ||
+    //                    s.EndsWith(".at3"));
+
+    //        foreach (var file in files)
+    //        {
+    //            arcPath = file.Remove(0, modPath.Length);
+    //            if (arcPath.StartsWith(@"\")) //Needed due to Microsoft fucking Path.Combine when the string begins with a \
+    //                origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath.Substring(1));
+    //            else
+    //                origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath);
+    //            targetArcPath = $"{origArcPath}_back";
+
+    //            using (WebClient uploader = new WebClient())
+    //            {
+    //                uploader.UseDefaultCredentials = true;
+    //                uploader.Credentials = new NetworkCredential(username, password);
+    //                uploader.UploadFile(server + arcPath, WebRequestMethods.Ftp.UploadFile, file);
+    //            }
+    //        }
+    //    }
+    //}
 
     public class TimedWebClient : WebClient
     {
