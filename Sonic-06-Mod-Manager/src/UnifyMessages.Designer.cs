@@ -63,7 +63,7 @@
             this.pnl_ButtonBackdrop.Controls.Add(this.btn_No);
             this.pnl_ButtonBackdrop.Location = new System.Drawing.Point(-1, 77);
             this.pnl_ButtonBackdrop.Name = "pnl_ButtonBackdrop";
-            this.pnl_ButtonBackdrop.Size = new System.Drawing.Size(272, 58);
+            this.pnl_ButtonBackdrop.Size = new System.Drawing.Size(267, 58);
             this.pnl_ButtonBackdrop.TabIndex = 1;
             // 
             // btn_Abort
@@ -73,7 +73,7 @@
             this.btn_Abort.FlatAppearance.BorderSize = 0;
             this.btn_Abort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Abort.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Abort.Location = new System.Drawing.Point(13, 10);
+            this.btn_Abort.Location = new System.Drawing.Point(11, 10);
             this.btn_Abort.Name = "btn_Abort";
             this.btn_Abort.Size = new System.Drawing.Size(75, 23);
             this.btn_Abort.TabIndex = 2;
@@ -89,7 +89,7 @@
             this.btn_OK.FlatAppearance.BorderSize = 0;
             this.btn_OK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_OK.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_OK.Location = new System.Drawing.Point(181, 10);
+            this.btn_OK.Location = new System.Drawing.Point(179, 10);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(75, 23);
             this.btn_OK.TabIndex = 0;
@@ -104,7 +104,7 @@
             this.btn_Yes.FlatAppearance.BorderSize = 0;
             this.btn_Yes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Yes.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Yes.Location = new System.Drawing.Point(97, 10);
+            this.btn_Yes.Location = new System.Drawing.Point(95, 10);
             this.btn_Yes.Name = "btn_Yes";
             this.btn_Yes.Size = new System.Drawing.Size(75, 23);
             this.btn_Yes.TabIndex = 1;
@@ -120,7 +120,7 @@
             this.btn_No.FlatAppearance.BorderSize = 0;
             this.btn_No.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_No.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_No.Location = new System.Drawing.Point(97, 10);
+            this.btn_No.Location = new System.Drawing.Point(95, 10);
             this.btn_No.Name = "btn_No";
             this.btn_No.Size = new System.Drawing.Size(75, 23);
             this.btn_No.TabIndex = 3;
@@ -151,20 +151,23 @@
             this.rtb_Message.Location = new System.Drawing.Point(64, 25);
             this.rtb_Message.Name = "rtb_Message";
             this.rtb_Message.ReadOnly = true;
-            this.rtb_Message.Size = new System.Drawing.Size(191, 36);
+            this.rtb_Message.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.rtb_Message.Size = new System.Drawing.Size(184, 13);
             this.rtb_Message.TabIndex = 3;
             this.rtb_Message.Text = "None";
+            this.rtb_Message.ContentsResized += new System.Windows.Forms.ContentsResizedEventHandler(this.Rtb_Message_ContentsResized);
             // 
             // UnifyMessages
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(268, 119);
+            this.ClientSize = new System.Drawing.Size(263, 119);
             this.Controls.Add(this.pic_Icon);
             this.Controls.Add(this.pnl_ButtonBackdrop);
-            this.Controls.Add(this.lbl_Description);
             this.Controls.Add(this.rtb_Message);
+            this.Controls.Add(this.lbl_Description);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -174,6 +177,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Unify Messenger";
+            this.Load += new System.EventHandler(this.UnifyMessages_Load);
             this.pnl_ButtonBackdrop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pic_Icon)).EndInit();
             this.ResumeLayout(false);

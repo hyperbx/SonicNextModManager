@@ -187,8 +187,8 @@ namespace Sonic_06_Mod_Manager.src
                         configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
                         configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
                         if (text_ReadOnly.Text != string.Empty) configInfo.WriteLine($"Read-only=\"{text_ReadOnly.Text}\"");
-                        if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 0) configInfo.WriteLine($"Save=\"{Path.Combine(newPath, "savedata.360")}\"");
-                        else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"{Path.Combine(newPath, "savedata.ps3")}\"");
+                        if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 0) configInfo.WriteLine($"Save=\"savedata.360\"");
+                        else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"savedata.ps3\"");
                         if (tb_Description.Text != string.Empty) configInfo.WriteLine($"Description=\"{tb_Description.Text}\"");
                         configInfo.Close();
                     }

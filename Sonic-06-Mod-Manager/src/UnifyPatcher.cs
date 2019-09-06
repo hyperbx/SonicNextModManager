@@ -100,13 +100,14 @@ namespace Unify.Patcher
                     if (merge && !read_only.Contains(Path.GetFileName(file))) {
                         //Pass off to MergeARCs
                         Console.WriteLine("Merging: " + file);
-                        MergeARCs(origArcPath, file, origArcPath, false, string.Empty, Path.GetFileName(modPath));
+                        MergeARCs(origArcPath, file, origArcPath, false, string.Empty);
                     }
                     else {
                         if (!File.Exists(targetArcPath)) {
                             //Copy a file if it isn't part of a merge mod or is marked as read-only.
                             Console.WriteLine("Copying: " + file);
                             File.Move(origArcPath, targetArcPath);
+                            if (!File.Exists($"{origArcPath}_orig")) File.Copy(targetArcPath, $"{origArcPath}_orig");
                             File.Copy(file, origArcPath);
                         }
                         else {
@@ -120,6 +121,7 @@ namespace Unify.Patcher
                         //Copy a file if it isn't part of a merge mod or is marked as read-only.
                         Console.WriteLine("Copying: " + file);
                         File.Move(origArcPath, targetArcPath);
+                        if (!File.Exists($"{origArcPath}_orig")) File.Copy(targetArcPath, $"{origArcPath}_orig");
                         File.Copy(file, origArcPath);
                     }
                     else {
@@ -130,7 +132,7 @@ namespace Unify.Patcher
             }
         }
 
-        public static void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath, string modName)
+        public static void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath)
         {
             string tempPath = $"{Program.applicationData}\\Temp\\{Path.GetRandomFileName()}"; // Defines the temporary path.
             var tempData = new DirectoryInfo(tempPath); // Gets directory information on the temporary path.
@@ -142,6 +144,7 @@ namespace Unify.Patcher
                 Directory.CreateDirectory(tempPath); 
                 File.Copy(arc1, Path.Combine(tempPath, Path.GetFileName(arc1))); // Copies the input ARC to the temporary path.
                 if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
+                if (!File.Exists($"{origArcPath}_orig")) File.Copy(targetArcPath, $"{origArcPath}_orig");
             }
 
             // Defines the arctool process.
@@ -205,13 +208,11 @@ namespace Unify.Patcher
 
         public static string UnpackARC(string arc)
         {
-            ProcessStartInfo unpack;
-
             string tempPath = $"{Program.applicationData}\\Temp\\{Path.GetRandomFileName()}";
             Directory.CreateDirectory(tempPath);
             File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc)));
 
-            unpack = new ProcessStartInfo($"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"") {
+            var unpack = new ProcessStartInfo($"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"") {
                 WorkingDirectory = $"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
                 WindowStyle = ProcessWindowStyle.Hidden
             };
@@ -258,11 +259,13 @@ namespace Unify.Patcher
             return tempPath;
         }
 
-        public static void CleanupMods()
+        public static void CleanupMods(int state)
         {
             if (!Directory.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory)) return;
 
-            var files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_back", SearchOption.AllDirectories);
+            string[] files = Array.Empty<string>();
+            if (state == 0) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_back", SearchOption.AllDirectories);
+            else if (state == 1) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_orig", SearchOption.AllDirectories);
 
             modManager.Status = SystemMessages.msg_Cleanup;
             foreach (var file in files)
@@ -278,48 +281,52 @@ namespace Unify.Patcher
             modManager.Status = SystemMessages.msg_DefaultStatus;
         }
 
-        public static void CleanupPatches()
+        public static void CleanupSaves(string modPath, string modName)
         {
-            if (!Directory.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory)) return;
+            string savedata = string.Empty;
 
-            var files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_orig", SearchOption.AllDirectories);
-
-            modManager.Status = SystemMessages.msg_Cleanup;
-            foreach (var file in files)
-            {
-                if (File.Exists(file.ToString().Remove(file.Length - 5)))
-                {
-                    Console.WriteLine("Removing: " + file);
-                    File.Delete(file.ToString().Remove(file.Length - 5));
+            //Check if Mod is a Merge Mod and if it contains any read-only files.
+            using (Stream configRead = File.Open(Path.Combine(modPath, "mod.ini"), FileMode.Open))
+            using (StreamReader configFile = new StreamReader(configRead, Encoding.Default)) {
+                string line;
+                string entryValue;
+                while ((line = configFile.ReadLine()) != null) {
+                    if (line.StartsWith("Save")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        savedata = entryValue;
+                    }
                 }
-
-                File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
             }
-            modManager.Status = SystemMessages.msg_DefaultStatus;
-        }
 
-        public static void CleanupSaves()
-        {
             if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0)
             {
                 if (!Directory.Exists(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath))) return;
 
                 string[] saves = Array.Empty<string>();
-                if (File.Exists(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "portable.txt")))
-                    saves = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "content"), "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
-                else
-                    saves = Directory.GetFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Xenia", "content"), "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
+                if (File.Exists(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "portable.txt"))) {
+                    string xeniaPortableContent = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "content");
+                    if (Directory.Exists(xeniaPortableContent)) saves = Directory.GetDirectories(xeniaPortableContent, "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
+                } else {
+                    string xeniaDocumentsContent = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "content");
+                    if (Directory.Exists(xeniaDocumentsContent)) saves = Directory.GetDirectories(xeniaDocumentsContent, "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
+                }
 
                 modManager.Status = SystemMessages.msg_Cleanup;
                 foreach (var file in saves)
                 {
-                    if (File.Exists(file.ToString().Remove(file.Length - 5)))
-                    {
+                    string saveFile = Path.Combine(file.ToString().Remove(file.Length - 5), Path.GetFileName(file.ToString().Remove(file.Length - 5)));
+                    if (File.Exists(saveFile)) {
                         Console.WriteLine("Removing: " + file);
-                        File.Delete(file.ToString().Remove(file.Length - 5));
+                        if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(modPath, "savedata.360"), true);
                     }
 
-                    File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
+                    if (Directory.Exists(file.ToString().Remove(file.Length - 5))) {
+                        Console.WriteLine("Removing: " + file);
+                        Directory.Delete(file.ToString().Remove(file.Length - 5), true);
+                    }
+
+                    Directory.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
                 }
                 modManager.Status = SystemMessages.msg_DefaultStatus;
             }
@@ -334,19 +341,24 @@ namespace Unify.Patcher
                 string getUSSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008-0000");
 
                 if (Directory.Exists(getEUSaveData))
-                    saves = Directory.GetFiles(getEUSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
+                    if (Directory.Exists(getEUSaveData)) saves = Directory.GetFiles(getEUSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
                 else if (Directory.Exists(getEUSaveData2))
-                    saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
+                    if (Directory.Exists(getEUSaveData2)) saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
                 else if (Directory.Exists(getUSSaveData))
-                    saves = Directory.GetFiles(getUSSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
+                    if (Directory.Exists(getUSSaveData)) saves = Directory.GetFiles(getUSSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
                 else if (Directory.Exists(getUSSaveData2))
-                    saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
+                    if (Directory.Exists(getUSSaveData2)) saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
 
                 modManager.Status = SystemMessages.msg_Cleanup;
                 foreach (var file in saves)
                 {
-                    if (File.Exists(file.ToString().Remove(file.Length - 5)))
-                    {
+                    string saveFile = Path.Combine(file.ToString().Remove(file.Length - 5), Path.GetFileName(file.ToString().Remove(file.Length - 5)));
+                    if (File.Exists(saveFile)) {
+                        Console.WriteLine("Removing: " + file);
+                        if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(modPath, "savedata.ps3"), true);
+                    }
+
+                    if (File.Exists(file.ToString().Remove(file.Length - 5))) {
                         Console.WriteLine("Removing: " + file);
                         File.Delete(file.ToString().Remove(file.Length - 5));
                     }
@@ -360,40 +372,74 @@ namespace Unify.Patcher
         public static void RedirectSaves(string modPath, string modName)
         {
             string[] saves = Array.Empty<string>();
-            if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
-                if (File.Exists(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "portable.txt")))
-                    saves = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "content"), "SonicNextSaveData.bin", SearchOption.AllDirectories);
-                else
-                    saves = Directory.GetFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Xenia", "content"), "SonicNextSaveData.bin", SearchOption.AllDirectories);
-            }
-            else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
-                string getEUSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028");
-                string getEUSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028-0000");
-                string getUSSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008");
-                string getUSSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008-0000");
+            bool savedata = false;
 
-                if (Directory.Exists(getEUSaveData))
-                    saves = Directory.GetFiles(getEUSaveData, "SYS-DATA", SearchOption.AllDirectories);
-                else if (Directory.Exists(getEUSaveData2))
-                    saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA", SearchOption.AllDirectories);
-                else if (Directory.Exists(getUSSaveData))
-                    saves = Directory.GetFiles(getUSSaveData, "SYS-DATA", SearchOption.AllDirectories);
-                else if (Directory.Exists(getUSSaveData2))
-                    saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA", SearchOption.AllDirectories);
+            //Check if Mod is a Merge Mod and if it contains any read-only files.
+            using (Stream configRead = File.Open(Path.Combine(modPath, "mod.ini"), FileMode.Open))
+            using (StreamReader configFile = new StreamReader(configRead, Encoding.Default)) {
+                string line;
+
+                while ((line = configFile.ReadLine()) != null)
+                    if (line.StartsWith("Save"))
+                        savedata = true;
             }
 
-            foreach (var save in saves) {
-                if (!File.Exists($"{save}_back")) File.Move(save, $"{save}_back");
-
+            if (savedata)
+            {
                 if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
-                    try { File.Copy(Path.Combine(modPath, "savedata.360"), save, true); }
-                    catch { skippedMods.Add(ModsMessages.ex_SkippedSave(modName, "Xbox 360")); }
+                    if (File.Exists(Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "portable.txt"))) {
+                        string xeniaPortableContent = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.xeniaPath), "content");
+                        if (Directory.Exists(xeniaPortableContent)) saves = Directory.GetFiles(xeniaPortableContent, "SonicNextSaveData.bin", SearchOption.AllDirectories);
+                    } else {
+                        string xeniaDocumentsContent = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Xenia", "content");
+                        if (Directory.Exists(xeniaDocumentsContent)) saves = Directory.GetFiles(xeniaDocumentsContent, "SonicNextSaveData.bin", SearchOption.AllDirectories);
+                    }
                 }
-                else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
-                    try { File.Copy(Path.Combine(modPath, "savedata.ps3"), save, true); }
-                    catch { skippedMods.Add(ModsMessages.ex_SkippedSave(modName, "PlayStation 3")); }
+                else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1)
+                {
+                    string getEUSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028");
+                    string getEUSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLES00028-0000");
+                    string getUSSaveData = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008");
+                    string getUSSaveData2 = Path.Combine(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.RPCS3Path), "dev_hdd0", "home", "00000001", "savedata", "BLUS30008-0000");
+
+                    if (Directory.Exists(getEUSaveData))
+                        if (Directory.Exists(getEUSaveData)) saves = Directory.GetFiles(getEUSaveData, "SYS-DATA", SearchOption.AllDirectories);
+                    else if (Directory.Exists(getEUSaveData2))
+                        if (Directory.Exists(getEUSaveData2)) saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA", SearchOption.AllDirectories);
+                    else if (Directory.Exists(getUSSaveData))
+                        if (Directory.Exists(getUSSaveData)) saves = Directory.GetFiles(getUSSaveData, "SYS-DATA", SearchOption.AllDirectories);
+                    else if (Directory.Exists(getUSSaveData2))
+                        if (Directory.Exists(getUSSaveData2)) saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA", SearchOption.AllDirectories);
+                }
+
+                foreach (var save in saves) {
+                    if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
+                        try {
+                            if (!Directory.Exists($"{Path.GetDirectoryName(save)}_back")) {
+                                Directory.CreateDirectory($"{Path.GetDirectoryName(save)}_back");
+                                DirectoryInfo backupSave = new DirectoryInfo(Path.GetDirectoryName(save));
+                                foreach (FileInfo fi in backupSave.GetFiles())
+                                    fi.CopyTo(Path.Combine($"{Path.GetDirectoryName(save)}_back", fi.Name), true);
+                                File.Copy(Path.Combine(modPath, "savedata.360"), save, true);
+                            }
+                            else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); break; }
+                        }
+                        catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "Xbox 360")); }
+                    }
+                    else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
+                        try { if (File.Exists(Path.Combine(modPath, "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(save))) {
+                                if (!File.Exists($"{save}_back")) {
+                                    File.Move(save, $"{save}_back");
+                                    File.Copy(Path.Combine(modPath, "savedata.ps3"), save, true);
+                                }
+                                else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); break; }
+                            }
+                        }
+                        catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "PlayStation 3")); }
+                    }
                 }
             }
+            else return;
         }
     }
 

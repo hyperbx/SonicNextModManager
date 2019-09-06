@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Linq;
 using System.Media;
 using System.Drawing;
 using System.Windows.Forms;
@@ -37,6 +35,7 @@ namespace Unify.Messages
     internal partial class UnifyMessages : Form
     {
         public static string Accept = string.Empty;
+        public static int TextHeight = 0;
 
         public UnifyMessages()
         {
@@ -49,17 +48,16 @@ namespace Unify.Messages
 
             Text = caption;
             rtb_Message.Text = text;
+            Width += rtb_Message.Width - 30;
 
-            if (text.Length > 65) {
-                lbl_Description.Text = SpliceText(text, 65);
-                Height += lbl_Description.Height - 30;
-            }
-            else {
-                lbl_Description.Text = text;
-                lbl_Description.Top += 7;
-                rtb_Message.Top += 7;
-                Height -= 7;
-            }
+            //if (rtb_Message.Lines.Length > 1)
+            //    foreach (var line in rtb_Message.Lines) Height += 8;
+
+            //if (text.Length < 65) {
+            //    lbl_Description.Top += 7;
+            //    rtb_Message.Top += 7;
+            //    Height -= 7;
+            //}
 
             switch (buttons)
             {
@@ -148,8 +146,6 @@ namespace Unify.Messages
         {
             public static string Show(string text, string caption, string buttons, string icon, bool centre) {
                 using (var openMessenger = new UnifyMessages(text, caption, buttons, icon, centre)) {
-                    var parentLeft = Sonic_06_Mod_Manager.ModManager.FormLeft + ((Sonic_06_Mod_Manager.ModManager.FormWidth - openMessenger.Width) / 2);
-                    var parentTop = Sonic_06_Mod_Manager.ModManager.FormTop + ((Sonic_06_Mod_Manager.ModManager.FormHeight - openMessenger.Height) / 2);
                     if (centre) openMessenger.StartPosition = FormStartPosition.CenterScreen;
                     else openMessenger.StartPosition = FormStartPosition.CenterParent; //new Point(parentLeft, parentTop);
                     openMessenger.ShowDialog();
@@ -171,6 +167,14 @@ namespace Unify.Messages
         private void Btn_No_Click(object sender, EventArgs e) { Accept = btn_No.Text; Close(); }
 
         private void Btn_Abort_Click(object sender, EventArgs e) { Accept = btn_Abort.Text; Close(); }
+
+        private void Rtb_Message_ContentsResized(object sender, ContentsResizedEventArgs e) {
+            var getMessageBoundaries = (RichTextBox)sender;
+            getMessageBoundaries.Height = e.NewRectangle.Height;
+            TextHeight = e.NewRectangle.Height;
+        }
+
+        private void UnifyMessages_Load(object sender, EventArgs e) { Height += TextHeight - 30; }
     }
 
     class SystemMessages
@@ -244,12 +248,13 @@ namespace Unify.Messages
         public static string ex_GBExtractFailed(string mod) { return $"Failed to extract {mod}."; }
         public static string msg_GBInstalled(string mod) { return $"{mod} has been installed in your mods directory."; }
         public static string ex_SkippedMod(string mod, string file) { return $"\n► {mod} (failed because a mod was already installed on file: {file} - try merging instead)"; }
-        public static string ex_SkippedSave(string mod, string platform) { return $"\n► {mod} (save redirect failed because the save was not targeted for the {platform})"; }
+        public static string ex_IncorrectSaveTarget(string mod, string platform) { return $"\n► {mod} (save redirect failed because the save was not targeted for the {platform})"; }
         public static string ex_SkippedModsTally(string failedMods) { return $"Mod installation completed, but the following mods were skipped:\n{failedMods}"; }
         public static string ex_IncorrectTarget(string mod, string platform) { return $"\n► {mod} (failed because the mod was not targeted for the {platform})"; }
         public static string ex_ModExists(string mod) { return $"A mod called '{mod}' already exists."; }
         public static string warn_ModDeleteWarn(string mod) { return $"Are you sure you want to delete '{mod}?'"; }
         public static string ex_ModDeleteError(string mod) { return $"Failed to delete '{mod}.' Please ensure that nothing is accessing that mod's directory, or delete it manually."; }
+        public static string ex_SkippedSave(string mod) { return $"\n► {mod} (save redirect failed because a save was already redirected)"; }
     }
 
     class EmulatorMessages

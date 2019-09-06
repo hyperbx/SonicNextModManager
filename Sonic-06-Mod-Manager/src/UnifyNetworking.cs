@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Linq;
+using Unify.Patcher;
 using Unify.Messages;
 using System.Xml.Linq;
 using System.Reflection;
@@ -75,41 +77,288 @@ namespace Unify.Networking
         }
     }
 
-    // Unfinished FTP stuff - may be deprecated, unless requested.
-    //class FTP
-    //{
-    //    public static string targetArcPath = string.Empty; //Modded ARC File
-    //    public static string origArcPath = string.Empty; //Original Game ARC File
-    //    public static string arcPath = string.Empty; //Paths to ARC in the game files
+    class FTP
+    {
+        public static string targetArcPath = string.Empty; //Modded ARC File
+        public static string origArcPath = string.Empty; //Original Game ARC File
+        public static string arcPath = string.Empty; //Paths to ARC in the game files
 
-    //    public static void UploadMods(string server, string modPath, string username, string password) {
-    //        var files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
-    //        .Where(s => s.EndsWith(".arc") ||
-    //                    s.EndsWith(".wmv") ||
-    //                    s.EndsWith(".xma") ||
-    //                    s.EndsWith(".xex") ||
-    //                    s.EndsWith(".bin") ||
-    //                    s.EndsWith(".pam") ||
-    //                    s.EndsWith(".at3"));
+        public static void InstallMods(string server, string modPath, string username, string password) {
+            bool merge = false;
+            string[] read_only = { };
+            string title = string.Empty;
+            string platform = string.Empty;
+            ARC.skippedMods.Clear();
 
-    //        foreach (var file in files)
-    //        {
-    //            arcPath = file.Remove(0, modPath.Length);
-    //            if (arcPath.StartsWith(@"\")) //Needed due to Microsoft fucking Path.Combine when the string begins with a \
-    //                origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath.Substring(1));
-    //            else
-    //                origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath);
-    //            targetArcPath = $"{origArcPath}_back";
+            //Check if Mod is a Merge Mod and if it contains any read-only files.
+            using (Stream configRead = File.Open(Path.Combine(modPath, "mod.ini"), FileMode.Open))
+            using (StreamReader configFile = new StreamReader(configRead, Encoding.Default)) {
+                string line;
+                string entryValue;
+                while ((line = configFile.ReadLine()) != null) {
+                    if (line.StartsWith("Title")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        title = entryValue;
+                    }
+                    if (line.StartsWith("Merge")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        merge = bool.Parse(entryValue);
+                    }
+                    if (line.StartsWith("Read-only")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        read_only = entryValue.Split(',');
+                    }
+                }
+            }
 
-    //            using (WebClient uploader = new WebClient())
-    //            {
-    //                uploader.UseDefaultCredentials = true;
-    //                uploader.Credentials = new NetworkCredential(username, password);
-    //                uploader.UploadFile(server + arcPath, WebRequestMethods.Ftp.UploadFile, file);
-    //            }
-    //        }
-    //    }
-    //}
+            var files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
+            .Where(s => s.EndsWith(".arc") ||
+                        s.EndsWith(".wmv") ||
+                        s.EndsWith(".xma") ||
+                        s.EndsWith(".xex") ||
+                        s.EndsWith(".bin") ||
+                        s.EndsWith(".pam") ||
+                        s.EndsWith(".at3"));
+
+            foreach (var file in files) {
+                arcPath = file.Remove(0, modPath.Length);
+                if (arcPath.StartsWith(@"\")) //Needed due to Microsoft fucking Path.Combine when the string begins with a \
+                    origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath.Substring(1));
+                else
+                    origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath);
+                targetArcPath = $"{origArcPath}_back";
+
+                using (WebClient client = new WebClient()) {
+                    client.UseDefaultCredentials = true;
+                    client.Credentials = new NetworkCredential(username, password);
+
+                    if (file.EndsWith(".arc")) {
+                        if (merge && !read_only.Contains(Path.GetFileName(file))) {
+                            //Pass off to MergeARCs
+                            Console.WriteLine("Merging: " + file);
+                            byte[] downloadFile = client.DownloadData((server + arcPath).Replace(@"\", "/"));
+                            string tempPath = $"{Sonic_06_Mod_Manager.Program.applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                            Directory.CreateDirectory(tempPath);
+
+                            using (FileStream downloadedFile = File.Create(Path.Combine(tempPath, Path.GetFileName(arcPath)))) {
+                                downloadedFile.Write(downloadFile, 0, downloadFile.Length);
+                                downloadedFile.Close();
+                            }
+
+                            ARC.MergeARCs(Path.Combine(tempPath, Path.GetFileName(arcPath)), file, Path.Combine(tempPath, Path.GetFileName(arcPath)), true, tempPath);
+
+                            if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
+                                var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
+                                renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
+                                renameFileRequest.Credentials = new NetworkCredential(username, password);
+                                renameFileRequest.RenameTo = $"{Path.GetFileName(arcPath)}_back";
+                                renameFileRequest.UseBinary = false;
+                                renameFileRequest.UsePassive = true;
+                                var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
+                            }
+
+                            client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, Path.Combine(tempPath, Path.GetFileName(arcPath)));
+                        } else {
+                            if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
+                                var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
+                                renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
+                                renameFileRequest.Credentials = new NetworkCredential(username, password);
+                                renameFileRequest.RenameTo = $"{Path.GetFileName(arcPath)}_back";
+                                renameFileRequest.UseBinary = false;
+                                renameFileRequest.UsePassive = true;
+                                var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
+                            } else {
+                                //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
+                                ARC.skippedMods.Add(ModsMessages.ex_SkippedMod(title, Path.GetFileName(file)));
+                                return;
+                            }
+
+                            client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, file);
+                        }
+                    } else {
+                        if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
+                            var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
+                            renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
+                            renameFileRequest.Credentials = new NetworkCredential(username, password);
+                            renameFileRequest.RenameTo = $"{Path.GetFileName(arcPath)}_back";
+                            renameFileRequest.UseBinary = false;
+                            renameFileRequest.UsePassive = true;
+                            var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
+                        } else {
+                            //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
+                            ARC.skippedMods.Add(ModsMessages.ex_SkippedMod(title, Path.GetFileName(file)));
+                            return;
+                        }
+
+                        client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, file);
+                    }
+                }
+            }
+        }
+
+        public static void CleanupMods(string server, string username, string password, int state)
+        {
+            List<string> fileSystem = new List<string>() {
+                "xenon/",
+                "xenon/archives/",
+                "xenon/event/",
+                "xenon/event/eboss/",
+                "xenon/sound/",
+                "xenon/sound/event/",
+                "xenon/sound/voice/e/",
+                "xenon/sound/voice/j/",
+                "ps3/",
+                "ps3/archives/",
+                "ps3/elf/",
+                "ps3/event/",
+                "ps3/event/eboss/",
+                "ps3/sound/",
+                "ps3/sound/event/",
+                "ps3/sound/voice/e/",
+                "ps3/sound/voice/j/",
+                "win32/",
+                "win32/archives/"
+            };
+
+            for (int i = 0; i < 10; i++) {
+                fileSystem.Add($"xenon/event/e000{i}/");
+                fileSystem.Add($"ps3/event/e000{i}/");
+            }
+            for (int i = 10; i <= 31; i++) {
+                fileSystem.Add($"xenon/event/e00{i}/");
+                fileSystem.Add($"ps3/event/e00{i}/");
+            }
+            for (int i = 100; i <= 130; i++) {
+                fileSystem.Add($"xenon/event/e0{i}/");
+                fileSystem.Add($"ps3/event/e0{i}/");
+            }
+            for (int i = 200; i <= 228; i++) {
+                fileSystem.Add($"xenon/event/e0{i}/");
+                fileSystem.Add($"ps3/event/e0{i}/");
+            }
+            for (int i = 301; i < 310; i++) {
+                fileSystem.Add($"xenon/event/e0{i}/");
+                fileSystem.Add($"ps3/event/e0{i}/");
+            }
+
+            for (int i = 0; i < fileSystem.Count; i++) {
+                Console.WriteLine(fileSystem[i]);
+                try {
+                    foreach (var item in GetFiles(server, fileSystem[i], username, password)) {
+                        if (item.EndsWith("_back") && state == 0) {
+                            if (CheckIfFileExistsOnServer(server + fileSystem[i] + item.Substring(item.Length - 5), username, password)) {
+                                var deleteFileRequest = (FtpWebRequest)WebRequest.Create(server + fileSystem[i] + item.Substring(item.Length - 5));
+                                deleteFileRequest.Method = WebRequestMethods.Ftp.DeleteFile;
+                                deleteFileRequest.Credentials = new NetworkCredential(username, password);
+                                deleteFileRequest.UseBinary = false;
+                                deleteFileRequest.UsePassive = true;
+                                var deleteFileResponse = (FtpWebResponse)deleteFileRequest.GetResponse();
+                                deleteFileResponse.Close();
+                            }
+
+                            var renameFileRequest = (FtpWebRequest)WebRequest.Create(server + fileSystem[i] + item);
+                            renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
+                            renameFileRequest.Credentials = new NetworkCredential(username, password);
+                            renameFileRequest.RenameTo = item.Substring(item.Length - 5);
+                            renameFileRequest.UseBinary = false;
+                            renameFileRequest.UsePassive = true;
+                            var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
+                            renameFileResponse.Close();
+                        }
+                        if (item.EndsWith("_orig") && state == 1) {
+                            if (CheckIfFileExistsOnServer(server + fileSystem[i] + item.Substring(item.Length - 5), username, password)) {
+                                var deleteFileRequest = (FtpWebRequest)WebRequest.Create(server + fileSystem[i] + item.Substring(item.Length - 5));
+                                deleteFileRequest.Method = WebRequestMethods.Ftp.DeleteFile;
+                                deleteFileRequest.Credentials = new NetworkCredential(username, password);
+                                deleteFileRequest.UseBinary = false;
+                                deleteFileRequest.UsePassive = true;
+                                var deleteFileResponse = (FtpWebResponse)deleteFileRequest.GetResponse();
+                                deleteFileResponse.Close();
+                            }
+
+                            var renameFileRequest = (FtpWebRequest)WebRequest.Create(server + fileSystem[i] + item);
+                            renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
+                            renameFileRequest.Credentials = new NetworkCredential(username, password);
+                            renameFileRequest.RenameTo = item.Substring(item.Length - 5);
+                            renameFileRequest.UseBinary = false;
+                            renameFileRequest.UsePassive = true;
+                            var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
+                            renameFileResponse.Close();
+                        }
+                    }
+                } catch { }
+            }
+        }
+
+        public static string DownloadFileToTemp(string filename, string username, string password) {
+            using (WebClient client = new WebClient()) {
+                client.UseDefaultCredentials = true;
+                client.Credentials = new NetworkCredential(username, password);
+
+                byte[] downloadFile = client.DownloadData(filename.Replace(@"\", "/"));
+                string tempPath = $"{Sonic_06_Mod_Manager.Program.applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                Directory.CreateDirectory(tempPath);
+
+                using (FileStream downloadedFile = File.Create(Path.Combine(tempPath, Path.GetFileName(filename))))
+                {
+                    downloadedFile.Write(downloadFile, 0, downloadFile.Length);
+                    downloadedFile.Close();
+                }
+
+                var unpack = new ProcessStartInfo($"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(filename))}\"")
+                {
+                    WorkingDirectory = $"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var Unpack = Process.Start(unpack);
+                Unpack.WaitForExit();
+                Unpack.Close();
+
+                return tempPath;
+            }
+        }
+
+        public static bool CheckIfFileExistsOnServer(string fileName, string username, string password) {
+            var request = (FtpWebRequest)WebRequest.Create(fileName);
+            request.Credentials = new NetworkCredential(username, password);
+            request.Method = WebRequestMethods.Ftp.GetFileSize;
+
+            try {
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                return true;
+            }
+            catch (WebException ex) {
+                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
+                    return false;
+            }
+            return false;
+        }
+
+        public static List<string> GetFiles(string server, string location, string username, string password)
+        {
+            try {
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(server + location);
+                request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(username, password);
+
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                Stream responseStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(responseStream);
+                string names = reader.ReadToEnd();
+
+                reader.Close();
+                response.Close();
+
+                return names.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
+            catch { throw; }
+        }
+    }
 
     public class TimedWebClient : WebClient
     {
