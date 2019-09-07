@@ -382,5 +382,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["ftpUsername"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool saveRedirect {
+            get {
+                return ((bool)(this["saveRedirect"]));
+            }
+            set {
+                this["saveRedirect"] = value;
+            }
+        }
     }
 }

@@ -94,6 +94,8 @@
             this.clb_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
+            this.lbl_SaveRedirect = new System.Windows.Forms.Label();
+            this.check_SaveRedirect = new System.Windows.Forms.CheckBox();
             this.Debug = new System.Windows.Forms.Button();
             this.btn_ReportBug = new System.Windows.Forms.Button();
             this.lbl_GameBanana = new System.Windows.Forms.Label();
@@ -938,6 +940,8 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Options.Controls.Add(this.lbl_SaveRedirect);
+            this.group_Options.Controls.Add(this.check_SaveRedirect);
             this.group_Options.Controls.Add(this.Debug);
             this.group_Options.Controls.Add(this.btn_ReportBug);
             this.group_Options.Controls.Add(this.lbl_GameBanana);
@@ -961,6 +965,27 @@
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
+            // 
+            // lbl_SaveRedirect
+            // 
+            this.lbl_SaveRedirect.AutoSize = true;
+            this.lbl_SaveRedirect.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_SaveRedirect.Location = new System.Drawing.Point(32, 72);
+            this.lbl_SaveRedirect.Name = "lbl_SaveRedirect";
+            this.lbl_SaveRedirect.Size = new System.Drawing.Size(110, 15);
+            this.lbl_SaveRedirect.TabIndex = 99;
+            this.lbl_SaveRedirect.Text = "Save file redirection";
+            // 
+            // check_SaveRedirect
+            // 
+            this.check_SaveRedirect.AutoSize = true;
+            this.check_SaveRedirect.ForeColor = System.Drawing.SystemColors.Control;
+            this.check_SaveRedirect.Location = new System.Drawing.Point(15, 73);
+            this.check_SaveRedirect.Name = "check_SaveRedirect";
+            this.check_SaveRedirect.Size = new System.Drawing.Size(15, 14);
+            this.check_SaveRedirect.TabIndex = 98;
+            this.check_SaveRedirect.UseVisualStyleBackColor = true;
+            this.check_SaveRedirect.CheckedChanged += new System.EventHandler(this.Check_SaveRedirect_CheckedChanged);
             // 
             // Debug
             // 
@@ -997,7 +1022,7 @@
             // 
             this.lbl_GameBanana.AutoSize = true;
             this.lbl_GameBanana.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_GameBanana.Location = new System.Drawing.Point(32, 72);
+            this.lbl_GameBanana.Location = new System.Drawing.Point(32, 96);
             this.lbl_GameBanana.Name = "lbl_GameBanana";
             this.lbl_GameBanana.Size = new System.Drawing.Size(151, 15);
             this.lbl_GameBanana.TabIndex = 93;
@@ -1007,7 +1032,7 @@
             // 
             this.check_GameBanana.AutoSize = true;
             this.check_GameBanana.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_GameBanana.Location = new System.Drawing.Point(15, 73);
+            this.check_GameBanana.Location = new System.Drawing.Point(15, 97);
             this.check_GameBanana.Name = "check_GameBanana";
             this.check_GameBanana.Size = new System.Drawing.Size(15, 14);
             this.check_GameBanana.TabIndex = 92;
@@ -1525,5 +1550,7 @@
         private System.Windows.Forms.Button sonic06mm_Aldi;
         private System.Windows.Forms.Label lbl_TweaksOverlay;
         private System.Windows.Forms.Label lbl_SetupOverlay;
+        private System.Windows.Forms.Label lbl_SaveRedirect;
+        private System.Windows.Forms.CheckBox check_SaveRedirect;
     }
 }

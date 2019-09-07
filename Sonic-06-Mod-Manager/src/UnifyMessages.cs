@@ -48,16 +48,16 @@ namespace Unify.Messages
 
             Text = caption;
             rtb_Message.Text = text;
-            Width += rtb_Message.Width - 30;
 
-            //if (rtb_Message.Lines.Length > 1)
-            //    foreach (var line in rtb_Message.Lines) Height += 8;
-
-            //if (text.Length < 65) {
-            //    lbl_Description.Top += 7;
-            //    rtb_Message.Top += 7;
-            //    Height -= 7;
-            //}
+            if (rtb_Message.Text.Length < 65) {
+                rtb_Message.Top += 8;
+                rtb_Message.Left += 5;
+                Width += rtb_Message.Width - 30;
+            }
+            else {
+                rtb_Message.Top += 1;
+                Width += rtb_Message.Width - 30;
+            }
 
             switch (buttons)
             {
@@ -238,7 +238,7 @@ namespace Unify.Messages
         public static string msg_LocateSave = "Please select a save file...";
         public static string msg_ThumbnailDeleteError = "An error occurred whilst removing the thumbnail.";
         public static string msg_SaveDeleteError = "An error occurred whilst removing the save data.";
-        public static string ex_ModInstallFailure = "General mod installation failure, please ensure your game directory is set correctly.";
+        public static string ex_ModInstallFailure = "General mod installation failure, please see the information below...";
         public static string msg_CancelDownloading = "Are you sure you want to cancel downloading?";
         public static string msg_LoSInstalled = "Legacy of Solaris has been installed in your mods directory.";
         public static string ex_GitHubTimeout = "Unable to establish a connection to GitHub.";
@@ -248,6 +248,7 @@ namespace Unify.Messages
         public static string ex_GBExtractFailed(string mod) { return $"Failed to extract {mod}."; }
         public static string msg_GBInstalled(string mod) { return $"{mod} has been installed in your mods directory."; }
         public static string ex_SkippedMod(string mod, string file) { return $"\n► {mod} (failed because a mod was already installed on file: {file} - try merging instead)"; }
+        public static string ex_SkippedModMissingFile(string mod, string file) { return $"\n► {mod} (failed because the following file doesn't exist in the game: {file})"; }
         public static string ex_IncorrectSaveTarget(string mod, string platform) { return $"\n► {mod} (save redirect failed because the save was not targeted for the {platform})"; }
         public static string ex_SkippedModsTally(string failedMods) { return $"Mod installation completed, but the following mods were skipped:\n{failedMods}"; }
         public static string ex_IncorrectTarget(string mod, string platform) { return $"\n► {mod} (failed because the mod was not targeted for the {platform})"; }
@@ -266,7 +267,7 @@ namespace Unify.Messages
 
     class PatchesMessages
     {
-        public static string ex_PatchInstallFailure = "General patch installation failure, please ensure your game directory is set correctly.";
+        public static string ex_PatchInstallFailure = "General patch installation failure, please see the information below...";
     }
 
     class SettingsMessages

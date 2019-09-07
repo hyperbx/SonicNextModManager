@@ -178,8 +178,7 @@ namespace Sonic_06_Mod_Manager.src
                         Directory.Move(modPath, newPath);
 
                     using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
-                    using (StreamWriter configInfo = new StreamWriter(configCreate))
-                    {
+                    using (StreamWriter configInfo = new StreamWriter(configCreate)) {
                         configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
                         if (text_Version.Text != string.Empty) configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
                         if (text_Date.Text != string.Empty) configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
@@ -305,5 +304,20 @@ namespace Sonic_06_Mod_Manager.src
         }
 
         private void Btn_SaveBrowser_Click(object sender, EventArgs e) { text_Save.Text = Locations.LocateSaves(combo_System.SelectedIndex); }
+
+        private void Combo_System_SelectedIndexChanged(object sender, EventArgs e) {
+            if (combo_System.SelectedIndex == 2) {
+                lbl_Save.ForeColor = SystemColors.GrayText;
+                text_Save.Enabled = false;
+                btn_SaveBrowser.Enabled = false;
+            } else {
+                if (Properties.Settings.Default.theme)
+                    lbl_Save.ForeColor = SystemColors.Control;
+                else
+                    lbl_Save.ForeColor = SystemColors.ControlText;
+                text_Save.Enabled = true;
+                btn_SaveBrowser.Enabled = true;
+            }
+        }
     }
 }

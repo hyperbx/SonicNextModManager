@@ -103,11 +103,27 @@ namespace Unify.Patcher
                         MergeARCs(origArcPath, file, origArcPath, false, string.Empty);
                     }
                     else {
+                        try {
+                            if (!File.Exists(targetArcPath)) {
+                                //Copy a file if it isn't part of a merge mod or is marked as read-only.
+                                Console.WriteLine("Copying: " + file);
+                                File.Move(origArcPath, targetArcPath);
+                                File.Copy(file, origArcPath);
+                            }
+                            else {
+                                //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
+                                skippedMods.Add(ModsMessages.ex_SkippedMod(modName, Path.GetFileName(file)));
+                            }
+                        }
+                        catch (FileNotFoundException) { skippedMods.Add(ModsMessages.ex_SkippedModMissingFile(modName, Path.GetFileName(file))); }
+                    }
+                }
+                else {
+                    try { 
                         if (!File.Exists(targetArcPath)) {
                             //Copy a file if it isn't part of a merge mod or is marked as read-only.
                             Console.WriteLine("Copying: " + file);
                             File.Move(origArcPath, targetArcPath);
-                            if (!File.Exists($"{origArcPath}_orig")) File.Copy(targetArcPath, $"{origArcPath}_orig");
                             File.Copy(file, origArcPath);
                         }
                         else {
@@ -115,19 +131,7 @@ namespace Unify.Patcher
                             skippedMods.Add(ModsMessages.ex_SkippedMod(modName, Path.GetFileName(file)));
                         }
                     }
-                }
-                else {
-                    if (!File.Exists(targetArcPath)) {
-                        //Copy a file if it isn't part of a merge mod or is marked as read-only.
-                        Console.WriteLine("Copying: " + file);
-                        File.Move(origArcPath, targetArcPath);
-                        if (!File.Exists($"{origArcPath}_orig")) File.Copy(targetArcPath, $"{origArcPath}_orig");
-                        File.Copy(file, origArcPath);
-                    }
-                    else {
-                        //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
-                        skippedMods.Add(ModsMessages.ex_SkippedMod(modName, Path.GetFileName(file)));
-                    }
+                    catch (FileNotFoundException) { skippedMods.Add(ModsMessages.ex_SkippedModMissingFile(modName, Path.GetFileName(file))); }
                 }
             }
         }

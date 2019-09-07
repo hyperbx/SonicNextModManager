@@ -50,7 +50,7 @@
             this.tb_Description = new System.Windows.Forms.RichTextBox();
             this.group_DescriptionField = new System.Windows.Forms.GroupBox();
             this.btn_RemoveThumbnail = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_Save = new System.Windows.Forms.Label();
             this.btn_SaveBrowser = new System.Windows.Forms.Button();
             this.text_Save = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).BeginInit();
@@ -124,11 +124,13 @@
             this.combo_System.FormattingEnabled = true;
             this.combo_System.Items.AddRange(new object[] {
             "Xbox 360",
-            "PlayStation 3"});
+            "PlayStation 3",
+            "All Systems"});
             this.combo_System.Location = new System.Drawing.Point(69, 354);
             this.combo_System.Name = "combo_System";
             this.combo_System.Size = new System.Drawing.Size(291, 21);
             this.combo_System.TabIndex = 79;
+            this.combo_System.SelectedIndexChanged += new System.EventHandler(this.Combo_System_SelectedIndexChanged);
             // 
             // lbl_System
             // 
@@ -279,14 +281,14 @@
             this.btn_RemoveThumbnail.UseVisualStyleBackColor = false;
             this.btn_RemoveThumbnail.Click += new System.EventHandler(this.Btn_RemoveThumbnail_Click);
             // 
-            // label1
+            // lbl_Save
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 410);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 93;
-            this.label1.Text = "Save:";
+            this.lbl_Save.AutoSize = true;
+            this.lbl_Save.Location = new System.Drawing.Point(30, 410);
+            this.lbl_Save.Name = "lbl_Save";
+            this.lbl_Save.Size = new System.Drawing.Size(35, 13);
+            this.lbl_Save.TabIndex = 93;
+            this.lbl_Save.Text = "Save:";
             // 
             // btn_SaveBrowser
             // 
@@ -316,7 +318,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(740, 467);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbl_Save);
             this.Controls.Add(this.btn_SaveBrowser);
             this.Controls.Add(this.text_Save);
             this.Controls.Add(this.btn_RemoveThumbnail);
@@ -376,7 +378,7 @@
         private System.Windows.Forms.RichTextBox tb_Description;
         private System.Windows.Forms.GroupBox group_DescriptionField;
         private System.Windows.Forms.Button btn_RemoveThumbnail;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_Save;
         private System.Windows.Forms.Button btn_SaveBrowser;
         private System.Windows.Forms.TextBox text_Save;
     }

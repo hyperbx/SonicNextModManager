@@ -94,6 +94,7 @@ namespace Sonic_06_Mod_Manager
             check_ManualInstall.Checked = Properties.Settings.Default.manualInstall;
             nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
             check_ManualPatches.Checked = Properties.Settings.Default.manualPatches;
+            check_SaveRedirect.Checked = Properties.Settings.Default.saveRedirect;
 
             switch (Properties.Settings.Default.priority)
             {
@@ -186,9 +187,11 @@ namespace Sonic_06_Mod_Manager
                                 ARC.InstallMods(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
                                 Status = SystemMessages.msg_DefaultStatus;
 
-                                Status = SystemMessages.msg_RedirectingSave(clb_ModsList.Items[i].ToString());
-                                ARC.RedirectSaves(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
-                                Status = SystemMessages.msg_DefaultStatus;
+                                if (check_SaveRedirect.Checked) {
+                                    Status = SystemMessages.msg_RedirectingSave(clb_ModsList.Items[i].ToString());
+                                    ARC.RedirectSaves(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
+                                    Status = SystemMessages.msg_DefaultStatus;
+                                }
                             }
                         }
                     } else {
@@ -199,9 +202,11 @@ namespace Sonic_06_Mod_Manager
                                 ARC.InstallMods(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
                                 Status = SystemMessages.msg_DefaultStatus;
 
-                                Status = SystemMessages.msg_RedirectingSave(clb_ModsList.GetItemText(mod));
-                                ARC.RedirectSaves(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
-                                Status = SystemMessages.msg_DefaultStatus;
+                                if (check_SaveRedirect.Checked) {
+                                    Status = SystemMessages.msg_RedirectingSave(clb_ModsList.GetItemText(mod));
+                                    ARC.RedirectSaves(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
+                                    Status = SystemMessages.msg_DefaultStatus;
+                                }
                             }
                         }
                     }
@@ -322,7 +327,7 @@ namespace Sonic_06_Mod_Manager
                     if (combo_Emulator_System.SelectedIndex == 0) {
                         if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Vulkan API Compatibility"))) {
                             Status = SystemMessages.msg_PatchingRenderer;
-                            if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                            if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                             unpack = ARC.UnpackARC(arc);
                             File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
                             File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
@@ -334,7 +339,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (combo_Reflections.SelectedIndex != 1) {
                         Status = SystemMessages.msg_PatchingRenderer;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                         unpack = ARC.UnpackARC(arc);
                         Lua.Reflections(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
                         ARC.RepackARC(unpack, arc);
@@ -343,7 +348,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) {
                         Status = SystemMessages.msg_PatchingRenderer;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                         unpack = ARC.UnpackARC(arc);
                         Lua.DisableHUD(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
                         ARC.RepackARC(unpack, arc);
@@ -352,7 +357,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows"))) {
                         Status = SystemMessages.msg_PatchingRenderer;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                         unpack = ARC.UnpackARC(arc);
                         Lua.DisableShadows(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows")));
                         ARC.RepackARC(unpack, arc);
@@ -363,7 +368,7 @@ namespace Sonic_06_Mod_Manager
                     {
                         if (nud_CameraDistance.Value != 650) {
                             Status = SystemMessages.msg_PatchingCamera;
-                            if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                            if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                             unpack = ARC.UnpackARC(arc);
                             Lua.CameraDistance(Path.Combine(unpack, $"cache\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
                             ARC.RepackARC(unpack, arc);
@@ -375,7 +380,7 @@ namespace Sonic_06_Mod_Manager
                     if (combo_Emulator_System.SelectedIndex == 0) {
                         if (nud_CameraDistance.Value != 650) {
                             Status = SystemMessages.msg_PatchingCamera;
-                            if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                            if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                             unpack = ARC.UnpackARC(arc);
                             Lua.CameraDistance(Path.Combine(unpack, $"game\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
                             ARC.RepackARC(unpack, arc);
@@ -386,7 +391,7 @@ namespace Sonic_06_Mod_Manager
                 else if (Path.GetFileName(arc) == "player_omega.arc") {
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Omega Blur Fix"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                         unpack = ARC.UnpackARC(arc);
                         File.WriteAllBytes(Path.Combine(unpack, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Fix);
                         ARC.RepackARC(unpack, arc);
@@ -396,7 +401,7 @@ namespace Sonic_06_Mod_Manager
                 else if (Path.GetFileName(arc) == "player.arc") {
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                         unpack = ARC.UnpackARC(arc);
                         Lua.ActionGaugeFixes(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")));
                         ARC.RepackARC(unpack, arc);
@@ -405,7 +410,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                         unpack = ARC.UnpackARC(arc);
                         Lua.UnlockMidairMomentum(Path.Combine(unpack, $"player\\{system}\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")));
                         ARC.RepackARC(unpack, arc);
@@ -414,7 +419,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
-                        if (!File.Exists($"{arc}_orig")) File.Copy(arc, $"{arc}_orig");
+                        if ((File.Exists($"{arc}_back") || File.Exists($"{arc}_orig")) == false) File.Copy(arc, $"{arc}_orig");
                         unpack = ARC.UnpackARC(arc);
                         Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
                         Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board_wap.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
@@ -501,6 +506,11 @@ namespace Sonic_06_Mod_Manager
                                     }
 
                                     if (!radio_Xbox360.Checked && entryValue.Contains("PlayStation 3")) {
+                                        clb_ModsList.Items.Add(modName);
+                                        configs.Add(mod);
+                                    }
+
+                                    if (entryValue.Contains("All Systems")) {
                                         clb_ModsList.Items.Add(modName);
                                         configs.Add(mod);
                                     }
@@ -739,7 +749,7 @@ namespace Sonic_06_Mod_Manager
                 xenia.WaitForExit(); // Wait for Xenia to exit
                 if (!check_ManualInstall.Checked) {
                     ARC.CleanupMods(0);
-                    RestoreSaves();
+                    if (check_SaveRedirect.Checked) RestoreSaves();
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }
@@ -789,7 +799,7 @@ namespace Sonic_06_Mod_Manager
                 RPCS3.WaitForExit(); // Wait for RPCS3 to exit
                 if (!check_ManualInstall.Checked) {
                     ARC.CleanupMods(0);
-                    RestoreSaves();
+                    if (check_SaveRedirect.Checked) RestoreSaves();
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }
@@ -912,6 +922,11 @@ namespace Sonic_06_Mod_Manager
         #endregion
 
         #region Settings
+        private void Check_SaveRedirect_CheckedChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.saveRedirect = check_SaveRedirect.Checked;
+            Properties.Settings.Default.Save();
+        }
+
         private void Text_FTPLocation_TextChanged(object sender, EventArgs e) {
             Properties.Settings.Default.ftpLocation = text_FTPLocation.Text;
             Properties.Settings.Default.Save();
