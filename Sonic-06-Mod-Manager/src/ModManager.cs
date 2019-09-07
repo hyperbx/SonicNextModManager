@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.0-indev-6919r1"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.0-indev-7919r2"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
 
@@ -117,6 +117,8 @@ namespace Sonic_06_Mod_Manager
                     check_GameBanana.Checked = true;
             }
             #endregion
+
+            Text = $"Sonic '06 Mod Manager ({versionNumber})";
         }
 
         public string Status { set { lbl_SetStatus.Text = value; } }
@@ -142,15 +144,18 @@ namespace Sonic_06_Mod_Manager
                 else Application.Exit(); // Close the program if no mods directory is set. Why? Because it's redundant.
             }
 
-            if (Directory.Exists(Properties.Settings.Default.modsDirectory))
-                GetMods(); // Basically just refreshes and clears up mods on launch
-            if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualInstall.Checked)
-                ARC.CleanupMods(0); // Ensures manual mod install is disabled first
-            if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualPatches.Checked)
-                ARC.CleanupMods(1); // Ensures manual patch install is disabled first
-            if ((Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.xeniaPath)) ||
-                 Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.RPCS3Path))) == true && !check_ManualInstall.Checked)
-                RestoreSaves(); // Ensures manual install is disabled first
+            if (Properties.Settings.Default.modsDirectory != string.Empty)
+                if (Directory.Exists(Properties.Settings.Default.modsDirectory))
+                    GetMods(); // Basically just refreshes and clears up mods on launch
+            if (Properties.Settings.Default.gameDirectory != string.Empty) {
+                if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualInstall.Checked)
+                    ARC.CleanupMods(0); // Ensures manual mod install is disabled first
+                if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualPatches.Checked)
+                    ARC.CleanupMods(1); // Ensures manual patch install is disabled first
+            }
+            if (Properties.Settings.Default.xeniaPath != string.Empty || Properties.Settings.Default.RPCS3Path != string.Empty)
+                if (Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.xeniaPath)) || Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.RPCS3Path)))
+                    if (!check_ManualInstall.Checked) RestoreSaves(); // Ensures manual install is disabled first
             if (!versionNumber.Contains("-indev"))
                 Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
         }
