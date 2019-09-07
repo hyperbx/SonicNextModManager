@@ -1085,12 +1085,14 @@ namespace Sonic_06_Mod_Manager
                     lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
+                    lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     lbl_ManualPatches.ForeColor = SystemColors.ControlText;
                     lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_CameraDistance.ForeColor = SystemColors.ControlText;
+                    lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1187,12 +1189,14 @@ namespace Sonic_06_Mod_Manager
                     lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
+                    lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     lbl_ManualPatches.ForeColor = SystemColors.Control;
                     lbl_TweaksOverlay.ForeColor = SystemColors.Control;
                     lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_CameraDistance.ForeColor = SystemColors.Control;
+                    lbl_SaveRedirect.ForeColor = SystemColors.Control;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1319,8 +1323,10 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.FTP = true;
                 check_ManualInstall.Enabled = false;
                 check_ManualPatches.Enabled = false;
+                check_SaveRedirect.Enabled = false;
                 lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                 lbl_ManualPatches.ForeColor = SystemColors.GrayText;
+                lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
                 btn_SaveAndPlay.Text = "Install Mods";
                 btn_SaveAndPlay.Width = 120;
                 btn_UninstallMods.Visible = true;
@@ -1340,18 +1346,21 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.FTP = false;
                 check_ManualInstall.Enabled = true;
                 check_ManualPatches.Enabled = true;
+                check_SaveRedirect.Enabled = true;
                 if (!Properties.Settings.Default.theme) {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     lbl_ManualPatches.ForeColor = SystemColors.ControlText;
                     lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_CameraDistance.ForeColor = SystemColors.ControlText;
+                    lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     lbl_ManualPatches.ForeColor = SystemColors.Control;
                     lbl_TweaksOverlay.ForeColor = SystemColors.Control;
                     lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_CameraDistance.ForeColor = SystemColors.Control;
+                    lbl_SaveRedirect.ForeColor = SystemColors.Control;
                 }
                 btn_SaveAndPlay.Text = "Save and Play";
                 btn_SaveAndPlay.Width = 245;
