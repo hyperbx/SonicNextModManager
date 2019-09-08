@@ -156,6 +156,8 @@ namespace Sonic_06_Mod_Manager
                     if (!check_ManualInstall.Checked) RestoreSaves(); // Ensures manual install is disabled first
             if (!versionNumber.Contains("-indev"))
                 Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
+
+            if (!Prerequisites.JavaCheck()) UnifyMessages.UnifyMessage.Show(SystemMessages.ex_JavaMissing, SystemMessages.tl_JavaError, "OK", "Information", true);
         }
 
         #region Mods
@@ -1010,10 +1012,23 @@ namespace Sonic_06_Mod_Manager
             }
 
             if (unifytb_Main.SelectedIndex == 2 && !check_FTP.Checked) {
-                btn_SaveAndPlay.Text = "Apply Patches";
-                btn_SaveAndPlay.Width = 120;
-                btn_UninstallMods.Text = "Restore Defaults";
-                btn_UninstallMods.Visible = true;
+                if (Prerequisites.JavaCheck()) {
+                    btn_SaveAndPlay.Text = "Apply Patches";
+                    btn_SaveAndPlay.Width = 120;
+                    btn_UninstallMods.Text = "Restore Defaults";
+                    btn_UninstallMods.Visible = true;
+                } else {
+                    check_ManualPatches.Enabled = false;
+                    lbl_ManualPatches.ForeColor = SystemColors.GrayText;
+                    lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
+                    lbl_Reflections.ForeColor = SystemColors.GrayText;
+                    lbl_CameraDistance.ForeColor = SystemColors.GrayText;
+                    clb_PatchesList.Enabled = false;
+                    btn_ResetReflections.Enabled = false;
+                    btn_ResetCameraDistance.Enabled = false;
+                    combo_Reflections.Enabled = false;
+                    nud_CameraDistance.Enabled = false;
+                }
             }
             else {
                 if (check_FTP.Checked || check_ManualInstall.Checked) {
@@ -1086,7 +1101,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
-                    lbl_ManualPatches.ForeColor = SystemColors.ControlText;
+                    if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
                     lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_CameraDistance.ForeColor = SystemColors.ControlText;
@@ -1190,7 +1205,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
-                    lbl_ManualPatches.ForeColor = SystemColors.Control;
+                    if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
                     lbl_TweaksOverlay.ForeColor = SystemColors.Control;
                     lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_CameraDistance.ForeColor = SystemColors.Control;
@@ -1350,18 +1365,18 @@ namespace Sonic_06_Mod_Manager
             {
                 Properties.Settings.Default.FTP = false;
                 check_ManualInstall.Enabled = true;
-                check_ManualPatches.Enabled = true;
+                if (Prerequisites.JavaCheck()) check_ManualPatches.Enabled = true;
                 check_SaveRedirect.Enabled = true;
                 if (!Properties.Settings.Default.theme) {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
-                    lbl_ManualPatches.ForeColor = SystemColors.ControlText;
+                    if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
                     lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                     lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
-                    lbl_ManualPatches.ForeColor = SystemColors.Control;
+                    if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
                     lbl_TweaksOverlay.ForeColor = SystemColors.Control;
                     lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_CameraDistance.ForeColor = SystemColors.Control;
