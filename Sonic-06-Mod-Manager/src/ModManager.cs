@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.0-indev-7919r2"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.0"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
 
@@ -117,8 +117,6 @@ namespace Sonic_06_Mod_Manager
                     check_GameBanana.Checked = true;
             }
             #endregion
-
-            Text = $"Sonic '06 Mod Manager ({versionNumber})";
         }
 
         public string Status { set { lbl_SetStatus.Text = value; } }
@@ -1285,9 +1283,16 @@ namespace Sonic_06_Mod_Manager
 
         private void Btn_ReportBug_Click(object sender, EventArgs e) { Process.Start("https://github.com/Knuxfan24/Sonic-06-Mod-Manager/issues"); }
 
-        private void Lbl_ModsDirectory_Click(object sender, EventArgs e) { Process.Start(Properties.Settings.Default.modsDirectory); } // Open Mods directory shortcut
+        private void Lbl_ModsDirectory_Click(object sender, EventArgs e) { if (Directory.Exists(Properties.Settings.Default.modsDirectory)) Process.Start(Properties.Settings.Default.modsDirectory); } // Open Mods directory shortcut
 
-        private void Lbl_GameDirectory_Click(object sender, EventArgs e) { Process.Start(Properties.Settings.Default.gameDirectory); } // Open Game directory shortcut
+        private void Lbl_GameDirectory_Click(object sender, EventArgs e) { if (Directory.Exists(Properties.Settings.Default.gameDirectory)) Process.Start(Properties.Settings.Default.gameDirectory); } // Open Game directory shortcut
+
+        private void Lbl_EmulatorEXE_Click(object sender, EventArgs e) {
+            if (combo_Emulator_System.SelectedIndex == 0)
+                LaunchXenia();
+            else
+                LaunchRPCS3();
+        }
 
         private void Check_ManualInstall_CheckedChanged(object sender, EventArgs e) {
             if (check_ManualInstall.Checked) {
@@ -1370,7 +1375,7 @@ namespace Sonic_06_Mod_Manager
                 btn_ResetCameraDistance.Enabled = true;
                 combo_Reflections.Enabled = true;
                 nud_CameraDistance.Enabled = true;
-                btn_Play.Enabled = false;
+                btn_Play.Enabled = true;
             }
 
             Properties.Settings.Default.Save();

@@ -780,6 +780,7 @@
             this.lbl_EmulatorEXE.Size = new System.Drawing.Size(80, 15);
             this.lbl_EmulatorEXE.TabIndex = 0;
             this.lbl_EmulatorEXE.Text = "Emulator EXE:";
+            this.lbl_EmulatorEXE.Click += new System.EventHandler(this.Lbl_EmulatorEXE_Click);
             // 
             // unifytb_Tab_Patches
             // 
