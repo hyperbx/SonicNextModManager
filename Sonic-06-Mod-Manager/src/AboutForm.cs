@@ -1,4 +1,5 @@
-﻿using Unify.Messages;
+﻿using System.Media;
+using Unify.Messages;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -87,5 +88,13 @@ namespace Sonic_06_Mod_Manager.src
         private void Link_Melpontro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.youtube.com/user/Melpontro"); }
 
         private void Link_acro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://gamebanana.com/members/1447045"); }
+
+        private void Pic_Logo_Click(object sender, System.EventArgs e)
+        {
+            if (ModManager.dreamcastDay) {
+                SoundPlayer dreamLaunch = new SoundPlayer(Properties.Resources.dreamLaunch);
+                dreamLaunch.Play();
+            }
+        }
     }
 }

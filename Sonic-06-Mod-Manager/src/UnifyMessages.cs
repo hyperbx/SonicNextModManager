@@ -99,12 +99,22 @@ namespace Unify.Messages
                 case "Error":
                     pic_Icon.BackgroundImage = Sonic_06_Mod_Manager.Properties.Resources.error.ToBitmap();
                     TopMost = true;
-                    SystemSounds.Hand.Play();
+                    if (Sonic_06_Mod_Manager.ModManager.dreamcastDay) {
+                        SoundPlayer dreamError = new SoundPlayer(Sonic_06_Mod_Manager.Properties.Resources.dream);
+                        dreamError.Play();
+                    }
+                    else
+                        SystemSounds.Hand.Play();
                     break;
                 case "Information":
                     pic_Icon.BackgroundImage = Extract("shell32.dll", 277, true).ToBitmap();
                     TopMost = false;
-                    SystemSounds.Asterisk.Play();
+                    if (Sonic_06_Mod_Manager.ModManager.dreamcastDay) {
+                        SoundPlayer dreamWarn = new SoundPlayer(Sonic_06_Mod_Manager.Properties.Resources.dreamWarn);
+                        dreamWarn.Play();
+                    }
+                    else
+                        SystemSounds.Asterisk.Play();
                     break;
                 case "Question":
                     pic_Icon.BackgroundImage = Extract("shell32.dll", 154, true).ToBitmap();
@@ -114,7 +124,12 @@ namespace Unify.Messages
                 case "Warning":
                     pic_Icon.BackgroundImage = Extract("shell32.dll", 237, true).ToBitmap();
                     TopMost = true;
-                    SystemSounds.Asterisk.Play();
+                    if (Sonic_06_Mod_Manager.ModManager.dreamcastDay) {
+                        SoundPlayer dreamWarn = new SoundPlayer(Sonic_06_Mod_Manager.Properties.Resources.dreamWarn);
+                        dreamWarn.Play();
+                    }
+                    else
+                        SystemSounds.Asterisk.Play();
                     break;
             }
 
@@ -223,6 +238,7 @@ namespace Unify.Messages
         public static string msg_PatchingCharacters = "Patching Characters...";
         public static string ex_JavaMissing = $"{tl_DefaultTitle} requires Java for installing patches. To use the Patches tab, please install Java and restart {tl_DefaultTitle}.";
         public static string tl_JavaError = "Java Error";
+        public static string tl_NetworkError = "Network Error";
 
         public static string ex_Prereq_Newtonsoft_WriteFailure(Exception exception) { return $"Failed to write Newtonsoft.Json.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }
         public static string ex_Prereq_Ookii_WriteFailure(Exception exception) { return $"Failed to write Ookii.Dialogs.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }
@@ -250,6 +266,7 @@ namespace Unify.Messages
         public static string ex_GitHubTimeout = "Unable to establish a connection to GitHub.";
         public static string ex_GameBananaTimeout = "Unable to establish a connection to GameBanana.";
         public static string ex_ExtractFailNoApp = "Failed to install from archive because 7-Zip and/or WinRAR is not installed.";
+        public static string ex_FTPError = "An error occurred whilst establishing a connection to the FTP server.";
 
         public static string ex_GBExtractFailed(string mod) { return $"Failed to extract {mod}."; }
         public static string msg_GBInstalled(string mod) { return $"{mod} has been installed in your mods directory."; }

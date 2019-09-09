@@ -127,6 +127,9 @@
   <data name="arctoolphp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\arctool.php;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="dream" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\dream.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="dreamcast_ntsc" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\dreamcast_ntsc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -138,6 +141,12 @@
   </data>
   <data name="dreamcast_pal_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\dreamcast_pal_icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dreamLaunch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\dreamLaunch.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dreamWarn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\dreamWarn.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\error.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

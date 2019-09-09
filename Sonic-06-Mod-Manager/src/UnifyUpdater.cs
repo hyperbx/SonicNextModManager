@@ -40,6 +40,13 @@ namespace Sonic_06_Mod_Manager.src
         {
             InitializeComponent();
 
+             if (ModManager.dreamcastDay) {
+                if (Properties.Settings.Default.dream) 
+                    Icon = Properties.Resources.dreamcast_ntsc_icon;
+                else
+                    Icon = Properties.Resources.dreamcast_pal_icon;
+             }
+
             this.url = url;
             this.enabled = enabled;
 

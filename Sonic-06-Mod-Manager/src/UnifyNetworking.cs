@@ -131,36 +131,55 @@ namespace Unify.Networking
                     origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath);
                 targetArcPath = $"{origArcPath}_back";
 
-                using (WebClient client = new WebClient()) {
-                    client.UseDefaultCredentials = true;
-                    client.Credentials = new NetworkCredential(username, password);
+                try
+                {
+                    using (WebClient client = new WebClient()) {
+                        client.UseDefaultCredentials = true;
+                        client.Credentials = new NetworkCredential(username, password);
 
-                    if (file.EndsWith(".arc")) {
-                        if (merge && !read_only.Contains(Path.GetFileName(file))) {
-                            //Pass off to MergeARCs
-                            Console.WriteLine("Merging: " + file);
-                            byte[] downloadFile = client.DownloadData((server + arcPath).Replace(@"\", "/"));
-                            string tempPath = $"{Sonic_06_Mod_Manager.Program.applicationData}\\Temp\\{Path.GetRandomFileName()}";
-                            Directory.CreateDirectory(tempPath);
+                        if (file.EndsWith(".arc")) {
+                            if (merge && !read_only.Contains(Path.GetFileName(file))) {
+                                //Pass off to MergeARCs
+                                Console.WriteLine("Merging: " + file);
+                                byte[] downloadFile = client.DownloadData((server + arcPath).Replace(@"\", "/"));
+                                string tempPath = $"{Sonic_06_Mod_Manager.Program.applicationData}\\Temp\\{Path.GetRandomFileName()}";
+                                Directory.CreateDirectory(tempPath);
 
-                            using (FileStream downloadedFile = File.Create(Path.Combine(tempPath, Path.GetFileName(arcPath)))) {
-                                downloadedFile.Write(downloadFile, 0, downloadFile.Length);
-                                downloadedFile.Close();
+                                using (FileStream downloadedFile = File.Create(Path.Combine(tempPath, Path.GetFileName(arcPath)))) {
+                                    downloadedFile.Write(downloadFile, 0, downloadFile.Length);
+                                    downloadedFile.Close();
+                                }
+
+                                ARC.MergeARCs(Path.Combine(tempPath, Path.GetFileName(arcPath)), file, Path.Combine(tempPath, Path.GetFileName(arcPath)), true, tempPath);
+
+                                if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
+                                    var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
+                                    renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
+                                    renameFileRequest.Credentials = new NetworkCredential(username, password);
+                                    renameFileRequest.RenameTo = $"{Path.GetFileName(arcPath)}_back";
+                                    renameFileRequest.UseBinary = false;
+                                    renameFileRequest.UsePassive = true;
+                                    var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
+                                }
+
+                                client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, Path.Combine(tempPath, Path.GetFileName(arcPath)));
+                            } else {
+                                if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
+                                    var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
+                                    renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
+                                    renameFileRequest.Credentials = new NetworkCredential(username, password);
+                                    renameFileRequest.RenameTo = $"{Path.GetFileName(arcPath)}_back";
+                                    renameFileRequest.UseBinary = false;
+                                    renameFileRequest.UsePassive = true;
+                                    var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
+                                } else {
+                                    //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
+                                    ARC.skippedMods.Add(ModsMessages.ex_SkippedMod(title, Path.GetFileName(file)));
+                                    return;
+                                }
+
+                                client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, file);
                             }
-
-                            ARC.MergeARCs(Path.Combine(tempPath, Path.GetFileName(arcPath)), file, Path.Combine(tempPath, Path.GetFileName(arcPath)), true, tempPath);
-
-                            if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
-                                var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
-                                renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
-                                renameFileRequest.Credentials = new NetworkCredential(username, password);
-                                renameFileRequest.RenameTo = $"{Path.GetFileName(arcPath)}_back";
-                                renameFileRequest.UseBinary = false;
-                                renameFileRequest.UsePassive = true;
-                                var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
-                            }
-
-                            client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, Path.Combine(tempPath, Path.GetFileName(arcPath)));
                         } else {
                             if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
                                 var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
@@ -178,24 +197,9 @@ namespace Unify.Networking
 
                             client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, file);
                         }
-                    } else {
-                        if (!CheckIfFileExistsOnServer((server + $"{arcPath}_back").Replace(@"\", "/"), username, password)) {
-                            var renameFileRequest = (FtpWebRequest)WebRequest.Create((server + arcPath).Replace(@"\", "/"));
-                            renameFileRequest.Method = WebRequestMethods.Ftp.Rename;
-                            renameFileRequest.Credentials = new NetworkCredential(username, password);
-                            renameFileRequest.RenameTo = $"{Path.GetFileName(arcPath)}_back";
-                            renameFileRequest.UseBinary = false;
-                            renameFileRequest.UsePassive = true;
-                            var renameFileResponse = (FtpWebResponse)renameFileRequest.GetResponse();
-                        } else {
-                            //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
-                            ARC.skippedMods.Add(ModsMessages.ex_SkippedMod(title, Path.GetFileName(file)));
-                            return;
-                        }
-
-                        client.UploadFile((server + arcPath).Replace(@"\", "/"), WebRequestMethods.Ftp.UploadFile, file);
                     }
                 }
+                catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_FTPError}\n\n{ex}", SystemMessages.tl_NetworkError, "OK", "Error", false); break; }
             }
         }
 

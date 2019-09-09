@@ -91,6 +91,15 @@ namespace Sonic_06_Mod_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream dream {
+            get {
+                return ResourceManager.GetStream("dream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap dreamcast_ntsc {
@@ -127,6 +136,24 @@ namespace Sonic_06_Mod_Manager.Properties {
             get {
                 object obj = ResourceManager.GetObject("dreamcast_pal_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream dreamLaunch {
+            get {
+                return ResourceManager.GetStream("dreamLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream dreamWarn {
+            get {
+                return ResourceManager.GetStream("dreamWarn", resourceCulture);
             }
         }
         

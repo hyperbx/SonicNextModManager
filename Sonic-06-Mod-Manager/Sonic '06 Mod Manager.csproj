@@ -183,6 +183,9 @@
     <None Include="res\dreamcast_pal.png" />
     <None Include="res\dreamcast_ntsc_icon.ico" />
     <None Include="res\dreamcast_pal_icon.ico" />
+    <None Include="res\dream.wav" />
+    <None Include="res\dreamLaunch.wav" />
+    <None Include="res\dreamWarn.wav" />
     <Content Include="res\logo_exception.png" />
     <None Include="res\logo_gamebanana.png" />
     <None Include="res\logo_legacy.png" />

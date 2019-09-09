@@ -191,6 +191,7 @@
             this.pic_Logo.Size = new System.Drawing.Size(229, 301);
             this.pic_Logo.TabIndex = 15;
             this.pic_Logo.TabStop = false;
+            this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
             // 
             // AboutForm
             // 

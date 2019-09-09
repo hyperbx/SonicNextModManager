@@ -47,6 +47,13 @@ namespace Sonic_06_Mod_Manager.src
 
             combo_System.SelectedIndex = 0;
 
+             if (ModManager.dreamcastDay) {
+                if (Properties.Settings.Default.dream) 
+                    Icon = Properties.Resources.dreamcast_ntsc_icon;
+                else
+                    Icon = Properties.Resources.dreamcast_pal_icon;
+             }
+
             if (Properties.Settings.Default.theme) {
                 pic_Thumbnail.BackColor = Color.FromArgb(45, 45, 48);
                 check_Merge.ForeColor = SystemColors.Control;
