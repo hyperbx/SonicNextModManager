@@ -49,8 +49,8 @@ namespace Unify.Messages
             Text = caption;
             rtb_Message.Text = text;
 
-            if (rtb_Message.Text.Length < 65) {
-                rtb_Message.Top += 8;
+            if (rtb_Message.Text.Length <= 65) {
+                rtb_Message.Top += 6;
                 rtb_Message.Left += 5;
                 Width += rtb_Message.Width - 30;
             }
@@ -119,14 +119,11 @@ namespace Unify.Messages
 
             if (Sonic_06_Mod_Manager.Properties.Settings.Default.theme) {
                 BackColor = Color.FromArgb(45, 45, 48);
-                lbl_Description.ForeColor = SystemColors.Control;
                 pic_Icon.BackColor = Color.FromArgb(45, 45, 48);
                 pnl_ButtonBackdrop.BackColor = Color.FromArgb(59, 59, 63);
                 rtb_Message.BackColor = Color.FromArgb(45, 45, 48);
                 rtb_Message.ForeColor = SystemColors.Control;
             }
-
-            Width = lbl_Description.Width + 100;
         }
 
         public static Icon Extract(string file, int number, bool largeIcon)
@@ -168,13 +165,19 @@ namespace Unify.Messages
 
         private void Btn_Abort_Click(object sender, EventArgs e) { Accept = btn_Abort.Text; Close(); }
 
-        private void Rtb_Message_ContentsResized(object sender, ContentsResizedEventArgs e) {
+        private void Rtb_Message_ContentsResized(object sender, ContentsResizedEventArgs e)
+        {
             var getMessageBoundaries = (RichTextBox)sender;
             getMessageBoundaries.Height = e.NewRectangle.Height;
             TextHeight = e.NewRectangle.Height;
         }
 
-        private void UnifyMessages_Load(object sender, EventArgs e) { Height += TextHeight - 30; }
+        private void UnifyMessages_Load(object sender, EventArgs e) {
+            if (rtb_Message.Text.Length <= 65)
+                Height = TextHeight + 140;
+            else
+                Height = TextHeight + 135;
+        }
     }
 
     class SystemMessages

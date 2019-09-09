@@ -140,8 +140,7 @@
             // 
             // rtb_Message
             // 
-            this.rtb_Message.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.rtb_Message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtb_Message.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.rtb_Message.BorderStyle = System.Windows.Forms.BorderStyle.None;

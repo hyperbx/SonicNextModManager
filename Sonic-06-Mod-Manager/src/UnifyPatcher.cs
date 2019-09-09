@@ -148,7 +148,6 @@ namespace Unify.Patcher
                 Directory.CreateDirectory(tempPath); 
                 File.Copy(arc1, Path.Combine(tempPath, Path.GetFileName(arc1))); // Copies the input ARC to the temporary path.
                 if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
-                if (!File.Exists($"{origArcPath}_orig")) File.Copy(targetArcPath, $"{origArcPath}_orig");
             }
 
             // Defines the arctool process.
