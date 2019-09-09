@@ -76,6 +76,7 @@ namespace Unify.Messages
                     btn_Yes.Visible = true;
                     btn_Yes.Text = "OK";
                     btn_OK.Text = "Cancel";
+                    btn_Yes.BackColor = SystemColors.ControlLightLight;
                     btn_OK.BackColor = Color.Tomato;
                     break;
                 case "AbortRetryIgnore":

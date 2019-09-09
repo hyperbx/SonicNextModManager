@@ -37,7 +37,17 @@ namespace Sonic_06_Mod_Manager.src
             InitializeComponent();
             lbl_versionNumber.Text = versionNumber;
 
-            if (ModManager.debugMode) {
+            if (ModManager.dreamcastDay) {
+                Text = "Happy birthday, Dreamcast!";
+                if (Properties.Settings.Default.dream) {
+                    Icon = Properties.Resources.dreamcast_ntsc_icon;
+                    pic_Logo.BackgroundImage = Properties.Resources.dreamcast_ntsc;
+                } else {
+                    Icon = Properties.Resources.dreamcast_pal_icon;
+                    pic_Logo.BackgroundImage = Properties.Resources.dreamcast_pal;
+                }
+            }
+            else if (ModManager.debugMode) {
                 lbl_Title.Text = SystemMessages.tl_DefaultTitle;
                 pic_Logo.BackgroundImage = Properties.Resources.logo_aldi;
             }

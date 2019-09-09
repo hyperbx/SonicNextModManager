@@ -2,7 +2,6 @@
 using System.IO;
 using Unify.Tools;
 using System.Text;
-using System.Linq;
 using Unify.Patcher;
 using Ookii.Dialogs;
 using Unify.Messages;
@@ -47,6 +46,8 @@ namespace Sonic_06_Mod_Manager
         public readonly string versionNumber = "Version 2.0"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
+        public static DateTime dreamcast = new DateTime(1999, 09, 09);
+        public static bool dreamcastDay = false;
 
         public ModManager(string[] args) {
             InitializeComponent();
@@ -55,6 +56,13 @@ namespace Sonic_06_Mod_Manager
 
             //Load settings from the Properties.
             #region Properties
+            if (dreamcast.Day == DateTime.Today.Day && dreamcast.Month == DateTime.Today.Month) {
+                dreamcastDay = true;
+                if (!Properties.Settings.Default.dream) { Icon = Properties.Resources.dreamcast_ntsc_icon; Properties.Settings.Default.dream = true; }
+                else { Icon = Properties.Resources.dreamcast_pal_icon; Properties.Settings.Default.dream = false; }
+                Properties.Settings.Default.Save();
+            }
+
             combo_Emulator_System.SelectedIndex = Properties.Settings.Default.emulatorSystem;
 
             if (combo_Emulator_System.SelectedIndex == 0)
@@ -651,10 +659,12 @@ namespace Sonic_06_Mod_Manager
             if (combo_Emulator_System.SelectedIndex == 0) {
                 Status = SystemMessages.msg_LaunchXenia;
                 LaunchXenia();
+                Status = SystemMessages.msg_DefaultStatus;
             }
             if (combo_Emulator_System.SelectedIndex == 1) {
                 Status = SystemMessages.msg_LaunchRPCS3;
                 LaunchRPCS3();
+                Status = SystemMessages.msg_DefaultStatus;
             }
         }
 
@@ -1108,6 +1118,7 @@ namespace Sonic_06_Mod_Manager
                 status_Main.BackColor = SystemColors.Control;
                 BackColor = SystemColors.ControlLight;
 
+                lbl_SetupOverlay.ForeColor = SystemColors.ControlText;
                 lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
                 lbl_AccentColour.ForeColor = SystemColors.ControlText;
                 lbl_CameraDistance.ForeColor = SystemColors.ControlText;
@@ -1212,6 +1223,7 @@ namespace Sonic_06_Mod_Manager
                 status_Main.BackColor = Color.FromArgb(28, 28, 28);
                 BackColor = Color.FromArgb(45, 45, 48);
 
+                lbl_SetupOverlay.ForeColor = SystemColors.Control;
                 lbl_TweaksOverlay.ForeColor = SystemColors.Control;
                 lbl_AccentColour.ForeColor = SystemColors.Control;
                 lbl_CameraDistance.ForeColor = SystemColors.Control;

@@ -179,6 +179,10 @@
     <None Include="res\GBStyleSheetLight.css" />
     <None Include="res\icon_aldi.ico" />
     <None Include="res\logo_aldi.png" />
+    <None Include="res\dreamcast_ntsc.png" />
+    <None Include="res\dreamcast_pal.png" />
+    <None Include="res\dreamcast_ntsc_icon.ico" />
+    <None Include="res\dreamcast_pal_icon.ico" />
     <Content Include="res\logo_exception.png" />
     <None Include="res\logo_gamebanana.png" />
     <None Include="res\logo_legacy.png" />
