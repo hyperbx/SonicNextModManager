@@ -43,7 +43,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.0"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.01"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
         public static DateTime dreamcast = new DateTime(1999, 09, 09);
@@ -341,9 +341,9 @@ namespace Sonic_06_Mod_Manager
                         if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Vulkan API Compatibility"))) {
                             Status = SystemMessages.msg_PatchingRenderer;
                             if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                                File.Copy($"{arc}_back", $"{arc}_orig");
+                                File.Copy($"{arc}_back", $"{arc}_orig", true);
                             else
-                                File.Copy(arc, $"{arc}_orig");
+                                File.Copy(arc, $"{arc}_orig", true);
                             unpack = ARC.UnpackARC(arc);
                             File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
                             File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
@@ -356,9 +356,9 @@ namespace Sonic_06_Mod_Manager
                     if (combo_Reflections.SelectedIndex != 1) {
                         Status = SystemMessages.msg_PatchingRenderer;
                         if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy($"{arc}_back", $"{arc}_orig");
+                            File.Copy($"{arc}_back", $"{arc}_orig", true);
                         else
-                            File.Copy(arc, $"{arc}_orig");
+                            File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         Lua.Reflections(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
                         ARC.RepackARC(unpack, arc);
@@ -368,9 +368,9 @@ namespace Sonic_06_Mod_Manager
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) {
                         Status = SystemMessages.msg_PatchingRenderer;
                         if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy($"{arc}_back", $"{arc}_orig");
+                            File.Copy($"{arc}_back", $"{arc}_orig", true);
                         else
-                            File.Copy(arc, $"{arc}_orig");
+                            File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         Lua.DisableHUD(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
                         ARC.RepackARC(unpack, arc);
@@ -380,9 +380,9 @@ namespace Sonic_06_Mod_Manager
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows"))) {
                         Status = SystemMessages.msg_PatchingRenderer;
                         if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy($"{arc}_back", $"{arc}_orig");
+                            File.Copy($"{arc}_back", $"{arc}_orig", true);
                         else
-                            File.Copy(arc, $"{arc}_orig");
+                            File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         Lua.DisableShadows(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows")));
                         ARC.RepackARC(unpack, arc);
@@ -394,9 +394,9 @@ namespace Sonic_06_Mod_Manager
                         if (nud_CameraDistance.Value != 650) {
                             Status = SystemMessages.msg_PatchingCamera;
                             if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                                File.Copy($"{arc}_back", $"{arc}_orig");
+                                File.Copy($"{arc}_back", $"{arc}_orig", true);
                             else
-                                File.Copy(arc, $"{arc}_orig");
+                                File.Copy(arc, $"{arc}_orig", true);
                             unpack = ARC.UnpackARC(arc);
                             Lua.CameraDistance(Path.Combine(unpack, $"cache\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
                             ARC.RepackARC(unpack, arc);
@@ -409,9 +409,9 @@ namespace Sonic_06_Mod_Manager
                         if (nud_CameraDistance.Value != 650) {
                             Status = SystemMessages.msg_PatchingCamera;
                             if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                                File.Copy($"{arc}_back", $"{arc}_orig");
+                                File.Copy($"{arc}_back", $"{arc}_orig", true);
                             else
-                                File.Copy(arc, $"{arc}_orig");
+                                File.Copy(arc, $"{arc}_orig", true);
                             unpack = ARC.UnpackARC(arc);
                             Lua.CameraDistance(Path.Combine(unpack, $"game\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
                             ARC.RepackARC(unpack, arc);
@@ -423,9 +423,9 @@ namespace Sonic_06_Mod_Manager
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Omega Blur Fix"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
                         if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy($"{arc}_back", $"{arc}_orig");
+                            File.Copy($"{arc}_back", $"{arc}_orig", true);
                         else
-                            File.Copy(arc, $"{arc}_orig");
+                            File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         File.WriteAllBytes(Path.Combine(unpack, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Fix);
                         ARC.RepackARC(unpack, arc);
@@ -436,9 +436,9 @@ namespace Sonic_06_Mod_Manager
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
                         if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy($"{arc}_back", $"{arc}_orig");
+                            File.Copy($"{arc}_back", $"{arc}_orig", true);
                         else
-                            File.Copy(arc, $"{arc}_orig");
+                            File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         Lua.ActionGaugeFixes(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")));
                         ARC.RepackARC(unpack, arc);
@@ -448,9 +448,9 @@ namespace Sonic_06_Mod_Manager
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
                         if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy($"{arc}_back", $"{arc}_orig");
+                            File.Copy($"{arc}_back", $"{arc}_orig", true);
                         else
-                            File.Copy(arc, $"{arc}_orig");
+                            File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         Lua.UnlockMidairMomentum(Path.Combine(unpack, $"player\\{system}\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")));
                         ARC.RepackARC(unpack, arc);
@@ -460,9 +460,9 @@ namespace Sonic_06_Mod_Manager
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
                         if (File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy($"{arc}_back", $"{arc}_orig");
+                            File.Copy($"{arc}_back", $"{arc}_orig", true);
                         else
-                            File.Copy(arc, $"{arc}_orig");
+                            File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
                         Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board_wap.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));

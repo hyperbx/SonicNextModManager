@@ -47,12 +47,12 @@ namespace Sonic_06_Mod_Manager.src
 
             combo_System.SelectedIndex = 0;
 
-             if (ModManager.dreamcastDay) {
-                if (Properties.Settings.Default.dream) 
+            if (ModManager.dreamcastDay) {
+                if (Properties.Settings.Default.dream)
                     Icon = Properties.Resources.dreamcast_ntsc_icon;
                 else
                     Icon = Properties.Resources.dreamcast_pal_icon;
-             }
+            }
 
             if (Properties.Settings.Default.theme) {
                 pic_Thumbnail.BackColor = Color.FromArgb(45, 45, 48);
@@ -114,7 +114,19 @@ namespace Sonic_06_Mod_Manager.src
                         {
                             entryValue = line.Substring(line.IndexOf("=") + 2);
                             entryValue = entryValue.Remove(entryValue.Length - 1);
-                            combo_System.SelectedText = entryValue;
+                            
+                            switch (entryValue)
+                            {
+                                case "Xbox 360":
+                                    combo_System.SelectedIndex = 0;
+                                    break;
+                                case "PlayStation 3":
+                                    combo_System.SelectedIndex = 1;
+                                    break;
+                                case "All Systems":
+                                    combo_System.SelectedIndex = 2;
+                                    break;
+                            }
                         }
                         if (line.StartsWith("Merge"))
                         {
@@ -161,7 +173,7 @@ namespace Sonic_06_Mod_Manager.src
                     pic_Thumbnail.BackgroundImage = Image.FromFile(img);
             }
 
-            if (!edit) lbl_ReadOnly.ForeColor = SystemColors.GrayText;
+            if (!edit) { lbl_ReadOnly.ForeColor = SystemColors.GrayText; }
         }
 
         public static bool FilePathHasInvalidChars(string path)

@@ -36,11 +36,11 @@ namespace Sonic_06_Mod_Manager.src
             InitializeComponent();
 
              if (ModManager.dreamcastDay) {
-                if (Properties.Settings.Default.dream) 
+                if (Properties.Settings.Default.dream)
                     Icon = Properties.Resources.dreamcast_ntsc_icon;
                 else
                     Icon = Properties.Resources.dreamcast_pal_icon;
-             }
+            }
 
             if (Properties.Settings.Default.theme) {
                 lbl_Title.ForeColor = SystemColors.Control;
