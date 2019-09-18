@@ -2,6 +2,7 @@
 using System.IO;
 using Unify.Tools;
 using System.Linq;
+using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Security.Principal;
@@ -75,7 +76,7 @@ namespace Sonic_06_Mod_Manager
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if ((Process.GetProcessesByName(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1) == false) {
+            if ((Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1) == false) {
                 if (args.Length > 0) {
                     if (args[0] == "-registry_add") {
                         GB_Registry.AddRegistry();
@@ -106,7 +107,7 @@ namespace Sonic_06_Mod_Manager
                             Application.Run(new ModManager(args));
                         }
                     }
-                } else Application.Run(new ModManager(args));
+                } else { Application.Run(new ModManager(args)); }
             }
             else if (args[0] == "-banana") {
                 string[] getIDs = args[1].Remove(0, 40).Split(',');
@@ -128,8 +129,15 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        public static bool RunningAsAdmin() {
-            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        public static bool RunningAsAdmin() { return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator); }
+
+        public static void ExecuteAsAdmin(string fileName, string arguments) {
+            Process proc = new Process();
+            proc.StartInfo.FileName = fileName;
+            proc.StartInfo.Arguments = arguments;
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.Verb = "runas";
+            proc.Start();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using Unify.Tools;
 using System.Text;
+using System.Linq;
 using Unify.Patcher;
 using Ookii.Dialogs;
 using Unify.Messages;
@@ -43,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.03"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.04"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
         public static DateTime dreamcast = new DateTime(1999, 09, 09);
@@ -71,7 +72,6 @@ namespace Sonic_06_Mod_Manager
                 text_EmulatorPath.Text = Properties.Settings.Default.RPCS3Path;
 
             combo_API.SelectedIndex = Properties.Settings.Default.API;
-            text_GameDirectory.Text = Properties.Settings.Default.gameDirectory;
             text_ModsDirectory.Text = Properties.Settings.Default.modsDirectory;
             text_FTPLocation.Text = Properties.Settings.Default.ftpLocation;
             text_Username.Text = Properties.Settings.Default.ftpUsername;
@@ -113,6 +113,51 @@ namespace Sonic_06_Mod_Manager
                     btn_Priority.Text = "Priority: Bottom to Top";
                     break;
             }
+
+            if (Properties.Settings.Default.gameDirectory == string.Empty) {
+                byte[] bytes;
+                string xexPath = Path.Combine(Application.StartupPath, "default.xex");
+                string ebootPath = Path.Combine(Application.StartupPath, "EBOOT.BIN");
+
+                if (combo_Emulator_System.SelectedIndex == 0) {
+                    if (File.Exists(xexPath)) {
+                        bytes = File.ReadAllBytes(xexPath).Take(4).ToArray();
+                        var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+
+                        if (hexString == "58 45 58 32") {
+                            Properties.Settings.Default.gameDirectory = Application.StartupPath;
+                            text_GameDirectory.Text = Application.StartupPath;
+                            combo_Emulator_System.SelectedIndex = 0;
+                            Properties.Settings.Default.Save();
+                        }
+                    }
+                    else if (File.Exists(ebootPath)) {
+                        bytes = File.ReadAllBytes(ebootPath).Take(3).ToArray();
+                        var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+
+                        if (hexString == "53 43 45") {
+                            Properties.Settings.Default.gameDirectory = Application.StartupPath;
+                            text_GameDirectory.Text = Application.StartupPath;
+                            combo_Emulator_System.SelectedIndex = 1;
+                            Properties.Settings.Default.Save();
+                        }
+                    }
+                }
+                else if (combo_Emulator_System.SelectedIndex == 1) {
+                    if (File.Exists(ebootPath)) {
+                        bytes = File.ReadAllBytes(ebootPath).Take(3).ToArray();
+                        var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+
+                        if (hexString == "53 43 45") {
+                            Properties.Settings.Default.gameDirectory = Application.StartupPath;
+                            text_GameDirectory.Text = Application.StartupPath;
+                            combo_Emulator_System.SelectedIndex = 1;
+                            Properties.Settings.Default.Save();
+                        }
+                    }
+                }
+            }
+            else { text_GameDirectory.Text = Properties.Settings.Default.gameDirectory; }
 
             RegistryKey key = Registry.ClassesRoot.OpenSubKey(GB_Registry.protocol, false); // Open the Sonic '06 Mod Manager protocol key
             RegistryKey getLocation = Registry.ClassesRoot.OpenSubKey($"{GB_Registry.protocol}\\shell\\open\\command");
@@ -1459,9 +1504,8 @@ namespace Sonic_06_Mod_Manager
 
                             switch (registry) {
                                 case "Yes":
-                                    var runAsAdmin = new ProcessStartInfo(Application.ExecutablePath, "-registry_add");
-                                    runAsAdmin.Verb = "runas";
-                                    if (Process.Start(runAsAdmin) != null) { Application.Exit(); }
+                                    Program.ExecuteAsAdmin(Application.ExecutablePath, "-registry_add");
+                                    Application.Exit();
                                     break;
                                 case "No":
                                     check_GameBanana.Checked = false;
@@ -1483,9 +1527,8 @@ namespace Sonic_06_Mod_Manager
 
                             switch (registry) {
                                 case "Yes":
-                                    var runAsAdmin = new ProcessStartInfo(Application.ExecutablePath, "-registry_remove");
-                                    runAsAdmin.Verb = "runas";
-                                    if (Process.Start(runAsAdmin) != null) { Application.Exit(); }
+                                    Program.ExecuteAsAdmin(Application.ExecutablePath, "-registry_remove");
+                                    Application.Exit();
                                     break;
                                 case "No":
                                     check_GameBanana.Checked = true;
