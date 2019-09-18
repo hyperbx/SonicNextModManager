@@ -43,7 +43,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.02"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.03"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
         public static DateTime dreamcast = new DateTime(1999, 09, 09);
@@ -173,18 +173,24 @@ namespace Sonic_06_Mod_Manager
         #region Mods
         private void Btn_ModInfo_Click(object sender, EventArgs e) {
             Status = SystemMessages.msg_ModInfo;
-            new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
+            if (File.Exists(configs[clb_ModsList.SelectedIndex]))
+                new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
+            else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error", false); }
             Status = SystemMessages.msg_DefaultStatus;
+            GetMods();
         }
 
         private void Btn_EditMod_Click(object sender, EventArgs e) {
             Status = SystemMessages.msg_EditMod;
-            new src.ModCreator(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex]), true).ShowDialog();
+            if (File.Exists(configs[clb_ModsList.SelectedIndex]))
+                new src.ModCreator(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex]), true).ShowDialog();
+            else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error", false); }
             Status = SystemMessages.msg_DefaultStatus;
             GetMods();
         }
 
         private void Btn_SaveAndPlay_Click(object sender, EventArgs e) {
+            ARC.skippedMods.Clear();
             SaveChecks();
             GetMods();
 
@@ -235,7 +241,7 @@ namespace Sonic_06_Mod_Manager
                             getString.Append(modName);
 
                         if (getString.Length > 0)
-                            UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning", false);
+                            UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning", true);
                     }
 
                     if (!check_ManualInstall.Checked) {
@@ -294,7 +300,7 @@ namespace Sonic_06_Mod_Manager
                         getString.Append(modName);
 
                     if (getString.Length > 0)
-                        UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning", false);
+                        UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning", true);
                 }
             }
         }
@@ -368,6 +374,18 @@ namespace Sonic_06_Mod_Manager
                         unpack = ARC.UnpackARC(arc);
                         Lua.DisableHUD(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
                         ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
+
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Music"))) {
+                        Status = SystemMessages.msg_PatchingAudio;
+                        if (Properties.Settings.Default.emulatorSystem == 0) {
+                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound"));
+                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound", "event"));
+                        } else {
+                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound"));
+                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound", "event"));
+                        }
                         Status = SystemMessages.msg_DefaultStatus;
                     }
 
@@ -636,8 +654,10 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void Btn_Play_Click(object sender, EventArgs e) { // Launches the emulator respective to what system is chosen
+            ARC.skippedMods.Clear();
+
             try {
-                if (!check_FTP.Checked) { ARC.CleanupMods(1); PatchAll(); }
+                if (!check_FTP.Checked && !check_ManualPatches.Checked) { ARC.CleanupMods(1); PatchAll(); }
             }
             catch (Exception ex) {
                 UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning", false);

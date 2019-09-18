@@ -169,6 +169,7 @@
             this.ClientSize = new System.Drawing.Size(564, 545);
             this.Controls.Add(this.mainControls_Split);
             this.Controls.Add(this.pnl_Backdrop);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(580, 584);
             this.Name = "ModInfo";

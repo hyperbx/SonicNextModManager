@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
@@ -94,7 +95,7 @@ namespace Sonic_06_Mod_Manager.src
                     {
                         entryValue = line.Substring(line.IndexOf("=") + 2);
                         entryValue = entryValue.Remove(entryValue.Length - 1);
-                        tb_Description.Text += entryValue;
+                        tb_Description.Text += entryValue.Replace(@"\n", Environment.NewLine); ;
                     }
                 }
             }

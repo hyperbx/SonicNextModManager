@@ -58,6 +58,7 @@
             this.ClientSize = new System.Drawing.Size(522, 106);
             this.Controls.Add(this.pgb_Progress);
             this.Controls.Add(this.lbl_Title);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "UnifyUpdater";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

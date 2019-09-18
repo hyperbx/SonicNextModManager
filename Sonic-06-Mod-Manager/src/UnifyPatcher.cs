@@ -790,4 +790,16 @@ namespace Unify.Patcher
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
     }
+
+    class XMA
+    {
+        public static void DisableMusic(string directoryRoot) {
+            var files = Directory.GetFiles(directoryRoot, "*.*", SearchOption.TopDirectoryOnly)
+            .Where(s => s.EndsWith(".xma") ||
+                        s.EndsWith(".at3"));
+
+            foreach (var sound in files)
+                if (!File.Exists($"{sound}_orig")) File.Move(sound, $"{sound}_orig");
+        }
+    }
 }

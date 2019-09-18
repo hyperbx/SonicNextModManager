@@ -80,97 +80,104 @@ namespace Sonic_06_Mod_Manager.src
 
             if (edit)
             {
-                using (StreamReader configFile = new StreamReader($"{Path.Combine(modPath)}\\mod.ini", Encoding.Default))
+                if (File.Exists(Path.Combine(modPath, "mod.ini")))
                 {
-                    string line;
-                    string entryValue;
-                    while ((line = configFile.ReadLine()) != null)
+                    using (StreamReader configFile = new StreamReader(Path.Combine(modPath, "mod.ini"), Encoding.Default))
                     {
-                        if (line.StartsWith("Title"))
+                        string line;
+                        string entryValue;
+                        while ((line = configFile.ReadLine()) != null)
                         {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            text_Title.Text = entryValue;
-                        }
-                        if (line.StartsWith("Version"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            text_Version.Text = entryValue;
-                        }
-                        if (line.StartsWith("Date"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            text_Date.Text = entryValue;
-                        }
-                        if (line.StartsWith("Author"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            text_Author.Text = entryValue;
-                        }
-                        if (line.StartsWith("Platform"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            
-                            switch (entryValue)
+                            if (line.StartsWith("Title"))
                             {
-                                case "Xbox 360":
-                                    combo_System.SelectedIndex = 0;
-                                    break;
-                                case "PlayStation 3":
-                                    combo_System.SelectedIndex = 1;
-                                    break;
-                                case "All Systems":
-                                    combo_System.SelectedIndex = 2;
-                                    break;
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Title.Text = entryValue;
                             }
-                        }
-                        if (line.StartsWith("Merge"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            check_Merge.Checked = bool.Parse(entryValue);
-                            if (check_Merge.Checked)
+                            if (line.StartsWith("Version"))
                             {
-                                text_ReadOnly.Enabled = true;
-                                btn_ReadOnlyBrowser.Enabled = true;
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Version.Text = entryValue;
+                            }
+                            if (line.StartsWith("Date"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Date.Text = entryValue;
+                            }
+                            if (line.StartsWith("Author"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Author.Text = entryValue;
+                            }
+                            if (line.StartsWith("Platform"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
 
-                                if (!Properties.Settings.Default.theme)
-                                    lbl_ReadOnly.ForeColor = SystemColors.ControlText;
-                                else
-                                    lbl_ReadOnly.ForeColor = SystemColors.Control;
+                                switch (entryValue)
+                                {
+                                    case "Xbox 360":
+                                        combo_System.SelectedIndex = 0;
+                                        break;
+                                    case "PlayStation 3":
+                                        combo_System.SelectedIndex = 1;
+                                        break;
+                                    case "All Systems":
+                                        combo_System.SelectedIndex = 2;
+                                        break;
+                                }
                             }
-                        }
-                        if (line.StartsWith("Read-only"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            text_ReadOnly.Text = entryValue;
-                        }
-                        if (line.StartsWith("Save"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            text_Save.Text = entryValue;
-                        }
-                        if (line.StartsWith("Description"))
-                        {
-                            entryValue = line.Substring(line.IndexOf("=") + 2);
-                            entryValue = entryValue.Remove(entryValue.Length - 1);
-                            tb_Description.Text += entryValue;
+                            if (line.StartsWith("Merge"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                check_Merge.Checked = bool.Parse(entryValue);
+                                if (check_Merge.Checked)
+                                {
+                                    text_ReadOnly.Enabled = true;
+                                    btn_ReadOnlyBrowser.Enabled = true;
+
+                                    if (!Properties.Settings.Default.theme)
+                                        lbl_ReadOnly.ForeColor = SystemColors.ControlText;
+                                    else
+                                        lbl_ReadOnly.ForeColor = SystemColors.Control;
+                                }
+                            }
+                            if (line.StartsWith("Read-only"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_ReadOnly.Text = entryValue;
+                            }
+                            if (line.StartsWith("Save"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Save.Text = entryValue;
+                            }
+                            if (line.StartsWith("Description"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                tb_Description.Text += entryValue.Replace(@"\n", Environment.NewLine);
+                            }
                         }
                     }
                 }
+                else { Close(); }
+
                 btn_Create.Text = "Edit Mod";
                 btn_Create.BackColor = Color.SkyBlue;
                 btn_Delete.Visible = true;
 
-                string[] getThumbnail = Directory.GetFiles(modPath, "thumbnail*", SearchOption.TopDirectoryOnly);
-                foreach (var img in getThumbnail)
-                    pic_Thumbnail.BackgroundImage = Image.FromFile(img);
+                if (Directory.Exists(modPath)) {
+                    string[] getThumbnail = Directory.GetFiles(modPath, "thumbnail*", SearchOption.TopDirectoryOnly);
+                    foreach (var img in getThumbnail)
+                        pic_Thumbnail.BackgroundImage = Image.FromFile(img);
+                }
             }
 
             if (!edit) { lbl_ReadOnly.ForeColor = SystemColors.GrayText; }
@@ -180,66 +187,77 @@ namespace Sonic_06_Mod_Manager.src
         {
             return !string.IsNullOrEmpty(path) && path.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
         }
+
         private void Btn_Create_Click(object sender, EventArgs e)
         {
-            if (!FilePathHasInvalidChars(text_Title.Text))
-            {
-                if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, text_Title.Text)) && !edit)
-                    UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(text_Title.Text), SystemMessages.tl_NameError, "OK", "Error", false);
-                else
-                {
-                    string newPath = Path.Combine(Properties.Settings.Default.modsDirectory, text_Title.Text);
+            string safeTitle = text_Title.Text.Replace(@"\", "")
+                                              .Replace("/", " - ")
+                                              .Replace(":", " - ")
+                                              .Replace("*", "")
+                                              .Replace("?", "")
+                                              .Replace("\"", "'")
+                                              .Replace("<", "")
+                                              .Replace(">", "")
+                                              .Replace("|", "");
 
-                    if (!edit)
-                        Directory.CreateDirectory(newPath);
-                    else
-                        if (!Directory.Exists(newPath))
-                        Directory.Move(modPath, newPath);
+            if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle)) && !edit)
+                UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(safeTitle), SystemMessages.tl_NameError, "OK", "Error", false);
+            else {
+                string newPath = Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle);
 
-                    using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
-                    using (StreamWriter configInfo = new StreamWriter(configCreate)) {
-                        configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
-                        if (text_Version.Text != string.Empty) configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
-                        if (text_Date.Text != string.Empty) configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
-                        if (text_Author.Text != string.Empty) configInfo.WriteLine($"Author=\"{text_Author.Text}\"");
-                        configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
-                        configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
-                        if (text_ReadOnly.Text != string.Empty) configInfo.WriteLine($"Read-only=\"{text_ReadOnly.Text}\"");
-                        if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 0) configInfo.WriteLine($"Save=\"savedata.360\"");
-                        else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"savedata.ps3\"");
-                        if (tb_Description.Text != string.Empty) configInfo.WriteLine($"Description=\"{tb_Description.Text}\"");
-                        configInfo.Close();
+                if (!edit)
+                     Directory.CreateDirectory(newPath);
+                else if (!Directory.Exists(newPath))
+                     Directory.Move(modPath, newPath);
+
+                using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
+                using (StreamWriter configInfo = new StreamWriter(configCreate)) {
+                    configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
+                    if (text_Version.Text != string.Empty) configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
+                    if (text_Date.Text != string.Empty) configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
+                    if (text_Author.Text != string.Empty) configInfo.WriteLine($"Author=\"{text_Author.Text}\"");
+                    configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
+                    configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
+                    if (text_ReadOnly.Text != string.Empty) configInfo.WriteLine($"Read-only=\"{text_ReadOnly.Text}\"");
+                    if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 0) configInfo.WriteLine($"Save=\"savedata.360\"");
+                    else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"savedata.ps3\"");
+                    if (tb_Description.Text != string.Empty) {
+                        string descriptionText = string.Empty;
+                        foreach (var newLine in tb_Description.Lines)
+                            descriptionText += $"{newLine}\\n";
+                        configInfo.WriteLine($"Description=\"{descriptionText}\"");
                     }
-
-                    if (File.Exists(modThumbnail))
-                        File.Copy(modThumbnail, Path.Combine(newPath, $"thumbnail{Path.GetExtension(modThumbnail)}"));
-
-                    if (File.Exists(text_Save.Text))
-                        if (combo_System.SelectedIndex == 0)
-                            File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.360"), true);
-                        else if (combo_System.SelectedIndex == 1)
-                            File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.ps3"), true);
-
-                    if (modThumbnail == string.Empty && edit) {
-                        try {
-                            string[] getThumbnail = Directory.GetFiles(newPath, "thumbnail*", SearchOption.TopDirectoryOnly);
-                            foreach (var img in getThumbnail)
-                                if (File.Exists(img)) File.Delete(img);
-                        }
-                        catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
-                    }
-
-                    if (text_Save.Text == string.Empty && edit) {
-                        try {
-                            string[] getSaveData = Directory.GetFiles(newPath, "savedata*", SearchOption.TopDirectoryOnly);
-                            foreach (var save in getSaveData)
-                                if (File.Exists(save)) File.Delete(save);
-                        }
-                        catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_SaveDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
-                    }
-
-                    Close();
+                    configInfo.Close();
                 }
+
+                if (File.Exists(modThumbnail))
+                    File.Copy(modThumbnail, Path.Combine(newPath, $"thumbnail{Path.GetExtension(modThumbnail)}"), true);
+
+                if (File.Exists(text_Save.Text))
+                    if (combo_System.SelectedIndex == 0)
+                        File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.360"), true);
+                    else if (combo_System.SelectedIndex == 1)
+                        File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.ps3"), true);
+
+                if (modThumbnail == string.Empty && edit) {
+                    try {
+                        string[] getThumbnail = Directory.GetFiles(newPath, "thumbnail*", SearchOption.TopDirectoryOnly);
+                        foreach (var img in getThumbnail)
+                            if (File.Exists(img)) File.Delete(img);
+                    }
+                    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
+                }
+
+                if (text_Save.Text == string.Empty && edit) {
+                    try {
+                        string[] getSaveData = Directory.GetFiles(newPath, "savedata*", SearchOption.TopDirectoryOnly);
+                        foreach (var save in getSaveData)
+                            if (File.Exists(save)) File.Delete(save);
+                    }
+                    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_SaveDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
+                }
+
+                Close();
             }
         }
 

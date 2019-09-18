@@ -341,6 +341,7 @@
             this.Controls.Add(this.lbl_Title);
             this.Controls.Add(this.text_Title);
             this.Controls.Add(this.pic_Thumbnail);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

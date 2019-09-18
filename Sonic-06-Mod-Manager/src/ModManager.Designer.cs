@@ -914,6 +914,7 @@
             this.clb_PatchesList.Items.AddRange(new object[] {
             "Action Gauge Fixes for Sonic",
             "Disable HUD",
+            "Disable Music",
             "Disable Shadows",
             "Omega Blur Fix",
             "Unlock Mid-air Momentum",
@@ -1420,6 +1421,7 @@
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.unifytb_Main);
             this.Controls.Add(this.btn_SaveAndPlay);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

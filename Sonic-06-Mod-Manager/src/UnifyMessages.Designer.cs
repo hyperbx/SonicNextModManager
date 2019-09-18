@@ -167,6 +167,7 @@
             this.Controls.Add(this.pnl_ButtonBackdrop);
             this.Controls.Add(this.rtb_Message);
             this.Controls.Add(this.lbl_Description);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

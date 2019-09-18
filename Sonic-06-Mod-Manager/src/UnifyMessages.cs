@@ -239,6 +239,7 @@ namespace Unify.Messages
         public static string ex_JavaMissing = $"{tl_DefaultTitle} requires Java for installing patches. To use the Patches tab, please install Java and restart {tl_DefaultTitle}.";
         public static string tl_JavaError = "Java Error";
         public static string tl_NetworkError = "Network Error";
+        public static string msg_PatchingAudio = "Patching Audio...";
 
         public static string ex_Prereq_Newtonsoft_WriteFailure(Exception exception) { return $"Failed to write Newtonsoft.Json.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }
         public static string ex_Prereq_Ookii_WriteFailure(Exception exception) { return $"Failed to write Ookii.Dialogs.dll. Please reinstall {tl_DefaultTitle}.\n\n{exception}"; }
@@ -267,6 +268,7 @@ namespace Unify.Messages
         public static string ex_GameBananaTimeout = "Unable to establish a connection to GameBanana.";
         public static string ex_ExtractFailNoApp = "Failed to install from archive because 7-Zip and/or WinRAR is not installed.";
         public static string ex_FTPError = "An error occurred whilst establishing a connection to the FTP server.";
+        public static string ex_ModInfoError = "Failed to retrieve information about the selected mod.";
 
         public static string ex_GBExtractFailed(string mod) { return $"Failed to extract {mod}."; }
         public static string msg_GBInstalled(string mod) { return $"{mod} has been installed in your mods directory."; }
