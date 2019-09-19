@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.04"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.05"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
         public static DateTime dreamcast = new DateTime(1999, 09, 09);
@@ -119,41 +119,26 @@ namespace Sonic_06_Mod_Manager
                 string xexPath = Path.Combine(Application.StartupPath, "default.xex");
                 string ebootPath = Path.Combine(Application.StartupPath, "EBOOT.BIN");
 
-                if (combo_Emulator_System.SelectedIndex == 0) {
-                    if (File.Exists(xexPath)) {
-                        bytes = File.ReadAllBytes(xexPath).Take(4).ToArray();
-                        var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+                if (File.Exists(xexPath)) {
+                    bytes = File.ReadAllBytes(xexPath).Take(4).ToArray();
+                    var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
 
-                        if (hexString == "58 45 58 32") {
-                            Properties.Settings.Default.gameDirectory = Application.StartupPath;
-                            text_GameDirectory.Text = Application.StartupPath;
-                            combo_Emulator_System.SelectedIndex = 0;
-                            Properties.Settings.Default.Save();
-                        }
-                    }
-                    else if (File.Exists(ebootPath)) {
-                        bytes = File.ReadAllBytes(ebootPath).Take(3).ToArray();
-                        var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
-
-                        if (hexString == "53 43 45") {
-                            Properties.Settings.Default.gameDirectory = Application.StartupPath;
-                            text_GameDirectory.Text = Application.StartupPath;
-                            combo_Emulator_System.SelectedIndex = 1;
-                            Properties.Settings.Default.Save();
-                        }
+                    if (hexString == "58 45 58 32") {
+                        Properties.Settings.Default.gameDirectory = Application.StartupPath;
+                        text_GameDirectory.Text = Application.StartupPath;
+                        combo_Emulator_System.SelectedIndex = 0;
+                        Properties.Settings.Default.Save();
                     }
                 }
-                else if (combo_Emulator_System.SelectedIndex == 1) {
-                    if (File.Exists(ebootPath)) {
-                        bytes = File.ReadAllBytes(ebootPath).Take(3).ToArray();
-                        var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+                else if (File.Exists(ebootPath)) {
+                    bytes = File.ReadAllBytes(ebootPath).Take(3).ToArray();
+                    var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
 
-                        if (hexString == "53 43 45") {
-                            Properties.Settings.Default.gameDirectory = Application.StartupPath;
-                            text_GameDirectory.Text = Application.StartupPath;
-                            combo_Emulator_System.SelectedIndex = 1;
-                            Properties.Settings.Default.Save();
-                        }
+                    if (hexString == "53 43 45") {
+                        Properties.Settings.Default.gameDirectory = Application.StartupPath;
+                        text_GameDirectory.Text = Application.StartupPath;
+                        combo_Emulator_System.SelectedIndex = 1;
+                        Properties.Settings.Default.Save();
                     }
                 }
             }

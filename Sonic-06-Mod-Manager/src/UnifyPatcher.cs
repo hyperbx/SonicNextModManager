@@ -799,7 +799,12 @@ namespace Unify.Patcher
                         s.EndsWith(".at3"));
 
             foreach (var sound in files)
-                if (!File.Exists($"{sound}_orig")) File.Move(sound, $"{sound}_orig");
+                if (!File.Exists($"{sound}_back") && !File.Exists($"{sound}_orig"))
+                    File.Move(sound, $"{sound}_orig");
+                else if (File.Exists($"{sound}_back")) {
+                    File.Move($"{sound}_back", $"{sound}_orig");
+                    File.Delete(sound);
+                }
         }
     }
 }
