@@ -158,6 +158,7 @@
             this.web_Description.Location = new System.Drawing.Point(0, 0);
             this.web_Description.MinimumSize = new System.Drawing.Size(20, 20);
             this.web_Description.Name = "web_Description";
+            this.web_Description.ScriptErrorsSuppressed = true;
             this.web_Description.Size = new System.Drawing.Size(362, 255);
             this.web_Description.TabIndex = 0;
             // 
