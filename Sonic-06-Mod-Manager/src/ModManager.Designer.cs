@@ -918,6 +918,7 @@
             "Disable Shadows",
             "Omega Blur Fix",
             "Unlock Mid-air Momentum",
+            "Unlock Tails\' Flight Limit",
             "Use Dynamic Bones for Snowboard States",
             "Vulkan API Compatibility"});
             this.clb_PatchesList.Location = new System.Drawing.Point(4, 9);

@@ -628,6 +628,24 @@ namespace Unify.Patcher
             }
         }
 
+        public static void UnlockTailsFlightLimit(string directoryRoot, bool enabled)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua) {
+                if (line.Contains("c_flight_timer_b")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (!enabled) tempLine[2] = "3.125"; //Replace the 2nd section (the original number)
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
         public static void ActionGaugeFixes(string directoryRoot, bool enabled)
         {
             Decompile(directoryRoot);
