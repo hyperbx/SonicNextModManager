@@ -38,7 +38,7 @@ namespace Unify.Patcher
     class ARC
     {
         public static readonly ModManager modManager = new ModManager(Array.Empty<string>());
-        public static List<string> skippedMods = new List<string>() {};
+        public static List<string> skippedMods = new List<string>() { };
         public static string targetArcPath = string.Empty; //Modded ARC File
         public static string origArcPath = string.Empty; //Original Game ARC File
         public static string arcPath = string.Empty; //Paths to ARC in the game files
@@ -74,7 +74,7 @@ namespace Unify.Patcher
             }
 
             //Return if platform is not the desired target
-            if (platform == "Xbox 360" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) 
+            if (platform == "Xbox 360" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1)
                 skippedMods.Add(ModsMessages.ex_IncorrectTarget(Path.GetFileName(modPath), "PlayStation 3"));
             if (platform == "PlayStation 3" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0)
                 skippedMods.Add(ModsMessages.ex_IncorrectTarget(Path.GetFileName(modPath), "Xbox 360"));
@@ -119,7 +119,7 @@ namespace Unify.Patcher
                     }
                 }
                 else {
-                    try { 
+                    try {
                         if (!File.Exists(targetArcPath)) {
                             //Copy a file if it isn't part of a merge mod or is marked as read-only.
                             Console.WriteLine("Copying: " + file);
@@ -140,12 +140,12 @@ namespace Unify.Patcher
         {
             string tempPath = $"{Program.applicationData}\\Temp\\{Path.GetRandomFileName()}"; // Defines the temporary path.
             var tempData = new DirectoryInfo(tempPath); // Gets directory information on the temporary path.
-            ProcessStartInfo arctool; 
+            ProcessStartInfo arctool;
 
             if (ftp) { tempPath = ftpPath; } // Changes the temporary path to the FTP path.
             if (!ftp)
             {
-                Directory.CreateDirectory(tempPath); 
+                Directory.CreateDirectory(tempPath);
                 File.Copy(arc1, Path.Combine(tempPath, Path.GetFileName(arc1))); // Copies the input ARC to the temporary path.
                 if (!File.Exists(targetArcPath)) File.Move(origArcPath, targetArcPath);
             }
@@ -345,12 +345,12 @@ namespace Unify.Patcher
 
                 if (Directory.Exists(getEUSaveData))
                     if (Directory.Exists(getEUSaveData)) saves = Directory.GetFiles(getEUSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
-                else if (Directory.Exists(getEUSaveData2))
-                    if (Directory.Exists(getEUSaveData2)) saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
-                else if (Directory.Exists(getUSSaveData))
-                    if (Directory.Exists(getUSSaveData)) saves = Directory.GetFiles(getUSSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
-                else if (Directory.Exists(getUSSaveData2))
-                    if (Directory.Exists(getUSSaveData2)) saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
+                    else if (Directory.Exists(getEUSaveData2))
+                        if (Directory.Exists(getEUSaveData2)) saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
+                        else if (Directory.Exists(getUSSaveData))
+                            if (Directory.Exists(getUSSaveData)) saves = Directory.GetFiles(getUSSaveData, "SYS-DATA_back", SearchOption.AllDirectories);
+                            else if (Directory.Exists(getUSSaveData2))
+                                if (Directory.Exists(getUSSaveData2)) saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA_back", SearchOption.AllDirectories);
 
                 modManager.Status = SystemMessages.msg_Cleanup;
                 foreach (var file in saves)
@@ -407,12 +407,12 @@ namespace Unify.Patcher
 
                     if (Directory.Exists(getEUSaveData))
                         if (Directory.Exists(getEUSaveData)) saves = Directory.GetFiles(getEUSaveData, "SYS-DATA", SearchOption.AllDirectories);
-                    else if (Directory.Exists(getEUSaveData2))
-                        if (Directory.Exists(getEUSaveData2)) saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA", SearchOption.AllDirectories);
-                    else if (Directory.Exists(getUSSaveData))
-                        if (Directory.Exists(getUSSaveData)) saves = Directory.GetFiles(getUSSaveData, "SYS-DATA", SearchOption.AllDirectories);
-                    else if (Directory.Exists(getUSSaveData2))
-                        if (Directory.Exists(getUSSaveData2)) saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA", SearchOption.AllDirectories);
+                        else if (Directory.Exists(getEUSaveData2))
+                            if (Directory.Exists(getEUSaveData2)) saves = Directory.GetFiles(getEUSaveData2, "SYS-DATA", SearchOption.AllDirectories);
+                            else if (Directory.Exists(getUSSaveData))
+                                if (Directory.Exists(getUSSaveData)) saves = Directory.GetFiles(getUSSaveData, "SYS-DATA", SearchOption.AllDirectories);
+                                else if (Directory.Exists(getUSSaveData2))
+                                    if (Directory.Exists(getUSSaveData2)) saves = Directory.GetFiles(getUSSaveData2, "SYS-DATA", SearchOption.AllDirectories);
                 }
 
                 foreach (var save in saves) {
@@ -443,6 +443,28 @@ namespace Unify.Patcher
                 }
             }
             else return;
+        }
+    }
+
+    class XEX
+    {
+        public static void Decrypt(string filepath) {
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = $"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\xextool.exe",
+                Arguments = $"-e u \"{filepath}\""
+            };
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+        }
+
+        public static void FieldOfView(string filepath, decimal fov) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x4F4D;
+                stream.WriteByte(decimal.ToByte(fov));
+            }
         }
     }
 
@@ -537,6 +559,89 @@ namespace Unify.Patcher
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
 
+        public static void CameraType(string directoryRoot, int type, decimal fov)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua) {
+                if (line.StartsWith("distance")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (type == 0)
+                        tempLine[2] = "6.5"; //Retail
+                    else if (type == 1)
+                    {
+                        if (fov > 90)
+                            tempLine[2] = "2.5";
+                        else
+                            tempLine[2] = "4.5";
+                    }
+                    else if (type == 2)
+                        tempLine[2] = "5.5"; //E3
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+                if (line.StartsWith("springK")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (type == 1)
+                    {
+                        if (fov > 90)
+                            tempLine[2] = "0.325";
+                        else
+                            tempLine[2] = "0.225";
+                    }
+                    else
+                        tempLine[2] = "0.98";
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+                if (line.StartsWith("altitude")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (type == 1)
+                        tempLine[2] = "-15";
+                    else
+                        tempLine[2] = "15";
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+                if (line.StartsWith("az_driveK")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (type == 1)
+                        tempLine[2] = "50000"; //TGS (32500 old)
+                    else if(type == 2)
+                        tempLine[2] = "690";
+                    else
+                        tempLine[2] = "3250";
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+                if (line.StartsWith("az_dampingK")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (type == 1)
+                        tempLine[2] = "2500";
+                    else if(type == 2)
+                        tempLine[2] = "100";
+                    else
+                        tempLine[2] = "250";
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+                if (line.StartsWith("c_camera")) {
+                    if (type == 1)
+                        if (editedLua[lineNum].Contains("c_camera = { x ="))
+                            editedLua[lineNum] = "c_camera = { x = 0 * meter, y = 0.5 * meter, z = 0 * meter }";
+                        else {
+                            editedLua[lineNum += 2] = "  y = 0.5 * meter,";
+                        }
+                    else
+                        if (editedLua[lineNum].Contains("c_camera = { x ="))
+                            editedLua[lineNum] = "c_camera = { x = 0 * meter, y = 0.7 * meter, z = 0 * meter }";
+                        else {
+                            editedLua[lineNum += 2] = "  y = 0.7 * meter,";
+                        }
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
         public static void DisableHUD(string directoryRoot, bool enabled)
         {
             Decompile(directoryRoot);
@@ -620,6 +725,16 @@ namespace Unify.Patcher
                             if (editedLua[lineNum] == "c_jump_walk = 9 * (meter / sec)")
                                 editedLua[lineNum] = "c_jump_walk = HeightAndDistanceToSpeed(l_jump_walk, l_jump_hight)";
                         }
+                    }
+                    if (line.Contains("c_flight_speed_min")) {
+                        string[] tempLine = line.Split(' '); //Split line into different sections
+                        if (!enabled)
+                            tempLine[2] = "0"; //Replace the 2nd section (the original number)
+                        else {
+                            if (tempLine[2] == "0")
+                                tempLine[2] = "10";
+                        }
+                        editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                     }
 
                     lineNum++;
@@ -771,7 +886,8 @@ namespace Unify.Patcher
             string[] editedLua = File.ReadAllLines(directoryRoot);
 
             if (enabled)
-                File.WriteAllLines(directoryRoot, editedLua.Append("c_hair = {\n  \"TopHair\",\n  \"HighLeftHair\",\n  \"HighRightHair\",\n  \"LowLeftHair\",\n  \"LowRightHair\",\n  \"MiddleHair\"\n}")); //Resave the Lua
+                if (!editedLua.Contains("c_hair"))
+                    File.WriteAllLines(directoryRoot, editedLua.Append("c_hair = {\n  \"TopHair\",\n  \"HighLeftHair\",\n  \"HighRightHair\",\n  \"LowLeftHair\",\n  \"LowRightHair\",\n  \"MiddleHair\"\n}")); //Resave the Lua
         }
 
         public static void MSAA(string directoryRoot, int scale)

@@ -98,5 +98,11 @@
     <Setting Name="dream" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="patches_CameraType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="patches_FieldOfView" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">90</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -406,5 +406,29 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["dream"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int patches_CameraType {
+            get {
+                return ((int)(this["patches_CameraType"]));
+            }
+            set {
+                this["patches_CameraType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("90")]
+        public int patches_FieldOfView {
+            get {
+                return ((int)(this["patches_FieldOfView"]));
+            }
+            set {
+                this["patches_FieldOfView"] = value;
+            }
+        }
     }
 }

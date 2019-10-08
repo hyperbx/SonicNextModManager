@@ -53,41 +53,45 @@ namespace Sonic_06_Mod_Manager.src
                 pic_Logo.BackgroundImage = Properties.Resources.logo_aldi;
             }
 
-            if (Properties.Settings.Default.theme)
-            {
+            if (Properties.Settings.Default.theme) {
                 pic_Logo.BackColor = Color.FromArgb(45, 45, 48);
                 BackColor = Color.FromArgb(28, 28, 28);
 
-                foreach (Control x in this.Controls)
-                {
+                foreach (Control x in this.Controls) {
                     if (x is Label)
-                    {
                         ((Label)x).ForeColor = SystemColors.Control;
-                    }
-
                     if (x is LinkLabel)
-                    {
                         ((LinkLabel)x).LinkColor = SystemColors.Control;
-                    }
                 }
             }
         }
 
         private void Link_Knuxfan24_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/Knuxfan24"); }
+        //Rich money.
 
         private void Link_Hyper_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/HyperPolygon64"); }
+        //lol
 
         private void Link_SuperSonic16_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/thesupersonic16"); }
+        //Great programmer who can code, he thinks.
 
         private void Link_SEGACarnival_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.segacarnival.com/forum/index.php"); }
+        //Great community with great people, what's there more to ask?
 
         private void Link_Nonami_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.youtube.com/channel/UC35wsF1NUwoUWmw2DLz6uJg"); }
+        //Moyai.
 
         private void Link_sharu6262_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://twitter.com/sharu6262"); }
+        //Speedrunner that speedruns things.
 
         private void Link_Melpontro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.youtube.com/user/Melpontro"); }
+        //The humble rights holder to Pelé.
 
         private void Link_acro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://gamebanana.com/members/1447045"); }
+        //Bellend. =P
+
+        private void Link_ChaosX_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://twitter.com/ChaosX2006"); }
+        //Never heard of 'em.
 
         private void Pic_Logo_Click(object sender, System.EventArgs e)
         {

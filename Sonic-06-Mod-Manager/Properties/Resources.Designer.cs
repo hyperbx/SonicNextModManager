@@ -432,5 +432,15 @@ namespace Sonic_06_Mod_Manager.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xextool {
+            get {
+                object obj = ResourceManager.GetObject("xextool", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

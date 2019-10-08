@@ -70,6 +70,9 @@ namespace Sonic_06_Mod_Manager
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe"))
                 File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", Properties.Resources.arctool);
 
+            if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\xextool.exe"))
+                File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\xextool.exe", Properties.Resources.xextool);
+
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar"))
                 File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar", Properties.Resources.unlub);
 

@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.07"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.08"; // Defines the version number to be used globally
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
         public static DateTime dreamcast = new DateTime(1999, 09, 09);
@@ -98,6 +98,7 @@ namespace Sonic_06_Mod_Manager
             check_Fullscreen.Checked = Properties.Settings.Default.emulator_Fullscreen;
             check_Discord.Checked = Properties.Settings.Default.emulator_Discord;
             combo_Reflections.SelectedIndex = Properties.Settings.Default.patches_Reflections;
+            combo_CameraType.SelectedIndex = Properties.Settings.Default.patches_CameraType;
             check_FTP.Checked = Properties.Settings.Default.FTP;
             check_ManualInstall.Checked = Properties.Settings.Default.manualInstall;
             nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
@@ -156,7 +157,7 @@ namespace Sonic_06_Mod_Manager
             }
             #endregion
 
-            Text = $"{SystemMessages.tl_DefaultTitle} ({versionNumber})";
+            Text = $"{SystemMessages.tl_DefaultTitle} ({versionNumber}) <x86>";
         }
 
         public string Status { set { lbl_SetStatus.Text = value; } }
@@ -371,6 +372,17 @@ namespace Sonic_06_Mod_Manager
             if (combo_Emulator_System.SelectedIndex == 0) system = "xenon";
             else if (combo_Emulator_System.SelectedIndex == 1) system = "ps3";
 
+            if (nud_FieldOfView.Value != 90) {
+                Status = SystemMessages.msg_PatchingCamera;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.FieldOfView(Path.Combine(text_GameDirectory.Text, "default.xex"), nud_FieldOfView.Value);
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
             foreach (var arc in files) {
                 if (Path.GetFileName(arc) == "cache.arc") {
                     if (combo_Emulator_System.SelectedIndex == 0) {
@@ -429,9 +441,8 @@ namespace Sonic_06_Mod_Manager
                         Status = SystemMessages.msg_DefaultStatus;
                     }
 
-                    if (combo_Emulator_System.SelectedIndex == 1)
-                    {
-                        if (nud_CameraDistance.Value != 650) {
+                    if (combo_Emulator_System.SelectedIndex == 1) {
+                        if (nud_CameraDistance.Value != 650 && nud_CameraDistance.Enabled) {
                             Status = SystemMessages.msg_PatchingCamera;
                             if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                                 File.Copy(arc, $"{arc}_orig", true);
@@ -440,11 +451,21 @@ namespace Sonic_06_Mod_Manager
                             ARC.RepackARC(unpack, arc);
                             Status = SystemMessages.msg_DefaultStatus;
                         }
+
+                        if (combo_CameraType.SelectedIndex != 0) {
+                            Status = SystemMessages.msg_PatchingCamera;
+                            if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                                File.Copy(arc, $"{arc}_orig", true);
+                            unpack = ARC.UnpackARC(arc);
+                            Lua.CameraType(Path.Combine(unpack, $"cache\\{system}\\cameraparam.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
+                            ARC.RepackARC(unpack, arc);
+                            Status = SystemMessages.msg_DefaultStatus;
+                        }
                     }
                 }
                 else if (Path.GetFileName(arc) == "game.arc") {
                     if (combo_Emulator_System.SelectedIndex == 0) {
-                        if (nud_CameraDistance.Value != 650) {
+                        if (nud_CameraDistance.Value != 650 && nud_CameraDistance.Enabled) {
                             Status = SystemMessages.msg_PatchingCamera;
                             if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                                 File.Copy(arc, $"{arc}_orig", true);
@@ -453,6 +474,16 @@ namespace Sonic_06_Mod_Manager
                             ARC.RepackARC(unpack, arc);
                             Status = SystemMessages.msg_DefaultStatus;
                         }
+                    }
+
+                    if (combo_CameraType.SelectedIndex != 0) {
+                        Status = SystemMessages.msg_PatchingCamera;
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+                        Lua.CameraType(Path.Combine(unpack, $"game\\{system}\\cameraparam.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
                     }
                 }
                 else if (Path.GetFileName(arc) == "player_omega.arc") {
@@ -507,6 +538,16 @@ namespace Sonic_06_Mod_Manager
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
+
+                    if (combo_CameraType.SelectedIndex != 0) {
+                        Status = SystemMessages.msg_PatchingCamera;
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+                        Lua.CameraType(Path.Combine(unpack, $"player\\{system}\\player\\common.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
                 }
             }
         }
@@ -515,7 +556,9 @@ namespace Sonic_06_Mod_Manager
             if (btn_UninstallMods.Text == "Restore Defaults") {
                 ARC.CleanupMods(1);
                 nud_CameraDistance.Value = 650; Properties.Settings.Default.patches_CameraDistance = 650;
+                nud_FieldOfView.Value = 90; Properties.Settings.Default.patches_FieldOfView = 90;
                 combo_Reflections.SelectedIndex = 1; Properties.Settings.Default.patches_Reflections = 1;
+                combo_CameraType.SelectedIndex = 0; Properties.Settings.Default.patches_CameraType = 0;
                 for (int i = 0; i < clb_PatchesList.Items.Count; i++) clb_PatchesList.SetItemChecked(i, false);
                 Properties.Settings.Default.Save();
                 SaveChecks();
@@ -534,6 +577,8 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.emulator_Debug = check_Debug.Checked;
             Properties.Settings.Default.emulator_Fullscreen = check_Fullscreen.Checked;
             Properties.Settings.Default.emulator_Discord = check_Discord.Checked;
+            Properties.Settings.Default.patches_CameraDistance = Convert.ToInt32(nud_CameraDistance.Value);
+            Properties.Settings.Default.patches_FieldOfView = Convert.ToInt32(nud_FieldOfView.Value);
 
             SaveChecks();
             GetMods();
@@ -910,6 +955,8 @@ namespace Sonic_06_Mod_Manager
             if (combo_Emulator_System.SelectedIndex == 0) {
                 group_Settings.Enabled = true;
                 combo_API.Enabled = true;
+                nud_FieldOfView.Enabled = true;
+                btn_ResetFOV.Enabled = true;
 
                 if (!Properties.Settings.Default.theme) {
                     lbl_API.ForeColor = SystemColors.ControlText;
@@ -922,6 +969,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Discord.ForeColor = SystemColors.ControlText;
                     lbl_Debug.ForeColor = SystemColors.ControlText;
                     lbl_SettingsOverlay.ForeColor = SystemColors.ControlText;
+                    lbl_FieldOfView.ForeColor = SystemColors.ControlText;
                 }
                 else {
                     lbl_API.ForeColor = SystemColors.Control;
@@ -934,7 +982,9 @@ namespace Sonic_06_Mod_Manager
                     lbl_Discord.ForeColor = SystemColors.Control;
                     lbl_Debug.ForeColor = SystemColors.Control;
                     lbl_SettingsOverlay.ForeColor = SystemColors.Control;
+                    lbl_FieldOfView.ForeColor = SystemColors.Control;
                 }
+
                 text_EmulatorPath.Text = Properties.Settings.Default.xeniaPath;
             }
             else {
@@ -951,6 +1001,9 @@ namespace Sonic_06_Mod_Manager
                 lbl_Discord.ForeColor = SystemColors.GrayText;
                 lbl_Debug.ForeColor = SystemColors.GrayText;
                 lbl_SettingsOverlay.ForeColor = SystemColors.GrayText;
+                lbl_FieldOfView.ForeColor = SystemColors.GrayText;
+                nud_FieldOfView.Enabled = false;
+                btn_ResetFOV.Enabled = false;
 
                 text_EmulatorPath.Text = Properties.Settings.Default.RPCS3Path;
             }
@@ -1002,9 +1055,43 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.Save();
         }
 
+        private void Combo_CameraType_SelectedIndexChanged(object sender, EventArgs e) { // Save Camera Type value
+            if (combo_CameraType.SelectedIndex != 0) {
+                if (combo_CameraType.SelectedIndex == 1) {
+                    nud_CameraDistance.Value = 250;
+                    nud_FieldOfView.Value = 150;
+                }
+                else if (combo_CameraType.SelectedIndex == 2) {
+                    nud_CameraDistance.Value = 550;
+                    nud_FieldOfView.Value = 90;
+                }
+                nud_CameraDistance.Enabled = false;
+                btn_ResetCameraDistance.Enabled = false;
+                lbl_CameraDistance.ForeColor = SystemColors.GrayText;
+            }
+            else {
+                nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
+                nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
+                nud_CameraDistance.Enabled = true;
+                btn_ResetCameraDistance.Enabled = true;
+                if (Properties.Settings.Default.theme)
+                    lbl_CameraDistance.ForeColor = SystemColors.Control;
+                else
+                    lbl_CameraDistance.ForeColor = SystemColors.ControlText;
+            }
+            Properties.Settings.Default.patches_CameraType = combo_CameraType.SelectedIndex;
+            Properties.Settings.Default.Save();
+        }
+
         private void Btn_ResetReflections_Click(object sender, EventArgs e) { // Default Reflections to Quarter
             combo_Reflections.SelectedIndex = 1;
             Properties.Settings.Default.patches_Reflections = 1;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Btn_ResetCameraType_Click(object sender, EventArgs e) { // Default Camera Type to Retail
+            combo_CameraType.SelectedIndex = 0;
+            Properties.Settings.Default.patches_CameraType = 0;
             Properties.Settings.Default.Save();
         }
 
@@ -1012,6 +1099,21 @@ namespace Sonic_06_Mod_Manager
             nud_CameraDistance.Value = 650;
             Properties.Settings.Default.patches_CameraDistance = 650;
             Properties.Settings.Default.Save();
+        }
+
+        private void Btn_ResetFOV_Click(object sender, EventArgs e) { // Default Field of View to 90
+            if (combo_CameraType.SelectedIndex == 1) {
+                if (nud_CameraDistance.Value == 450) nud_FieldOfView.Value = 90;
+                else nud_FieldOfView.Value = 150;
+            }
+            else nud_FieldOfView.Value = 90;
+            Properties.Settings.Default.patches_FieldOfView = 90;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Nud_FieldOfView_ValueChanged(object sender, EventArgs e) {
+            if (combo_CameraType.SelectedIndex == 1 && nud_FieldOfView.Value <= 90) nud_CameraDistance.Value = 450;
+            else if (combo_CameraType.SelectedIndex == 1 && nud_FieldOfView.Value > 90) nud_CameraDistance.Value = 250;
         }
         #endregion
 
@@ -1036,7 +1138,7 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.manualPatches = true;
                 check_FTP.Enabled = false;
                 lbl_FTP.ForeColor = SystemColors.GrayText;
-            } else if (!check_ManualInstall.Checked) {
+            } else {
                 Properties.Settings.Default.manualPatches = false;
                 check_FTP.Enabled = true;
                 if (!Properties.Settings.Default.theme)
@@ -1067,6 +1169,15 @@ namespace Sonic_06_Mod_Manager
             ChangeAccentColours();
         }
 
+        private void Aldi(object sender, EventArgs e)
+        {
+            Text = "Aldi Mod Manager";
+            Icon = Properties.Resources.icon_aldi;
+            debugMode = true;
+            SystemMessages.tl_DefaultTitle = "Aldi Mod Manager";
+            btn_About.Text = "About Aldi Mod Manager";
+        }
+
         private void ChangeAccentColours() {
             btn_ColourPicker.BackColor = Properties.Settings.Default.accentColour; //Change the colour of the selector button.
             unifytb_Main.ActiveColor = Properties.Settings.Default.accentColour; //Colour the selected tab is highlighted in.
@@ -1078,17 +1189,18 @@ namespace Sonic_06_Mod_Manager
             clb_ModsList.ClearSelected();
             clb_PatchesList.ClearSelected();
 
-            if (check_ManualInstall.Checked)
-            {
+            if (check_ManualInstall.Checked) {
                 Properties.Settings.Default.manualInstall = true;
                 check_FTP.Enabled = false;
                 lbl_FTP.ForeColor = SystemColors.GrayText;
                 btn_SaveAndPlay.Text = "Install Mods";
                 btn_SaveAndPlay.Width = 120;
                 btn_UninstallMods.Visible = true;
-            }
-            else
-            {
+            } else if (check_ManualPatches.Checked) {
+                Properties.Settings.Default.manualPatches = true;
+                check_FTP.Enabled = false;
+                lbl_FTP.ForeColor = SystemColors.GrayText;
+            } else {
                 Properties.Settings.Default.manualInstall = false;
                 check_FTP.Enabled = true;
                 if (!Properties.Settings.Default.theme)
@@ -1118,15 +1230,13 @@ namespace Sonic_06_Mod_Manager
                     combo_Reflections.Enabled = false;
                     nud_CameraDistance.Enabled = false;
                 }
-            }
-            else {
+            } else {
                 if (check_FTP.Checked || check_ManualInstall.Checked) {
                     btn_SaveAndPlay.Text = "Install Mods";
                     btn_SaveAndPlay.Width = 120;
                     btn_UninstallMods.Text = "Uninstall Mods";
                     btn_UninstallMods.Visible = true;
-                }
-                else {
+                } else {
                     btn_SaveAndPlay.Text = "Save and Play";
                     btn_SaveAndPlay.Width = 245;
                     btn_UninstallMods.Text = "Uninstall Mods";
@@ -1134,6 +1244,7 @@ namespace Sonic_06_Mod_Manager
                 }
             }
 
+            Properties.Settings.Default.Save();
             btn_CreateNewMod.Width = 245; // Reset Create New Mod button size from Edit Mod compacted size
             btn_EditMod.Visible = false;
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
@@ -1189,6 +1300,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
+                    lbl_CameraType.ForeColor = SystemColors.GrayText;
+                    lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
@@ -1196,6 +1309,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                     lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
+                    lbl_CameraType.ForeColor = SystemColors.ControlText;
+                    if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.ControlText;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1294,6 +1409,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
+                    lbl_CameraType.ForeColor = SystemColors.GrayText;
+                    lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
@@ -1301,6 +1418,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_CameraDistance.ForeColor = SystemColors.Control;
                     lbl_SaveRedirect.ForeColor = SystemColors.Control;
+                    lbl_CameraType.ForeColor = SystemColors.Control;
+                    if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.Control;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1408,18 +1527,13 @@ namespace Sonic_06_Mod_Manager
                 btn_SaveAndPlay.Text = "Install Mods";
                 btn_SaveAndPlay.Width = 120;
                 btn_UninstallMods.Visible = true;
-            } else if (!check_ManualPatches.Checked) {
+            } else {
                 Properties.Settings.Default.manualInstall = false;
                 check_FTP.Enabled = true;
                 if (!Properties.Settings.Default.theme)
                     lbl_FTP.ForeColor = SystemColors.ControlText;
                 else
                     lbl_FTP.ForeColor = SystemColors.Control;
-                btn_SaveAndPlay.Text = "Save and Play";
-                btn_SaveAndPlay.Width = 245;
-                btn_UninstallMods.Visible = false;
-            } else {
-                Properties.Settings.Default.manualInstall = false;
                 btn_SaveAndPlay.Text = "Save and Play";
                 btn_SaveAndPlay.Width = 245;
                 btn_UninstallMods.Visible = false;
@@ -1445,12 +1559,18 @@ namespace Sonic_06_Mod_Manager
                 lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
                 lbl_Reflections.ForeColor = SystemColors.GrayText;
                 lbl_CameraDistance.ForeColor = SystemColors.GrayText;
+                lbl_CameraType.ForeColor = SystemColors.GrayText;
+                lbl_FieldOfView.ForeColor = SystemColors.GrayText;
+                combo_CameraType.Enabled = false;
+                btn_ResetCameraType.Enabled = false;
                 clb_PatchesList.Enabled = false;
                 btn_ResetReflections.Enabled = false;
                 btn_ResetCameraDistance.Enabled = false;
                 combo_Reflections.Enabled = false;
                 nud_CameraDistance.Enabled = false;
                 btn_Play.Enabled = false;
+                nud_FieldOfView.Enabled = false;
+                btn_ResetFOV.Enabled = false;
             }
             else
             {
@@ -1458,29 +1578,45 @@ namespace Sonic_06_Mod_Manager
                 check_ManualInstall.Enabled = true;
                 if (Prerequisites.JavaCheck()) check_ManualPatches.Enabled = true;
                 check_SaveRedirect.Enabled = true;
+                if (combo_Emulator_System.SelectedIndex != 1) {
+                    nud_FieldOfView.Enabled = true;
+                    btn_ResetFOV.Enabled = true;
+                }
+                if (combo_CameraType.SelectedIndex != 1) {
+                    nud_CameraDistance.Enabled = true;
+                    btn_ResetCameraDistance.Enabled = true;
+                }
                 if (!Properties.Settings.Default.theme) {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
                     lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
-                    lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                     lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
+                    lbl_CameraType.ForeColor = SystemColors.ControlText;
+                    if (combo_Emulator_System.SelectedIndex != 1)
+                        lbl_FieldOfView.ForeColor = SystemColors.ControlText;
+                    if (combo_CameraType.SelectedIndex != 1)
+                        lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
                     lbl_TweaksOverlay.ForeColor = SystemColors.Control;
                     lbl_Reflections.ForeColor = SystemColors.Control;
-                    lbl_CameraDistance.ForeColor = SystemColors.Control;
                     lbl_SaveRedirect.ForeColor = SystemColors.Control;
+                    lbl_CameraType.ForeColor = SystemColors.Control;
+                    if (combo_Emulator_System.SelectedIndex != 1)
+                        lbl_FieldOfView.ForeColor = SystemColors.Control;
+                    if (combo_CameraType.SelectedIndex != 1)
+                        lbl_CameraDistance.ForeColor = SystemColors.Control;
                 }
                 btn_SaveAndPlay.Text = "Save and Play";
                 btn_SaveAndPlay.Width = 245;
                 btn_UninstallMods.Visible = false;
+                combo_CameraType.Enabled = true;
+                btn_ResetCameraType.Enabled = true;
                 clb_PatchesList.Enabled = true;
                 btn_ResetReflections.Enabled = true;
-                btn_ResetCameraDistance.Enabled = true;
                 combo_Reflections.Enabled = true;
-                nud_CameraDistance.Enabled = true;
                 btn_Play.Enabled = true;
             }
 
@@ -1537,69 +1673,5 @@ namespace Sonic_06_Mod_Manager
             }
         }
         #endregion
-
-        //Debug Button to allow us to check random bits & bobs
-        //private void Debug_Click(object sender, EventArgs e)
-        //{
-        //    //Lua Decompilation Test
-        //    //OpenFileDialog openLua = new OpenFileDialog();
-        //    //openLua.Filter = "SONIC THE HEDGEHOG (2006) Lua (*.lub)|*.lub";
-
-        //    //if (openLua.ShowDialog() == DialogResult.OK)
-        //    //{
-        //    //    Lua.Decompile(openLua.FileName);
-        //    //    Lua.CameraDistance(openLua.FileName, 250);
-        //    //}
-
-        //    //MessageBox Text Test
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.msg_Prereq_Newtonsoft, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.msg_Prereq_Ookii, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistryUninstall, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.msg_NoUpdates, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.ex_UpdateFailedUnknown, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.warn_CloseProcesses, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateComplete, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.ex_Prereq_Newtonsoft_WriteFailure(null), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.ex_Prereq_Ookii_WriteFailure(null), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateAvailable("Version 4.20", "lol"), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.msg_NoModDirectory, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModListError, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.msg_LocateARCs, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.msg_ThumbnailDeleteError, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInstallFailure, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.msg_CancelDownloading, "Test", "OK", "Information");
-              #region //UnifyMessages.UnifyMessage.Show(ModsMessages.msg_LoSInstalled, "Test", "OK", "Information");
-        private void Aldi(object sender, EventArgs e)
-        {
-            Text = "Aldi Mod Manager";
-            Icon = Properties.Resources.icon_aldi;
-            debugMode = true;
-            SystemMessages.tl_DefaultTitle = "Aldi Mod Manager";
-            btn_About.Text = "About Aldi Mod Manager";
-        }
-
-        private void Debug_Click(object sender, EventArgs e)
-        {
-
-        }
-        #endregion
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GitHubTimeout, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GameBananaTimeout, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GBExtractFailed("lol"), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.msg_GBInstalled("lol"), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedMod("lol", "filename"), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally("these mods are ded"), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_IncorrectTarget("lol", "69lol"), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists("noob"), "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(EmulatorMessages.msg_LocateGame, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(EmulatorMessages.msg_LocateXenia, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(EmulatorMessages.msg_LocateRPCS3, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SettingsMessages.msg_LocateMods, "Test", "OK", "Information");
-        //    //UnifyMessages.UnifyMessage.Show(SettingsMessages.msg_Reset, "Test", "OK", "Information");
-        //}
-
-
     }
 }

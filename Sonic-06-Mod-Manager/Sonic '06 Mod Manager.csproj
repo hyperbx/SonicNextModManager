@@ -159,12 +159,9 @@
     <None Include="res\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\omega_Root.xno" />
+    <None Include="res\xextool.exe" />
     <None Include="res\omega_Root_Fix.xno" />
     <None Include="res\omega_Root_Retail.xno" />
-    <None Include="res\orig_render_gamemode.lub" />
-    <None Include="res\orig_render_main.lub" />
-    <None Include="res\orig_render_title.lub" />
     <None Include="res\retail_render_gamemode.lub" />
     <None Include="res\retail_render_main.lub" />
     <None Include="res\retail_render_title.lub" />
