@@ -157,7 +157,7 @@ namespace Sonic_06_Mod_Manager
             }
             #endregion
 
-            Text = $"{SystemMessages.tl_DefaultTitle} ({versionNumber}) <x86>";
+            Text = $"{SystemMessages.tl_DefaultTitle} ({versionNumber})";
         }
 
         public string Status { set { lbl_SetStatus.Text = value; } }
