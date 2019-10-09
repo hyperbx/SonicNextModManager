@@ -1188,6 +1188,7 @@
             this.btn_About.Text = "About Sonic \'06 Mod Manager";
             this.btn_About.UseVisualStyleBackColor = false;
             this.btn_About.Click += new System.EventHandler(this.Btn_About_Click);
+            this.btn_About.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_About_MouseUp);
             // 
             // btn_ColourPicker_Default
             // 

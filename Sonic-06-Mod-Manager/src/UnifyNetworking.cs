@@ -52,7 +52,10 @@ namespace Unify.Networking
                 try { latestVersion = new TimedWebClient { Timeout = 100000 }.DownloadString(versionInfoLink); }
                 catch { return; }
 
-                try { changeLogs = new TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt"); }
+                try {
+                    changeLogs = new TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt");
+                    if (Sonic_06_Mod_Manager.ModManager.dreamcastDay) changeLogs += "\n\nHappy birthday, Dreamcast!";
+                }
                 catch { changeLogs = "► Allan please add details"; }
 
                 if (latestVersion.Contains("Version")) {

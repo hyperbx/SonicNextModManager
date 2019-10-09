@@ -42,6 +42,7 @@
             this.lbl_Title = new System.Windows.Forms.Label();
             this.pic_Logo = new System.Windows.Forms.PictureBox();
             this.link_ChaosX = new System.Windows.Forms.LinkLabel();
+            this.link_Velcomia = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -155,7 +156,7 @@
             this.lbl_Contributors.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Contributors.Location = new System.Drawing.Point(233, 47);
             this.lbl_Contributors.Name = "lbl_Contributors";
-            this.lbl_Contributors.Size = new System.Drawing.Size(357, 270);
+            this.lbl_Contributors.Size = new System.Drawing.Size(357, 285);
             this.lbl_Contributors.TabIndex = 18;
             this.lbl_Contributors.Text = resources.GetString("lbl_Contributors.Text");
             // 
@@ -189,7 +190,7 @@
             this.pic_Logo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pic_Logo.Location = new System.Drawing.Point(-1, -2);
             this.pic_Logo.Name = "pic_Logo";
-            this.pic_Logo.Size = new System.Drawing.Size(229, 329);
+            this.pic_Logo.Size = new System.Drawing.Size(229, 346);
             this.pic_Logo.TabIndex = 15;
             this.pic_Logo.TabStop = false;
             this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
@@ -207,11 +208,25 @@
             this.link_ChaosX.Text = "ChaosX";
             this.link_ChaosX.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_ChaosX_LinkClicked);
             // 
+            // link_Velcomia
+            // 
+            this.link_Velcomia.AutoSize = true;
+            this.link_Velcomia.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.link_Velcomia.LinkColor = System.Drawing.Color.Black;
+            this.link_Velcomia.Location = new System.Drawing.Point(233, 318);
+            this.link_Velcomia.Name = "link_Velcomia";
+            this.link_Velcomia.Size = new System.Drawing.Size(57, 14);
+            this.link_Velcomia.TabIndex = 31;
+            this.link_Velcomia.TabStop = true;
+            this.link_Velcomia.Text = "Velcomia";
+            this.link_Velcomia.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_Velcomia_LinkClicked);
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 325);
+            this.ClientSize = new System.Drawing.Size(595, 342);
+            this.Controls.Add(this.link_Velcomia);
             this.Controls.Add(this.link_ChaosX);
             this.Controls.Add(this.link_acro);
             this.Controls.Add(this.link_SEGACarnival);
@@ -254,5 +269,6 @@
         private System.Windows.Forms.Label lbl_Title;
         private System.Windows.Forms.PictureBox pic_Logo;
         private System.Windows.Forms.LinkLabel link_ChaosX;
+        private System.Windows.Forms.LinkLabel link_Velcomia;
     }
 }

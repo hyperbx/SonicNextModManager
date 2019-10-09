@@ -194,6 +194,15 @@ namespace Unify.Messages
             else
                 Height = TextHeight + 135;
         }
+
+        private void Btn_Copy_Click(object sender, EventArgs e) {
+            try { Clipboard.SetText(rtb_Message.Text); }
+            catch {
+                btn_Copy.Text = "Error";
+                btn_Copy.BackColor = Color.Tomato;
+                btn_Copy.Enabled = false;
+            }
+        }
     }
 
     class SystemMessages

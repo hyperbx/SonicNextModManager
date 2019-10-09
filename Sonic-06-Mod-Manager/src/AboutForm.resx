@@ -128,14 +128,15 @@ SuperSonic16 - GameBanana API for C#
 SEGA Carnival - Software Update Hosting
 Nonami - Windows Software Tester and Omega Blur Fix
 darkhero1337 - Unlock Mid-air Momentum
-ChaosX - Tokyo Game Show Camera Accuracy
+ChaosX - Tokyo Game Show (TGS) Camera Accuracy
 xorloser - XexTool
 
 Testers:
 sharu6262- Xbox Hardware Tester
 Melpontro - Xbox Hardware Tester
 ChrisHighwind - Linux Software Tester
-acro - Windows Software Tester</value>
+acro - Windows Software Tester
+Velcomia - Windows Software Tester</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

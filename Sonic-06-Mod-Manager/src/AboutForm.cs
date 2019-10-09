@@ -100,5 +100,8 @@ namespace Sonic_06_Mod_Manager.src
                 dreamLaunch.Play();
             }
         }
+
+        private void Link_Velcomia_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.youtube.com/user/Velcomia"); }
+        //The ultimate bug hunter.
     }
 }

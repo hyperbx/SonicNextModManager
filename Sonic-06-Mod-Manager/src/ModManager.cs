@@ -44,10 +44,14 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.08"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.09"; // Defines the version number to be used globally
+        public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
-        public static DateTime dreamcast = new DateTime(1999, 09, 09);
+        public static DateTime dreamcastNA = new DateTime(1999, 09, 09);
+        public static DateTime dreamcastEU = new DateTime(1999, 10, 14);
+        public static DateTime dreamcastJP = new DateTime(1998, 11, 27);
+        public static DateTime dreamcastAU = new DateTime(1999, 11, 30);
         public static bool dreamcastDay = false;
 
         public ModManager(string[] args) {
@@ -57,7 +61,11 @@ namespace Sonic_06_Mod_Manager
 
             //Load settings from the Properties.
             #region Properties
-            if (dreamcast.Day == DateTime.Today.Day && dreamcast.Month == DateTime.Today.Month) {
+            if (dreamcastNA.Day == DateTime.Today.Day && dreamcastNA.Month == DateTime.Today.Month ||
+                dreamcastEU.Day == DateTime.Today.Day && dreamcastEU.Month == DateTime.Today.Month ||
+                dreamcastJP.Day == DateTime.Today.Day && dreamcastJP.Month == DateTime.Today.Month ||
+                dreamcastAU.Day == DateTime.Today.Day && dreamcastAU.Month == DateTime.Today.Month)
+            {
                 dreamcastDay = true;
                 if (!Properties.Settings.Default.dream) { Icon = Properties.Resources.dreamcast_ntsc_icon; Properties.Settings.Default.dream = true; }
                 else { Icon = Properties.Resources.dreamcast_pal_icon; Properties.Settings.Default.dream = false; }
@@ -101,7 +109,13 @@ namespace Sonic_06_Mod_Manager
             combo_CameraType.SelectedIndex = Properties.Settings.Default.patches_CameraType;
             check_FTP.Checked = Properties.Settings.Default.FTP;
             check_ManualInstall.Checked = Properties.Settings.Default.manualInstall;
-            nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
+            nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
+            if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView <= 90)
+                nud_CameraDistance.Value = 450;
+            else if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView > 90)
+                nud_CameraDistance.Value = 250;
+            else
+                nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
             check_ManualPatches.Checked = Properties.Settings.Default.manualPatches;
             check_SaveRedirect.Checked = Properties.Settings.Default.saveRedirect;
 
@@ -1495,6 +1509,30 @@ namespace Sonic_06_Mod_Manager
 
         //Show About Form, passing the Version Number in to be displayed.
         private void Btn_About_Click(object sender, EventArgs e) { new src.AboutForm(versionNumber).ShowDialog(); }
+
+        private void Btn_About_MouseUp(object sender, MouseEventArgs e) {
+            switch (e.Button) {
+                case MouseButtons.Right:
+                    string inst = "Unknown";
+                    if (IntPtr.Size == 4)
+                        inst = "x86";
+                    else if (IntPtr.Size == 8)
+                        inst = "x64";
+                    else
+                        inst = "Unknown";
+
+                    UnifyMessages.UnifyMessage.Show(
+                        $"Sonic '06 Mod Manager\n\n" +
+                        $"" +
+                        $"Framework Version: {versionNumber.Substring(8)}\n" +
+                        $"Sonic '06 Mod Loader Version: {modLoaderVersion.Substring(8)}\n\n" +
+                        $"" +
+                        $"Architecture: {inst}\n" +
+                        $"Dreamcast Day: {dreamcastDay.ToString()}",
+                        "Debug Information", "OK", "Information", true);
+                    break;
+            }
+        }
 
         private void Btn_Reset_Click(object sender, EventArgs e) {
             //Read the message box text if you're confused.
