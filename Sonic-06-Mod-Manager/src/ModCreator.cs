@@ -175,8 +175,9 @@ namespace Sonic_06_Mod_Manager.src
 
                 if (Directory.Exists(modPath)) {
                     string[] getThumbnail = Directory.GetFiles(modPath, "thumbnail*", SearchOption.TopDirectoryOnly);
-                    foreach (var img in getThumbnail)
+                    foreach (var img in getThumbnail) {
                         pic_Thumbnail.BackgroundImage = Image.FromFile(img);
+                    }
                 }
             }
 
@@ -203,12 +204,15 @@ namespace Sonic_06_Mod_Manager.src
             if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle)) && !edit)
                 UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(safeTitle), SystemMessages.tl_NameError, "OK", "Error", false);
             else {
+                pic_Thumbnail.BackgroundImage.Dispose();
+                pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception;
+
                 string newPath = Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle);
 
                 if (!edit)
                      Directory.CreateDirectory(newPath);
                 else if (!Directory.Exists(newPath))
-                     Directory.Move(modPath, newPath);
+                    Directory.Move(modPath, newPath);
 
                 using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
                 using (StreamWriter configInfo = new StreamWriter(configCreate)) {
@@ -239,14 +243,14 @@ namespace Sonic_06_Mod_Manager.src
                     else if (combo_System.SelectedIndex == 1)
                         File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.ps3"), true);
 
-                if (modThumbnail == string.Empty && edit) {
-                    try {
-                        string[] getThumbnail = Directory.GetFiles(newPath, "thumbnail*", SearchOption.TopDirectoryOnly);
-                        foreach (var img in getThumbnail)
-                            if (File.Exists(img)) File.Delete(img);
-                    }
-                    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
-                }
+                //if (modThumbnail == string.Empty && edit) {
+                //    try {
+                //        string[] getThumbnail = Directory.GetFiles(newPath, "thumbnail*", SearchOption.TopDirectoryOnly);
+                //        foreach (var img in getThumbnail)
+                //            if (File.Exists(img)) File.Delete(img);
+                //    }
+                //    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
+                //}
 
                 if (text_Save.Text == string.Empty && edit) {
                     try {

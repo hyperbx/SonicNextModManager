@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.09"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.1"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -234,8 +234,24 @@ namespace Sonic_06_Mod_Manager
             GetMods();
         }
 
+        private void SaveUserOptions()
+        {
+            Properties.Settings.Default.emulator_RTV = check_RTV.Checked;
+            Properties.Settings.Default.emulator_2xRes = check_2xRes.Checked;
+            Properties.Settings.Default.emulator_VSync = check_VSync.Checked;
+            Properties.Settings.Default.emulator_ProtectZero = check_ProtectZero.Checked;
+            Properties.Settings.Default.emulator_Gamma = check_Gamma.Checked;
+            Properties.Settings.Default.emulator_Debug = check_Debug.Checked;
+            Properties.Settings.Default.emulator_Fullscreen = check_Fullscreen.Checked;
+            Properties.Settings.Default.emulator_Discord = check_Discord.Checked;
+            Properties.Settings.Default.patches_CameraDistance = Convert.ToInt32(nud_CameraDistance.Value);
+            Properties.Settings.Default.patches_FieldOfView = Convert.ToInt32(nud_FieldOfView.Value);
+            Properties.Settings.Default.Save();
+        }
+
         private void Btn_SaveAndPlay_Click(object sender, EventArgs e) {
             ARC.skippedMods.Clear();
+            SaveUserOptions();
             SaveChecks();
             GetMods();
 
@@ -583,17 +599,7 @@ namespace Sonic_06_Mod_Manager
         private void Btn_RefreshMods_Click(object sender, EventArgs e) { GetMods(); }
 
         private void Btn_Save_Click(object sender, EventArgs e) {
-            Properties.Settings.Default.emulator_RTV = check_RTV.Checked;
-            Properties.Settings.Default.emulator_2xRes = check_2xRes.Checked;
-            Properties.Settings.Default.emulator_VSync = check_VSync.Checked;
-            Properties.Settings.Default.emulator_ProtectZero = check_ProtectZero.Checked;
-            Properties.Settings.Default.emulator_Gamma = check_Gamma.Checked;
-            Properties.Settings.Default.emulator_Debug = check_Debug.Checked;
-            Properties.Settings.Default.emulator_Fullscreen = check_Fullscreen.Checked;
-            Properties.Settings.Default.emulator_Discord = check_Discord.Checked;
-            Properties.Settings.Default.patches_CameraDistance = Convert.ToInt32(nud_CameraDistance.Value);
-            Properties.Settings.Default.patches_FieldOfView = Convert.ToInt32(nud_FieldOfView.Value);
-
+            SaveUserOptions();
             SaveChecks();
             GetMods();
 
