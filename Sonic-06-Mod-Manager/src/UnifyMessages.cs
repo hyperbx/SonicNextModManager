@@ -238,7 +238,7 @@ namespace Unify.Messages
         public static string warn_CloseProcesses = $"Please close any other instances of {tl_DefaultTitle} and try again.";
         public static string tl_ProcessError = "Process Error";
         public static string tl_Update = "New update available!";
-        public static string msg_UpdateComplete = $"Update complete! Please restart {tl_DefaultTitle}.";
+        public static string msg_UpdateComplete = $"Update complete! Restarting {tl_DefaultTitle}...";
         public static string msg_PatchingRenderer = "Patching Renderer...";
         public static string msg_PatchingReflections = "Patching Reflections...";
         public static string msg_PatchingHUD = "Patching HUD...";
