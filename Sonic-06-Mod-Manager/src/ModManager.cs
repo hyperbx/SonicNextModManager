@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.12"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.13"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -474,7 +474,7 @@ namespace Sonic_06_Mod_Manager
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
-                        Lua.DisableBloom(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
+                        Lua.DisableBloom(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom")));
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
