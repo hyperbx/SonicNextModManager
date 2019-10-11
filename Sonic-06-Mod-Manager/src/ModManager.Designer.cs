@@ -1050,6 +1050,7 @@
             this.clb_PatchesList.FormattingEnabled = true;
             this.clb_PatchesList.Items.AddRange(new object[] {
             "Action Gauge Fixes for Sonic",
+            "Disable Bloom",
             "Disable HUD",
             "Disable Music",
             "Disable Shadows",

@@ -642,6 +642,29 @@ namespace Unify.Patcher
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
 
+        public static void DisableBloom(string directoryRoot, bool enabled)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua) {
+                if (line.Contains("ApplyBloom")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (!enabled)
+                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                    else {
+                        if (tempLine[2].StartsWith("--"))
+                            tempLine[2] = tempLine[2].Substring(2);
+                    }
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
         public static void DisableHUD(string directoryRoot, bool enabled)
         {
             Decompile(directoryRoot);

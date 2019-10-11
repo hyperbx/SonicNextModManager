@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.11"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.12"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -414,6 +414,18 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
+            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Music"))) {
+                Status = SystemMessages.msg_PatchingAudio;
+                if (Properties.Settings.Default.emulatorSystem == 0) {
+                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound"));
+                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound", "event"));
+                } else {
+                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound"));
+                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound", "event"));
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
             foreach (var arc in files) {
                 if (Path.GetFileName(arc) == "cache.arc") {
                     if (combo_Renderer.SelectedIndex == 1) {
@@ -457,6 +469,16 @@ namespace Sonic_06_Mod_Manager
                         Status = SystemMessages.msg_DefaultStatus;
                     }
 
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) {
+                        Status = SystemMessages.msg_PatchingRenderer;
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+                        Lua.DisableBloom(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
+
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) {
                         Status = SystemMessages.msg_PatchingRenderer;
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
@@ -464,18 +486,6 @@ namespace Sonic_06_Mod_Manager
                         unpack = ARC.UnpackARC(arc);
                         Lua.DisableHUD(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
                         ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
-                    }
-
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Music"))) {
-                        Status = SystemMessages.msg_PatchingAudio;
-                        if (Properties.Settings.Default.emulatorSystem == 0) {
-                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound"));
-                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound", "event"));
-                        } else {
-                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound"));
-                            XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound", "event"));
-                        }
                         Status = SystemMessages.msg_DefaultStatus;
                     }
 
