@@ -35,3 +35,7 @@ In order to use the Mod Manager, your copy of SONIC THE HEDGEHOG (2006) needs to
 - PlayStation 3: https://www.reddit.com/r/ps3homebrew/wiki/multiman#wiki_making_backups_of_games
 
 (Xbox 360 users) - If you end up with an ISO Disc Image, then you can use [Sonic '06 Toolkit](https://github.com/HyperPolygon64/Sonic-06-Toolkit) to extract the Xbox 360 ISO.
+
+===
+
+For a more visual usage writeup, check the official Mod Installation guide on the [Sonic '06 Gamebanana Page](https://gamebanana.com/games/6836): https://gamebanana.com/tuts/13074
