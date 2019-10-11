@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.1"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.11"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -1034,6 +1034,11 @@ namespace Sonic_06_Mod_Manager
         private void Combo_API_SelectedIndexChanged(object sender, EventArgs e) {
             //Depending on the selected API and theme, change text to disabled colour.
             if (combo_API.SelectedIndex == 0) {
+                if (!Properties.Settings.Default.seenVulkanWarning)
+                {
+                    UnifyMessages.UnifyMessage.Show(SystemMessages.msg_VulkanWarning, SystemMessages.tl_DefaultTitle, "OK", "Warning", true);
+                    Properties.Settings.Default.seenVulkanWarning = true;
+                }
                 check_RTV.Enabled = false;
                 check_2xRes.Enabled = false;
                 lbl_ForceRTV.ForeColor = SystemColors.GrayText;
@@ -1534,7 +1539,8 @@ namespace Sonic_06_Mod_Manager
                         $"Sonic '06 Mod Loader Version: {modLoaderVersion.Substring(8)}\n\n" +
                         $"" +
                         $"Architecture: {inst}\n" +
-                        $"Dreamcast Day: {dreamcastDay.ToString()}",
+                        $"Dreamcast Day: {dreamcastDay.ToString()}\n" +
+                        $"Seen Vulkan Warning: {Properties.Settings.Default.seenVulkanWarning.ToString()}",
                         "Debug Information", "OK", "Information", true);
                     break;
             }

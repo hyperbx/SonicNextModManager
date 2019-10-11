@@ -430,5 +430,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["patches_FieldOfView"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool seenVulkanWarning {
+            get {
+                return ((bool)(this["seenVulkanWarning"]));
+            }
+            set {
+                this["seenVulkanWarning"] = value;
+            }
+        }
     }
 }
