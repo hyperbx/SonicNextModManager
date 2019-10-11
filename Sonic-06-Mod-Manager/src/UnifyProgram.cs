@@ -142,5 +142,12 @@ namespace Sonic_06_Mod_Manager
             proc.StartInfo.Verb = "runas";
             proc.Start();
         }
+
+        public static void Restart() {
+            Process proc = new Process();
+            proc.StartInfo.FileName = Application.ExecutablePath;
+            proc.Start();
+            Application.Exit();
+        }
     }
 }

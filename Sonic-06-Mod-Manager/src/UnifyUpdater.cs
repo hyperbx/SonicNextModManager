@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Drawing;
 using Unify.Messages;
 using System.Windows.Forms;
 
@@ -47,25 +48,34 @@ namespace Sonic_06_Mod_Manager.src
                     Icon = Properties.Resources.dreamcast_pal_icon;
              }
 
+            if (Properties.Settings.Default.theme) {
+                BackColor = Color.FromArgb(28, 28, 28);
+                lbl_Title.ForeColor = SystemColors.Control;
+            } else {
+                BackColor = SystemColors.Control;
+                lbl_Title.ForeColor = SystemColors.ControlText;
+            }
+
             this.url = url;
             this.enabled = enabled;
 
+            Text = SystemMessages.tl_DefaultTitle;
             lbl_Title.Text = $"Updating Sonic '06 Mod Manager to {versionNumber}...";
             Width = lbl_Title.Width + 40;
+            MinimumSize = MaximumSize = new Size(Width, Height);
 
             if (this.enabled) UpdateVersion();
             else Close();
         }
 
-        private void UpdateVersion()
-        {
+        private void UpdateVersion() {
             var clientApplication = new WebClient();
             clientApplication.DownloadProgressChanged += (s, e) => { pgb_Progress.Value = e.ProgressPercentage; };
             clientApplication.DownloadFileAsync(new Uri(url), Application.ExecutablePath + ".pak");
             clientApplication.DownloadFileCompleted += (s, e) => {
                 File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
                 UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateComplete, SystemMessages.tl_Success, "OK", "Information", false);
-                Application.Exit();
+                Program.Restart();
             };
         }
     }

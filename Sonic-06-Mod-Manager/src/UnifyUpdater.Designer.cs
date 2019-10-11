@@ -36,6 +36,7 @@
             // pgb_Progress
             // 
             this.pgb_Progress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.pgb_Progress.BackColor = System.Drawing.SystemColors.Control;
             this.pgb_Progress.Location = new System.Drawing.Point(12, 44);
             this.pgb_Progress.Name = "pgb_Progress";
             this.pgb_Progress.Size = new System.Drawing.Size(498, 50);
@@ -56,10 +57,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(522, 106);
+            this.ControlBox = false;
             this.Controls.Add(this.pgb_Progress);
             this.Controls.Add(this.lbl_Title);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "UnifyUpdater";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unify Updater";

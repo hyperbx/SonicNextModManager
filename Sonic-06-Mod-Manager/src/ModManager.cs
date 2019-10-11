@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.13"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.14-indev-111019r1"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -1128,8 +1128,8 @@ namespace Sonic_06_Mod_Manager
                 lbl_CameraDistance.ForeColor = SystemColors.GrayText;
             }
             else {
-                nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
-                nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
+                nud_CameraDistance.Value = 650;
+                nud_FieldOfView.Value = 90;
                 nud_CameraDistance.Enabled = true;
                 btn_ResetCameraDistance.Enabled = true;
                 if (Properties.Settings.Default.theme)
