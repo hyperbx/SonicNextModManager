@@ -127,6 +127,9 @@
   <data name="arctoolphp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\arctool.php;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="barebones_render_main" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\barebones_render_main.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="dream" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\dream.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -189,6 +192,12 @@
   </data>
   <data name="Ookii_Dialogs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Ookii.Dialogs.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="render_barebones" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\render_barebones.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="render_cheap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\render_cheap.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="retail_render_gamemode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\retail_render_gamemode.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

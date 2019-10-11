@@ -97,6 +97,9 @@
             this.lbl_CameraDistance = new System.Windows.Forms.Label();
             this.lbl_Reflections = new System.Windows.Forms.Label();
             this.combo_Reflections = new System.Windows.Forms.ComboBox();
+            this.btn_ResetRenderer = new System.Windows.Forms.Button();
+            this.lbl_Renderer = new System.Windows.Forms.Label();
+            this.combo_Renderer = new System.Windows.Forms.ComboBox();
             this.clb_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
@@ -817,6 +820,9 @@
             this.group_Tweaks.Controls.Add(this.lbl_CameraDistance);
             this.group_Tweaks.Controls.Add(this.lbl_Reflections);
             this.group_Tweaks.Controls.Add(this.combo_Reflections);
+            this.group_Tweaks.Controls.Add(this.btn_ResetRenderer);
+            this.group_Tweaks.Controls.Add(this.lbl_Renderer);
+            this.group_Tweaks.Controls.Add(this.combo_Renderer);
             this.group_Tweaks.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Tweaks.Location = new System.Drawing.Point(267, 1);
             this.group_Tweaks.Name = "group_Tweaks";
@@ -832,7 +838,7 @@
             this.btn_ResetFOV.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetFOV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetFOV.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetFOV.Image")));
-            this.btn_ResetFOV.Location = new System.Drawing.Point(227, 191);
+            this.btn_ResetFOV.Location = new System.Drawing.Point(227, 240);
             this.btn_ResetFOV.Name = "btn_ResetFOV";
             this.btn_ResetFOV.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetFOV.TabIndex = 98;
@@ -841,7 +847,7 @@
             // 
             // nud_FieldOfView
             // 
-            this.nud_FieldOfView.Location = new System.Drawing.Point(14, 190);
+            this.nud_FieldOfView.Location = new System.Drawing.Point(14, 239);
             this.nud_FieldOfView.Maximum = new decimal(new int[] {
             255,
             0,
@@ -861,7 +867,7 @@
             // 
             this.lbl_FieldOfView.AutoSize = true;
             this.lbl_FieldOfView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_FieldOfView.Location = new System.Drawing.Point(11, 172);
+            this.lbl_FieldOfView.Location = new System.Drawing.Point(11, 221);
             this.lbl_FieldOfView.Name = "lbl_FieldOfView";
             this.lbl_FieldOfView.Size = new System.Drawing.Size(74, 15);
             this.lbl_FieldOfView.TabIndex = 96;
@@ -874,7 +880,7 @@
             this.btn_ResetCameraType.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraType.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraType.Image")));
-            this.btn_ResetCameraType.Location = new System.Drawing.Point(227, 93);
+            this.btn_ResetCameraType.Location = new System.Drawing.Point(227, 142);
             this.btn_ResetCameraType.Name = "btn_ResetCameraType";
             this.btn_ResetCameraType.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraType.TabIndex = 95;
@@ -885,7 +891,7 @@
             // 
             this.lbl_CameraType.AutoSize = true;
             this.lbl_CameraType.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_CameraType.Location = new System.Drawing.Point(11, 74);
+            this.lbl_CameraType.Location = new System.Drawing.Point(11, 123);
             this.lbl_CameraType.Name = "lbl_CameraType";
             this.lbl_CameraType.Size = new System.Drawing.Size(75, 15);
             this.lbl_CameraType.TabIndex = 93;
@@ -899,7 +905,7 @@
             "Retail",
             "Tokyo Game Show (TGS)",
             "Electronic Entertainment Expo (E3)"});
-            this.combo_CameraType.Location = new System.Drawing.Point(14, 92);
+            this.combo_CameraType.Location = new System.Drawing.Point(14, 141);
             this.combo_CameraType.Name = "combo_CameraType";
             this.combo_CameraType.Size = new System.Drawing.Size(211, 23);
             this.combo_CameraType.TabIndex = 94;
@@ -921,7 +927,7 @@
             this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetReflections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetReflections.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetReflections.Image")));
-            this.btn_ResetReflections.Location = new System.Drawing.Point(227, 44);
+            this.btn_ResetReflections.Location = new System.Drawing.Point(227, 93);
             this.btn_ResetReflections.Name = "btn_ResetReflections";
             this.btn_ResetReflections.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetReflections.TabIndex = 87;
@@ -935,7 +941,7 @@
             this.btn_ResetCameraDistance.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraDistance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraDistance.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraDistance.Image")));
-            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(227, 142);
+            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(227, 191);
             this.btn_ResetCameraDistance.Name = "btn_ResetCameraDistance";
             this.btn_ResetCameraDistance.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraDistance.TabIndex = 85;
@@ -944,7 +950,7 @@
             // 
             // nud_CameraDistance
             // 
-            this.nud_CameraDistance.Location = new System.Drawing.Point(14, 141);
+            this.nud_CameraDistance.Location = new System.Drawing.Point(14, 190);
             this.nud_CameraDistance.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -963,7 +969,7 @@
             // 
             this.lbl_CameraDistance.AutoSize = true;
             this.lbl_CameraDistance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_CameraDistance.Location = new System.Drawing.Point(11, 123);
+            this.lbl_CameraDistance.Location = new System.Drawing.Point(11, 172);
             this.lbl_CameraDistance.Name = "lbl_CameraDistance";
             this.lbl_CameraDistance.Size = new System.Drawing.Size(96, 15);
             this.lbl_CameraDistance.TabIndex = 83;
@@ -973,7 +979,7 @@
             // 
             this.lbl_Reflections.AutoSize = true;
             this.lbl_Reflections.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Reflections.Location = new System.Drawing.Point(11, 25);
+            this.lbl_Reflections.Location = new System.Drawing.Point(11, 74);
             this.lbl_Reflections.Name = "lbl_Reflections";
             this.lbl_Reflections.Size = new System.Drawing.Size(65, 15);
             this.lbl_Reflections.TabIndex = 77;
@@ -988,11 +994,50 @@
             "Quarter",
             "Half",
             "Full"});
-            this.combo_Reflections.Location = new System.Drawing.Point(14, 43);
+            this.combo_Reflections.Location = new System.Drawing.Point(14, 92);
             this.combo_Reflections.Name = "combo_Reflections";
             this.combo_Reflections.Size = new System.Drawing.Size(211, 23);
             this.combo_Reflections.TabIndex = 78;
             this.combo_Reflections.SelectedIndexChanged += new System.EventHandler(this.Combo_Reflections_SelectedIndexChanged);
+            // 
+            // btn_ResetRenderer
+            // 
+            this.btn_ResetRenderer.FlatAppearance.BorderSize = 0;
+            this.btn_ResetRenderer.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetRenderer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetRenderer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetRenderer.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetRenderer.Image")));
+            this.btn_ResetRenderer.Location = new System.Drawing.Point(227, 44);
+            this.btn_ResetRenderer.Name = "btn_ResetRenderer";
+            this.btn_ResetRenderer.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetRenderer.TabIndex = 101;
+            this.btn_ResetRenderer.UseVisualStyleBackColor = true;
+            this.btn_ResetRenderer.Click += new System.EventHandler(this.Btn_ResetRenderer_Click);
+            // 
+            // lbl_Renderer
+            // 
+            this.lbl_Renderer.AutoSize = true;
+            this.lbl_Renderer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Renderer.Location = new System.Drawing.Point(11, 25);
+            this.lbl_Renderer.Name = "lbl_Renderer";
+            this.lbl_Renderer.Size = new System.Drawing.Size(54, 15);
+            this.lbl_Renderer.TabIndex = 99;
+            this.lbl_Renderer.Text = "Renderer";
+            // 
+            // combo_Renderer
+            // 
+            this.combo_Renderer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_Renderer.FormattingEnabled = true;
+            this.combo_Renderer.Items.AddRange(new object[] {
+            "Default",
+            "Barebones",
+            "Destructive",
+            "Cheap"});
+            this.combo_Renderer.Location = new System.Drawing.Point(14, 43);
+            this.combo_Renderer.Name = "combo_Renderer";
+            this.combo_Renderer.Size = new System.Drawing.Size(211, 23);
+            this.combo_Renderer.TabIndex = 100;
+            this.combo_Renderer.SelectedIndexChanged += new System.EventHandler(this.Combo_Renderer_SelectedIndexChanged);
             // 
             // clb_PatchesList
             // 
@@ -1011,8 +1056,7 @@
             "Omega Blur Fix",
             "Unlock Mid-air Momentum",
             "Unlock Tails\' Flight Limit",
-            "Use Dynamic Bones for Snowboard States",
-            "Vulkan API Compatibility"});
+            "Use Dynamic Bones for Snowboard States"});
             this.clb_PatchesList.Location = new System.Drawing.Point(4, 9);
             this.clb_PatchesList.Name = "clb_PatchesList";
             this.clb_PatchesList.Size = new System.Drawing.Size(257, 470);
@@ -1638,5 +1682,8 @@
         private System.Windows.Forms.Button btn_ResetFOV;
         private System.Windows.Forms.NumericUpDown nud_FieldOfView;
         private System.Windows.Forms.Label lbl_FieldOfView;
+        private System.Windows.Forms.Button btn_ResetRenderer;
+        private System.Windows.Forms.Label lbl_Renderer;
+        private System.Windows.Forms.ComboBox combo_Renderer;
     }
 }

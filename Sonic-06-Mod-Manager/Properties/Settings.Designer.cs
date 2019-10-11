@@ -442,5 +442,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["seenVulkanWarning"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int patches_Renderer {
+            get {
+                return ((int)(this["patches_Renderer"]));
+            }
+            set {
+                this["patches_Renderer"] = value;
+            }
+        }
     }
 }

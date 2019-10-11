@@ -118,6 +118,7 @@ namespace Sonic_06_Mod_Manager
                 nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
             check_ManualPatches.Checked = Properties.Settings.Default.manualPatches;
             check_SaveRedirect.Checked = Properties.Settings.Default.saveRedirect;
+            combo_Renderer.SelectedIndex = Properties.Settings.Default.patches_Renderer;
 
             switch (Properties.Settings.Default.priority)
             {
@@ -415,18 +416,35 @@ namespace Sonic_06_Mod_Manager
 
             foreach (var arc in files) {
                 if (Path.GetFileName(arc) == "cache.arc") {
-                    if (combo_Emulator_System.SelectedIndex == 0) {
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Vulkan API Compatibility"))) {
-                            Status = SystemMessages.msg_PatchingRenderer;
-                            if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                                File.Copy(arc, $"{arc}_orig", true);
-                            unpack = ARC.UnpackARC(arc);
-                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
-                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
-                            File.WriteAllBytes(Path.Combine(unpack, "cache\\xenon\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
-                            ARC.RepackARC(unpack, arc);
-                            Status = SystemMessages.msg_DefaultStatus;
-                        }
+                    if (combo_Renderer.SelectedIndex == 1) {
+                        Status = SystemMessages.msg_PatchingRenderer;
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_barebones);
+                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.barebones_render_main);
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
+                    else if (combo_Renderer.SelectedIndex == 2) {
+                        Status = SystemMessages.msg_PatchingRenderer;
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
+                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
+                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
+                    else if (combo_Renderer.SelectedIndex == 3) {
+                        Status = SystemMessages.msg_PatchingRenderer;
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_cheap);
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
                     }
 
                     if (combo_Reflections.SelectedIndex != 1) {
@@ -589,6 +607,7 @@ namespace Sonic_06_Mod_Manager
                 nud_FieldOfView.Value = 90; Properties.Settings.Default.patches_FieldOfView = 90;
                 combo_Reflections.SelectedIndex = 1; Properties.Settings.Default.patches_Reflections = 1;
                 combo_CameraType.SelectedIndex = 0; Properties.Settings.Default.patches_CameraType = 0;
+                combo_Renderer.SelectedIndex = 0; Properties.Settings.Default.patches_Renderer = 0;
                 for (int i = 0; i < clb_PatchesList.Items.Count; i++) clb_PatchesList.SetItemChecked(i, false);
                 Properties.Settings.Default.Save();
                 SaveChecks();
@@ -1075,6 +1094,11 @@ namespace Sonic_06_Mod_Manager
         #endregion
 
         #region Patches
+        private void Combo_Renderer_SelectedIndexChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.patches_Renderer = combo_Renderer.SelectedIndex;
+            Properties.Settings.Default.Save();
+        }
+
         private void Combo_Reflections_SelectedIndexChanged(object sender, EventArgs e) { // Save Reflections value
             Properties.Settings.Default.patches_Reflections = combo_Reflections.SelectedIndex;
             Properties.Settings.Default.Save();
@@ -1105,6 +1129,12 @@ namespace Sonic_06_Mod_Manager
                     lbl_CameraDistance.ForeColor = SystemColors.ControlText;
             }
             Properties.Settings.Default.patches_CameraType = combo_CameraType.SelectedIndex;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Btn_ResetRenderer_Click(object sender, EventArgs e) {
+            combo_Renderer.SelectedIndex = 0;
+            Properties.Settings.Default.patches_Renderer = 0;
             Properties.Settings.Default.Save();
         }
 
@@ -1327,6 +1357,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
                     lbl_CameraType.ForeColor = SystemColors.GrayText;
                     lbl_FieldOfView.ForeColor = SystemColors.GrayText;
+                    lbl_Renderer.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
@@ -1336,6 +1367,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
                     lbl_CameraType.ForeColor = SystemColors.ControlText;
                     if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.ControlText;
+                    lbl_Renderer.ForeColor = SystemColors.ControlText;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1436,6 +1468,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
                     lbl_CameraType.ForeColor = SystemColors.GrayText;
                     lbl_FieldOfView.ForeColor = SystemColors.GrayText;
+                    lbl_Renderer.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
@@ -1445,6 +1478,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_SaveRedirect.ForeColor = SystemColors.Control;
                     lbl_CameraType.ForeColor = SystemColors.Control;
                     if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.Control;
+                    lbl_Renderer.ForeColor = SystemColors.Control;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1533,14 +1567,14 @@ namespace Sonic_06_Mod_Manager
                         inst = "Unknown";
 
                     UnifyMessages.UnifyMessage.Show(
-                        $"Sonic '06 Mod Manager\n\n" +
+                        $"Sonic '06 Mod Manager\n" +
+                        $"Architecture: {inst}\n\n" +
                         $"" +
                         $"Framework Version: {versionNumber.Substring(8)}\n" +
                         $"Sonic '06 Mod Loader Version: {modLoaderVersion.Substring(8)}\n\n" +
                         $"" +
-                        $"Architecture: {inst}\n" +
                         $"Dreamcast Day: {dreamcastDay.ToString()}\n" +
-                        $"Seen Vulkan Warning: {Properties.Settings.Default.seenVulkanWarning.ToString()}",
+                        $"Vulkan Warning: {Properties.Settings.Default.seenVulkanWarning.ToString()}",
                         "Debug Information", "OK", "Information", true);
                     break;
             }
@@ -1611,6 +1645,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_CameraDistance.ForeColor = SystemColors.GrayText;
                 lbl_CameraType.ForeColor = SystemColors.GrayText;
                 lbl_FieldOfView.ForeColor = SystemColors.GrayText;
+                lbl_Renderer.ForeColor = SystemColors.GrayText;
                 combo_CameraType.Enabled = false;
                 btn_ResetCameraType.Enabled = false;
                 clb_PatchesList.Enabled = false;
@@ -1621,6 +1656,8 @@ namespace Sonic_06_Mod_Manager
                 btn_Play.Enabled = false;
                 nud_FieldOfView.Enabled = false;
                 btn_ResetFOV.Enabled = false;
+                combo_Renderer.Enabled = false;
+                btn_ResetRenderer.Enabled = false;
             }
             else
             {
@@ -1647,6 +1684,7 @@ namespace Sonic_06_Mod_Manager
                         lbl_FieldOfView.ForeColor = SystemColors.ControlText;
                     if (combo_CameraType.SelectedIndex != 1)
                         lbl_CameraDistance.ForeColor = SystemColors.ControlText;
+                    lbl_Renderer.ForeColor = SystemColors.ControlText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
@@ -1658,6 +1696,7 @@ namespace Sonic_06_Mod_Manager
                         lbl_FieldOfView.ForeColor = SystemColors.Control;
                     if (combo_CameraType.SelectedIndex != 1)
                         lbl_CameraDistance.ForeColor = SystemColors.Control;
+                    lbl_Renderer.ForeColor = SystemColors.Control;
                 }
                 btn_SaveAndPlay.Text = "Save and Play";
                 btn_SaveAndPlay.Width = 245;
@@ -1668,6 +1707,8 @@ namespace Sonic_06_Mod_Manager
                 btn_ResetReflections.Enabled = true;
                 combo_Reflections.Enabled = true;
                 btn_Play.Enabled = true;
+                combo_Renderer.Enabled = true;
+                btn_ResetRenderer.Enabled = true;
             }
 
             Properties.Settings.Default.Save();
