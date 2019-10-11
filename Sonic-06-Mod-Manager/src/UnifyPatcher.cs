@@ -682,6 +682,16 @@ namespace Unify.Patcher
                     }
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
+                if (line.Contains("RenderWorld(_ARG_0_, \"afterpp\"")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (!enabled)
+                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                    else {
+                        if (tempLine[2].StartsWith("--"))
+                            tempLine[2] = tempLine[2].Substring(2);
+                    }
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
 
                 lineNum++;
             }
