@@ -1053,8 +1053,7 @@ namespace Sonic_06_Mod_Manager
         private void Combo_API_SelectedIndexChanged(object sender, EventArgs e) {
             //Depending on the selected API and theme, change text to disabled colour.
             if (combo_API.SelectedIndex == 0) {
-                if (!Properties.Settings.Default.seenVulkanWarning)
-                {
+                if (!Properties.Settings.Default.seenVulkanWarning && combo_Renderer.SelectedIndex != 2) {
                     UnifyMessages.UnifyMessage.Show(SystemMessages.msg_VulkanWarning, SystemMessages.tl_DefaultTitle, "OK", "Warning", true);
                     Properties.Settings.Default.seenVulkanWarning = true;
                 }
