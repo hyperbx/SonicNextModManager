@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.14-indev-111019r1"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.14"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -434,6 +434,7 @@ namespace Sonic_06_Mod_Manager
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
                         File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_barebones);
+                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_utility.lub"), Properties.Resources.barebones_render_utility);
                         File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.barebones_render_main);
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;

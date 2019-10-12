@@ -130,6 +130,9 @@
   <data name="barebones_render_main" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\barebones_render_main.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="barebones_render_utility" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\barebones_render_utility.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="dream" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\dream.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

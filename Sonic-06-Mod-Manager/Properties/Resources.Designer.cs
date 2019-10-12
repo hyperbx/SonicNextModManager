@@ -101,6 +101,16 @@ namespace Sonic_06_Mod_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] barebones_render_utility {
+            get {
+                object obj = ResourceManager.GetObject("barebones_render_utility", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream dream {
