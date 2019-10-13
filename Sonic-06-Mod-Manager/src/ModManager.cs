@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.14"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.15"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -403,7 +403,7 @@ namespace Sonic_06_Mod_Manager
             if (combo_Emulator_System.SelectedIndex == 0) system = "xenon";
             else if (combo_Emulator_System.SelectedIndex == 1) system = "ps3";
 
-            if (nud_FieldOfView.Value != 90) {
+            if (nud_FieldOfView.Value != 90 && system != "ps3") {
                 Status = SystemMessages.msg_PatchingCamera;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
                     if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
@@ -433,22 +433,23 @@ namespace Sonic_06_Mod_Manager
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
-                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_barebones);
-                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_utility.lub"), Properties.Resources.barebones_render_utility);
+                        if (system != "ps3") File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.barebones_render_gamemode);
                         File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.barebones_render_main);
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
                     else if (combo_Renderer.SelectedIndex == 2) {
-                        Status = SystemMessages.msg_PatchingRenderer;
-                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy(arc, $"{arc}_orig", true);
-                        unpack = ARC.UnpackARC(arc);
-                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
-                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
-                        File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
-                        ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
+                        if (system != "ps3") {
+                            Status = SystemMessages.msg_PatchingRenderer;
+                            if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                                File.Copy(arc, $"{arc}_orig", true);
+                            unpack = ARC.UnpackARC(arc);
+                            File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.vulkan_render_gamemode);
+                            File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_title.lub"), Properties.Resources.vulkan_render_title);
+                            File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
+                            ARC.RepackARC(unpack, arc);
+                            Status = SystemMessages.msg_DefaultStatus;
+                        }
                     }
                     else if (combo_Renderer.SelectedIndex == 3) {
                         Status = SystemMessages.msg_PatchingRenderer;

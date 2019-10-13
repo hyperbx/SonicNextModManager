@@ -93,9 +93,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] barebones_render_main {
+        internal static byte[] barebones_render_gamemode {
             get {
-                object obj = ResourceManager.GetObject("barebones_render_main", resourceCulture);
+                object obj = ResourceManager.GetObject("barebones_render_gamemode", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] barebones_render_utility {
+        internal static byte[] barebones_render_main {
             get {
-                object obj = ResourceManager.GetObject("barebones_render_utility", resourceCulture);
+                object obj = ResourceManager.GetObject("barebones_render_main", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -369,16 +369,6 @@ namespace Sonic_06_Mod_Manager.Properties {
         internal static byte[] Ookii_Dialogs {
             get {
                 object obj = ResourceManager.GetObject("Ookii_Dialogs", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] render_barebones {
-            get {
-                object obj = ResourceManager.GetObject("render_barebones", resourceCulture);
                 return ((byte[])(obj));
             }
         }
