@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.15"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.16"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -522,28 +522,58 @@ namespace Sonic_06_Mod_Manager
                             Status = SystemMessages.msg_DefaultStatus;
                         }
                     }
-                }
-                else if (Path.GetFileName(arc) == "game.arc") {
+
                     if (combo_Emulator_System.SelectedIndex == 0) {
                         if (nud_CameraDistance.Value != 650 && nud_CameraDistance.Enabled) {
-                            Status = SystemMessages.msg_PatchingCamera;
-                            if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                                File.Copy(arc, $"{arc}_orig", true);
-                            unpack = ARC.UnpackARC(arc);
-                            Lua.CameraDistance(Path.Combine(unpack, $"game\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
-                            ARC.RepackARC(unpack, arc);
-                            Status = SystemMessages.msg_DefaultStatus;
+                            if (system != "xenon") {
+                                Status = SystemMessages.msg_PatchingCamera;
+                                if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                                    File.Copy(arc, $"{arc}_orig", true);
+                                unpack = ARC.UnpackARC(arc);
+                                Lua.CameraDistance(Path.Combine(unpack, $"cache\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
+                                ARC.RepackARC(unpack, arc);
+                                Status = SystemMessages.msg_DefaultStatus;
+                            }
                         }
                     }
 
                     if (combo_CameraType.SelectedIndex != 0) {
-                        Status = SystemMessages.msg_PatchingCamera;
-                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
-                            File.Copy(arc, $"{arc}_orig", true);
-                        unpack = ARC.UnpackARC(arc);
-                        Lua.CameraType(Path.Combine(unpack, $"game\\{system}\\cameraparam.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
-                        ARC.RepackARC(unpack, arc);
-                        Status = SystemMessages.msg_DefaultStatus;
+                        if (system != "xenon") {
+                            Status = SystemMessages.msg_PatchingCamera;
+                            if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                                File.Copy(arc, $"{arc}_orig", true);
+                            unpack = ARC.UnpackARC(arc);
+                            Lua.CameraType(Path.Combine(unpack, $"cache\\{system}\\cameraparam.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
+                            ARC.RepackARC(unpack, arc);
+                            Status = SystemMessages.msg_DefaultStatus;
+                        }
+                    }
+                }
+                else if (Path.GetFileName(arc) == "game.arc") {
+                    if (combo_Emulator_System.SelectedIndex == 0) {
+                        if (nud_CameraDistance.Value != 650 && nud_CameraDistance.Enabled) {
+                            if (system != "ps3") {
+                                Status = SystemMessages.msg_PatchingCamera;
+                                if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                                    File.Copy(arc, $"{arc}_orig", true);
+                                unpack = ARC.UnpackARC(arc);
+                                Lua.CameraDistance(Path.Combine(unpack, $"game\\{system}\\cameraparam.lub"), decimal.ToInt32(nud_CameraDistance.Value));
+                                ARC.RepackARC(unpack, arc);
+                                Status = SystemMessages.msg_DefaultStatus;
+                            }
+                        }
+                    }
+
+                    if (combo_CameraType.SelectedIndex != 0) {
+                        if (system != "ps3") {
+                            Status = SystemMessages.msg_PatchingCamera;
+                            if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                                File.Copy(arc, $"{arc}_orig", true);
+                            unpack = ARC.UnpackARC(arc);
+                            Lua.CameraType(Path.Combine(unpack, $"game\\{system}\\cameraparam.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
+                            ARC.RepackARC(unpack, arc);
+                            Status = SystemMessages.msg_DefaultStatus;
+                        }
                     }
                 }
                 else if (Path.GetFileName(arc) == "player_omega.arc") {
@@ -1118,8 +1148,13 @@ namespace Sonic_06_Mod_Manager
         private void Combo_CameraType_SelectedIndexChanged(object sender, EventArgs e) { // Save Camera Type value
             if (combo_CameraType.SelectedIndex != 0) {
                 if (combo_CameraType.SelectedIndex == 1) {
-                    nud_CameraDistance.Value = 250;
-                    nud_FieldOfView.Value = 150;
+                    if (combo_Emulator_System.SelectedIndex == 0) {
+                        nud_CameraDistance.Value = 250;
+                        nud_FieldOfView.Value = 150;
+                    } else {
+                        nud_CameraDistance.Value = 450;
+                        nud_FieldOfView.Value = 90;
+                    }
                 }
                 else if (combo_CameraType.SelectedIndex == 2) {
                     nud_CameraDistance.Value = 550;
@@ -1128,8 +1163,7 @@ namespace Sonic_06_Mod_Manager
                 nud_CameraDistance.Enabled = false;
                 btn_ResetCameraDistance.Enabled = false;
                 lbl_CameraDistance.ForeColor = SystemColors.GrayText;
-            }
-            else {
+            } else {
                 nud_CameraDistance.Value = 650;
                 nud_FieldOfView.Value = 90;
                 nud_CameraDistance.Enabled = true;

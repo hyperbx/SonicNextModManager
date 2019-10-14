@@ -781,11 +781,16 @@ namespace Unify.Patcher
             Decompile(directoryRoot);
             string[] editedLua = File.ReadAllLines(directoryRoot);
             int lineNum = 0;
+            decimal origTimer = 0;
 
             foreach (string line in editedLua) {
-                if (line.Contains("c_flight_timer_b")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
-                    if (!enabled) tempLine[2] = "3.125"; //Replace the 2nd section (the original number)
+                string[] tempLine = line.Split(' '); //Split line into different sections
+
+                if (tempLine[0] == "c_flight_timer") {
+                    origTimer = decimal.Parse(tempLine[2]);
+                }
+                if (tempLine[0] == "c_flight_timer_b") {
+                    if (!enabled) tempLine[2] = (((origTimer * 1000) + 125) / 1000).ToString(); //Replace the 2nd section (the original number)
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
 

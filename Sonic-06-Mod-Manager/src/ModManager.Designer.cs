@@ -1031,8 +1031,8 @@
             this.combo_Renderer.Items.AddRange(new object[] {
             "Default",
             "Barebones",
-            "Destructive",
-            "Cheap"});
+            "Destructive (Vulkan)",
+            "Cheap (Not Recommended)"});
             this.combo_Renderer.Location = new System.Drawing.Point(14, 43);
             this.combo_Renderer.Name = "combo_Renderer";
             this.combo_Renderer.Size = new System.Drawing.Size(211, 23);
