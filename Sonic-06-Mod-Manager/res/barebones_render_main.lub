@@ -1,5 +1,5 @@
 function RenderMainForSingle(_ARG_0_, _ARG_1_, _ARG_2_)
-  SetFrameBufferObject(_ARG_0_, "framebuffer0", "depthstencil", "all", 0, 0, 0, 0)
+  SetFrameBufferObject(_ARG_0_, _ARG_1_, _ARG_2_, "all", 0, 0, 0, 0)
   SetCurrentCamera(_ARG_0_, "main")
   SetBlendMode(_ARG_0_, "opaque")
   LockBlendMode(_ARG_0_, "true")
