@@ -79,14 +79,16 @@ namespace Unify.Patcher
             if (platform == "PlayStation 3" && Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0)
                 skippedMods.Add(ModsMessages.ex_IncorrectTarget(Path.GetFileName(modPath), "Xbox 360"));
 
-            var files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
+            List<string> files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
             .Where(s => s.EndsWith(".arc") ||
                         s.EndsWith(".wmv") ||
                         s.EndsWith(".xma") ||
-                        s.EndsWith(".xex") ||
-                        s.EndsWith(".bin") ||
+                        s.EndsWith("default.xex") ||
+                        s.EndsWith("EBOOT.BIN") ||
                         s.EndsWith(".pam") ||
-                        s.EndsWith(".at3"));
+                        s.EndsWith(".at3")).ToList();
+            string[] directories = Directory.GetDirectories(modPath, "*.arc", SearchOption.AllDirectories);
+            foreach (var dir in directories) files.Add(dir);
 
             foreach (var file in files) {
                 arcPath = file.Remove(0, modPath.Length);
@@ -140,6 +142,8 @@ namespace Unify.Patcher
         {
             string tempPath = $"{Program.applicationData}\\Temp\\{Path.GetRandomFileName()}"; // Defines the temporary path.
             var tempData = new DirectoryInfo(tempPath); // Gets directory information on the temporary path.
+            bool useDirectory = false;
+
             ProcessStartInfo arctool;
 
             if (ftp) { tempPath = ftpPath; } // Changes the temporary path to the FTP path.
@@ -164,19 +168,28 @@ namespace Unify.Patcher
 
             File.Delete(Path.Combine(tempPath, Path.GetFileName(arc1))); // Deletes the temporary input ARC.
 
-            File.Copy(arc2, Path.Combine(tempPath, Path.GetFileName(arc2))); // Copies the merge ARC.
+            if (File.Exists(arc2)) {
+                useDirectory = false;
+                File.Copy(arc2, Path.Combine(tempPath, Path.GetFileName(arc2))); // Copies the input ARC to the temporary path.
+            }
+            else if (Directory.Exists(arc2)) {
+                useDirectory = true;
+                DirectoryCopy(arc2, Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc2)), true);
+            }
 
-            // Defines the arctool process.
-            arctool = new ProcessStartInfo($"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc2))}\"")
+            if (!useDirectory)
             {
-                WorkingDirectory = $"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+                // Defines the arctool process.
+                arctool = new ProcessStartInfo($"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc2))}\"") {
+                    WorkingDirectory = $"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
 
-            var Unpack2 = Process.Start(arctool); // Unpacks the merge ARC.
-            Unpack2.WaitForExit();
+                var Unpack2 = Process.Start(arctool); // Unpacks the merge ARC.
+                Unpack2.WaitForExit();
 
-            File.Delete(Path.Combine(tempPath, Path.GetFileName(arc2))); // Deletes the temporary merge ARC.
+                File.Delete(Path.Combine(tempPath, Path.GetFileName(arc2))); // Deletes the temporary merge ARC.
+            }
 
             // Defines the arctool process.
             arctool = new ProcessStartInfo($"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool.exe", $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(arc2))}\" -c \"{output}\"")
@@ -443,6 +456,37 @@ namespace Unify.Patcher
                 }
             }
             else return;
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, true);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
         }
     }
 

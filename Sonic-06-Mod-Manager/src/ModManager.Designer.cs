@@ -1030,7 +1030,7 @@
             this.combo_Renderer.FormattingEnabled = true;
             this.combo_Renderer.Items.AddRange(new object[] {
             "Default",
-            "Barebones",
+            "Optimised",
             "Destructive (Vulkan)",
             "Cheap (Not Recommended)"});
             this.combo_Renderer.Location = new System.Drawing.Point(14, 43);
