@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.18"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.19"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -180,7 +180,7 @@ namespace Sonic_06_Mod_Manager
         private void ModManager_Shown(object sender, EventArgs e) { // Using the Shown method is cleaner, as it waits for the main window to appear before performing tasks
             //Ask the user for a mod directory if the textbox for it is empty/the specified path doesn't exist.
             if (text_ModsDirectory.Text == string.Empty || !Directory.Exists(text_ModsDirectory.Text)) {
-                UnifyMessages.UnifyMessage.Show(ModsMessages.msg_NoModDirectory, SystemMessages.tl_DefaultTitle, "OK", "Information", true);
+                UnifyMessages.UnifyMessage.Show(ModsMessages.msg_NoModDirectory, SystemMessages.tl_DefaultTitle, "OK", "Information");
 
                 VistaFolderBrowserDialog mods = new VistaFolderBrowserDialog {
                     Description = SettingsMessages.msg_LocateMods,
@@ -213,7 +213,7 @@ namespace Sonic_06_Mod_Manager
             if ((versionNumber.Contains("-indev") || versionNumber.Contains("-beta") || versionNumber.Contains("-test")) == false)
                 Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
 
-            if (!Prerequisites.JavaCheck()) UnifyMessages.UnifyMessage.Show(SystemMessages.ex_JavaMissing, SystemMessages.tl_JavaError, "OK", "Information", true);
+            if (!Prerequisites.JavaCheck()) UnifyMessages.UnifyMessage.Show(SystemMessages.ex_JavaMissing, SystemMessages.tl_JavaError, "OK", "Information");
         }
 
         #region Mods
@@ -221,7 +221,7 @@ namespace Sonic_06_Mod_Manager
             Status = SystemMessages.msg_ModInfo;
             if (File.Exists(configs[clb_ModsList.SelectedIndex]))
                 new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
-            else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error", false); }
+            else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error"); }
             Status = SystemMessages.msg_DefaultStatus;
             GetMods();
         }
@@ -230,7 +230,7 @@ namespace Sonic_06_Mod_Manager
             Status = SystemMessages.msg_EditMod;
             if (File.Exists(configs[clb_ModsList.SelectedIndex]))
                 new src.ModCreator(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex]), true).ShowDialog();
-            else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error", false); }
+            else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error"); }
             Status = SystemMessages.msg_DefaultStatus;
             GetMods();
         }
@@ -303,7 +303,7 @@ namespace Sonic_06_Mod_Manager
                             getString.Append(modName);
 
                         if (getString.Length > 0)
-                            UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning", true);
+                            UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning");
                     }
 
                     if (!check_ManualInstall.Checked) {
@@ -320,7 +320,7 @@ namespace Sonic_06_Mod_Manager
                     }
                 }
                 catch (Exception ex) {
-                    UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning", false);
+                    UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
                     unifytb_Main.SelectedIndex = 3;
                     Status = SystemMessages.msg_DefaultStatus;
                 }
@@ -330,7 +330,7 @@ namespace Sonic_06_Mod_Manager
                     if (!check_FTP.Checked) { ARC.CleanupMods(1); PatchAll(); }
                 }
                 catch (Exception ex) {
-                    UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning", false);
+                    UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
                     unifytb_Main.SelectedIndex = 3;
                     Status = SystemMessages.msg_DefaultStatus;
                 }
@@ -362,7 +362,7 @@ namespace Sonic_06_Mod_Manager
                         getString.Append(modName);
 
                     if (getString.Length > 0)
-                        UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning", true);
+                        UnifyMessages.UnifyMessage.Show(ModsMessages.ex_SkippedModsTally(getString.ToString()), SystemMessages.tl_SuccessWarn, "OK", "Warning");
                 }
             }
         }
@@ -598,6 +598,17 @@ namespace Sonic_06_Mod_Manager
                         Status = SystemMessages.msg_DefaultStatus;
                     }
 
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic"))) {
+                        Status = SystemMessages.msg_PatchingCharacters;
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+                        Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")));
+                        Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\princess.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")));
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
+
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) {
                         Status = SystemMessages.msg_PatchingCharacters;
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
@@ -731,7 +742,7 @@ namespace Sonic_06_Mod_Manager
                 GetModsChecks();
                 GetPatchesChecks();
             }
-            catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", SystemMessages.tl_ListError, "OK", "Error", true); }
+            catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", SystemMessages.tl_ListError, "OK", "Error"); }
         }
 
         private void GetModsChecks()
@@ -826,7 +837,7 @@ namespace Sonic_06_Mod_Manager
                 if (!check_FTP.Checked && !check_ManualPatches.Checked) { ARC.CleanupMods(1); PatchAll(); }
             }
             catch (Exception ex) {
-                UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning", false);
+                UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
                 unifytb_Main.SelectedIndex = 3;
                 Status = SystemMessages.msg_DefaultStatus;
             }
@@ -1096,7 +1107,7 @@ namespace Sonic_06_Mod_Manager
             //Depending on the selected API and theme, change text to disabled colour.
             if (combo_API.SelectedIndex == 0) {
                 if (!Properties.Settings.Default.seenVulkanWarning && combo_Renderer.SelectedIndex != 2) {
-                    UnifyMessages.UnifyMessage.Show(SystemMessages.msg_VulkanWarning, SystemMessages.tl_DefaultTitle, "OK", "Warning", true);
+                    UnifyMessages.UnifyMessage.Show(SystemMessages.msg_VulkanWarning, SystemMessages.tl_DefaultTitle, "OK", "Warning");
                     Properties.Settings.Default.seenVulkanWarning = true;
                 }
                 check_RTV.Enabled = false;
@@ -1620,14 +1631,14 @@ namespace Sonic_06_Mod_Manager
                         $"" +
                         $"Dreamcast Day: {dreamcastDay.ToString()}\n" +
                         $"Vulkan Warning: {Properties.Settings.Default.seenVulkanWarning.ToString()}",
-                        "Debug Information", "OK", "Information", true);
+                        "Debug Information", "OK", "Information");
                     break;
             }
         }
 
         private void Btn_Reset_Click(object sender, EventArgs e) {
             //Read the message box text if you're confused.
-            string resetConfirmation = UnifyMessages.UnifyMessage.Show(SettingsMessages.msg_Reset, SystemMessages.tl_DefaultTitle, "YesNo", "Warning", false);
+            string resetConfirmation = UnifyMessages.UnifyMessage.Show(SettingsMessages.msg_Reset, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
 
             if (resetConfirmation == "Yes") {
                 Properties.Settings.Default.Reset();
@@ -1767,7 +1778,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (key == null) {
                         if (!Program.RunningAsAdmin()) {
-                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning", false);
+                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
 
                             switch (registry) {
                                 case "Yes":
@@ -1790,7 +1801,7 @@ namespace Sonic_06_Mod_Manager
 
                     if (key != null) {
                         if (!Program.RunningAsAdmin()) {
-                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistryUninstall, SystemMessages.tl_DefaultTitle, "YesNo", "Warning", false);
+                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistryUninstall, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
 
                             switch (registry) {
                                 case "Yes":

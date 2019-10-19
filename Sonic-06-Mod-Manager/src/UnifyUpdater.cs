@@ -74,7 +74,7 @@ namespace Sonic_06_Mod_Manager.src
             clientApplication.DownloadFileAsync(new Uri(url), Application.ExecutablePath + ".pak");
             clientApplication.DownloadFileCompleted += (s, e) => {
                 File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
-                UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateComplete, SystemMessages.tl_Success, "OK", "Information", false);
+                UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateComplete, SystemMessages.tl_Success, "OK", "Information");
                 Program.Restart();
             };
         }

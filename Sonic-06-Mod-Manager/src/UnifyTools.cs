@@ -278,7 +278,7 @@ namespace Unify.Tools
                 Directory.Delete(cache, true);
                 key.Close();
 
-            } else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, SystemMessages.tl_ExtractError, "OK", "Error", false); }
+            } else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, SystemMessages.tl_ExtractError, "OK", "Error"); }
         }
     }
 

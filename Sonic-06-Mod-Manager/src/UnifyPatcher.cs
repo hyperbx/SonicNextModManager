@@ -849,8 +849,7 @@ namespace Unify.Patcher
             string[] editedLua = File.ReadAllLines(directoryRoot);
             int lineNum = 0;
 
-            foreach (string line in editedLua)
-            {
+            foreach (string line in editedLua) {
                 if (line.StartsWith("c_gauge_green") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_green";
@@ -861,7 +860,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_green";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_red") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_red";
@@ -872,7 +870,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_red";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_blue") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_blue";
@@ -883,7 +880,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_blue";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_white") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_white";
@@ -894,7 +890,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_white";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_sky") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_sky";
@@ -905,7 +900,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_sky";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_yellow") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_yellow";
@@ -916,7 +910,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_yellow";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_purple") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_purple";
@@ -927,7 +920,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_purple";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_super") && enabled) {
                     string[] tempLine = line.Split(' ');
                     tempLine[0] = "c_super";
@@ -938,7 +930,6 @@ namespace Unify.Patcher
                     tempLine[0] = "c_gauge_super";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_heal")) {
                     string[] tempLine = line.Split(' ');
                     if (!enabled)
@@ -947,7 +938,6 @@ namespace Unify.Patcher
                         tempLine[2] = "5";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 if (line.StartsWith("c_gauge_heal_delay")) {
                     string[] tempLine = line.Split(' ');
                     if (!enabled)
@@ -960,6 +950,27 @@ namespace Unify.Patcher
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua);
+        }
+
+        public static void CurvedHomingAttack(string directoryRoot, bool enabled)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua) {
+                if (line.Contains("OpenOther(_ARG_0_, other_module_sonic_homing)")) {
+                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    if (!enabled)
+                        tempLine[3] = "other_module_sonic_homing)"; //Replace the 2nd section (the original number)
+                    else
+                        tempLine[3] = "other_module_blaze_homing)";
+                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                }
+
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
 
         public static void UseDynamicBonesForSnowboard(string directoryRoot, bool enabled)

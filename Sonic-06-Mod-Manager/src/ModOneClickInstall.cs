@@ -88,7 +88,7 @@ namespace Sonic_06_Mod_Manager.src
 
         private void Btn_Decline_Click(object sender, System.EventArgs e) {
             if (btn_Decline.Text != "No") {
-                string cancel = UnifyMessages.UnifyMessage.Show(ModsMessages.msg_CancelDownloading, SystemMessages.tl_AreYouSure, "YesNo", "Question", false);
+                string cancel = UnifyMessages.UnifyMessage.Show(ModsMessages.msg_CancelDownloading, SystemMessages.tl_AreYouSure, "YesNo", "Question");
                 if (cancel == "Yes") Close();
             }
             else Close();
@@ -143,8 +143,8 @@ namespace Sonic_06_Mod_Manager.src
                                      getFile == "stage_kdv_d.arc")
                                 wc.DownloadFileAsync(URI, Path.Combine(w_archives, getFile));
                         }
-                    } UnifyMessages.UnifyMessage.Show(ModsMessages.msg_LoSInstalled, SystemMessages.tl_Success, "OK", "Information", false); Close();
-                } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GitHubTimeout, SystemMessages.tl_ServerError, "OK", "Error", false); Close(); }
+                    } UnifyMessages.UnifyMessage.Show(ModsMessages.msg_LoSInstalled, SystemMessages.tl_Success, "OK", "Information"); Close();
+                } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GitHubTimeout, SystemMessages.tl_ServerError, "OK", "Error"); Close(); }
             } else {
                 try {
                     var request = (HttpWebRequest)WebRequest.Create(downloadURL);
@@ -159,7 +159,7 @@ namespace Sonic_06_Mod_Manager.src
                         wc.DownloadFileCompleted += wc_DownloadFileCompleted;
                         wc.DownloadFileAsync(URI, Path.Combine(cache, $"{Path.GetFileName(downloadURL)}.bin"));
                     }
-                } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GameBananaTimeout, SystemMessages.tl_ServerError, "OK", "Error", false); Close(); }
+                } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GameBananaTimeout, SystemMessages.tl_ServerError, "OK", "Error"); Close(); }
             }
         }
 
@@ -177,9 +177,9 @@ namespace Sonic_06_Mod_Manager.src
                 else
                     Archives.InstallFrom7zArchive(Path.Combine(cache, $"{Path.GetFileName(downloadURL)}.bin"), cache);
 
-                UnifyMessages.UnifyMessage.Show(ModsMessages.msg_GBInstalled(item.ModName), SystemMessages.tl_Success, "OK", "Information", false); Close();
+                UnifyMessages.UnifyMessage.Show(ModsMessages.msg_GBInstalled(item.ModName), SystemMessages.tl_Success, "OK", "Information"); Close();
             }
-            catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GBExtractFailed(item.ModName), SystemMessages.tl_ExtractError, "OK", "Error", false); Close(); }
+            catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GBExtractFailed(item.ModName), SystemMessages.tl_ExtractError, "OK", "Error"); Close(); }
         }
     }
 }

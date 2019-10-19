@@ -42,7 +42,7 @@ namespace Unify.Messages
             InitializeComponent();
         }
 
-        public UnifyMessages(string text, string caption, string buttons, string icon, bool centre)
+        public UnifyMessages(string text, string caption, string buttons, string icon)
         {
             InitializeComponent();
 
@@ -157,10 +157,8 @@ namespace Unify.Messages
 
         public static class UnifyMessage
         {
-            public static string Show(string text, string caption, string buttons, string icon, bool centre) {
-                using (var openMessenger = new UnifyMessages(text, caption, buttons, icon, centre)) {
-                    if (centre) openMessenger.StartPosition = FormStartPosition.CenterScreen;
-                    else openMessenger.StartPosition = FormStartPosition.CenterParent; //new Point(parentLeft, parentTop);
+            public static string Show(string text, string caption, string buttons, string icon) {
+                using (var openMessenger = new UnifyMessages(text, caption, buttons, icon)) {
                     openMessenger.ShowDialog();
                 }
 

@@ -202,7 +202,7 @@ namespace Sonic_06_Mod_Manager.src
                                               .Replace("|", "");
 
             if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle)) && !edit)
-                UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(safeTitle), SystemMessages.tl_NameError, "OK", "Error", false);
+                UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(safeTitle), SystemMessages.tl_NameError, "OK", "Error");
             else {
                 pic_Thumbnail.BackgroundImage.Dispose();
                 pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception;
@@ -258,7 +258,7 @@ namespace Sonic_06_Mod_Manager.src
                         foreach (var save in getSaveData)
                             if (File.Exists(save)) File.Delete(save);
                     }
-                    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_SaveDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
+                    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_SaveDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error"); }
                 }
 
                 Close();
@@ -324,7 +324,7 @@ namespace Sonic_06_Mod_Manager.src
 
         private void Btn_Delete_Click(object sender, EventArgs e)
         {
-            string confirmation = UnifyMessages.UnifyMessage.Show(ModsMessages.warn_ModDeleteWarn(Path.GetFileName(modPath)), SystemMessages.tl_AreYouSure, "YesNo", "Question", false);
+            string confirmation = UnifyMessages.UnifyMessage.Show(ModsMessages.warn_ModDeleteWarn(Path.GetFileName(modPath)), SystemMessages.tl_AreYouSure, "YesNo", "Question");
 
             switch (confirmation)
             {
@@ -339,7 +339,7 @@ namespace Sonic_06_Mod_Manager.src
                                 directory.Delete(true);
                             Directory.Delete(modPath);
                         }
-                    } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModDeleteError(Path.GetFileName(modPath)), SystemMessages.tl_DirectoryError, "OK", "Error", false); } Close();
+                    } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModDeleteError(Path.GetFileName(modPath)), SystemMessages.tl_DirectoryError, "OK", "Error"); } Close();
                     break;
             }
         }

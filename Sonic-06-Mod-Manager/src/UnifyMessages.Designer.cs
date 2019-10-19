@@ -191,8 +191,7 @@
             this.MinimizeBox = false;
             this.Name = "UnifyMessages";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unify Messenger";
             this.Load += new System.EventHandler(this.UnifyMessages_Load);
             this.pnl_ButtonBackdrop.ResumeLayout(false);

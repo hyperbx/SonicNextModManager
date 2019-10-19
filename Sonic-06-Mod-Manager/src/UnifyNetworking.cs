@@ -60,21 +60,21 @@ namespace Unify.Networking
 
                 if (latestVersion.Contains("Version")) {
                     if (latestVersion != currentVersion) {
-                        string confirmUpdate = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateAvailable(latestVersion, changeLogs), SystemMessages.tl_Update, "YesNo", "Question", true);
+                        string confirmUpdate = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateAvailable(latestVersion, changeLogs), SystemMessages.tl_Update, "YesNo", "Question");
                         switch (confirmUpdate) {
                             case "Yes":
                                 var exists = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1;
-                                if (exists) { UnifyMessages.UnifyMessage.Show(SystemMessages.warn_CloseProcesses, SystemMessages.tl_ProcessError, "OK", "Error", true); }
+                                if (exists) { UnifyMessages.UnifyMessage.Show(SystemMessages.warn_CloseProcesses, SystemMessages.tl_ProcessError, "OK", "Error"); }
                                 else {
                                     try {
                                         if (File.Exists(Application.ExecutablePath)) new Sonic_06_Mod_Manager.src.UnifyUpdater(latestVersion, newVersionDownloadLink, true).ShowDialog();
                                         else return;
                                     }
-                                    catch { UnifyMessages.UnifyMessage.Show(SystemMessages.ex_UpdateFailedUnknown, SystemMessages.tl_FatalError, "OK", "Error", true); }
+                                    catch { UnifyMessages.UnifyMessage.Show(SystemMessages.ex_UpdateFailedUnknown, SystemMessages.tl_FatalError, "OK", "Error"); }
                                 }
                                 break;
                         }
-                    } else if (updateState == "user") UnifyMessages.UnifyMessage.Show(SystemMessages.msg_NoUpdates, SystemMessages.tl_DefaultTitle, "OK", "Information", false);
+                    } else if (updateState == "user") UnifyMessages.UnifyMessage.Show(SystemMessages.msg_NoUpdates, SystemMessages.tl_DefaultTitle, "OK", "Information");
                 } else { serverStatus = "down"; }
             } catch { serverStatus = "offline"; } updateState = null;
         }
@@ -202,7 +202,7 @@ namespace Unify.Networking
                         }
                     }
                 }
-                catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_FTPError}\n\n{ex}", SystemMessages.tl_NetworkError, "OK", "Error", false); break; }
+                catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_FTPError}\n\n{ex}", SystemMessages.tl_NetworkError, "OK", "Error"); break; }
             }
         }
 
