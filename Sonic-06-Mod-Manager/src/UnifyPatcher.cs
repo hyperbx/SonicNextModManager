@@ -597,7 +597,6 @@ namespace Unify.Patcher
                         tempLine[6] = tempLine[7] = string.Empty; //Replace the 2nd section (the original number)
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
-
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
@@ -680,7 +679,6 @@ namespace Unify.Patcher
                             editedLua[lineNum += 2] = "  y = 0.7 * meter,";
                         }
                 }
-
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
@@ -688,81 +686,100 @@ namespace Unify.Patcher
 
         public static void DisableBloom(string directoryRoot, bool enabled)
         {
-            Decompile(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+            var files = Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories);
 
-            foreach (string line in editedLua) {
-                if (line.Contains("ApplyBloom")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
-                    if (!enabled)
-                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
-                    else {
-                        if (tempLine[2].StartsWith("--"))
-                            tempLine[2] = tempLine[2].Substring(2);
+            foreach (var lub in files) {
+                if (Path.GetFileName(lub) != "render_shadowmap.lub" && Path.GetFileName(lub) != "render_title.lub") {
+                    Decompile(lub);
+                    string[] editedLua = File.ReadAllLines(lub);
+                    int lineNum = 0;
+
+                    foreach (string line in editedLua) {
+                        if (line.Contains("ApplyBloom")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            if (!enabled)
+                                tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                            else {
+                                if (tempLine[2].StartsWith("--"))
+                                    tempLine[2] = tempLine[2].Substring(2);
+                            }
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
+                        lineNum++;
                     }
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                    File.WriteAllLines(lub, editedLua); //Resave the Lua
                 }
-
-                lineNum++;
             }
-            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
 
         public static void DisableHUD(string directoryRoot, bool enabled)
         {
-            Decompile(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+            var files = Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories);
 
-            foreach (string line in editedLua) {
-                if (line.Contains("Render2D")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
-                    if (!enabled)
-                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
-                    else {
-                        if (tempLine[2].StartsWith("--"))
-                            tempLine[2] = tempLine[2].Substring(2);
-                    }
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
-                }
-                if (line.Contains("RenderWorld(_ARG_0_, \"afterpp\"")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
-                    if (!enabled)
-                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
-                    else {
-                        if (tempLine[2].StartsWith("--"))
-                            tempLine[2] = tempLine[2].Substring(2);
-                    }
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
-                }
+            foreach (var lub in files) {
+                if (Path.GetFileName(lub) != "render_shadowmap.lub" && Path.GetFileName(lub) != "render_title.lub") {
+                    Decompile(lub);
+                    string[] editedLua = File.ReadAllLines(lub);
+                    int lineNum = 0;
+                    int modified = 0;
 
-                lineNum++;
+                    foreach (string line in editedLua) {
+                        if (line.Contains("Render2D")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            if (!enabled) {
+                                if (tempLine[0] != "function")
+                                    tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                            } else {
+                                if (tempLine[2].StartsWith("--"))
+                                    tempLine[2] = tempLine[2].Substring(2);
+                            }
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                            modified++;
+                        }
+                        if (line.Contains("RenderWorld(_ARG_0_, \"afterpp\"")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            if (!enabled)
+                                tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                            else {
+                                if (tempLine[2].StartsWith("--"))
+                                    tempLine[2] = tempLine[2].Substring(2);
+                            }
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                            modified++;
+                        }
+                        lineNum++;
+                    }
+                    if (modified != 0) File.WriteAllLines(lub, editedLua); //Resave the Lua
+                }
             }
-            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
 
         public static void DisableShadows(string directoryRoot, bool enabled)
         {
-            Decompile(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+            var files = Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories);
 
-            foreach (string line in editedLua) {
-                if (line.Contains("RenderCSM")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
-                    if (!enabled)
-                        tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
-                    else {
-                        if (tempLine[2].StartsWith("--"))
-                            tempLine[2] = tempLine[2].Substring(2);
+            foreach (var lub in files) {
+                if (Path.GetFileName(lub) != "render_shadowmap.lub" && Path.GetFileName(lub) != "render_title.lub") {
+                    Decompile(lub);
+                    string[] editedLua = File.ReadAllLines(lub);
+                    int lineNum = 0;
+
+                    foreach (string line in editedLua) {
+                        if (line.Contains("RenderCSM")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            if (!enabled)
+                                tempLine[2] = "--" + tempLine[2]; //Replace the 2nd section (the original number)
+                            else {
+                                if (tempLine[2].StartsWith("--"))
+                                    tempLine[2] = tempLine[2].Substring(2);
+                            }
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
+                        lineNum++;
                     }
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                    File.WriteAllLines(lub, editedLua); //Resave the Lua
                 }
-
-                lineNum++;
             }
-            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
 
         public static void UnlockMidairMomentum(string directoryRoot, bool enabled)
@@ -813,7 +830,6 @@ namespace Unify.Patcher
                         }
                         editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                     }
-
                     lineNum++;
                 }
                 File.WriteAllLines(lub, editedLua); //Resave the Lua
@@ -837,7 +853,6 @@ namespace Unify.Patcher
                     if (!enabled) tempLine[2] = (((origTimer * 1000) + 125) / 1000).ToString(); //Replace the 2nd section (the original number)
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
-
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
@@ -946,7 +961,6 @@ namespace Unify.Patcher
                         tempLine[2] = "0";
                     editedLua[lineNum] = string.Join(" ", tempLine);
                 }
-
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua);
@@ -967,7 +981,6 @@ namespace Unify.Patcher
                         tempLine[3] = "other_module_blaze_homing)";
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
-
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
@@ -1000,7 +1013,6 @@ namespace Unify.Patcher
                         tempLine[2] = "\"4x\""; //Replace the 2nd section (the original number)
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
-
                 if (line.EndsWith("MSAAType)")) {
                     string[] tempLine = line.Split(' '); //Split line into different sections
                     if (scale == 0) {
@@ -1011,7 +1023,6 @@ namespace Unify.Patcher
                         tempLine[14] = "MSAAType)"; //Replace the 2nd section (the original number)
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
-
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua

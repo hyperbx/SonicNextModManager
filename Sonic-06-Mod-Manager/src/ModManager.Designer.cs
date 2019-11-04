@@ -1046,6 +1046,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.clb_PatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.clb_PatchesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.clb_PatchesList.CheckOnClick = true;
             this.clb_PatchesList.ForeColor = System.Drawing.SystemColors.Control;
             this.clb_PatchesList.FormattingEnabled = true;
             this.clb_PatchesList.Items.AddRange(new object[] {
@@ -1063,6 +1064,7 @@
             this.clb_PatchesList.Name = "clb_PatchesList";
             this.clb_PatchesList.Size = new System.Drawing.Size(257, 470);
             this.clb_PatchesList.TabIndex = 1;
+            this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
             // 
             // unifytb_Tab_Settings
             // 
