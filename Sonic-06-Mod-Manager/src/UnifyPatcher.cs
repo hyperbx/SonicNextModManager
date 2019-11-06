@@ -613,10 +613,9 @@ namespace Unify.Patcher
                     string[] tempLine = line.Split(' '); //Split line into different sections
                     if (type == 0)
                         tempLine[2] = "6.5"; //Retail
-                    else if (type == 1)
-                    {
+                    else if (type == 1) {
                         if (fov > 90)
-                            tempLine[2] = "2.5";
+                            tempLine[2] = "3.5";
                         else
                             tempLine[2] = "4.5";
                     }
@@ -665,19 +664,23 @@ namespace Unify.Patcher
                         tempLine[2] = "250";
                     editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
                 }
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
+        public static void CameraHeight(string directoryRoot, decimal height)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua) {
                 if (line.StartsWith("c_camera")) {
-                    if (type == 1)
-                        if (editedLua[lineNum].Contains("c_camera = { x ="))
-                            editedLua[lineNum] = "c_camera = { x = 0 * meter, y = 0.5 * meter, z = 0 * meter }";
-                        else {
-                            editedLua[lineNum += 2] = "  y = 0.5 * meter,";
-                        }
+                    if (editedLua[lineNum].Contains("c_camera = { x ="))
+                        editedLua[lineNum] = "c_camera = { x = 0 * meter, y = " + (height / 100) + " * meter, z = 0 * meter }";
                     else
-                        if (editedLua[lineNum].Contains("c_camera = { x ="))
-                            editedLua[lineNum] = "c_camera = { x = 0 * meter, y = 0.7 * meter, z = 0 * meter }";
-                        else {
-                            editedLua[lineNum += 2] = "  y = 0.7 * meter,";
-                        }
+                        editedLua[lineNum += 2] = $"  y = {height / 100} * meter,";
                 }
                 lineNum++;
             }
@@ -1029,7 +1032,7 @@ namespace Unify.Patcher
         }
     }
 
-    class XMA
+    class AV
     {
         public static void DisableMusic(string directoryRoot) {
             var files = Directory.GetFiles(directoryRoot, "*.*", SearchOption.TopDirectoryOnly)

@@ -71,8 +71,8 @@
     <Setting Name="patches_CameraDistance" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">650</Value>
     </Setting>
-    <Setting Name="patches_CameraHeight" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+    <Setting Name="patches_CameraHeight" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">70</Value>
     </Setting>
     <Setting Name="manualInstall" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

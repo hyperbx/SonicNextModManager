@@ -84,6 +84,9 @@
             this.lbl_EmulatorEXE = new System.Windows.Forms.Label();
             this.unifytb_Tab_Patches = new System.Windows.Forms.TabPage();
             this.group_Tweaks = new System.Windows.Forms.GroupBox();
+            this.btn_ResetCameraHeight = new System.Windows.Forms.Button();
+            this.nud_CameraHeight = new System.Windows.Forms.NumericUpDown();
+            this.lbl_CameraHeight = new System.Windows.Forms.Label();
             this.btn_ResetFOV = new System.Windows.Forms.Button();
             this.nud_FieldOfView = new System.Windows.Forms.NumericUpDown();
             this.lbl_FieldOfView = new System.Windows.Forms.Label();
@@ -143,6 +146,7 @@
             this.group_Setup.SuspendLayout();
             this.unifytb_Tab_Patches.SuspendLayout();
             this.group_Tweaks.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_CameraHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_FieldOfView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).BeginInit();
             this.unifytb_Tab_Settings.SuspendLayout();
@@ -807,6 +811,9 @@
             this.group_Tweaks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Tweaks.Controls.Add(this.btn_ResetCameraHeight);
+            this.group_Tweaks.Controls.Add(this.nud_CameraHeight);
+            this.group_Tweaks.Controls.Add(this.lbl_CameraHeight);
             this.group_Tweaks.Controls.Add(this.btn_ResetFOV);
             this.group_Tweaks.Controls.Add(this.nud_FieldOfView);
             this.group_Tweaks.Controls.Add(this.lbl_FieldOfView);
@@ -831,6 +838,48 @@
             this.group_Tweaks.TabStop = false;
             this.group_Tweaks.Text = "Tweaks";
             // 
+            // btn_ResetCameraHeight
+            // 
+            this.btn_ResetCameraHeight.FlatAppearance.BorderSize = 0;
+            this.btn_ResetCameraHeight.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetCameraHeight.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetCameraHeight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetCameraHeight.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraHeight.Image")));
+            this.btn_ResetCameraHeight.Location = new System.Drawing.Point(227, 240);
+            this.btn_ResetCameraHeight.Name = "btn_ResetCameraHeight";
+            this.btn_ResetCameraHeight.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetCameraHeight.TabIndex = 104;
+            this.btn_ResetCameraHeight.UseVisualStyleBackColor = true;
+            this.btn_ResetCameraHeight.Click += new System.EventHandler(this.Btn_ResetCameraHeight_Click);
+            // 
+            // nud_CameraHeight
+            // 
+            this.nud_CameraHeight.DecimalPlaces = 1;
+            this.nud_CameraHeight.Location = new System.Drawing.Point(14, 239);
+            this.nud_CameraHeight.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.nud_CameraHeight.Name = "nud_CameraHeight";
+            this.nud_CameraHeight.Size = new System.Drawing.Size(211, 23);
+            this.nud_CameraHeight.TabIndex = 103;
+            this.nud_CameraHeight.Value = new decimal(new int[] {
+            70,
+            0,
+            0,
+            0});
+            // 
+            // lbl_CameraHeight
+            // 
+            this.lbl_CameraHeight.AutoSize = true;
+            this.lbl_CameraHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_CameraHeight.Location = new System.Drawing.Point(11, 221);
+            this.lbl_CameraHeight.Name = "lbl_CameraHeight";
+            this.lbl_CameraHeight.Size = new System.Drawing.Size(87, 15);
+            this.lbl_CameraHeight.TabIndex = 102;
+            this.lbl_CameraHeight.Text = "Camera Height";
+            // 
             // btn_ResetFOV
             // 
             this.btn_ResetFOV.FlatAppearance.BorderSize = 0;
@@ -838,7 +887,7 @@
             this.btn_ResetFOV.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetFOV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetFOV.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetFOV.Image")));
-            this.btn_ResetFOV.Location = new System.Drawing.Point(227, 240);
+            this.btn_ResetFOV.Location = new System.Drawing.Point(227, 289);
             this.btn_ResetFOV.Name = "btn_ResetFOV";
             this.btn_ResetFOV.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetFOV.TabIndex = 98;
@@ -847,7 +896,7 @@
             // 
             // nud_FieldOfView
             // 
-            this.nud_FieldOfView.Location = new System.Drawing.Point(14, 239);
+            this.nud_FieldOfView.Location = new System.Drawing.Point(14, 288);
             this.nud_FieldOfView.Maximum = new decimal(new int[] {
             255,
             0,
@@ -867,7 +916,7 @@
             // 
             this.lbl_FieldOfView.AutoSize = true;
             this.lbl_FieldOfView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_FieldOfView.Location = new System.Drawing.Point(11, 221);
+            this.lbl_FieldOfView.Location = new System.Drawing.Point(11, 270);
             this.lbl_FieldOfView.Name = "lbl_FieldOfView";
             this.lbl_FieldOfView.Size = new System.Drawing.Size(74, 15);
             this.lbl_FieldOfView.TabIndex = 96;
@@ -1054,6 +1103,7 @@
             "Curved Homing Attack for Sonic",
             "Disable Bloom",
             "Disable HUD",
+            "Disable Intro Logos",
             "Disable Music",
             "Disable Shadows",
             "Omega Blur Fix",
@@ -1064,7 +1114,7 @@
             this.clb_PatchesList.Name = "clb_PatchesList";
             this.clb_PatchesList.Size = new System.Drawing.Size(257, 470);
             this.clb_PatchesList.TabIndex = 1;
-            this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
+            this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.Clb_PatchesList_SelectedIndexChanged);
             // 
             // unifytb_Tab_Settings
             // 
@@ -1566,6 +1616,7 @@
             this.unifytb_Tab_Patches.ResumeLayout(false);
             this.group_Tweaks.ResumeLayout(false);
             this.group_Tweaks.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_CameraHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_FieldOfView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).EndInit();
             this.unifytb_Tab_Settings.ResumeLayout(false);
@@ -1689,5 +1740,8 @@
         private System.Windows.Forms.Button btn_ResetRenderer;
         private System.Windows.Forms.Label lbl_Renderer;
         private System.Windows.Forms.ComboBox combo_Renderer;
+        private System.Windows.Forms.Button btn_ResetCameraHeight;
+        private System.Windows.Forms.NumericUpDown nud_CameraHeight;
+        private System.Windows.Forms.Label lbl_CameraHeight;
     }
 }

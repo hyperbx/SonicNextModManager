@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.2"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.21"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -113,7 +113,7 @@ namespace Sonic_06_Mod_Manager
             if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView <= 90)
                 nud_CameraDistance.Value = 450;
             else if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView > 90)
-                nud_CameraDistance.Value = 250;
+                nud_CameraDistance.Value = 350;
             else
                 nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
             check_ManualPatches.Checked = Properties.Settings.Default.manualPatches;
@@ -247,6 +247,7 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.emulator_Discord = check_Discord.Checked;
             Properties.Settings.Default.patches_CameraDistance = Convert.ToInt32(nud_CameraDistance.Value);
             Properties.Settings.Default.patches_FieldOfView = Convert.ToInt32(nud_FieldOfView.Value);
+            Properties.Settings.Default.patches_CameraHeight = Convert.ToInt32(nud_CameraHeight.Value);
             Properties.Settings.Default.Save();
         }
 
@@ -403,7 +404,7 @@ namespace Sonic_06_Mod_Manager
             else if (combo_Emulator_System.SelectedIndex == 1) system = "ps3";
             else return;
 
-            if (nud_FieldOfView.Value != 90 && system != "ps3") {
+            if (nud_FieldOfView.Value != 90 && system == "xenon") {
                 Status = SystemMessages.msg_PatchingCamera;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
                     if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
@@ -417,11 +418,32 @@ namespace Sonic_06_Mod_Manager
             if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Music"))) {
                 Status = SystemMessages.msg_PatchingAudio;
                 if (system == "xenon") {
-                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound"));
-                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound", "event"));
+                    AV.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound"));
+                    AV.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound", "event"));
                 } else if (system == "ps3") {
-                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound"));
-                    XMA.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound", "event"));
+                    AV.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound"));
+                    AV.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "ps3", "sound", "event"));
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
+            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Intro Logos"))) {
+                string HDSEGARoot = Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound", "HD_SEGA");
+                Status = SystemMessages.msg_PatchingVideo;
+                if (system == "xenon") {
+                    if (!File.Exists($"{HDSEGARoot}.wmv_back") && !File.Exists($"{HDSEGARoot}.wmv_orig"))
+                        File.Move($"{HDSEGARoot}.wmv", $"{HDSEGARoot}.wmv_orig");
+                    else if (File.Exists($"{HDSEGARoot}.wmv_back")) {
+                        File.Move($"{HDSEGARoot}.wmv_back", $"{HDSEGARoot}.wmv_orig");
+                        File.Delete($"{HDSEGARoot}.wmv");
+                    }
+                } else if (system == "ps3") {
+                    if (!File.Exists($"{HDSEGARoot}.pam_back") && !File.Exists($"{HDSEGARoot}.pam_orig"))
+                        File.Move($"{HDSEGARoot}.pam", $"{HDSEGARoot}.pam_orig");
+                    else if (File.Exists($"{HDSEGARoot}.pam_back")) {
+                        File.Move($"{HDSEGARoot}.pam_back", $"{HDSEGARoot}.pam_orig");
+                        File.Delete($"{HDSEGARoot}.pam");
+                    }
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }
@@ -560,9 +582,29 @@ namespace Sonic_06_Mod_Manager
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
+                } else if (Path.GetFileName(arc) == "sprite.arc") {
+                    int proceed = 0;
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Intro Logos"))) proceed++;
+
+                    if (proceed != 0) {
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+
+                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Intro Logos"))) {
+                            string criLogo = Path.Combine(unpack, "sprite\\win32\\sprite\\logo\\cri_logo.xncp");
+                            string sonicteamLogo = Path.Combine(unpack, "sprite\\win32\\sprite\\logo\\sonicteam_logo.xncp");
+                            if (File.Exists(criLogo)) File.Delete(criLogo);
+                            if (File.Exists(sonicteamLogo)) File.Delete(sonicteamLogo);
+                        }
+
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
                 } else if (Path.GetFileName(arc) == "player.arc") {
                     int proceed = 0;
                     if (combo_CameraType.SelectedIndex != 0) proceed++;
+                    if (nud_CameraHeight.Value != 70) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) proceed++;
@@ -601,9 +643,13 @@ namespace Sonic_06_Mod_Manager
                             Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board_wap.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
                         }
 
-                        if (combo_CameraType.SelectedIndex != 0) {
+                        if (combo_CameraType.SelectedIndex == 1) {
                             Status = SystemMessages.msg_PatchingCamera;
                             Lua.CameraType(Path.Combine(unpack, $"player\\{system}\\player\\common.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
+                        }
+
+                        if (nud_CameraHeight.Value != 70) {
+                            Lua.CameraHeight(Path.Combine(unpack, $"player\\{system}\\player\\common.lub"), nud_CameraHeight.Value);
                         }
 
                         ARC.RepackARC(unpack, arc);
@@ -1120,15 +1166,18 @@ namespace Sonic_06_Mod_Manager
             if (combo_CameraType.SelectedIndex != 0) {
                 if (combo_CameraType.SelectedIndex == 1) {
                     if (combo_Emulator_System.SelectedIndex == 0) {
-                        nud_CameraDistance.Value = 250;
-                        nud_FieldOfView.Value = 150;
+                        nud_CameraDistance.Value = 350;
+                        nud_CameraHeight.Value = 32.5m;
+                        nud_FieldOfView.Value = 110;
                     } else {
                         nud_CameraDistance.Value = 450;
+                        nud_CameraHeight.Value = 32.5m;
                         nud_FieldOfView.Value = 90;
                     }
                 }
                 else if (combo_CameraType.SelectedIndex == 2) {
                     nud_CameraDistance.Value = 550;
+                    nud_CameraHeight.Value = 70;
                     nud_FieldOfView.Value = 90;
                 }
                 nud_CameraDistance.Enabled = false;
@@ -1136,6 +1185,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_CameraDistance.ForeColor = SystemColors.GrayText;
             } else {
                 nud_CameraDistance.Value = 650;
+                nud_CameraHeight.Value = 70;
                 nud_FieldOfView.Value = 90;
                 nud_CameraDistance.Enabled = true;
                 btn_ResetCameraDistance.Enabled = true;
@@ -1174,21 +1224,40 @@ namespace Sonic_06_Mod_Manager
 
         private void Btn_ResetFOV_Click(object sender, EventArgs e) { // Default Field of View to 90
             if (combo_CameraType.SelectedIndex == 1) {
-                if (nud_CameraDistance.Value == 450) nud_FieldOfView.Value = 90;
-                else nud_FieldOfView.Value = 150;
+                if (nud_CameraDistance.Value == 450) { 
+                    nud_FieldOfView.Value = 90;
+                    Properties.Settings.Default.patches_FieldOfView = 90;
+                } else {
+                    nud_FieldOfView.Value = 110;
+                    Properties.Settings.Default.patches_FieldOfView = 110;
+                }
+            } else { 
+                nud_FieldOfView.Value = 90;
+                Properties.Settings.Default.patches_FieldOfView = 90;
             }
-            else nud_FieldOfView.Value = 90;
-            Properties.Settings.Default.patches_FieldOfView = 90;
             Properties.Settings.Default.Save();
         }
 
         private void Nud_FieldOfView_ValueChanged(object sender, EventArgs e) {
             if (combo_CameraType.SelectedIndex == 1 && nud_FieldOfView.Value <= 90) nud_CameraDistance.Value = 450;
-            else if (combo_CameraType.SelectedIndex == 1 && nud_FieldOfView.Value > 90) nud_CameraDistance.Value = 250;
+            else if (combo_CameraType.SelectedIndex == 1 && nud_FieldOfView.Value > 90) nud_CameraDistance.Value = 350;
         }
-#endregion
 
-#region Settings
+        private void Clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { clb_PatchesList.ClearSelected(); }
+
+        private void Btn_ResetCameraHeight_Click(object sender, EventArgs e) {
+            if (combo_CameraType.SelectedIndex == 1) {
+                nud_CameraHeight.Value = 32.5m;
+                Properties.Settings.Default.patches_CameraHeight = 32.5m;
+            } else {
+                nud_CameraHeight.Value = 70;
+                Properties.Settings.Default.patches_CameraHeight = 70;
+            } 
+            Properties.Settings.Default.Save();
+        }
+        #endregion
+
+        #region Settings
         private void Check_SaveRedirect_CheckedChanged(object sender, EventArgs e) {
             Properties.Settings.Default.saveRedirect = check_SaveRedirect.Checked;
             Properties.Settings.Default.Save();
@@ -1374,6 +1443,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_CameraType.ForeColor = SystemColors.GrayText;
                     lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                     lbl_Renderer.ForeColor = SystemColors.GrayText;
+                    lbl_CameraHeight.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
@@ -1384,6 +1454,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_CameraType.ForeColor = SystemColors.ControlText;
                     if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.ControlText;
                     lbl_Renderer.ForeColor = SystemColors.ControlText;
+                    lbl_CameraHeight.ForeColor = SystemColors.ControlText;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1485,6 +1556,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_CameraType.ForeColor = SystemColors.GrayText;
                     lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                     lbl_Renderer.ForeColor = SystemColors.GrayText;
+                    lbl_CameraHeight.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
@@ -1495,6 +1567,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_CameraType.ForeColor = SystemColors.Control;
                     if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.Control;
                     lbl_Renderer.ForeColor = SystemColors.Control;
+                    lbl_CameraHeight.ForeColor = SystemColors.Control;
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1662,6 +1735,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_CameraType.ForeColor = SystemColors.GrayText;
                 lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                 lbl_Renderer.ForeColor = SystemColors.GrayText;
+                lbl_CameraHeight.ForeColor = SystemColors.GrayText;
                 combo_CameraType.Enabled = false;
                 btn_ResetCameraType.Enabled = false;
                 clb_PatchesList.Enabled = false;
@@ -1674,6 +1748,8 @@ namespace Sonic_06_Mod_Manager
                 btn_ResetFOV.Enabled = false;
                 combo_Renderer.Enabled = false;
                 btn_ResetRenderer.Enabled = false;
+                nud_CameraHeight.Enabled = false;
+                btn_ResetCameraHeight.Enabled = false;
             }
             else
             {
@@ -1701,6 +1777,7 @@ namespace Sonic_06_Mod_Manager
                     if (combo_CameraType.SelectedIndex != 1)
                         lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                     lbl_Renderer.ForeColor = SystemColors.ControlText;
+                    lbl_CameraHeight.ForeColor = SystemColors.ControlText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
@@ -1713,6 +1790,7 @@ namespace Sonic_06_Mod_Manager
                     if (combo_CameraType.SelectedIndex != 1)
                         lbl_CameraDistance.ForeColor = SystemColors.Control;
                     lbl_Renderer.ForeColor = SystemColors.Control;
+                    lbl_CameraHeight.ForeColor = SystemColors.Control;
                 }
                 btn_SaveAndPlay.Text = "Save and Play";
                 btn_SaveAndPlay.Width = 245;
@@ -1725,6 +1803,8 @@ namespace Sonic_06_Mod_Manager
                 btn_Play.Enabled = true;
                 combo_Renderer.Enabled = true;
                 btn_ResetRenderer.Enabled = true;
+                nud_CameraHeight.Enabled = true;
+                btn_ResetCameraHeight.Enabled = true;
             }
 
             Properties.Settings.Default.Save();
@@ -1781,8 +1861,6 @@ namespace Sonic_06_Mod_Manager
         }
         #endregion
 
-        private void clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) {
-            clb_PatchesList.ClearSelected();
-        }
+
     }
 }
