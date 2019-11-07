@@ -51,7 +51,7 @@
             this.link_acro.AutoSize = true;
             this.link_acro.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_acro.LinkColor = System.Drawing.Color.Black;
-            this.link_acro.Location = new System.Drawing.Point(233, 302);
+            this.link_acro.Location = new System.Drawing.Point(233, 213);
             this.link_acro.Name = "link_acro";
             this.link_acro.Size = new System.Drawing.Size(30, 14);
             this.link_acro.TabIndex = 29;
@@ -103,7 +103,7 @@
             this.link_Melpontro.AutoSize = true;
             this.link_Melpontro.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_Melpontro.LinkColor = System.Drawing.Color.Black;
-            this.link_Melpontro.Location = new System.Drawing.Point(233, 272);
+            this.link_Melpontro.Location = new System.Drawing.Point(233, 288);
             this.link_Melpontro.Name = "link_Melpontro";
             this.link_Melpontro.Size = new System.Drawing.Size(64, 14);
             this.link_Melpontro.TabIndex = 25;
@@ -116,7 +116,7 @@
             this.link_sharu6262.AutoSize = true;
             this.link_sharu6262.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_sharu6262.LinkColor = System.Drawing.Color.Black;
-            this.link_sharu6262.Location = new System.Drawing.Point(233, 257);
+            this.link_sharu6262.Location = new System.Drawing.Point(233, 273);
             this.link_sharu6262.Name = "link_sharu6262";
             this.link_sharu6262.Size = new System.Drawing.Size(62, 14);
             this.link_sharu6262.TabIndex = 23;
