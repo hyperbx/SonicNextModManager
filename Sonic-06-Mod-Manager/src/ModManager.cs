@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.22"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.23"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -110,6 +110,7 @@ namespace Sonic_06_Mod_Manager
             check_FTP.Checked = Properties.Settings.Default.FTP;
             check_ManualInstall.Checked = Properties.Settings.Default.manualInstall;
             nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
+            check_DisableSoftwareUpdater.Checked = Properties.Settings.Default.disableSoftwareUpdater;
 
             if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView <= 90)
                 nud_CameraDistance.Value = 450;
@@ -215,7 +216,8 @@ namespace Sonic_06_Mod_Manager
                 if (Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.xeniaPath)) || Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.RPCS3Path)))
                     if (!check_ManualInstall.Checked) RestoreSaves(); // Ensures manual install is disabled first
             if ((versionNumber.Contains("-indev") || versionNumber.Contains("-beta") || versionNumber.Contains("-test")) == false)
-                Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
+                if (!Properties.Settings.Default.disableSoftwareUpdater)
+                    Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
 
             if (!Prerequisites.JavaCheck()) UnifyMessages.UnifyMessage.Show(SystemMessages.ex_JavaMissing, SystemMessages.tl_JavaError, "OK", "Information");
         }
@@ -927,7 +929,7 @@ namespace Sonic_06_Mod_Manager
         }
 #endregion
 
-#region Emulator
+        #region Emulator
         private void LaunchXenia() {
             if (text_GameDirectory.Text == string.Empty) {
                 //Select game directory and save if we don't have one specified.
@@ -1155,7 +1157,7 @@ namespace Sonic_06_Mod_Manager
         }
 #endregion
 
-#region Patches
+        #region Patches
         private void Combo_Renderer_SelectedIndexChanged(object sender, EventArgs e) {
             Properties.Settings.Default.patches_Renderer = combo_Renderer.SelectedIndex;
             Properties.Settings.Default.Save();
@@ -1245,9 +1247,9 @@ namespace Sonic_06_Mod_Manager
 
         private void Nud_FieldOfView_ValueChanged(object sender, EventArgs e) {
             if (combo_CameraType.SelectedIndex == 1) { 
-                if (nud_FieldOfView.Value <= 90)
+                if (nud_FieldOfView.Value == 90)
                     nud_CameraDistance.Value = 450; 
-                else if (nud_FieldOfView.Value > 90)
+                else if (nud_FieldOfView.Value == 110)
                     nud_CameraDistance.Value = 350;
             }
         }
@@ -1295,6 +1297,11 @@ namespace Sonic_06_Mod_Manager
                 else
                     lbl_FTP.ForeColor = SystemColors.Control;
             }
+            Properties.Settings.Default.Save();
+        }
+
+        private void Check_DisableSoftwareUpdater_CheckedChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.disableSoftwareUpdater = check_DisableSoftwareUpdater.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -1442,6 +1449,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_GameBanana.ForeColor = SystemColors.ControlText;
                 lbl_SetStatus.ForeColor = SystemColors.ControlText; lbl_SetStatus.BackColor = SystemColors.Control;
                 lbl_ManualPatches.ForeColor = SystemColors.ControlText;
+                lbl_DisableSoftwareUpdater.ForeColor = SystemColors.ControlText;
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
@@ -1555,6 +1563,7 @@ namespace Sonic_06_Mod_Manager
                 sonic06mm_Aldi.BackColor = Color.FromArgb(45, 45, 48);
                 lbl_SetStatus.ForeColor = SystemColors.Control; lbl_SetStatus.BackColor = Color.FromArgb(28, 28, 28);
                 lbl_ManualPatches.ForeColor = SystemColors.Control;
+                lbl_DisableSoftwareUpdater.ForeColor = SystemColors.Control;
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;

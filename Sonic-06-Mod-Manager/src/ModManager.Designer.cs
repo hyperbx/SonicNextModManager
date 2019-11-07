@@ -106,6 +106,8 @@
             this.clb_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
+            this.lbl_DisableSoftwareUpdater = new System.Windows.Forms.Label();
+            this.check_DisableSoftwareUpdater = new System.Windows.Forms.CheckBox();
             this.lbl_SaveRedirect = new System.Windows.Forms.Label();
             this.check_SaveRedirect = new System.Windows.Forms.CheckBox();
             this.btn_ReportBug = new System.Windows.Forms.Button();
@@ -1133,6 +1135,8 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Options.Controls.Add(this.lbl_DisableSoftwareUpdater);
+            this.group_Options.Controls.Add(this.check_DisableSoftwareUpdater);
             this.group_Options.Controls.Add(this.lbl_SaveRedirect);
             this.group_Options.Controls.Add(this.check_SaveRedirect);
             this.group_Options.Controls.Add(this.btn_ReportBug);
@@ -1157,6 +1161,27 @@
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
+            // 
+            // lbl_DisableSoftwareUpdater
+            // 
+            this.lbl_DisableSoftwareUpdater.AutoSize = true;
+            this.lbl_DisableSoftwareUpdater.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_DisableSoftwareUpdater.Location = new System.Drawing.Point(32, 120);
+            this.lbl_DisableSoftwareUpdater.Name = "lbl_DisableSoftwareUpdater";
+            this.lbl_DisableSoftwareUpdater.Size = new System.Drawing.Size(137, 15);
+            this.lbl_DisableSoftwareUpdater.TabIndex = 101;
+            this.lbl_DisableSoftwareUpdater.Text = "Disable software updater";
+            // 
+            // check_DisableSoftwareUpdater
+            // 
+            this.check_DisableSoftwareUpdater.AutoSize = true;
+            this.check_DisableSoftwareUpdater.ForeColor = System.Drawing.SystemColors.Control;
+            this.check_DisableSoftwareUpdater.Location = new System.Drawing.Point(15, 121);
+            this.check_DisableSoftwareUpdater.Name = "check_DisableSoftwareUpdater";
+            this.check_DisableSoftwareUpdater.Size = new System.Drawing.Size(15, 14);
+            this.check_DisableSoftwareUpdater.TabIndex = 100;
+            this.check_DisableSoftwareUpdater.UseVisualStyleBackColor = true;
+            this.check_DisableSoftwareUpdater.CheckedChanged += new System.EventHandler(this.Check_DisableSoftwareUpdater_CheckedChanged);
             // 
             // lbl_SaveRedirect
             // 
@@ -1743,5 +1768,7 @@
         private System.Windows.Forms.Button btn_ResetCameraHeight;
         private System.Windows.Forms.NumericUpDown nud_CameraHeight;
         private System.Windows.Forms.Label lbl_CameraHeight;
+        private System.Windows.Forms.Label lbl_DisableSoftwareUpdater;
+        private System.Windows.Forms.CheckBox check_DisableSoftwareUpdater;
     }
 }
