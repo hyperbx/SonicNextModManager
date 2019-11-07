@@ -118,6 +118,8 @@ namespace Sonic_06_Mod_Manager
             else
                 nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
 
+            nud_CameraHeight.Value = Properties.Settings.Default.patches_CameraHeight;
+            nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
             check_ManualPatches.Checked = Properties.Settings.Default.manualPatches;
             check_SaveRedirect.Checked = Properties.Settings.Default.saveRedirect;
             combo_Renderer.SelectedIndex = Properties.Settings.Default.patches_Renderer;
@@ -1204,13 +1206,24 @@ namespace Sonic_06_Mod_Manager
 
         private void Btn_ResetCameraType_Click(object sender, EventArgs e) { // Default Camera Type to Retail
             combo_CameraType.SelectedIndex = 0;
+            nud_CameraDistance.Value = 650;
+            nud_CameraHeight.Value = 70;
+            nud_FieldOfView.Value = 90;
             Properties.Settings.Default.patches_CameraType = 0;
             Properties.Settings.Default.Save();
         }
 
         private void Btn_ResetCameraDistance_Click(object sender, EventArgs e) { // Default Camera Distance to 650
-            nud_CameraDistance.Value = 650;
-            Properties.Settings.Default.patches_CameraDistance = 650;
+            if (combo_CameraType.SelectedIndex == 0) {
+                nud_CameraDistance.Value = 650;
+                Properties.Settings.Default.patches_CameraDistance = 650;
+            } else if (combo_CameraType.SelectedIndex == 1) {
+                nud_CameraDistance.Value = 350;
+                Properties.Settings.Default.patches_CameraDistance = 350;
+            } else if (combo_CameraType.SelectedIndex == 2) {
+                nud_CameraDistance.Value = 550;
+                Properties.Settings.Default.patches_CameraDistance = 550;
+            } 
             Properties.Settings.Default.Save();
         }
 
@@ -1231,8 +1244,12 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void Nud_FieldOfView_ValueChanged(object sender, EventArgs e) {
-            if (combo_CameraType.SelectedIndex == 1 && nud_FieldOfView.Value <= 90) nud_CameraDistance.Value = 450;
-            else if (combo_CameraType.SelectedIndex == 1 && nud_FieldOfView.Value > 90) nud_CameraDistance.Value = 350;
+            if (combo_CameraType.SelectedIndex == 1) { 
+                if (nud_FieldOfView.Value <= 90)
+                    nud_CameraDistance.Value = 450; 
+                else if (nud_FieldOfView.Value > 90)
+                    nud_CameraDistance.Value = 350;
+            }
         }
 
         private void Clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { clb_PatchesList.ClearSelected(); }
