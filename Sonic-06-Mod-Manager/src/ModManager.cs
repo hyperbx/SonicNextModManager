@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.21"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.22"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -110,12 +110,14 @@ namespace Sonic_06_Mod_Manager
             check_FTP.Checked = Properties.Settings.Default.FTP;
             check_ManualInstall.Checked = Properties.Settings.Default.manualInstall;
             nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
+
             if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView <= 90)
                 nud_CameraDistance.Value = 450;
             else if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView > 90)
                 nud_CameraDistance.Value = 350;
             else
                 nud_CameraDistance.Value = Properties.Settings.Default.patches_CameraDistance;
+
             check_ManualPatches.Checked = Properties.Settings.Default.manualPatches;
             check_SaveRedirect.Checked = Properties.Settings.Default.saveRedirect;
             combo_Renderer.SelectedIndex = Properties.Settings.Default.patches_Renderer;
@@ -1174,25 +1176,15 @@ namespace Sonic_06_Mod_Manager
                         nud_CameraHeight.Value = 32.5m;
                         nud_FieldOfView.Value = 90;
                     }
-                }
-                else if (combo_CameraType.SelectedIndex == 2) {
+                } else if (combo_CameraType.SelectedIndex == 2) {
                     nud_CameraDistance.Value = 550;
                     nud_CameraHeight.Value = 70;
                     nud_FieldOfView.Value = 90;
                 }
-                nud_CameraDistance.Enabled = false;
-                btn_ResetCameraDistance.Enabled = false;
-                lbl_CameraDistance.ForeColor = SystemColors.GrayText;
             } else {
                 nud_CameraDistance.Value = 650;
                 nud_CameraHeight.Value = 70;
                 nud_FieldOfView.Value = 90;
-                nud_CameraDistance.Enabled = true;
-                btn_ResetCameraDistance.Enabled = true;
-                if (Properties.Settings.Default.theme)
-                    lbl_CameraDistance.ForeColor = SystemColors.Control;
-                else
-                    lbl_CameraDistance.ForeColor = SystemColors.ControlText;
             }
             Properties.Settings.Default.patches_CameraType = combo_CameraType.SelectedIndex;
             Properties.Settings.Default.Save();
@@ -1860,7 +1852,5 @@ namespace Sonic_06_Mod_Manager
             }
         }
         #endregion
-
-
     }
 }
