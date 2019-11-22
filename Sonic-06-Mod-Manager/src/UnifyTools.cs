@@ -305,13 +305,27 @@ namespace Unify.Tools
 
     public class Bytes
     {
-        public static byte[] StringToByteArray(string hex)
-        {
+        public static byte[] StringToByteArray(string hex) {
             int NumberChars = hex.Length;
             byte[] bytes = new byte[NumberChars / 2];
             for (int i = 0; i < NumberChars; i += 2)
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
             return bytes;
+        }
+
+        public static byte[] StringToByteArrayExtended(string hex) {
+            int NumberChars = hex.Length;
+            byte[] bytes = new byte[NumberChars / 2];
+            for (int i = 0; i < NumberChars; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            return bytes;
+        }
+
+        public static bool ByteArrayToFile(string fileName, byte[] byteArray) {
+            using (var fs = new FileStream(fileName, FileMode.Append, FileAccess.Write)) {
+                fs.Write(byteArray, 0, byteArray.Length);
+                return true;
+            }
         }
     }
 }

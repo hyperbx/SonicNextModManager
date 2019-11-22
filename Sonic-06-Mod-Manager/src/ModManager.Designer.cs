@@ -84,6 +84,12 @@
             this.lbl_EmulatorEXE = new System.Windows.Forms.Label();
             this.unifytb_Tab_Patches = new System.Windows.Forms.TabPage();
             this.group_Tweaks = new System.Windows.Forms.GroupBox();
+            this.help_FieldOfView = new System.Windows.Forms.LinkLabel();
+            this.help_CameraHeight = new System.Windows.Forms.LinkLabel();
+            this.help_CameraDistance = new System.Windows.Forms.LinkLabel();
+            this.help_CameraType = new System.Windows.Forms.LinkLabel();
+            this.help_Reflections = new System.Windows.Forms.LinkLabel();
+            this.help_Renderer = new System.Windows.Forms.LinkLabel();
             this.btn_ResetCameraHeight = new System.Windows.Forms.Button();
             this.nud_CameraHeight = new System.Windows.Forms.NumericUpDown();
             this.lbl_CameraHeight = new System.Windows.Forms.Label();
@@ -813,6 +819,12 @@
             this.group_Tweaks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Tweaks.Controls.Add(this.help_FieldOfView);
+            this.group_Tweaks.Controls.Add(this.help_CameraHeight);
+            this.group_Tweaks.Controls.Add(this.help_CameraDistance);
+            this.group_Tweaks.Controls.Add(this.help_CameraType);
+            this.group_Tweaks.Controls.Add(this.help_Reflections);
+            this.group_Tweaks.Controls.Add(this.help_Renderer);
             this.group_Tweaks.Controls.Add(this.btn_ResetCameraHeight);
             this.group_Tweaks.Controls.Add(this.nud_CameraHeight);
             this.group_Tweaks.Controls.Add(this.lbl_CameraHeight);
@@ -839,6 +851,96 @@
             this.group_Tweaks.TabIndex = 2;
             this.group_Tweaks.TabStop = false;
             this.group_Tweaks.Text = "Tweaks";
+            // 
+            // help_FieldOfView
+            // 
+            this.help_FieldOfView.AutoSize = true;
+            this.help_FieldOfView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.help_FieldOfView.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.help_FieldOfView.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.help_FieldOfView.LinkColor = System.Drawing.SystemColors.ControlDark;
+            this.help_FieldOfView.Location = new System.Drawing.Point(212, 270);
+            this.help_FieldOfView.Name = "help_FieldOfView";
+            this.help_FieldOfView.Size = new System.Drawing.Size(18, 15);
+            this.help_FieldOfView.TabIndex = 110;
+            this.help_FieldOfView.TabStop = true;
+            this.help_FieldOfView.Text = " ? ";
+            this.help_FieldOfView.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.help_FieldOfView_LinkClicked);
+            // 
+            // help_CameraHeight
+            // 
+            this.help_CameraHeight.AutoSize = true;
+            this.help_CameraHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.help_CameraHeight.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.help_CameraHeight.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.help_CameraHeight.LinkColor = System.Drawing.SystemColors.ControlDark;
+            this.help_CameraHeight.Location = new System.Drawing.Point(212, 221);
+            this.help_CameraHeight.Name = "help_CameraHeight";
+            this.help_CameraHeight.Size = new System.Drawing.Size(18, 15);
+            this.help_CameraHeight.TabIndex = 109;
+            this.help_CameraHeight.TabStop = true;
+            this.help_CameraHeight.Text = " ? ";
+            this.help_CameraHeight.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.help_CameraHeight_LinkClicked);
+            // 
+            // help_CameraDistance
+            // 
+            this.help_CameraDistance.AutoSize = true;
+            this.help_CameraDistance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.help_CameraDistance.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.help_CameraDistance.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.help_CameraDistance.LinkColor = System.Drawing.SystemColors.ControlDark;
+            this.help_CameraDistance.Location = new System.Drawing.Point(212, 172);
+            this.help_CameraDistance.Name = "help_CameraDistance";
+            this.help_CameraDistance.Size = new System.Drawing.Size(18, 15);
+            this.help_CameraDistance.TabIndex = 108;
+            this.help_CameraDistance.TabStop = true;
+            this.help_CameraDistance.Text = " ? ";
+            this.help_CameraDistance.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.help_CameraDistance_LinkClicked);
+            // 
+            // help_CameraType
+            // 
+            this.help_CameraType.AutoSize = true;
+            this.help_CameraType.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.help_CameraType.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.help_CameraType.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.help_CameraType.LinkColor = System.Drawing.SystemColors.ControlDark;
+            this.help_CameraType.Location = new System.Drawing.Point(212, 123);
+            this.help_CameraType.Name = "help_CameraType";
+            this.help_CameraType.Size = new System.Drawing.Size(18, 15);
+            this.help_CameraType.TabIndex = 107;
+            this.help_CameraType.TabStop = true;
+            this.help_CameraType.Text = " ? ";
+            this.help_CameraType.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Help_CameraType_LinkClicked);
+            // 
+            // help_Reflections
+            // 
+            this.help_Reflections.AutoSize = true;
+            this.help_Reflections.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.help_Reflections.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.help_Reflections.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.help_Reflections.LinkColor = System.Drawing.SystemColors.ControlDark;
+            this.help_Reflections.Location = new System.Drawing.Point(212, 74);
+            this.help_Reflections.Name = "help_Reflections";
+            this.help_Reflections.Size = new System.Drawing.Size(18, 15);
+            this.help_Reflections.TabIndex = 106;
+            this.help_Reflections.TabStop = true;
+            this.help_Reflections.Text = " ? ";
+            this.help_Reflections.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Help_Reflections_LinkClicked);
+            // 
+            // help_Renderer
+            // 
+            this.help_Renderer.AutoSize = true;
+            this.help_Renderer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.help_Renderer.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.help_Renderer.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.help_Renderer.LinkColor = System.Drawing.SystemColors.ControlDark;
+            this.help_Renderer.Location = new System.Drawing.Point(212, 25);
+            this.help_Renderer.Name = "help_Renderer";
+            this.help_Renderer.Size = new System.Drawing.Size(18, 15);
+            this.help_Renderer.TabIndex = 105;
+            this.help_Renderer.TabStop = true;
+            this.help_Renderer.Text = " ? ";
+            this.help_Renderer.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Help_Renderer_LinkClicked);
             // 
             // btn_ResetCameraHeight
             // 
@@ -1097,7 +1199,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.clb_PatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.clb_PatchesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.clb_PatchesList.CheckOnClick = true;
             this.clb_PatchesList.ForeColor = System.Drawing.SystemColors.Control;
             this.clb_PatchesList.FormattingEnabled = true;
             this.clb_PatchesList.Items.AddRange(new object[] {
@@ -1109,6 +1210,7 @@
             "Disable Music",
             "Disable Shadows",
             "Omega Blur Fix",
+            "Silver Grind Trick Fix",
             "Unlock Mid-air Momentum",
             "Unlock Tails\' Flight Limit",
             "Use Dynamic Bones for Snowboard States"});
@@ -1116,7 +1218,7 @@
             this.clb_PatchesList.Name = "clb_PatchesList";
             this.clb_PatchesList.Size = new System.Drawing.Size(257, 470);
             this.clb_PatchesList.TabIndex = 1;
-            this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.Clb_PatchesList_SelectedIndexChanged);
+            this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
             // 
             // unifytb_Tab_Settings
             // 
@@ -1417,7 +1519,7 @@
             this.group_FTP.Size = new System.Drawing.Size(522, 148);
             this.group_FTP.TabIndex = 6;
             this.group_FTP.TabStop = false;
-            this.group_FTP.Text = "File Transfer Protocol";
+            this.group_FTP.Text = "File Transfer Protocol (Deprecated)";
             // 
             // lbl_FTP
             // 
@@ -1770,5 +1872,11 @@
         private System.Windows.Forms.Label lbl_CameraHeight;
         private System.Windows.Forms.Label lbl_DisableSoftwareUpdater;
         private System.Windows.Forms.CheckBox check_DisableSoftwareUpdater;
+        private System.Windows.Forms.LinkLabel help_Renderer;
+        private System.Windows.Forms.LinkLabel help_FieldOfView;
+        private System.Windows.Forms.LinkLabel help_CameraHeight;
+        private System.Windows.Forms.LinkLabel help_CameraDistance;
+        private System.Windows.Forms.LinkLabel help_CameraType;
+        private System.Windows.Forms.LinkLabel help_Reflections;
     }
 }

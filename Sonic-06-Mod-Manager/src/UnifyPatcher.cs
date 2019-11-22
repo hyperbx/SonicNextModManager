@@ -512,6 +512,19 @@ namespace Unify.Patcher
         }
     }
 
+    class PKG
+    {
+        public static void SilverGrindTrick(string filepath) {
+            string hexString = BitConverter.ToString(File.ReadAllBytes(filepath).ToArray()).Replace("-", "");
+            string brokenAnim = "73765F6772696E64747269636B30302E786E6D2E786E6D";
+
+            if (hexString.Contains(brokenAnim)) {
+                hexString = hexString.Replace(brokenAnim, "73765F6772696E64747269636B30302E786E6D00000000");
+                File.WriteAllBytes(filepath, Bytes.StringToByteArrayExtended(hexString));
+            }
+        }
+    }
+
     class Lua
     {
         public static void Decompile(string filepath)

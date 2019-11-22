@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.23"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.24"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -224,12 +224,41 @@ namespace Sonic_06_Mod_Manager
 
         #region Mods
         private void Btn_ModInfo_Click(object sender, EventArgs e) {
-            Status = SystemMessages.msg_ModInfo;
-            if (File.Exists(configs[clb_ModsList.SelectedIndex]))
-                new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
-            else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error"); }
+            if (unifytb_Main.SelectedIndex == 0) {
+                Status = SystemMessages.msg_ModInfo;
+                if (File.Exists(configs[clb_ModsList.SelectedIndex]))
+                    new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
+                else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error"); }
+                GetMods();
+            } else if (unifytb_Main.SelectedIndex == 2) {
+                Status = SystemMessages.msg_PatchInfo;
+                if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's Action Gauge draining and replenishment when using Gems.", "Action Gauge Fixes for Sonic", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will swap Sonic's homing module with Blaze's to simulate the homing attack from early versions of Sonic '06. However, this removes Sonic's ability to destroy physics objects.", "Curved Homing Attack for Sonic", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Bloom")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will disable bloom entirely, as you would expect from a patch called 'Disable Bloom.'", "Disable Bloom", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable HUD")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will disable the HUD entirely; including the enemy gauge and water effects on the screen in Kingdom Valley.", "Disable HUD", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Intro Logos")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will disable the logos that display when the game launches.", "Disable Intro Logos", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Music")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will disable all music tracks. This may only be useful to Xbox 360 players, since the game doesn't save audio settings on that version.", "Disable Music", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Shadows")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will disable real-time shadow rendering and baked shadows. This may provide a significant performance boost, but looks pretty ugly.", "Disable Shadows", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Omega Blur Fix")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will remove Omega's transparency materials to fix a bug on Xenia where the sprites become blurry.", "Omega Blur Fix", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will remove a duplicate file extension in Silver's model package for the grind trick animation name, therefore making the animation play in-game.", "Silver Grind Trick Fix", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will unlock all mid-air momentum for every character, making it easier to move in the air.", "Unlock Mid-air Momentum", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Unlock Tails' Flight Limit")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will unlock Tails' flight limit so he doesn't slam into a ceiling whilst flying. This provides more free control akin to Sonic Adventure.", "Unlock Tails' Flight Limit", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's hair bones whilst using the snowboard.", "Use Dynamic Bones for Snowboard States", "OK", "Information");
+                }
+            }
             Status = SystemMessages.msg_DefaultStatus;
-            GetMods();
         }
 
         private void Btn_EditMod_Click(object sender, EventArgs e) {
@@ -613,6 +642,7 @@ namespace Sonic_06_Mod_Manager
                     if (nud_CameraHeight.Value != 70) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic"))) proceed++;
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Tails' Flight Limit"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States"))) proceed++;
@@ -625,6 +655,11 @@ namespace Sonic_06_Mod_Manager
                         if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) {
                             Status = SystemMessages.msg_PatchingCharacters;
                             Lua.ActionGaugeFixes(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")));
+                        }
+
+                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix"))) {
+                            Status = SystemMessages.msg_PatchingCharacters;
+                            PKG.SilverGrindTrick(Path.Combine(unpack, $"player\\{system}\\player\\silver.pkg"));
                         }
 
                         if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic"))) {
@@ -1254,8 +1289,6 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        private void Clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { clb_PatchesList.ClearSelected(); }
-
         private void Btn_ResetCameraHeight_Click(object sender, EventArgs e) {
             if (combo_CameraType.SelectedIndex == 1) {
                 nud_CameraHeight.Value = 32.5m;
@@ -1344,6 +1377,7 @@ namespace Sonic_06_Mod_Manager
         private void Unifytb_Main_SelectedIndexChanged(object sender, System.EventArgs e) {
             clb_ModsList.ClearSelected();
             clb_PatchesList.ClearSelected();
+            btn_ModInfo.Text = "Mod Info";
 
             if (check_ManualInstall.Checked) {
                 Properties.Settings.Default.manualInstall = true;
@@ -1374,6 +1408,7 @@ namespace Sonic_06_Mod_Manager
                     btn_SaveAndPlay.Width = 120;
                     btn_UninstallMods.Text = "Restore Defaults";
                     btn_UninstallMods.Visible = true;
+                    btn_ModInfo.Text = "Patch Info";
                 } else {
                     check_ManualPatches.Enabled = false;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
@@ -1385,6 +1420,7 @@ namespace Sonic_06_Mod_Manager
                     btn_ResetCameraDistance.Enabled = false;
                     combo_Reflections.Enabled = false;
                     nud_CameraDistance.Enabled = false;
+                    btn_ModInfo.Text = "Mod Info";
                 }
             } else {
                 if (check_FTP.Checked || check_ManualInstall.Checked) {
@@ -1878,5 +1914,57 @@ namespace Sonic_06_Mod_Manager
             }
         }
         #endregion
+
+        private void Help_Renderer_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to pick which renderer the game uses.\n\n" +
+                                            "" +
+                                            "► Default - Standard Sonic '06 renderer.\n" +
+                                            "► Optimised - HyperPolygon64's Optimised Renderer which improves performance without compromising visuals.\n" +
+                                            "► Destructive - AllanCat's renderer which is optimised for the Vulkan API on Xenia.\n" +
+                                            "► Cheap - Sonic Team's bizarre renderer which disables a lot of effects.", "Renderer", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void Help_Reflections_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to choose the reflection resolution. Changing this doesn't impact performance.\n\n" +
+                                            "" +
+                                            "► Off - Disables reflections entirely.\n" +
+                                            "► Quarter - Default (320x180).\n" +
+                                            "► Half - Halved internal resolution for reflections (640x360).\n" +
+                                            "► Full - Full internal resolution for reflections (1280x720).", "Reflections", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void Help_CameraType_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to change the way the camera works.\n\n" +
+                                            "" +
+                                            "► Retail - Standard Sonic '06 camera.\n" +
+                                            "► Tokyo Game Show (TGS) - A recreation of the look and feel of Tokyo Game Show (2005)'s camera.\n" +
+                                            "► Electronic Entertainment Expo (E3) - The same camera used in the Xbox Live Arcade Demo.", "Camera Type", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void help_CameraDistance_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to change the distance between the camera and the player.", "Camera Distance", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void help_CameraHeight_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to change the height at where the camera sits in relation to the player.", "Camera Height", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void help_FieldOfView_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to change the field of view for the main camera.", "Field of View", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { btn_ModInfo.Enabled = clb_PatchesList.SelectedIndex >= 0; }
     }
 }

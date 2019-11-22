@@ -215,6 +215,7 @@ namespace Unify.Messages
         public static string msg_CreateNewMod = "Creating new mod...";
         public static string msg_EditMod = "Editing mod...";
         public static string msg_ModInfo = "Previewing mod info...";
+        public static string msg_PatchInfo = "Previewing patch info...";
         public static string msg_Cleanup = "Cleaning up...";
         public static string msg_Prereq_Newtonsoft = "Newtonsoft.Json.dll was written to the application path.";
         public static string tl_FatalError = "Fatal Error";
