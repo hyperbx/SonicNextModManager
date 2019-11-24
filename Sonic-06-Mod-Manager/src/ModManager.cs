@@ -288,7 +288,7 @@ namespace Sonic_06_Mod_Manager
             SaveChecks();
             GetMods();
 
-            if ((btn_InstallMods.Text == "Save and Play" || btn_InstallMods.Text == "Install Mods") && !check_FTP.Checked) {
+            if (((sender as Button).Text == "Save and Play" || (sender as Button).Text == "Install Mods") && !check_FTP.Checked) {
                 try {
                     RestoreSaves();
                     ARC.CleanupMods(0);
@@ -356,7 +356,7 @@ namespace Sonic_06_Mod_Manager
                     Status = SystemMessages.msg_DefaultStatus;
                 }
             }
-            else if (btn_InstallMods.Text == "Apply Patches") {
+            else if ((sender as Button).Text == "Apply Patches") {
                 try {
                     if (!check_FTP.Checked) { ARC.CleanupMods(1); PatchAll(); }
                 }
