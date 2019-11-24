@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.26"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.27"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -252,6 +252,8 @@ namespace Sonic_06_Mod_Manager
                     UnifyMessages.UnifyMessage.Show("This patch will unlock Tails' flight limit so he doesn't slam into a ceiling whilst flying. This provides more free control akin to Sonic Adventure.", "Unlock Tails' Flight Limit", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's hair bones whilst using the snowboard.", "Use Dynamic Bones for Snowboard States", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Xbox Live Arcade Radial Blur")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will restore the higher quality radial blur from the Xbox Live Arcade Demo.", "Xbox Live Arcade Radial Blur", "OK", "Information");
                 }
             }
             Status = SystemMessages.msg_DefaultStatus;
@@ -623,10 +625,29 @@ namespace Sonic_06_Mod_Manager
                         unpack = ARC.UnpackARC(arc);
 
                         if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Intro Logos"))) {
+                            Status = SystemMessages.msg_PatchingVideo;
                             string criLogo = Path.Combine(unpack, "sprite\\win32\\sprite\\logo\\cri_logo.xncp");
                             string sonicteamLogo = Path.Combine(unpack, "sprite\\win32\\sprite\\logo\\sonicteam_logo.xncp");
                             if (File.Exists(criLogo)) File.Delete(criLogo);
                             if (File.Exists(sonicteamLogo)) File.Delete(sonicteamLogo);
+                        }
+
+                        ARC.RepackARC(unpack, arc);
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
+                } else if (Path.GetFileName(arc) == "shader.arc") {
+                    int proceed = 0;
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Xbox Live Arcade Radial Blur"))) proceed++;
+
+                    if (proceed != 0 && system == "xenon") {
+                        if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
+                            File.Copy(arc, $"{arc}_orig", true);
+                        unpack = ARC.UnpackARC(arc);
+
+                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Xbox Live Arcade Radial Blur"))) {
+                            Status = SystemMessages.msg_PatchingRenderer;
+                            string blurShader = Path.Combine(unpack, "shader\\xenon\\shader\\std\\BurnoutBlurFilter.fxo");
+                            File.WriteAllBytes(blurShader, Properties.Resources.BurnoutBlurFilter);
                         }
 
                         ARC.RepackARC(unpack, arc);

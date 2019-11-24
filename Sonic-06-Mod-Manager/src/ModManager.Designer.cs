@@ -1106,7 +1106,8 @@
             "Silver Grind Trick Fix",
             "Unlock Mid-air Momentum",
             "Unlock Tails\' Flight Limit",
-            "Use Dynamic Bones for Snowboard States"});
+            "Use Dynamic Bones for Snowboard States",
+            "Xbox Live Arcade Radial Blur"});
             this.clb_PatchesList.Location = new System.Drawing.Point(3, 2);
             this.clb_PatchesList.Name = "clb_PatchesList";
             this.clb_PatchesList.Size = new System.Drawing.Size(257, 468);

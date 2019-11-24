@@ -150,6 +150,7 @@
     </Compile>
     <None Include="res\barebones_render_gamemode.lub" />
     <None Include="res\barebones_render_main.lub" />
+    <None Include="res\BurnoutBlurFilter.fxo" />
     <None Include="res\render_cheap.lub" />
     <None Include="res\vulkan_render_gamemode.lub" />
     <None Include="res\vulkan_render_main.lub" />
