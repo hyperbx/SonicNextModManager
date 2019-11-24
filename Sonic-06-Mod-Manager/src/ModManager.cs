@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.24"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.25"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -84,8 +84,7 @@ namespace Sonic_06_Mod_Manager
             text_FTPLocation.Text = Properties.Settings.Default.ftpLocation;
             text_Username.Text = Properties.Settings.Default.ftpUsername;
 
-            switch (Properties.Settings.Default.filter)
-            {
+            switch (Properties.Settings.Default.filter) {
                 case 0:
                     radio_All.Checked = true;
                     break;
@@ -125,8 +124,7 @@ namespace Sonic_06_Mod_Manager
             check_SaveRedirect.Checked = Properties.Settings.Default.saveRedirect;
             combo_Renderer.SelectedIndex = Properties.Settings.Default.patches_Renderer;
 
-            switch (Properties.Settings.Default.priority)
-            {
+            switch (Properties.Settings.Default.priority) {
                 case false:
                     btn_Priority.Text = "Priority: Top to Bottom";
                     break;
@@ -150,8 +148,7 @@ namespace Sonic_06_Mod_Manager
                         combo_Emulator_System.SelectedIndex = 0;
                         Properties.Settings.Default.Save();
                     }
-                }
-                else if (File.Exists(ebootPath)) {
+                } else if (File.Exists(ebootPath)) {
                     bytes = File.ReadAllBytes(ebootPath).Take(3).ToArray();
                     var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
 
@@ -162,8 +159,7 @@ namespace Sonic_06_Mod_Manager
                         Properties.Settings.Default.Save();
                     }
                 }
-            }
-            else { text_GameDirectory.Text = Properties.Settings.Default.gameDirectory; }
+            } else { text_GameDirectory.Text = Properties.Settings.Default.gameDirectory; }
 
             RegistryKey key = Registry.ClassesRoot.OpenSubKey(GB_Registry.protocol, false); // Open the Sonic '06 Mod Manager protocol key
             RegistryKey getLocation = Registry.ClassesRoot.OpenSubKey($"{GB_Registry.protocol}\\shell\\open\\command");
@@ -292,7 +288,7 @@ namespace Sonic_06_Mod_Manager
             SaveChecks();
             GetMods();
 
-            if ((btn_SaveAndPlay.Text == "Save and Play" || btn_SaveAndPlay.Text == "Install Mods") && !check_FTP.Checked) {
+            if ((btn_InstallMods.Text == "Save and Play" || btn_InstallMods.Text == "Install Mods") && !check_FTP.Checked) {
                 try {
                     RestoreSaves();
                     ARC.CleanupMods(0);
@@ -360,7 +356,7 @@ namespace Sonic_06_Mod_Manager
                     Status = SystemMessages.msg_DefaultStatus;
                 }
             }
-            else if (btn_SaveAndPlay.Text == "Apply Patches") {
+            else if (btn_InstallMods.Text == "Apply Patches") {
                 try {
                     if (!check_FTP.Checked) { ARC.CleanupMods(1); PatchAll(); }
                 }
@@ -740,10 +736,8 @@ namespace Sonic_06_Mod_Manager
             clb_ModsList.Items.Clear();
             btn_UpperPriority.Enabled = false;
             btn_DownerPriority.Enabled = false;
+            split_ListControls.Visible = false;
             btn_ModInfo.Enabled = false;
-            btn_EditMod.Enabled = false;
-            btn_CreateNewMod.Width = 245;
-            btn_EditMod.Visible = false;
 
             try {
                 configs.Clear();
@@ -908,8 +902,7 @@ namespace Sonic_06_Mod_Manager
         private void Btn_DeselectAll_Click(object sender, EventArgs e) {
             for (int i = 0; i < clb_ModsList.Items.Count; i++) clb_ModsList.SetItemChecked(i, false);
             clb_ModsList.ClearSelected();
-            btn_CreateNewMod.Width = 245;
-            btn_EditMod.Visible = false;
+            split_ListControls.Visible = false;
         }
 
         private void Btn_UpperPriority_Click(object sender, EventArgs e) { // Moves selected checkbox up the list
@@ -950,8 +943,8 @@ namespace Sonic_06_Mod_Manager
 
         private void Clb_ModsList_SelectedIndexChanged(object sender, EventArgs e) {
             btn_ModInfo.Enabled = clb_ModsList.SelectedIndex >= 0; // Enables/disables the Mod Info button depending on if a checkbox is selected
-            btn_EditMod.Visible = clb_ModsList.SelectedIndex >= 0; btn_EditMod.Enabled = clb_ModsList.SelectedIndex >= 0; // Enables/disables the Edit Mod button depending on if a checkbox is selected
-            btn_CreateNewMod.Width = 120; // Sets Create New Mod button width to fit the Edit Mod button
+            if (clb_ModsList.SelectedIndex >= 0) split_ListControls.Visible = true;
+            else split_ListControls.Visible = false;
             btn_UpperPriority.Enabled = clb_ModsList.SelectedIndex > 0; // Enables/disables the Upper Priority button depending on if a checkbox is selected
             btn_DownerPriority.Enabled = clb_ModsList.SelectedIndex >= 0 && clb_ModsList.SelectedIndex < clb_ModsList.Items.Count - 1; // Enables/disables the Downer Priority button depending on if a checkbox is selected
         }
@@ -1383,8 +1376,8 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.manualInstall = true;
                 check_FTP.Enabled = false;
                 lbl_FTP.ForeColor = SystemColors.GrayText;
-                btn_SaveAndPlay.Text = "Install Mods";
-                btn_SaveAndPlay.Width = 120;
+                btn_InstallMods.Text = "Install Mods";
+                split_Mods.Visible = true;
                 btn_UninstallMods.Visible = true;
             } else if (check_ManualPatches.Checked) {
                 Properties.Settings.Default.manualPatches = true;
@@ -1397,15 +1390,14 @@ namespace Sonic_06_Mod_Manager
                     lbl_FTP.ForeColor = SystemColors.ControlText;
                 else
                     lbl_FTP.ForeColor = SystemColors.Control;
-                btn_SaveAndPlay.Text = "Save and Play";
-                btn_SaveAndPlay.Width = 245;
+                split_Mods.Visible = false;
                 btn_UninstallMods.Visible = false;
             }
 
             if (unifytb_Main.SelectedIndex == 2 && !check_FTP.Checked) {
                 if (Prerequisites.JavaCheck()) {
-                    btn_SaveAndPlay.Text = "Apply Patches";
-                    btn_SaveAndPlay.Width = 120;
+                    btn_InstallMods.Text = "Apply Patches";
+                    split_Mods.Visible = true;
                     btn_UninstallMods.Text = "Restore Defaults";
                     btn_UninstallMods.Visible = true;
                     btn_ModInfo.Text = "Patch Info";
@@ -1424,21 +1416,19 @@ namespace Sonic_06_Mod_Manager
                 }
             } else {
                 if (check_FTP.Checked || check_ManualInstall.Checked) {
-                    btn_SaveAndPlay.Text = "Install Mods";
-                    btn_SaveAndPlay.Width = 120;
+                    btn_InstallMods.Text = "Install Mods";
+                    split_Mods.Visible = true;
                     btn_UninstallMods.Text = "Uninstall Mods";
                     btn_UninstallMods.Visible = true;
                 } else {
-                    btn_SaveAndPlay.Text = "Save and Play";
-                    btn_SaveAndPlay.Width = 245;
+                    split_Mods.Visible = false;
                     btn_UninstallMods.Text = "Uninstall Mods";
                     btn_UninstallMods.Visible = false;
                 }
             }
 
             Properties.Settings.Default.Save();
-            btn_CreateNewMod.Width = 245; // Reset Create New Mod button size from Edit Mod compacted size
-            btn_EditMod.Visible = false;
+            split_ListControls.Visible = false;
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
         }
 
@@ -1564,15 +1554,14 @@ namespace Sonic_06_Mod_Manager
                 text_Username.BackColor = SystemColors.ControlLightLight; text_Username.ForeColor = SystemColors.ControlText;
                 text_EmulatorPath.BackColor = SystemColors.ControlLightLight; text_EmulatorPath.ForeColor = SystemColors.ControlText;
 
-                clb_ModsList.BackColor = SystemColors.ControlLightLight; clb_ModsList.ForeColor = SystemColors.ControlText;
-                clb_PatchesList.BackColor = SystemColors.ControlLightLight; clb_PatchesList.ForeColor = SystemColors.ControlText;
+                pnl_ModBackdrop.BackColor = clb_ModsList.BackColor = SystemColors.ControlLightLight;
+                clb_ModsList.ForeColor = SystemColors.ControlText;
+                pnl_PatchBackdrop.BackColor = clb_PatchesList.BackColor = SystemColors.ControlLightLight;
+                clb_PatchesList.ForeColor = SystemColors.ControlText;
 
                 radio_All.ForeColor = SystemColors.ControlText; radio_All.BackColor = SystemColors.ControlLightLight;
                 radio_Xbox360.ForeColor = SystemColors.ControlText; radio_Xbox360.BackColor = SystemColors.ControlLightLight;
                 radio_PlayStation3.ForeColor = SystemColors.ControlText; radio_PlayStation3.BackColor = SystemColors.ControlLightLight;
-
-                btn_CreateNewMod.Width = 245;
-                btn_EditMod.Visible = false;
             }
             else {
                 btn_Theme.Text = "Theme: Dark";
@@ -1678,15 +1667,14 @@ namespace Sonic_06_Mod_Manager
                 text_Username.BackColor = Color.FromArgb(45, 45, 48); text_Username.ForeColor = SystemColors.Control;
                 text_EmulatorPath.BackColor = Color.FromArgb(45, 45, 48); text_EmulatorPath.ForeColor = SystemColors.Control;
 
-                clb_ModsList.BackColor = Color.FromArgb(45, 45, 48); clb_ModsList.ForeColor = SystemColors.Control;
-                clb_PatchesList.BackColor = Color.FromArgb(45, 45, 48); clb_PatchesList.ForeColor = SystemColors.Control;
+                pnl_ModBackdrop.BackColor = clb_ModsList.BackColor = Color.FromArgb(45, 45, 48); 
+                clb_ModsList.ForeColor = SystemColors.Control;
+                pnl_PatchBackdrop.BackColor = clb_PatchesList.BackColor = Color.FromArgb(45, 45, 48); 
+                clb_PatchesList.ForeColor = SystemColors.Control;
 
                 radio_All.ForeColor = SystemColors.Control; radio_All.BackColor = Color.FromArgb(45, 45, 48);
                 radio_Xbox360.ForeColor = SystemColors.Control; radio_Xbox360.BackColor = Color.FromArgb(45, 45, 48);
                 radio_PlayStation3.ForeColor = SystemColors.Control; radio_PlayStation3.BackColor = Color.FromArgb(45, 45, 48);
-
-                btn_CreateNewMod.Width = 245;
-                btn_EditMod.Visible = false;
             }
 
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
@@ -1751,8 +1739,8 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.manualInstall = true;
                 check_FTP.Enabled = false;
                 lbl_FTP.ForeColor = SystemColors.GrayText;
-                btn_SaveAndPlay.Text = "Install Mods";
-                btn_SaveAndPlay.Width = 120;
+                btn_InstallMods.Text = "Install Mods";
+                split_Mods.Visible = true;
                 btn_UninstallMods.Visible = true;
             } else {
                 Properties.Settings.Default.manualInstall = false;
@@ -1761,8 +1749,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_FTP.ForeColor = SystemColors.ControlText;
                 else
                     lbl_FTP.ForeColor = SystemColors.Control;
-                btn_SaveAndPlay.Text = "Save and Play";
-                btn_SaveAndPlay.Width = 245;
+                split_Mods.Visible = false;
                 btn_UninstallMods.Visible = false;
             }
             Properties.Settings.Default.Save();
@@ -1779,8 +1766,8 @@ namespace Sonic_06_Mod_Manager
                 lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                 lbl_ManualPatches.ForeColor = SystemColors.GrayText;
                 lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
-                btn_SaveAndPlay.Text = "Install Mods";
-                btn_SaveAndPlay.Width = 120;
+                btn_InstallMods.Text = "Install Mods";
+                split_Mods.Visible = true;
                 btn_UninstallMods.Visible = true;
 
                 lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
@@ -1846,8 +1833,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Renderer.ForeColor = SystemColors.Control;
                     lbl_CameraHeight.ForeColor = SystemColors.Control;
                 }
-                btn_SaveAndPlay.Text = "Save and Play";
-                btn_SaveAndPlay.Width = 245;
+                split_Mods.Visible = false;
                 btn_UninstallMods.Visible = false;
                 combo_CameraType.Enabled = true;
                 btn_ResetCameraType.Enabled = true;

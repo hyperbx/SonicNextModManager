@@ -29,11 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModManager));
-            this.btn_SaveAndPlay = new System.Windows.Forms.Button();
             this.btn_Save = new System.Windows.Forms.Button();
             this.btn_Play = new System.Windows.Forms.Button();
             this.btn_RefreshMods = new System.Windows.Forms.Button();
-            this.btn_CreateNewMod = new System.Windows.Forms.Button();
             this.btn_ModInfo = new System.Windows.Forms.Button();
             this.status_Main = new System.Windows.Forms.StatusStrip();
             this.lbl_Status = new System.Windows.Forms.ToolStripStatusLabel();
@@ -41,11 +39,20 @@
             this.radio_All = new System.Windows.Forms.RadioButton();
             this.radio_Xbox360 = new System.Windows.Forms.RadioButton();
             this.radio_PlayStation3 = new System.Windows.Forms.RadioButton();
-            this.btn_UninstallMods = new System.Windows.Forms.Button();
-            this.btn_EditMod = new System.Windows.Forms.Button();
             this.lbl_MainStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.lbl_SetStatus = new System.Windows.Forms.Label();
             this.sonic06mm_Aldi = new System.Windows.Forms.Button();
+            this.split_MainControls = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.split_MainControlsWidthModifier = new System.Windows.Forms.SplitContainer();
+            this.split_Mods = new System.Windows.Forms.SplitContainer();
+            this.btn_InstallMods = new System.Windows.Forms.Button();
+            this.btn_UninstallMods = new System.Windows.Forms.Button();
+            this.btn_SaveAndPlayFull = new System.Windows.Forms.Button();
+            this.split_ListControls = new System.Windows.Forms.SplitContainer();
+            this.btn_CreateNewMod = new System.Windows.Forms.Button();
+            this.btn_EditMod = new System.Windows.Forms.Button();
+            this.btn_CreateNewModFull = new System.Windows.Forms.Button();
             this.unifytb_Main = new UnifyTabControl.UnifyTabControl();
             this.unifytb_Tab_Mods = new System.Windows.Forms.TabPage();
             this.btn_Priority = new System.Windows.Forms.Button();
@@ -53,6 +60,7 @@
             this.btn_UpperPriority = new System.Windows.Forms.Button();
             this.btn_DeselectAll = new System.Windows.Forms.Button();
             this.btn_SelectAll = new System.Windows.Forms.Button();
+            this.pnl_ModBackdrop = new System.Windows.Forms.Panel();
             this.clb_ModsList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Emulator = new System.Windows.Forms.TabPage();
             this.lbl_SetupOverlay = new System.Windows.Forms.Label();
@@ -83,6 +91,9 @@
             this.text_EmulatorPath = new System.Windows.Forms.TextBox();
             this.lbl_EmulatorEXE = new System.Windows.Forms.Label();
             this.unifytb_Tab_Patches = new System.Windows.Forms.TabPage();
+            this.split_Patches = new System.Windows.Forms.SplitContainer();
+            this.pnl_PatchBackdrop = new System.Windows.Forms.Panel();
+            this.clb_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.group_Tweaks = new System.Windows.Forms.GroupBox();
             this.help_FieldOfView = new System.Windows.Forms.LinkLabel();
             this.help_CameraHeight = new System.Windows.Forms.LinkLabel();
@@ -109,28 +120,29 @@
             this.btn_ResetRenderer = new System.Windows.Forms.Button();
             this.lbl_Renderer = new System.Windows.Forms.Label();
             this.combo_Renderer = new System.Windows.Forms.ComboBox();
-            this.clb_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
             this.lbl_DisableSoftwareUpdater = new System.Windows.Forms.Label();
             this.check_DisableSoftwareUpdater = new System.Windows.Forms.CheckBox();
             this.lbl_SaveRedirect = new System.Windows.Forms.Label();
             this.check_SaveRedirect = new System.Windows.Forms.CheckBox();
-            this.btn_ReportBug = new System.Windows.Forms.Button();
             this.lbl_GameBanana = new System.Windows.Forms.Label();
             this.check_GameBanana = new System.Windows.Forms.CheckBox();
-            this.btn_Update = new System.Windows.Forms.Button();
             this.lbl_ManualInstall = new System.Windows.Forms.Label();
-            this.btn_Reset = new System.Windows.Forms.Button();
-            this.btn_GitHub = new System.Windows.Forms.Button();
-            this.btn_About = new System.Windows.Forms.Button();
             this.btn_ColourPicker_Default = new System.Windows.Forms.Button();
             this.lbl_AccentColour = new System.Windows.Forms.Label();
             this.btn_ColourPicker = new System.Windows.Forms.Button();
             this.check_ManualInstall = new System.Windows.Forms.CheckBox();
-            this.btn_Theme = new System.Windows.Forms.Button();
             this.lbl_ManualPatches = new System.Windows.Forms.Label();
             this.check_ManualPatches = new System.Windows.Forms.CheckBox();
+            this.split_Options = new System.Windows.Forms.SplitContainer();
+            this.btn_ReportBug = new System.Windows.Forms.Button();
+            this.btn_GitHub = new System.Windows.Forms.Button();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.btn_About = new System.Windows.Forms.Button();
+            this.btn_Update = new System.Windows.Forms.Button();
+            this.btn_Reset = new System.Windows.Forms.Button();
+            this.btn_Theme = new System.Windows.Forms.Button();
             this.group_FTP = new System.Windows.Forms.GroupBox();
             this.lbl_FTP = new System.Windows.Forms.Label();
             this.check_FTP = new System.Windows.Forms.CheckBox();
@@ -147,41 +159,65 @@
             this.text_ModsDirectory = new System.Windows.Forms.TextBox();
             this.lbl_GameDirectory = new System.Windows.Forms.Label();
             this.lbl_ModsDirectory = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.split_MainControls)).BeginInit();
+            this.split_MainControls.Panel1.SuspendLayout();
+            this.split_MainControls.Panel2.SuspendLayout();
+            this.split_MainControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.split_MainControlsWidthModifier)).BeginInit();
+            this.split_MainControlsWidthModifier.Panel1.SuspendLayout();
+            this.split_MainControlsWidthModifier.Panel2.SuspendLayout();
+            this.split_MainControlsWidthModifier.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.split_Mods)).BeginInit();
+            this.split_Mods.Panel1.SuspendLayout();
+            this.split_Mods.Panel2.SuspendLayout();
+            this.split_Mods.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.split_ListControls)).BeginInit();
+            this.split_ListControls.Panel1.SuspendLayout();
+            this.split_ListControls.Panel2.SuspendLayout();
+            this.split_ListControls.SuspendLayout();
             this.unifytb_Main.SuspendLayout();
             this.unifytb_Tab_Mods.SuspendLayout();
+            this.pnl_ModBackdrop.SuspendLayout();
             this.unifytb_Tab_Emulator.SuspendLayout();
             this.group_Settings.SuspendLayout();
             this.group_Setup.SuspendLayout();
             this.unifytb_Tab_Patches.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.split_Patches)).BeginInit();
+            this.split_Patches.Panel1.SuspendLayout();
+            this.split_Patches.Panel2.SuspendLayout();
+            this.split_Patches.SuspendLayout();
+            this.pnl_PatchBackdrop.SuspendLayout();
             this.group_Tweaks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_FieldOfView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).BeginInit();
             this.unifytb_Tab_Settings.SuspendLayout();
             this.group_Options.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.split_Options)).BeginInit();
+            this.split_Options.Panel1.SuspendLayout();
+            this.split_Options.Panel2.SuspendLayout();
+            this.split_Options.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.group_FTP.SuspendLayout();
             this.group_Directories.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btn_SaveAndPlay
-            // 
-            this.btn_SaveAndPlay.BackColor = System.Drawing.Color.LightGreen;
-            this.btn_SaveAndPlay.FlatAppearance.BorderSize = 0;
-            this.btn_SaveAndPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SaveAndPlay.Location = new System.Drawing.Point(147, 516);
-            this.btn_SaveAndPlay.Name = "btn_SaveAndPlay";
-            this.btn_SaveAndPlay.Size = new System.Drawing.Size(245, 23);
-            this.btn_SaveAndPlay.TabIndex = 44;
-            this.btn_SaveAndPlay.Text = "Save and Play";
-            this.btn_SaveAndPlay.UseVisualStyleBackColor = false;
-            this.btn_SaveAndPlay.Click += new System.EventHandler(this.Btn_SaveAndPlay_Click);
-            // 
             // btn_Save
             // 
+            this.btn_Save.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Save.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_Save.FlatAppearance.BorderSize = 0;
             this.btn_Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Save.Location = new System.Drawing.Point(9, 516);
+            this.btn_Save.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_Save.Location = new System.Drawing.Point(9, 10);
             this.btn_Save.Name = "btn_Save";
             this.btn_Save.Size = new System.Drawing.Size(132, 23);
             this.btn_Save.TabIndex = 43;
@@ -191,12 +227,15 @@
             // 
             // btn_Play
             // 
+            this.btn_Play.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Play.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_Play.FlatAppearance.BorderSize = 0;
             this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Play.Location = new System.Drawing.Point(398, 516);
+            this.btn_Play.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_Play.Location = new System.Drawing.Point(1, 10);
             this.btn_Play.Name = "btn_Play";
-            this.btn_Play.Size = new System.Drawing.Size(132, 23);
+            this.btn_Play.Size = new System.Drawing.Size(133, 23);
             this.btn_Play.TabIndex = 45;
             this.btn_Play.Text = "Play";
             this.btn_Play.UseVisualStyleBackColor = false;
@@ -204,36 +243,29 @@
             // 
             // btn_RefreshMods
             // 
+            this.btn_RefreshMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_RefreshMods.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_RefreshMods.FlatAppearance.BorderSize = 0;
             this.btn_RefreshMods.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_RefreshMods.Location = new System.Drawing.Point(398, 545);
+            this.btn_RefreshMods.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_RefreshMods.Location = new System.Drawing.Point(1, 39);
             this.btn_RefreshMods.Name = "btn_RefreshMods";
-            this.btn_RefreshMods.Size = new System.Drawing.Size(132, 23);
+            this.btn_RefreshMods.Size = new System.Drawing.Size(133, 23);
             this.btn_RefreshMods.TabIndex = 48;
             this.btn_RefreshMods.Text = "Refresh Mods";
             this.btn_RefreshMods.UseVisualStyleBackColor = false;
             this.btn_RefreshMods.Click += new System.EventHandler(this.Btn_RefreshMods_Click);
             // 
-            // btn_CreateNewMod
-            // 
-            this.btn_CreateNewMod.BackColor = System.Drawing.Color.LightGreen;
-            this.btn_CreateNewMod.FlatAppearance.BorderSize = 0;
-            this.btn_CreateNewMod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_CreateNewMod.Location = new System.Drawing.Point(147, 545);
-            this.btn_CreateNewMod.Name = "btn_CreateNewMod";
-            this.btn_CreateNewMod.Size = new System.Drawing.Size(120, 23);
-            this.btn_CreateNewMod.TabIndex = 47;
-            this.btn_CreateNewMod.Text = "Create New Mod";
-            this.btn_CreateNewMod.UseVisualStyleBackColor = false;
-            this.btn_CreateNewMod.Click += new System.EventHandler(this.Btn_CreateNewMod_Click);
-            // 
             // btn_ModInfo
             // 
+            this.btn_ModInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ModInfo.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_ModInfo.FlatAppearance.BorderSize = 0;
             this.btn_ModInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ModInfo.Location = new System.Drawing.Point(9, 545);
+            this.btn_ModInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_ModInfo.Location = new System.Drawing.Point(9, 39);
             this.btn_ModInfo.Name = "btn_ModInfo";
             this.btn_ModInfo.Size = new System.Drawing.Size(132, 23);
             this.btn_ModInfo.TabIndex = 46;
@@ -267,6 +299,7 @@
             // 
             // radio_All
             // 
+            this.radio_All.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.radio_All.AutoSize = true;
             this.radio_All.ForeColor = System.Drawing.SystemColors.Control;
             this.radio_All.Location = new System.Drawing.Point(339, 1);
@@ -279,6 +312,7 @@
             // 
             // radio_Xbox360
             // 
+            this.radio_Xbox360.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.radio_Xbox360.AutoSize = true;
             this.radio_Xbox360.ForeColor = System.Drawing.SystemColors.Control;
             this.radio_Xbox360.Location = new System.Drawing.Point(378, 1);
@@ -291,6 +325,7 @@
             // 
             // radio_PlayStation3
             // 
+            this.radio_PlayStation3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.radio_PlayStation3.AutoSize = true;
             this.radio_PlayStation3.ForeColor = System.Drawing.SystemColors.Control;
             this.radio_PlayStation3.Location = new System.Drawing.Point(452, 1);
@@ -301,35 +336,6 @@
             this.radio_PlayStation3.UseVisualStyleBackColor = true;
             this.radio_PlayStation3.CheckedChanged += new System.EventHandler(this.Radio_PlayStation3_CheckedChanged);
             // 
-            // btn_UninstallMods
-            // 
-            this.btn_UninstallMods.BackColor = System.Drawing.Color.Tomato;
-            this.btn_UninstallMods.FlatAppearance.BorderSize = 0;
-            this.btn_UninstallMods.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_UninstallMods.Location = new System.Drawing.Point(273, 516);
-            this.btn_UninstallMods.Name = "btn_UninstallMods";
-            this.btn_UninstallMods.Size = new System.Drawing.Size(119, 23);
-            this.btn_UninstallMods.TabIndex = 53;
-            this.btn_UninstallMods.Text = "Uninstall Mods";
-            this.btn_UninstallMods.UseVisualStyleBackColor = false;
-            this.btn_UninstallMods.Visible = false;
-            this.btn_UninstallMods.Click += new System.EventHandler(this.Btn_UninstallMods_Click);
-            // 
-            // btn_EditMod
-            // 
-            this.btn_EditMod.BackColor = System.Drawing.Color.SkyBlue;
-            this.btn_EditMod.Enabled = false;
-            this.btn_EditMod.FlatAppearance.BorderSize = 0;
-            this.btn_EditMod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_EditMod.Location = new System.Drawing.Point(273, 545);
-            this.btn_EditMod.Name = "btn_EditMod";
-            this.btn_EditMod.Size = new System.Drawing.Size(119, 23);
-            this.btn_EditMod.TabIndex = 54;
-            this.btn_EditMod.Text = "Edit Mod";
-            this.btn_EditMod.UseVisualStyleBackColor = false;
-            this.btn_EditMod.Visible = false;
-            this.btn_EditMod.Click += new System.EventHandler(this.Btn_EditMod_Click);
-            // 
             // lbl_MainStatus
             // 
             this.lbl_MainStatus.ForeColor = System.Drawing.SystemColors.Control;
@@ -339,6 +345,7 @@
             // 
             // lbl_SetStatus
             // 
+            this.lbl_SetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_SetStatus.AutoSize = true;
             this.lbl_SetStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.lbl_SetStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -360,10 +367,207 @@
             this.sonic06mm_Aldi.UseVisualStyleBackColor = true;
             this.sonic06mm_Aldi.Click += new System.EventHandler(this.Aldi);
             // 
+            // split_MainControls
+            // 
+            this.split_MainControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.split_MainControls.IsSplitterFixed = true;
+            this.split_MainControls.Location = new System.Drawing.Point(0, 506);
+            this.split_MainControls.Name = "split_MainControls";
+            // 
+            // split_MainControls.Panel1
+            // 
+            this.split_MainControls.Panel1.Controls.Add(this.btn_Save);
+            this.split_MainControls.Panel1.Controls.Add(this.btn_ModInfo);
+            // 
+            // split_MainControls.Panel2
+            // 
+            this.split_MainControls.Panel2.Controls.Add(this.splitContainer3);
+            this.split_MainControls.Size = new System.Drawing.Size(538, 73);
+            this.split_MainControls.SplitterDistance = 142;
+            this.split_MainControls.TabIndex = 57;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.split_MainControlsWidthModifier);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Play);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_RefreshMods);
+            this.splitContainer3.Size = new System.Drawing.Size(392, 73);
+            this.splitContainer3.SplitterDistance = 246;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // split_MainControlsWidthModifier
+            // 
+            this.split_MainControlsWidthModifier.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.split_MainControlsWidthModifier.Location = new System.Drawing.Point(0, 0);
+            this.split_MainControlsWidthModifier.Name = "split_MainControlsWidthModifier";
+            this.split_MainControlsWidthModifier.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // split_MainControlsWidthModifier.Panel1
+            // 
+            this.split_MainControlsWidthModifier.Panel1.Controls.Add(this.split_Mods);
+            this.split_MainControlsWidthModifier.Panel1.Controls.Add(this.btn_SaveAndPlayFull);
+            // 
+            // split_MainControlsWidthModifier.Panel2
+            // 
+            this.split_MainControlsWidthModifier.Panel2.Controls.Add(this.split_ListControls);
+            this.split_MainControlsWidthModifier.Panel2.Controls.Add(this.btn_CreateNewModFull);
+            this.split_MainControlsWidthModifier.Size = new System.Drawing.Size(246, 73);
+            this.split_MainControlsWidthModifier.SplitterDistance = 34;
+            this.split_MainControlsWidthModifier.TabIndex = 0;
+            // 
+            // split_Mods
+            // 
+            this.split_Mods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.split_Mods.IsSplitterFixed = true;
+            this.split_Mods.Location = new System.Drawing.Point(0, 0);
+            this.split_Mods.Name = "split_Mods";
+            // 
+            // split_Mods.Panel1
+            // 
+            this.split_Mods.Panel1.Controls.Add(this.btn_InstallMods);
+            // 
+            // split_Mods.Panel2
+            // 
+            this.split_Mods.Panel2.Controls.Add(this.btn_UninstallMods);
+            this.split_Mods.Size = new System.Drawing.Size(246, 34);
+            this.split_Mods.SplitterDistance = 122;
+            this.split_Mods.TabIndex = 0;
+            this.split_Mods.Visible = false;
+            // 
+            // btn_InstallMods
+            // 
+            this.btn_InstallMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_InstallMods.BackColor = System.Drawing.Color.LightGreen;
+            this.btn_InstallMods.FlatAppearance.BorderSize = 0;
+            this.btn_InstallMods.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_InstallMods.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_InstallMods.Location = new System.Drawing.Point(1, 10);
+            this.btn_InstallMods.Name = "btn_InstallMods";
+            this.btn_InstallMods.Size = new System.Drawing.Size(120, 23);
+            this.btn_InstallMods.TabIndex = 0;
+            this.btn_InstallMods.Text = "Install Mods";
+            this.btn_InstallMods.UseVisualStyleBackColor = false;
+            this.btn_InstallMods.Click += new System.EventHandler(this.Btn_SaveAndPlay_Click);
+            // 
+            // btn_UninstallMods
+            // 
+            this.btn_UninstallMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_UninstallMods.BackColor = System.Drawing.Color.Tomato;
+            this.btn_UninstallMods.FlatAppearance.BorderSize = 0;
+            this.btn_UninstallMods.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_UninstallMods.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_UninstallMods.Location = new System.Drawing.Point(1, 10);
+            this.btn_UninstallMods.Name = "btn_UninstallMods";
+            this.btn_UninstallMods.Size = new System.Drawing.Size(118, 23);
+            this.btn_UninstallMods.TabIndex = 2;
+            this.btn_UninstallMods.Text = "Uninstall Mods";
+            this.btn_UninstallMods.UseVisualStyleBackColor = false;
+            this.btn_UninstallMods.Click += new System.EventHandler(this.Btn_UninstallMods_Click);
+            // 
+            // btn_SaveAndPlayFull
+            // 
+            this.btn_SaveAndPlayFull.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_SaveAndPlayFull.BackColor = System.Drawing.Color.LightGreen;
+            this.btn_SaveAndPlayFull.FlatAppearance.BorderSize = 0;
+            this.btn_SaveAndPlayFull.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_SaveAndPlayFull.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_SaveAndPlayFull.Location = new System.Drawing.Point(1, 10);
+            this.btn_SaveAndPlayFull.Name = "btn_SaveAndPlayFull";
+            this.btn_SaveAndPlayFull.Size = new System.Drawing.Size(244, 23);
+            this.btn_SaveAndPlayFull.TabIndex = 5;
+            this.btn_SaveAndPlayFull.Text = "Save and Play";
+            this.btn_SaveAndPlayFull.UseVisualStyleBackColor = false;
+            this.btn_SaveAndPlayFull.Click += new System.EventHandler(this.Btn_SaveAndPlay_Click);
+            // 
+            // split_ListControls
+            // 
+            this.split_ListControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.split_ListControls.IsSplitterFixed = true;
+            this.split_ListControls.Location = new System.Drawing.Point(0, 0);
+            this.split_ListControls.Name = "split_ListControls";
+            // 
+            // split_ListControls.Panel1
+            // 
+            this.split_ListControls.Panel1.Controls.Add(this.btn_CreateNewMod);
+            // 
+            // split_ListControls.Panel2
+            // 
+            this.split_ListControls.Panel2.Controls.Add(this.btn_EditMod);
+            this.split_ListControls.Size = new System.Drawing.Size(246, 35);
+            this.split_ListControls.SplitterDistance = 122;
+            this.split_ListControls.TabIndex = 0;
+            this.split_ListControls.Visible = false;
+            // 
+            // btn_CreateNewMod
+            // 
+            this.btn_CreateNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_CreateNewMod.BackColor = System.Drawing.Color.LightGreen;
+            this.btn_CreateNewMod.FlatAppearance.BorderSize = 0;
+            this.btn_CreateNewMod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_CreateNewMod.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_CreateNewMod.Location = new System.Drawing.Point(1, 1);
+            this.btn_CreateNewMod.Name = "btn_CreateNewMod";
+            this.btn_CreateNewMod.Size = new System.Drawing.Size(120, 23);
+            this.btn_CreateNewMod.TabIndex = 1;
+            this.btn_CreateNewMod.Text = "Create New Mod";
+            this.btn_CreateNewMod.UseVisualStyleBackColor = false;
+            this.btn_CreateNewMod.Click += new System.EventHandler(this.Btn_CreateNewMod_Click);
+            // 
+            // btn_EditMod
+            // 
+            this.btn_EditMod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_EditMod.BackColor = System.Drawing.Color.SkyBlue;
+            this.btn_EditMod.FlatAppearance.BorderSize = 0;
+            this.btn_EditMod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_EditMod.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_EditMod.Location = new System.Drawing.Point(1, 1);
+            this.btn_EditMod.Name = "btn_EditMod";
+            this.btn_EditMod.Size = new System.Drawing.Size(118, 23);
+            this.btn_EditMod.TabIndex = 3;
+            this.btn_EditMod.Text = "Edit Mod";
+            this.btn_EditMod.UseVisualStyleBackColor = false;
+            this.btn_EditMod.Click += new System.EventHandler(this.Btn_EditMod_Click);
+            // 
+            // btn_CreateNewModFull
+            // 
+            this.btn_CreateNewModFull.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_CreateNewModFull.BackColor = System.Drawing.Color.LightGreen;
+            this.btn_CreateNewModFull.FlatAppearance.BorderSize = 0;
+            this.btn_CreateNewModFull.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_CreateNewModFull.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btn_CreateNewModFull.Location = new System.Drawing.Point(1, 1);
+            this.btn_CreateNewModFull.Name = "btn_CreateNewModFull";
+            this.btn_CreateNewModFull.Size = new System.Drawing.Size(244, 23);
+            this.btn_CreateNewModFull.TabIndex = 4;
+            this.btn_CreateNewModFull.Text = "Create New Mod";
+            this.btn_CreateNewModFull.UseVisualStyleBackColor = false;
+            this.btn_CreateNewModFull.Click += new System.EventHandler(this.Btn_CreateNewMod_Click);
+            // 
             // unifytb_Main
             // 
             this.unifytb_Main.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.unifytb_Main.AllowDrop = true;
+            this.unifytb_Main.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.unifytb_Main.BackTabColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.unifytb_Main.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.unifytb_Main.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
@@ -395,7 +599,7 @@
             this.unifytb_Tab_Mods.Controls.Add(this.btn_UpperPriority);
             this.unifytb_Tab_Mods.Controls.Add(this.btn_DeselectAll);
             this.unifytb_Tab_Mods.Controls.Add(this.btn_SelectAll);
-            this.unifytb_Tab_Mods.Controls.Add(this.clb_ModsList);
+            this.unifytb_Tab_Mods.Controls.Add(this.pnl_ModBackdrop);
             this.unifytb_Tab_Mods.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Mods.Name = "unifytb_Tab_Mods";
             this.unifytb_Tab_Mods.Padding = new System.Windows.Forms.Padding(3);
@@ -405,12 +609,13 @@
             // 
             // btn_Priority
             // 
+            this.btn_Priority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_Priority.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_Priority.FlatAppearance.BorderSize = 0;
             this.btn_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Priority.Location = new System.Drawing.Point(348, 453);
+            this.btn_Priority.Location = new System.Drawing.Point(348, 455);
             this.btn_Priority.Name = "btn_Priority";
-            this.btn_Priority.Size = new System.Drawing.Size(174, 23);
+            this.btn_Priority.Size = new System.Drawing.Size(178, 23);
             this.btn_Priority.TabIndex = 42;
             this.btn_Priority.Text = "Priority: Top to Bottom";
             this.btn_Priority.UseVisualStyleBackColor = false;
@@ -418,12 +623,13 @@
             // 
             // btn_DownerPriority
             // 
+            this.btn_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_DownerPriority.BackColor = System.Drawing.Color.White;
             this.btn_DownerPriority.Enabled = false;
             this.btn_DownerPriority.FlatAppearance.BorderSize = 0;
             this.btn_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_DownerPriority.Location = new System.Drawing.Point(315, 453);
+            this.btn_DownerPriority.Location = new System.Drawing.Point(316, 455);
             this.btn_DownerPriority.Name = "btn_DownerPriority";
             this.btn_DownerPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_DownerPriority.TabIndex = 41;
@@ -433,12 +639,13 @@
             // 
             // btn_UpperPriority
             // 
+            this.btn_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_UpperPriority.BackColor = System.Drawing.Color.White;
             this.btn_UpperPriority.Enabled = false;
             this.btn_UpperPriority.FlatAppearance.BorderSize = 0;
             this.btn_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 453);
+            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 455);
             this.btn_UpperPriority.Name = "btn_UpperPriority";
             this.btn_UpperPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_UpperPriority.TabIndex = 40;
@@ -448,12 +655,13 @@
             // 
             // btn_DeselectAll
             // 
+            this.btn_DeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_DeselectAll.BackColor = System.Drawing.Color.Tomato;
             this.btn_DeselectAll.FlatAppearance.BorderSize = 0;
             this.btn_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DeselectAll.Location = new System.Drawing.Point(146, 453);
+            this.btn_DeselectAll.Location = new System.Drawing.Point(145, 455);
             this.btn_DeselectAll.Name = "btn_DeselectAll";
-            this.btn_DeselectAll.Size = new System.Drawing.Size(132, 23);
+            this.btn_DeselectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_DeselectAll.TabIndex = 2;
             this.btn_DeselectAll.Text = "Deselect All";
             this.btn_DeselectAll.UseVisualStyleBackColor = false;
@@ -461,26 +669,43 @@
             // 
             // btn_SelectAll
             // 
+            this.btn_SelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
             this.btn_SelectAll.FlatAppearance.BorderSize = 0;
             this.btn_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SelectAll.Location = new System.Drawing.Point(8, 453);
+            this.btn_SelectAll.Location = new System.Drawing.Point(5, 455);
             this.btn_SelectAll.Name = "btn_SelectAll";
-            this.btn_SelectAll.Size = new System.Drawing.Size(132, 23);
+            this.btn_SelectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_SelectAll.TabIndex = 1;
             this.btn_SelectAll.Text = "Select All";
             this.btn_SelectAll.UseVisualStyleBackColor = false;
             this.btn_SelectAll.Click += new System.EventHandler(this.Btn_SelectAll_Click);
             // 
+            // pnl_ModBackdrop
+            // 
+            this.pnl_ModBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_ModBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.pnl_ModBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_ModBackdrop.Controls.Add(this.clb_ModsList);
+            this.pnl_ModBackdrop.Location = new System.Drawing.Point(4, 8);
+            this.pnl_ModBackdrop.Name = "pnl_ModBackdrop";
+            this.pnl_ModBackdrop.Size = new System.Drawing.Size(522, 438);
+            this.pnl_ModBackdrop.TabIndex = 43;
+            // 
             // clb_ModsList
             // 
+            this.clb_ModsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.clb_ModsList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.clb_ModsList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.clb_ModsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.clb_ModsList.ForeColor = System.Drawing.SystemColors.Control;
             this.clb_ModsList.FormattingEnabled = true;
-            this.clb_ModsList.Location = new System.Drawing.Point(4, 9);
+            this.clb_ModsList.Location = new System.Drawing.Point(3, 2);
             this.clb_ModsList.Name = "clb_ModsList";
-            this.clb_ModsList.Size = new System.Drawing.Size(522, 434);
+            this.clb_ModsList.Size = new System.Drawing.Size(515, 432);
             this.clb_ModsList.TabIndex = 0;
             this.clb_ModsList.SelectedIndexChanged += new System.EventHandler(this.Clb_ModsList_SelectedIndexChanged);
             // 
@@ -609,6 +834,9 @@
             // 
             // group_Settings
             // 
+            this.group_Settings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.group_Settings.Controls.Add(this.check_Discord);
             this.group_Settings.Controls.Add(this.check_Fullscreen);
             this.group_Settings.Controls.Add(this.check_Debug);
@@ -707,6 +935,8 @@
             // 
             // group_Setup
             // 
+            this.group_Setup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.group_Setup.Controls.Add(this.combo_Emulator_System);
             this.group_Setup.Controls.Add(this.lbl_Emulator_System);
             this.group_Setup.Controls.Add(this.combo_API);
@@ -724,6 +954,8 @@
             // 
             // combo_Emulator_System
             // 
+            this.combo_Emulator_System.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.combo_Emulator_System.BackColor = System.Drawing.SystemColors.Window;
             this.combo_Emulator_System.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_Emulator_System.FormattingEnabled = true;
@@ -747,6 +979,8 @@
             // 
             // combo_API
             // 
+            this.combo_API.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.combo_API.BackColor = System.Drawing.SystemColors.Window;
             this.combo_API.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_API.FormattingEnabled = true;
@@ -770,6 +1004,7 @@
             // 
             // btn_EmulatorPath
             // 
+            this.btn_EmulatorPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_EmulatorPath.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_EmulatorPath.FlatAppearance.BorderSize = 0;
             this.btn_EmulatorPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -785,6 +1020,8 @@
             // 
             // text_EmulatorPath
             // 
+            this.text_EmulatorPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.text_EmulatorPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.text_EmulatorPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_EmulatorPath.ForeColor = System.Drawing.SystemColors.Control;
@@ -806,13 +1043,73 @@
             // unifytb_Tab_Patches
             // 
             this.unifytb_Tab_Patches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.unifytb_Tab_Patches.Controls.Add(this.group_Tweaks);
-            this.unifytb_Tab_Patches.Controls.Add(this.clb_PatchesList);
+            this.unifytb_Tab_Patches.Controls.Add(this.split_Patches);
             this.unifytb_Tab_Patches.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Patches.Name = "unifytb_Tab_Patches";
             this.unifytb_Tab_Patches.Size = new System.Drawing.Size(530, 483);
             this.unifytb_Tab_Patches.TabIndex = 2;
             this.unifytb_Tab_Patches.Text = "Patches";
+            // 
+            // split_Patches
+            // 
+            this.split_Patches.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.split_Patches.IsSplitterFixed = true;
+            this.split_Patches.Location = new System.Drawing.Point(2, 3);
+            this.split_Patches.Name = "split_Patches";
+            // 
+            // split_Patches.Panel1
+            // 
+            this.split_Patches.Panel1.Controls.Add(this.pnl_PatchBackdrop);
+            // 
+            // split_Patches.Panel2
+            // 
+            this.split_Patches.Panel2.Controls.Add(this.group_Tweaks);
+            this.split_Patches.Size = new System.Drawing.Size(530, 480);
+            this.split_Patches.SplitterDistance = 260;
+            this.split_Patches.TabIndex = 3;
+            // 
+            // pnl_PatchBackdrop
+            // 
+            this.pnl_PatchBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_PatchBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.pnl_PatchBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_PatchBackdrop.Controls.Add(this.clb_PatchesList);
+            this.pnl_PatchBackdrop.Location = new System.Drawing.Point(2, 5);
+            this.pnl_PatchBackdrop.Name = "pnl_PatchBackdrop";
+            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(257, 471);
+            this.pnl_PatchBackdrop.TabIndex = 2;
+            // 
+            // clb_PatchesList
+            // 
+            this.clb_PatchesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.clb_PatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.clb_PatchesList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.clb_PatchesList.ForeColor = System.Drawing.SystemColors.Control;
+            this.clb_PatchesList.FormattingEnabled = true;
+            this.clb_PatchesList.Items.AddRange(new object[] {
+            "Action Gauge Fixes for Sonic",
+            "Curved Homing Attack for Sonic",
+            "Disable Bloom",
+            "Disable HUD",
+            "Disable Intro Logos",
+            "Disable Music",
+            "Disable Shadows",
+            "Omega Blur Fix",
+            "Silver Grind Trick Fix",
+            "Unlock Mid-air Momentum",
+            "Unlock Tails\' Flight Limit",
+            "Use Dynamic Bones for Snowboard States"});
+            this.clb_PatchesList.Location = new System.Drawing.Point(3, 2);
+            this.clb_PatchesList.Name = "clb_PatchesList";
+            this.clb_PatchesList.Size = new System.Drawing.Size(255, 450);
+            this.clb_PatchesList.TabIndex = 1;
+            this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
             // 
             // group_Tweaks
             // 
@@ -845,15 +1142,16 @@
             this.group_Tweaks.Controls.Add(this.lbl_Renderer);
             this.group_Tweaks.Controls.Add(this.combo_Renderer);
             this.group_Tweaks.ForeColor = System.Drawing.SystemColors.Control;
-            this.group_Tweaks.Location = new System.Drawing.Point(267, 1);
+            this.group_Tweaks.Location = new System.Drawing.Point(1, -3);
             this.group_Tweaks.Name = "group_Tweaks";
-            this.group_Tweaks.Size = new System.Drawing.Size(259, 479);
+            this.group_Tweaks.Size = new System.Drawing.Size(259, 480);
             this.group_Tweaks.TabIndex = 2;
             this.group_Tweaks.TabStop = false;
             this.group_Tweaks.Text = "Tweaks";
             // 
             // help_FieldOfView
             // 
+            this.help_FieldOfView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.help_FieldOfView.AutoSize = true;
             this.help_FieldOfView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.help_FieldOfView.ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -869,6 +1167,7 @@
             // 
             // help_CameraHeight
             // 
+            this.help_CameraHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.help_CameraHeight.AutoSize = true;
             this.help_CameraHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.help_CameraHeight.ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -884,6 +1183,7 @@
             // 
             // help_CameraDistance
             // 
+            this.help_CameraDistance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.help_CameraDistance.AutoSize = true;
             this.help_CameraDistance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.help_CameraDistance.ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -899,6 +1199,7 @@
             // 
             // help_CameraType
             // 
+            this.help_CameraType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.help_CameraType.AutoSize = true;
             this.help_CameraType.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.help_CameraType.ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -914,6 +1215,7 @@
             // 
             // help_Reflections
             // 
+            this.help_Reflections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.help_Reflections.AutoSize = true;
             this.help_Reflections.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.help_Reflections.ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -929,6 +1231,7 @@
             // 
             // help_Renderer
             // 
+            this.help_Renderer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.help_Renderer.AutoSize = true;
             this.help_Renderer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.help_Renderer.ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -944,6 +1247,7 @@
             // 
             // btn_ResetCameraHeight
             // 
+            this.btn_ResetCameraHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ResetCameraHeight.FlatAppearance.BorderSize = 0;
             this.btn_ResetCameraHeight.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraHeight.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -958,6 +1262,8 @@
             // 
             // nud_CameraHeight
             // 
+            this.nud_CameraHeight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.nud_CameraHeight.DecimalPlaces = 1;
             this.nud_CameraHeight.Location = new System.Drawing.Point(14, 239);
             this.nud_CameraHeight.Maximum = new decimal(new int[] {
@@ -986,6 +1292,7 @@
             // 
             // btn_ResetFOV
             // 
+            this.btn_ResetFOV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ResetFOV.FlatAppearance.BorderSize = 0;
             this.btn_ResetFOV.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetFOV.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -1000,6 +1307,8 @@
             // 
             // nud_FieldOfView
             // 
+            this.nud_FieldOfView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.nud_FieldOfView.Location = new System.Drawing.Point(14, 288);
             this.nud_FieldOfView.Maximum = new decimal(new int[] {
             255,
@@ -1028,6 +1337,7 @@
             // 
             // btn_ResetCameraType
             // 
+            this.btn_ResetCameraType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ResetCameraType.FlatAppearance.BorderSize = 0;
             this.btn_ResetCameraType.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraType.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -1052,6 +1362,8 @@
             // 
             // combo_CameraType
             // 
+            this.combo_CameraType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.combo_CameraType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_CameraType.FormattingEnabled = true;
             this.combo_CameraType.Items.AddRange(new object[] {
@@ -1075,6 +1387,7 @@
             // 
             // btn_ResetReflections
             // 
+            this.btn_ResetReflections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ResetReflections.FlatAppearance.BorderSize = 0;
             this.btn_ResetReflections.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -1089,6 +1402,7 @@
             // 
             // btn_ResetCameraDistance
             // 
+            this.btn_ResetCameraDistance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ResetCameraDistance.FlatAppearance.BorderSize = 0;
             this.btn_ResetCameraDistance.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraDistance.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -1103,6 +1417,8 @@
             // 
             // nud_CameraDistance
             // 
+            this.nud_CameraDistance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.nud_CameraDistance.Location = new System.Drawing.Point(14, 190);
             this.nud_CameraDistance.Maximum = new decimal(new int[] {
             999999,
@@ -1140,6 +1456,8 @@
             // 
             // combo_Reflections
             // 
+            this.combo_Reflections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.combo_Reflections.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_Reflections.FormattingEnabled = true;
             this.combo_Reflections.Items.AddRange(new object[] {
@@ -1155,6 +1473,7 @@
             // 
             // btn_ResetRenderer
             // 
+            this.btn_ResetRenderer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_ResetRenderer.FlatAppearance.BorderSize = 0;
             this.btn_ResetRenderer.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetRenderer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -1179,6 +1498,8 @@
             // 
             // combo_Renderer
             // 
+            this.combo_Renderer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.combo_Renderer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_Renderer.FormattingEnabled = true;
             this.combo_Renderer.Items.AddRange(new object[] {
@@ -1191,34 +1512,6 @@
             this.combo_Renderer.Size = new System.Drawing.Size(211, 23);
             this.combo_Renderer.TabIndex = 100;
             this.combo_Renderer.SelectedIndexChanged += new System.EventHandler(this.Combo_Renderer_SelectedIndexChanged);
-            // 
-            // clb_PatchesList
-            // 
-            this.clb_PatchesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.clb_PatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.clb_PatchesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.clb_PatchesList.ForeColor = System.Drawing.SystemColors.Control;
-            this.clb_PatchesList.FormattingEnabled = true;
-            this.clb_PatchesList.Items.AddRange(new object[] {
-            "Action Gauge Fixes for Sonic",
-            "Curved Homing Attack for Sonic",
-            "Disable Bloom",
-            "Disable HUD",
-            "Disable Intro Logos",
-            "Disable Music",
-            "Disable Shadows",
-            "Omega Blur Fix",
-            "Silver Grind Trick Fix",
-            "Unlock Mid-air Momentum",
-            "Unlock Tails\' Flight Limit",
-            "Use Dynamic Bones for Snowboard States"});
-            this.clb_PatchesList.Location = new System.Drawing.Point(4, 9);
-            this.clb_PatchesList.Name = "clb_PatchesList";
-            this.clb_PatchesList.Size = new System.Drawing.Size(257, 470);
-            this.clb_PatchesList.TabIndex = 1;
-            this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
             // 
             // unifytb_Tab_Settings
             // 
@@ -1241,21 +1534,16 @@
             this.group_Options.Controls.Add(this.check_DisableSoftwareUpdater);
             this.group_Options.Controls.Add(this.lbl_SaveRedirect);
             this.group_Options.Controls.Add(this.check_SaveRedirect);
-            this.group_Options.Controls.Add(this.btn_ReportBug);
             this.group_Options.Controls.Add(this.lbl_GameBanana);
             this.group_Options.Controls.Add(this.check_GameBanana);
-            this.group_Options.Controls.Add(this.btn_Update);
             this.group_Options.Controls.Add(this.lbl_ManualInstall);
-            this.group_Options.Controls.Add(this.btn_Reset);
-            this.group_Options.Controls.Add(this.btn_GitHub);
-            this.group_Options.Controls.Add(this.btn_About);
             this.group_Options.Controls.Add(this.btn_ColourPicker_Default);
             this.group_Options.Controls.Add(this.lbl_AccentColour);
             this.group_Options.Controls.Add(this.btn_ColourPicker);
             this.group_Options.Controls.Add(this.check_ManualInstall);
-            this.group_Options.Controls.Add(this.btn_Theme);
             this.group_Options.Controls.Add(this.lbl_ManualPatches);
             this.group_Options.Controls.Add(this.check_ManualPatches);
+            this.group_Options.Controls.Add(this.split_Options);
             this.group_Options.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Options.Location = new System.Drawing.Point(4, 256);
             this.group_Options.Name = "group_Options";
@@ -1306,21 +1594,6 @@
             this.check_SaveRedirect.UseVisualStyleBackColor = true;
             this.check_SaveRedirect.CheckedChanged += new System.EventHandler(this.Check_SaveRedirect_CheckedChanged);
             // 
-            // btn_ReportBug
-            // 
-            this.btn_ReportBug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_ReportBug.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btn_ReportBug.FlatAppearance.BorderSize = 0;
-            this.btn_ReportBug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ReportBug.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_ReportBug.Location = new System.Drawing.Point(14, 157);
-            this.btn_ReportBug.Name = "btn_ReportBug";
-            this.btn_ReportBug.Size = new System.Drawing.Size(119, 23);
-            this.btn_ReportBug.TabIndex = 94;
-            this.btn_ReportBug.Text = "Report a bug";
-            this.btn_ReportBug.UseVisualStyleBackColor = false;
-            this.btn_ReportBug.Click += new System.EventHandler(this.Btn_ReportBug_Click);
-            // 
             // lbl_GameBanana
             // 
             this.lbl_GameBanana.AutoSize = true;
@@ -1342,22 +1615,6 @@
             this.check_GameBanana.UseVisualStyleBackColor = true;
             this.check_GameBanana.CheckedChanged += new System.EventHandler(this.Check_GameBanana_CheckedChanged);
             // 
-            // btn_Update
-            // 
-            this.btn_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Update.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btn_Update.FlatAppearance.BorderSize = 0;
-            this.btn_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Update.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Update.Location = new System.Drawing.Point(139, 157);
-            this.btn_Update.Name = "btn_Update";
-            this.btn_Update.Size = new System.Drawing.Size(245, 23);
-            this.btn_Update.TabIndex = 91;
-            this.btn_Update.Text = "Check for Updates";
-            this.btn_Update.UseVisualStyleBackColor = false;
-            this.btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
-            // 
             // lbl_ManualInstall
             // 
             this.lbl_ManualInstall.AutoSize = true;
@@ -1367,53 +1624,6 @@
             this.lbl_ManualInstall.Size = new System.Drawing.Size(136, 15);
             this.lbl_ManualInstall.TabIndex = 19;
             this.lbl_ManualInstall.Text = "Manual mod installation";
-            // 
-            // btn_Reset
-            // 
-            this.btn_Reset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Reset.BackColor = System.Drawing.Color.Tomato;
-            this.btn_Reset.FlatAppearance.BorderSize = 0;
-            this.btn_Reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Reset.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Reset.Location = new System.Drawing.Point(390, 186);
-            this.btn_Reset.Name = "btn_Reset";
-            this.btn_Reset.Size = new System.Drawing.Size(119, 23);
-            this.btn_Reset.TabIndex = 90;
-            this.btn_Reset.Text = "Reset";
-            this.btn_Reset.UseVisualStyleBackColor = false;
-            this.btn_Reset.Click += new System.EventHandler(this.Btn_Reset_Click);
-            // 
-            // btn_GitHub
-            // 
-            this.btn_GitHub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_GitHub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(218)))), ((int)(((byte)(240)))));
-            this.btn_GitHub.FlatAppearance.BorderSize = 0;
-            this.btn_GitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_GitHub.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_GitHub.Location = new System.Drawing.Point(14, 186);
-            this.btn_GitHub.Name = "btn_GitHub";
-            this.btn_GitHub.Size = new System.Drawing.Size(119, 23);
-            this.btn_GitHub.TabIndex = 89;
-            this.btn_GitHub.Text = "GitHub";
-            this.btn_GitHub.UseVisualStyleBackColor = false;
-            this.btn_GitHub.Click += new System.EventHandler(this.Btn_GitHub_Click);
-            // 
-            // btn_About
-            // 
-            this.btn_About.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_About.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btn_About.FlatAppearance.BorderSize = 0;
-            this.btn_About.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_About.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_About.Location = new System.Drawing.Point(139, 186);
-            this.btn_About.Name = "btn_About";
-            this.btn_About.Size = new System.Drawing.Size(245, 23);
-            this.btn_About.TabIndex = 50;
-            this.btn_About.Text = "About Sonic \'06 Mod Manager";
-            this.btn_About.UseVisualStyleBackColor = false;
-            this.btn_About.Click += new System.EventHandler(this.Btn_About_Click);
-            this.btn_About.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_About_MouseUp);
             // 
             // btn_ColourPicker_Default
             // 
@@ -1465,21 +1675,6 @@
             this.check_ManualInstall.UseVisualStyleBackColor = true;
             this.check_ManualInstall.CheckedChanged += new System.EventHandler(this.Check_ManualInstall_CheckedChanged);
             // 
-            // btn_Theme
-            // 
-            this.btn_Theme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Theme.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btn_Theme.FlatAppearance.BorderSize = 0;
-            this.btn_Theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Theme.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Theme.Location = new System.Drawing.Point(390, 157);
-            this.btn_Theme.Name = "btn_Theme";
-            this.btn_Theme.Size = new System.Drawing.Size(119, 23);
-            this.btn_Theme.TabIndex = 43;
-            this.btn_Theme.Text = "Theme: None";
-            this.btn_Theme.UseVisualStyleBackColor = false;
-            this.btn_Theme.Click += new System.EventHandler(this.Btn_Theme_Click);
-            // 
             // lbl_ManualPatches
             // 
             this.lbl_ManualPatches.AutoSize = true;
@@ -1500,6 +1695,141 @@
             this.check_ManualPatches.TabIndex = 96;
             this.check_ManualPatches.UseVisualStyleBackColor = true;
             this.check_ManualPatches.CheckedChanged += new System.EventHandler(this.Check_ManualPatches_CheckedChanged);
+            // 
+            // split_Options
+            // 
+            this.split_Options.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.split_Options.Location = new System.Drawing.Point(6, 153);
+            this.split_Options.Name = "split_Options";
+            // 
+            // split_Options.Panel1
+            // 
+            this.split_Options.Panel1.Controls.Add(this.btn_ReportBug);
+            this.split_Options.Panel1.Controls.Add(this.btn_GitHub);
+            // 
+            // split_Options.Panel2
+            // 
+            this.split_Options.Panel2.Controls.Add(this.splitContainer2);
+            this.split_Options.Size = new System.Drawing.Size(510, 60);
+            this.split_Options.SplitterDistance = 128;
+            this.split_Options.TabIndex = 102;
+            // 
+            // btn_ReportBug
+            // 
+            this.btn_ReportBug.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_ReportBug.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_ReportBug.FlatAppearance.BorderSize = 0;
+            this.btn_ReportBug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ReportBug.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_ReportBug.Location = new System.Drawing.Point(8, 4);
+            this.btn_ReportBug.Name = "btn_ReportBug";
+            this.btn_ReportBug.Size = new System.Drawing.Size(119, 23);
+            this.btn_ReportBug.TabIndex = 94;
+            this.btn_ReportBug.Text = "Report a bug";
+            this.btn_ReportBug.UseVisualStyleBackColor = false;
+            this.btn_ReportBug.Click += new System.EventHandler(this.Btn_ReportBug_Click);
+            // 
+            // btn_GitHub
+            // 
+            this.btn_GitHub.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_GitHub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(218)))), ((int)(((byte)(240)))));
+            this.btn_GitHub.FlatAppearance.BorderSize = 0;
+            this.btn_GitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_GitHub.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_GitHub.Location = new System.Drawing.Point(8, 33);
+            this.btn_GitHub.Name = "btn_GitHub";
+            this.btn_GitHub.Size = new System.Drawing.Size(119, 23);
+            this.btn_GitHub.TabIndex = 89;
+            this.btn_GitHub.Text = "GitHub";
+            this.btn_GitHub.UseVisualStyleBackColor = false;
+            this.btn_GitHub.Click += new System.EventHandler(this.Btn_GitHub_Click);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.btn_About);
+            this.splitContainer2.Panel1.Controls.Add(this.btn_Update);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.btn_Reset);
+            this.splitContainer2.Panel2.Controls.Add(this.btn_Theme);
+            this.splitContainer2.Size = new System.Drawing.Size(378, 60);
+            this.splitContainer2.SplitterDistance = 247;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // btn_About
+            // 
+            this.btn_About.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_About.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_About.FlatAppearance.BorderSize = 0;
+            this.btn_About.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_About.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_About.Location = new System.Drawing.Point(1, 33);
+            this.btn_About.Name = "btn_About";
+            this.btn_About.Size = new System.Drawing.Size(245, 23);
+            this.btn_About.TabIndex = 50;
+            this.btn_About.Text = "About Sonic \'06 Mod Manager";
+            this.btn_About.UseVisualStyleBackColor = false;
+            this.btn_About.Click += new System.EventHandler(this.Btn_About_Click);
+            this.btn_About.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_About_MouseUp);
+            // 
+            // btn_Update
+            // 
+            this.btn_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Update.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_Update.FlatAppearance.BorderSize = 0;
+            this.btn_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Update.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_Update.Location = new System.Drawing.Point(1, 4);
+            this.btn_Update.Name = "btn_Update";
+            this.btn_Update.Size = new System.Drawing.Size(245, 23);
+            this.btn_Update.TabIndex = 91;
+            this.btn_Update.Text = "Check for Updates";
+            this.btn_Update.UseVisualStyleBackColor = false;
+            this.btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
+            // 
+            // btn_Reset
+            // 
+            this.btn_Reset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Reset.BackColor = System.Drawing.Color.Tomato;
+            this.btn_Reset.FlatAppearance.BorderSize = 0;
+            this.btn_Reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Reset.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_Reset.Location = new System.Drawing.Point(1, 33);
+            this.btn_Reset.Name = "btn_Reset";
+            this.btn_Reset.Size = new System.Drawing.Size(119, 23);
+            this.btn_Reset.TabIndex = 90;
+            this.btn_Reset.Text = "Reset";
+            this.btn_Reset.UseVisualStyleBackColor = false;
+            this.btn_Reset.Click += new System.EventHandler(this.Btn_Reset_Click);
+            // 
+            // btn_Theme
+            // 
+            this.btn_Theme.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Theme.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_Theme.FlatAppearance.BorderSize = 0;
+            this.btn_Theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Theme.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_Theme.Location = new System.Drawing.Point(1, 4);
+            this.btn_Theme.Name = "btn_Theme";
+            this.btn_Theme.Size = new System.Drawing.Size(119, 23);
+            this.btn_Theme.TabIndex = 43;
+            this.btn_Theme.Text = "Theme: None";
+            this.btn_Theme.UseVisualStyleBackColor = false;
+            this.btn_Theme.Click += new System.EventHandler(this.Btn_Theme_Click);
             // 
             // group_FTP
             // 
@@ -1710,30 +2040,42 @@
             this.ClientSize = new System.Drawing.Size(538, 601);
             this.Controls.Add(this.sonic06mm_Aldi);
             this.Controls.Add(this.lbl_SetStatus);
-            this.Controls.Add(this.btn_EditMod);
-            this.Controls.Add(this.btn_UninstallMods);
             this.Controls.Add(this.radio_PlayStation3);
             this.Controls.Add(this.radio_Xbox360);
             this.Controls.Add(this.radio_All);
             this.Controls.Add(this.status_Main);
-            this.Controls.Add(this.btn_RefreshMods);
-            this.Controls.Add(this.btn_CreateNewMod);
-            this.Controls.Add(this.btn_ModInfo);
-            this.Controls.Add(this.btn_Play);
-            this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.unifytb_Main);
-            this.Controls.Add(this.btn_SaveAndPlay);
+            this.Controls.Add(this.split_MainControls);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(554, 640);
             this.Name = "ModManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";
             this.Shown += new System.EventHandler(this.ModManager_Shown);
+            this.split_MainControls.Panel1.ResumeLayout(false);
+            this.split_MainControls.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.split_MainControls)).EndInit();
+            this.split_MainControls.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.split_MainControlsWidthModifier.Panel1.ResumeLayout(false);
+            this.split_MainControlsWidthModifier.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.split_MainControlsWidthModifier)).EndInit();
+            this.split_MainControlsWidthModifier.ResumeLayout(false);
+            this.split_Mods.Panel1.ResumeLayout(false);
+            this.split_Mods.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.split_Mods)).EndInit();
+            this.split_Mods.ResumeLayout(false);
+            this.split_ListControls.Panel1.ResumeLayout(false);
+            this.split_ListControls.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.split_ListControls)).EndInit();
+            this.split_ListControls.ResumeLayout(false);
             this.unifytb_Main.ResumeLayout(false);
             this.unifytb_Tab_Mods.ResumeLayout(false);
+            this.pnl_ModBackdrop.ResumeLayout(false);
             this.unifytb_Tab_Emulator.ResumeLayout(false);
             this.unifytb_Tab_Emulator.PerformLayout();
             this.group_Settings.ResumeLayout(false);
@@ -1741,6 +2083,11 @@
             this.group_Setup.ResumeLayout(false);
             this.group_Setup.PerformLayout();
             this.unifytb_Tab_Patches.ResumeLayout(false);
+            this.split_Patches.Panel1.ResumeLayout(false);
+            this.split_Patches.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.split_Patches)).EndInit();
+            this.split_Patches.ResumeLayout(false);
+            this.pnl_PatchBackdrop.ResumeLayout(false);
             this.group_Tweaks.ResumeLayout(false);
             this.group_Tweaks.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraHeight)).EndInit();
@@ -1749,6 +2096,14 @@
             this.unifytb_Tab_Settings.ResumeLayout(false);
             this.group_Options.ResumeLayout(false);
             this.group_Options.PerformLayout();
+            this.split_Options.Panel1.ResumeLayout(false);
+            this.split_Options.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.split_Options)).EndInit();
+            this.split_Options.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.group_FTP.ResumeLayout(false);
             this.group_FTP.PerformLayout();
             this.group_Directories.ResumeLayout(false);
@@ -1771,11 +2126,9 @@
         private System.Windows.Forms.Button btn_Priority;
         private System.Windows.Forms.Button btn_DownerPriority;
         private System.Windows.Forms.Button btn_UpperPriority;
-        private System.Windows.Forms.Button btn_SaveAndPlay;
         private System.Windows.Forms.Button btn_Save;
         private System.Windows.Forms.Button btn_Play;
         private System.Windows.Forms.Button btn_RefreshMods;
-        private System.Windows.Forms.Button btn_CreateNewMod;
         private System.Windows.Forms.Button btn_ModInfo;
         private System.Windows.Forms.CheckedListBox clb_PatchesList;
         private System.Windows.Forms.StatusStrip status_Main;
@@ -1839,8 +2192,6 @@
         private System.Windows.Forms.RadioButton radio_All;
         private System.Windows.Forms.RadioButton radio_Xbox360;
         private System.Windows.Forms.RadioButton radio_PlayStation3;
-        private System.Windows.Forms.Button btn_UninstallMods;
-        private System.Windows.Forms.Button btn_EditMod;
         private System.Windows.Forms.Label lbl_ManualInstall;
         private System.Windows.Forms.Label lbl_FTP;
         private System.Windows.Forms.Label lbl_GameBanana;
@@ -1878,5 +2229,21 @@
         private System.Windows.Forms.LinkLabel help_CameraDistance;
         private System.Windows.Forms.LinkLabel help_CameraType;
         private System.Windows.Forms.LinkLabel help_Reflections;
+        private System.Windows.Forms.SplitContainer split_Patches;
+        private System.Windows.Forms.Panel pnl_PatchBackdrop;
+        private System.Windows.Forms.Panel pnl_ModBackdrop;
+        private System.Windows.Forms.SplitContainer split_MainControls;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.SplitContainer split_MainControlsWidthModifier;
+        private System.Windows.Forms.Button btn_CreateNewMod;
+        private System.Windows.Forms.Button btn_InstallMods;
+        private System.Windows.Forms.Button btn_EditMod;
+        private System.Windows.Forms.Button btn_UninstallMods;
+        private System.Windows.Forms.Button btn_CreateNewModFull;
+        private System.Windows.Forms.Button btn_SaveAndPlayFull;
+        private System.Windows.Forms.SplitContainer split_Mods;
+        private System.Windows.Forms.SplitContainer split_ListControls;
+        private System.Windows.Forms.SplitContainer split_Options;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
