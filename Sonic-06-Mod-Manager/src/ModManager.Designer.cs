@@ -613,7 +613,7 @@
             this.btn_Priority.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_Priority.FlatAppearance.BorderSize = 0;
             this.btn_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Priority.Location = new System.Drawing.Point(348, 455);
+            this.btn_Priority.Location = new System.Drawing.Point(348, 456);
             this.btn_Priority.Name = "btn_Priority";
             this.btn_Priority.Size = new System.Drawing.Size(178, 23);
             this.btn_Priority.TabIndex = 42;
@@ -629,7 +629,7 @@
             this.btn_DownerPriority.FlatAppearance.BorderSize = 0;
             this.btn_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_DownerPriority.Location = new System.Drawing.Point(316, 455);
+            this.btn_DownerPriority.Location = new System.Drawing.Point(316, 456);
             this.btn_DownerPriority.Name = "btn_DownerPriority";
             this.btn_DownerPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_DownerPriority.TabIndex = 41;
@@ -645,7 +645,7 @@
             this.btn_UpperPriority.FlatAppearance.BorderSize = 0;
             this.btn_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 455);
+            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 456);
             this.btn_UpperPriority.Name = "btn_UpperPriority";
             this.btn_UpperPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_UpperPriority.TabIndex = 40;
@@ -659,7 +659,7 @@
             this.btn_DeselectAll.BackColor = System.Drawing.Color.Tomato;
             this.btn_DeselectAll.FlatAppearance.BorderSize = 0;
             this.btn_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DeselectAll.Location = new System.Drawing.Point(145, 455);
+            this.btn_DeselectAll.Location = new System.Drawing.Point(145, 456);
             this.btn_DeselectAll.Name = "btn_DeselectAll";
             this.btn_DeselectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_DeselectAll.TabIndex = 2;
@@ -673,7 +673,7 @@
             this.btn_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
             this.btn_SelectAll.FlatAppearance.BorderSize = 0;
             this.btn_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SelectAll.Location = new System.Drawing.Point(5, 455);
+            this.btn_SelectAll.Location = new System.Drawing.Point(5, 456);
             this.btn_SelectAll.Name = "btn_SelectAll";
             this.btn_SelectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_SelectAll.TabIndex = 1;
@@ -689,7 +689,7 @@
             this.pnl_ModBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.pnl_ModBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_ModBackdrop.Controls.Add(this.clb_ModsList);
-            this.pnl_ModBackdrop.Location = new System.Drawing.Point(4, 8);
+            this.pnl_ModBackdrop.Location = new System.Drawing.Point(4, 9);
             this.pnl_ModBackdrop.Name = "pnl_ModBackdrop";
             this.pnl_ModBackdrop.Size = new System.Drawing.Size(522, 438);
             this.pnl_ModBackdrop.TabIndex = 43;
@@ -1067,7 +1067,7 @@
             // 
             this.split_Patches.Panel2.Controls.Add(this.group_Tweaks);
             this.split_Patches.Size = new System.Drawing.Size(530, 480);
-            this.split_Patches.SplitterDistance = 260;
+            this.split_Patches.SplitterDistance = 262;
             this.split_Patches.TabIndex = 3;
             // 
             // pnl_PatchBackdrop
@@ -1078,9 +1078,9 @@
             this.pnl_PatchBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.pnl_PatchBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_PatchBackdrop.Controls.Add(this.clb_PatchesList);
-            this.pnl_PatchBackdrop.Location = new System.Drawing.Point(2, 5);
+            this.pnl_PatchBackdrop.Location = new System.Drawing.Point(2, 6);
             this.pnl_PatchBackdrop.Name = "pnl_PatchBackdrop";
-            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(257, 471);
+            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(259, 469);
             this.pnl_PatchBackdrop.TabIndex = 2;
             // 
             // clb_PatchesList
@@ -1107,7 +1107,7 @@
             "Use Dynamic Bones for Snowboard States"});
             this.clb_PatchesList.Location = new System.Drawing.Point(3, 2);
             this.clb_PatchesList.Name = "clb_PatchesList";
-            this.clb_PatchesList.Size = new System.Drawing.Size(255, 450);
+            this.clb_PatchesList.Size = new System.Drawing.Size(257, 468);
             this.clb_PatchesList.TabIndex = 1;
             this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
             // 
@@ -1142,9 +1142,9 @@
             this.group_Tweaks.Controls.Add(this.lbl_Renderer);
             this.group_Tweaks.Controls.Add(this.combo_Renderer);
             this.group_Tweaks.ForeColor = System.Drawing.SystemColors.Control;
-            this.group_Tweaks.Location = new System.Drawing.Point(1, -3);
+            this.group_Tweaks.Location = new System.Drawing.Point(1, -2);
             this.group_Tweaks.Name = "group_Tweaks";
-            this.group_Tweaks.Size = new System.Drawing.Size(259, 480);
+            this.group_Tweaks.Size = new System.Drawing.Size(257, 478);
             this.group_Tweaks.TabIndex = 2;
             this.group_Tweaks.TabStop = false;
             this.group_Tweaks.Text = "Tweaks";
@@ -1157,7 +1157,7 @@
             this.help_FieldOfView.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_FieldOfView.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_FieldOfView.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_FieldOfView.Location = new System.Drawing.Point(212, 270);
+            this.help_FieldOfView.Location = new System.Drawing.Point(210, 270);
             this.help_FieldOfView.Name = "help_FieldOfView";
             this.help_FieldOfView.Size = new System.Drawing.Size(18, 15);
             this.help_FieldOfView.TabIndex = 110;
@@ -1173,7 +1173,7 @@
             this.help_CameraHeight.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_CameraHeight.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_CameraHeight.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_CameraHeight.Location = new System.Drawing.Point(212, 221);
+            this.help_CameraHeight.Location = new System.Drawing.Point(210, 221);
             this.help_CameraHeight.Name = "help_CameraHeight";
             this.help_CameraHeight.Size = new System.Drawing.Size(18, 15);
             this.help_CameraHeight.TabIndex = 109;
@@ -1189,7 +1189,7 @@
             this.help_CameraDistance.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_CameraDistance.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_CameraDistance.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_CameraDistance.Location = new System.Drawing.Point(212, 172);
+            this.help_CameraDistance.Location = new System.Drawing.Point(210, 172);
             this.help_CameraDistance.Name = "help_CameraDistance";
             this.help_CameraDistance.Size = new System.Drawing.Size(18, 15);
             this.help_CameraDistance.TabIndex = 108;
@@ -1205,7 +1205,7 @@
             this.help_CameraType.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_CameraType.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_CameraType.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_CameraType.Location = new System.Drawing.Point(212, 123);
+            this.help_CameraType.Location = new System.Drawing.Point(210, 123);
             this.help_CameraType.Name = "help_CameraType";
             this.help_CameraType.Size = new System.Drawing.Size(18, 15);
             this.help_CameraType.TabIndex = 107;
@@ -1221,7 +1221,7 @@
             this.help_Reflections.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_Reflections.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_Reflections.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_Reflections.Location = new System.Drawing.Point(212, 74);
+            this.help_Reflections.Location = new System.Drawing.Point(210, 74);
             this.help_Reflections.Name = "help_Reflections";
             this.help_Reflections.Size = new System.Drawing.Size(18, 15);
             this.help_Reflections.TabIndex = 106;
@@ -1237,7 +1237,7 @@
             this.help_Renderer.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_Renderer.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_Renderer.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_Renderer.Location = new System.Drawing.Point(212, 25);
+            this.help_Renderer.Location = new System.Drawing.Point(210, 25);
             this.help_Renderer.Name = "help_Renderer";
             this.help_Renderer.Size = new System.Drawing.Size(18, 15);
             this.help_Renderer.TabIndex = 105;
@@ -1253,7 +1253,7 @@
             this.btn_ResetCameraHeight.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraHeight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraHeight.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraHeight.Image")));
-            this.btn_ResetCameraHeight.Location = new System.Drawing.Point(227, 240);
+            this.btn_ResetCameraHeight.Location = new System.Drawing.Point(225, 240);
             this.btn_ResetCameraHeight.Name = "btn_ResetCameraHeight";
             this.btn_ResetCameraHeight.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraHeight.TabIndex = 104;
@@ -1272,7 +1272,7 @@
             0,
             0});
             this.nud_CameraHeight.Name = "nud_CameraHeight";
-            this.nud_CameraHeight.Size = new System.Drawing.Size(211, 23);
+            this.nud_CameraHeight.Size = new System.Drawing.Size(209, 23);
             this.nud_CameraHeight.TabIndex = 103;
             this.nud_CameraHeight.Value = new decimal(new int[] {
             70,
@@ -1298,7 +1298,7 @@
             this.btn_ResetFOV.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetFOV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetFOV.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetFOV.Image")));
-            this.btn_ResetFOV.Location = new System.Drawing.Point(227, 289);
+            this.btn_ResetFOV.Location = new System.Drawing.Point(225, 289);
             this.btn_ResetFOV.Name = "btn_ResetFOV";
             this.btn_ResetFOV.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetFOV.TabIndex = 98;
@@ -1316,7 +1316,7 @@
             0,
             0});
             this.nud_FieldOfView.Name = "nud_FieldOfView";
-            this.nud_FieldOfView.Size = new System.Drawing.Size(211, 23);
+            this.nud_FieldOfView.Size = new System.Drawing.Size(209, 23);
             this.nud_FieldOfView.TabIndex = 97;
             this.nud_FieldOfView.Value = new decimal(new int[] {
             90,
@@ -1343,7 +1343,7 @@
             this.btn_ResetCameraType.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraType.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraType.Image")));
-            this.btn_ResetCameraType.Location = new System.Drawing.Point(227, 142);
+            this.btn_ResetCameraType.Location = new System.Drawing.Point(225, 142);
             this.btn_ResetCameraType.Name = "btn_ResetCameraType";
             this.btn_ResetCameraType.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraType.TabIndex = 95;
@@ -1372,14 +1372,14 @@
             "Electronic Entertainment Expo (E3)"});
             this.combo_CameraType.Location = new System.Drawing.Point(14, 141);
             this.combo_CameraType.Name = "combo_CameraType";
-            this.combo_CameraType.Size = new System.Drawing.Size(211, 23);
+            this.combo_CameraType.Size = new System.Drawing.Size(209, 23);
             this.combo_CameraType.TabIndex = 94;
             this.combo_CameraType.SelectedIndexChanged += new System.EventHandler(this.Combo_CameraType_SelectedIndexChanged);
             // 
             // lbl_TweaksOverlay
             // 
             this.lbl_TweaksOverlay.AutoSize = true;
-            this.lbl_TweaksOverlay.Location = new System.Drawing.Point(6, 0);
+            this.lbl_TweaksOverlay.Location = new System.Drawing.Point(5, 0);
             this.lbl_TweaksOverlay.Name = "lbl_TweaksOverlay";
             this.lbl_TweaksOverlay.Size = new System.Drawing.Size(44, 15);
             this.lbl_TweaksOverlay.TabIndex = 92;
@@ -1393,7 +1393,7 @@
             this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetReflections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetReflections.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetReflections.Image")));
-            this.btn_ResetReflections.Location = new System.Drawing.Point(227, 93);
+            this.btn_ResetReflections.Location = new System.Drawing.Point(225, 93);
             this.btn_ResetReflections.Name = "btn_ResetReflections";
             this.btn_ResetReflections.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetReflections.TabIndex = 87;
@@ -1408,7 +1408,7 @@
             this.btn_ResetCameraDistance.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraDistance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraDistance.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraDistance.Image")));
-            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(227, 191);
+            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(225, 191);
             this.btn_ResetCameraDistance.Name = "btn_ResetCameraDistance";
             this.btn_ResetCameraDistance.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraDistance.TabIndex = 85;
@@ -1426,7 +1426,7 @@
             0,
             0});
             this.nud_CameraDistance.Name = "nud_CameraDistance";
-            this.nud_CameraDistance.Size = new System.Drawing.Size(211, 23);
+            this.nud_CameraDistance.Size = new System.Drawing.Size(209, 23);
             this.nud_CameraDistance.TabIndex = 84;
             this.nud_CameraDistance.Value = new decimal(new int[] {
             650,
@@ -1467,7 +1467,7 @@
             "Full"});
             this.combo_Reflections.Location = new System.Drawing.Point(14, 92);
             this.combo_Reflections.Name = "combo_Reflections";
-            this.combo_Reflections.Size = new System.Drawing.Size(211, 23);
+            this.combo_Reflections.Size = new System.Drawing.Size(209, 23);
             this.combo_Reflections.TabIndex = 78;
             this.combo_Reflections.SelectedIndexChanged += new System.EventHandler(this.Combo_Reflections_SelectedIndexChanged);
             // 
@@ -1479,7 +1479,7 @@
             this.btn_ResetRenderer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetRenderer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetRenderer.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetRenderer.Image")));
-            this.btn_ResetRenderer.Location = new System.Drawing.Point(227, 44);
+            this.btn_ResetRenderer.Location = new System.Drawing.Point(225, 44);
             this.btn_ResetRenderer.Name = "btn_ResetRenderer";
             this.btn_ResetRenderer.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetRenderer.TabIndex = 101;
@@ -1509,7 +1509,7 @@
             "Cheap (Not Recommended)"});
             this.combo_Renderer.Location = new System.Drawing.Point(14, 43);
             this.combo_Renderer.Name = "combo_Renderer";
-            this.combo_Renderer.Size = new System.Drawing.Size(211, 23);
+            this.combo_Renderer.Size = new System.Drawing.Size(209, 23);
             this.combo_Renderer.TabIndex = 100;
             this.combo_Renderer.SelectedIndexChanged += new System.EventHandler(this.Combo_Renderer_SelectedIndexChanged);
             // 
