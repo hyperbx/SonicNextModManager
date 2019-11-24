@@ -408,6 +408,7 @@
             // split_MainControlsWidthModifier
             // 
             this.split_MainControlsWidthModifier.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.split_MainControlsWidthModifier.IsSplitterFixed = true;
             this.split_MainControlsWidthModifier.Location = new System.Drawing.Point(0, 0);
             this.split_MainControlsWidthModifier.Name = "split_MainControlsWidthModifier";
             this.split_MainControlsWidthModifier.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -1700,6 +1701,7 @@
             // 
             this.split_Options.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.split_Options.IsSplitterFixed = true;
             this.split_Options.Location = new System.Drawing.Point(6, 153);
             this.split_Options.Name = "split_Options";
             // 
@@ -1750,6 +1752,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.IsSplitterFixed = true;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             // 
