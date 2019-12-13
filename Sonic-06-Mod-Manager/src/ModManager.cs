@@ -44,7 +44,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.27"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.28"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.0";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -232,6 +232,8 @@ namespace Sonic_06_Mod_Manager
                     UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's Action Gauge draining and replenishment when using Gems.", "Action Gauge Fixes for Sonic", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")) {
                     UnifyMessages.UnifyMessage.Show("This patch will swap Sonic's homing module with Blaze's to simulate the homing attack from early versions of Sonic '06. However, this removes Sonic's ability to destroy physics objects.", "Curved Homing Attack for Sonic", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Debug Mode")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will enable Debug Mode, allowing you to navigate stages with no-clip.\n\nControls:\n► Left Analog Stick/Directional Pad - Move.\n► Right Bumper (R1) - Increase Ring count by 100.\n► Y (Triangle) - Increase height.\n► A (Cross) - Decrease height.", "Debug Mode", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Bloom")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable bloom entirely, as you would expect from a patch called 'Disable Bloom.'", "Disable Bloom", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable HUD")) {
@@ -659,6 +661,7 @@ namespace Sonic_06_Mod_Manager
                     if (nud_CameraHeight.Value != 70) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic"))) proceed++;
+                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Debug Mode"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Tails' Flight Limit"))) proceed++;
@@ -683,6 +686,11 @@ namespace Sonic_06_Mod_Manager
                             Status = SystemMessages.msg_PatchingCharacters;
                             Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")));
                             Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\princess.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")));
+                        }
+
+                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Debug Mode"))) {
+                            Status = SystemMessages.msg_PatchingCharacters;
+                            Lua.DebugMode(Path.Combine(unpack, $"player\\{system}\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Debug Mode")));
                         }
 
                         if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) {

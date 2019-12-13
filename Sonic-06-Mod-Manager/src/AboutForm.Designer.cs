@@ -43,6 +43,7 @@
             this.pic_Logo = new System.Windows.Forms.PictureBox();
             this.link_ChaosX = new System.Windows.Forms.LinkLabel();
             this.link_Velcomia = new System.Windows.Forms.LinkLabel();
+            this.link_Mefiresu = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -103,7 +104,7 @@
             this.link_Melpontro.AutoSize = true;
             this.link_Melpontro.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_Melpontro.LinkColor = System.Drawing.Color.Black;
-            this.link_Melpontro.Location = new System.Drawing.Point(233, 288);
+            this.link_Melpontro.Location = new System.Drawing.Point(233, 302);
             this.link_Melpontro.Name = "link_Melpontro";
             this.link_Melpontro.Size = new System.Drawing.Size(64, 14);
             this.link_Melpontro.TabIndex = 25;
@@ -116,7 +117,7 @@
             this.link_sharu6262.AutoSize = true;
             this.link_sharu6262.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_sharu6262.LinkColor = System.Drawing.Color.Black;
-            this.link_sharu6262.Location = new System.Drawing.Point(233, 273);
+            this.link_sharu6262.Location = new System.Drawing.Point(233, 287);
             this.link_sharu6262.Name = "link_sharu6262";
             this.link_sharu6262.Size = new System.Drawing.Size(62, 14);
             this.link_sharu6262.TabIndex = 23;
@@ -156,7 +157,7 @@
             this.lbl_Contributors.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Contributors.Location = new System.Drawing.Point(233, 47);
             this.lbl_Contributors.Name = "lbl_Contributors";
-            this.lbl_Contributors.Size = new System.Drawing.Size(357, 285);
+            this.lbl_Contributors.Size = new System.Drawing.Size(357, 300);
             this.lbl_Contributors.TabIndex = 18;
             this.lbl_Contributors.Text = resources.GetString("lbl_Contributors.Text");
             // 
@@ -190,7 +191,7 @@
             this.pic_Logo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pic_Logo.Location = new System.Drawing.Point(-1, -2);
             this.pic_Logo.Name = "pic_Logo";
-            this.pic_Logo.Size = new System.Drawing.Size(229, 346);
+            this.pic_Logo.Size = new System.Drawing.Size(229, 359);
             this.pic_Logo.TabIndex = 15;
             this.pic_Logo.TabStop = false;
             this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
@@ -213,7 +214,7 @@
             this.link_Velcomia.AutoSize = true;
             this.link_Velcomia.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_Velcomia.LinkColor = System.Drawing.Color.Black;
-            this.link_Velcomia.Location = new System.Drawing.Point(233, 318);
+            this.link_Velcomia.Location = new System.Drawing.Point(233, 332);
             this.link_Velcomia.Name = "link_Velcomia";
             this.link_Velcomia.Size = new System.Drawing.Size(57, 14);
             this.link_Velcomia.TabIndex = 31;
@@ -221,11 +222,25 @@
             this.link_Velcomia.Text = "Velcomia";
             this.link_Velcomia.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_Velcomia_LinkClicked);
             // 
+            // link_Mefiresu
+            // 
+            this.link_Mefiresu.AutoSize = true;
+            this.link_Mefiresu.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.link_Mefiresu.LinkColor = System.Drawing.Color.Black;
+            this.link_Mefiresu.Location = new System.Drawing.Point(233, 228);
+            this.link_Mefiresu.Name = "link_Mefiresu";
+            this.link_Mefiresu.Size = new System.Drawing.Size(54, 14);
+            this.link_Mefiresu.TabIndex = 32;
+            this.link_Mefiresu.TabStop = true;
+            this.link_Mefiresu.Text = "Mefiresu";
+            this.link_Mefiresu.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Mefiresu_LinkClicked);
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 342);
+            this.ClientSize = new System.Drawing.Size(595, 355);
+            this.Controls.Add(this.link_Mefiresu);
             this.Controls.Add(this.link_Velcomia);
             this.Controls.Add(this.link_ChaosX);
             this.Controls.Add(this.link_acro);
@@ -270,5 +285,6 @@
         private System.Windows.Forms.PictureBox pic_Logo;
         private System.Windows.Forms.LinkLabel link_ChaosX;
         private System.Windows.Forms.LinkLabel link_Velcomia;
+        private System.Windows.Forms.LinkLabel link_Mefiresu;
     }
 }

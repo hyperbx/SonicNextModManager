@@ -550,6 +550,43 @@ namespace Unify.Patcher
             }
         }
 
+        public static void DebugMode(string directoryRoot, bool enabled) {
+            var files = Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories);
+
+            foreach (var lub in files) {
+                if (!Path.GetFileName(lub).StartsWith("select_")) {
+                    Decompile(lub);
+                    string[] editedLua = File.ReadAllLines(lub);
+                    int lineNum = 0;
+
+                    foreach (string line in editedLua) {
+                        if (line.StartsWith("debug")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            tempLine[2] = "use";
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
+                        if (line.StartsWith("c_module_state")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            tempLine[2] = "state_module_debug";
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
+                        if (line.StartsWith("c_posture_control")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            tempLine[2] = "posture_control_debug";
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
+                        if (line.StartsWith("c_input_system")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            tempLine[2] = "input_system_debug";
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
+                        lineNum++;
+                    }
+                    File.WriteAllLines(lub, editedLua); //Resave the Lua
+                }
+            }
+        }
+
         public static void CameraDistance(string directoryRoot, int distance)
         {
             Decompile(directoryRoot);

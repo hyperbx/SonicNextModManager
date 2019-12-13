@@ -1097,6 +1097,7 @@
             this.clb_PatchesList.Items.AddRange(new object[] {
             "Action Gauge Fixes for Sonic",
             "Curved Homing Attack for Sonic",
+            "Debug Mode",
             "Disable Bloom",
             "Disable HUD",
             "Disable Intro Logos",

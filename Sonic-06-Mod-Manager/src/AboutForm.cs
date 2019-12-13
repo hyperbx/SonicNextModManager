@@ -103,5 +103,8 @@ namespace Sonic_06_Mod_Manager.src
 
         private void Link_Velcomia_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://www.youtube.com/user/Velcomia"); }
         //The ultimate bug hunter.
+
+        private void link_Mefiresu_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://twitter.com/Mefiresu"); }
+        //Debug Mode developer.
     }
 }
