@@ -1,8 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text;
+using System.Linq;
+using Unify.Tools;
 using System.Drawing;
+using Unify.Messages;
+using Unify.Networking;
 using System.Windows.Forms;
+using System.IO.Compression;
+
 
 // Project Unify is licensed under the MIT License:
 /*
@@ -33,10 +40,14 @@ namespace Sonic_06_Mod_Manager.src
 {
     public partial class ModInfo : Form
     {
+        string metadata, data, version, modDirectory = string.Empty;
+
         public ModInfo(string modPath) {
             InitializeComponent();
 
-             if (ModManager.dreamcastDay) {
+            modDirectory = modPath;
+
+            if (ModManager.dreamcastDay) {
                 if (Properties.Settings.Default.dream)
                     Icon = Properties.Resources.dreamcast_ntsc_icon;
                 else
@@ -69,6 +80,7 @@ namespace Sonic_06_Mod_Manager.src
                     if (line.StartsWith("Version")) {
                         entryValue = line.Substring(line.IndexOf("=") + 2);
                         entryValue = entryValue.Remove(entryValue.Length - 1);
+                        version = entryValue;
                         tb_Information.Text += $"Version: {entryValue}\n";
                     }
                     if (line.StartsWith("Date")) {
@@ -95,7 +107,20 @@ namespace Sonic_06_Mod_Manager.src
                     {
                         entryValue = line.Substring(line.IndexOf("=") + 2);
                         entryValue = entryValue.Remove(entryValue.Length - 1);
-                        tb_Description.Text += entryValue.Replace(@"\n", Environment.NewLine); ;
+                        tb_Description.Text += entryValue.Replace(@"\n", Environment.NewLine);
+                    }
+                    if (line.StartsWith("Metadata")) 
+                    {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        metadata = entryValue.Replace(@"\n", Environment.NewLine);
+                        if (entryValue.Length > 0) btn_Update.Enabled = pgb_Progress.Enabled = true;
+                    }
+                    if (line.StartsWith("Data")) 
+                    {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        data = entryValue.Replace(@"\n", Environment.NewLine);
                     }
                 }
             }
@@ -107,5 +132,64 @@ namespace Sonic_06_Mod_Manager.src
         }
 
         private void ModInfo_FormClosing(object sender, FormClosingEventArgs e) { pic_Thumbnail.BackgroundImage.Dispose(); }
+
+        private void Btn_Update_Click(object sender, EventArgs e) {
+            string archive = Path.GetTempFileName();
+            string metadata, version = string.Empty;
+
+            try { metadata = new TimedWebClient { Timeout = 100000 }.DownloadString(this.metadata); }
+            catch { return; }
+
+            if (metadata.Length != 0) {
+                string[] splitMetadata = metadata.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+                foreach (string line in splitMetadata) {
+                    string entryValue = string.Empty;
+                    if (line.StartsWith("Version")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        version = entryValue;
+                    }
+                    if (line.StartsWith("Data")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        if (data != entryValue) data = entryValue;
+                    }
+                }
+            }
+
+            if (version != this.version) {
+                var clientApplication = new WebClient();
+                clientApplication.DownloadProgressChanged += (s, dlevent) => { pgb_Progress.Value = dlevent.ProgressPercentage; };
+                clientApplication.DownloadFileAsync(new Uri(data), archive);
+                clientApplication.DownloadFileCompleted += (s, dlevent) => {
+                    var bytes = File.ReadAllBytes(archive).Take(2).ToArray();
+                    var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+                    var extractData = new DirectoryInfo(modDirectory);
+                    pic_Thumbnail.BackgroundImage.Dispose();
+                    pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception;
+
+                    try {
+                        if (Directory.Exists(modDirectory)) {
+                            foreach (FileInfo file in extractData.GetFiles())
+                                file.Delete();
+                            foreach (DirectoryInfo directory in extractData.GetDirectories())
+                                directory.Delete(true);
+                        }
+                        Directory.Delete(modDirectory);
+                    } catch { }
+
+                    if (hexString == "50 4B")
+                        using (ZipArchive zArchive = new ZipArchive(new MemoryStream(File.ReadAllBytes(archive))))
+                            Archives.ExtractToDirectory(zArchive, Properties.Settings.Default.modsDirectory, true);
+                    else Archives.InstallFrom7zArchive(archive);
+
+                    UnifyMessages.UnifyMessage.Show(ModsMessages.msg_ModUpdated(lbl_Title.Text), SystemMessages.tl_Success, "OK", "Information");
+
+                    File.Delete(archive);
+                    Close();
+                };
+            } else UnifyMessages.UnifyMessage.Show(SystemMessages.msg_NoUpdates, lbl_Title.Text, "OK", "Information");
+        }
     }
 }

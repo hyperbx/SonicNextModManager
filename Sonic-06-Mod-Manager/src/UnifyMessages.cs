@@ -282,6 +282,7 @@ namespace Unify.Messages
 
         public static string ex_GBExtractFailed(string mod) { return $"Failed to extract {mod}."; }
         public static string msg_GBInstalled(string mod) { return $"{mod} has been installed in your mods directory."; }
+        public static string msg_ModUpdated(string mod) { return $"{mod} has been updated successfully..."; }
         public static string ex_SkippedMod(string mod, string file) { return $"\n► {mod} (failed because a mod was already installed on file: {file} - try merging instead)"; }
         public static string ex_SkippedModMissingFile(string mod, string file) { return $"\n► {mod} (failed because the following file doesn't exist in the game: {file})"; }
         public static string ex_IncorrectSaveTarget(string mod, string platform) { return $"\n► {mod} (save redirect failed because the save was not targeted for the {platform})"; }
@@ -296,6 +297,7 @@ namespace Unify.Messages
     class EmulatorMessages
     {
         public static string msg_LocateGame = "Please specify your game directory...";
+        public static string msg_LocateSaves = "Please specify your save data directory...";
         public static string msg_LocateXenia = "Please specify your executable file for Xenia...";
         public static string msg_LocateRPCS3 = "Please specify your executable file for RPCS3...";
     }

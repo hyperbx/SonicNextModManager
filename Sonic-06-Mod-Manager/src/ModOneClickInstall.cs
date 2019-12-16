@@ -21,6 +21,7 @@ namespace Sonic_06_Mod_Manager.src
         public string downloadID = string.Empty;
         public string url = string.Empty;
         public GBAPIItemDataBasic item;
+        string archive = string.Empty;
         public int modID = 0;
 
         public ModOneClickInstall(GBAPIItemDataBasic item, string url, int downloadID, int modID) {
@@ -152,12 +153,12 @@ namespace Sonic_06_Mod_Manager.src
                     var URI = response.ResponseUri;
                     response.Close();
 
-                    Directory.CreateDirectory(cache);
+                    archive = Path.GetTempFileName();
 
                     using (WebClient wc = new WebClient()) {
                         wc.DownloadProgressChanged += wc_DownloadProgressChanged;
                         wc.DownloadFileCompleted += wc_DownloadFileCompleted;
-                        wc.DownloadFileAsync(URI, Path.Combine(cache, $"{Path.GetFileName(downloadURL)}.bin"));
+                        wc.DownloadFileAsync(URI, archive);
                     }
                 } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GameBananaTimeout, SystemMessages.tl_ServerError, "OK", "Error"); Close(); }
             }
@@ -172,12 +173,12 @@ namespace Sonic_06_Mod_Manager.src
                 var bytes = File.ReadAllBytes($"{cache}\\{Path.GetFileName(downloadURL)}.bin").Take(2).ToArray();
                 var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
 
-                if (hexString == "50 4B")
-                    Archives.InstallFromZip(Path.Combine(cache, $"{Path.GetFileName(downloadURL)}.bin"), cache);
-                else
-                    Archives.InstallFrom7zArchive(Path.Combine(cache, $"{Path.GetFileName(downloadURL)}.bin"), cache);
+                if (hexString == "50 4B") Archives.InstallFromZip(archive);
+                else Archives.InstallFrom7zArchive(archive);
 
                 UnifyMessages.UnifyMessage.Show(ModsMessages.msg_GBInstalled(item.ModName), SystemMessages.tl_Success, "OK", "Information"); Close();
+
+                File.Delete(archive);
             }
             catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GBExtractFailed(item.ModName), SystemMessages.tl_ExtractError, "OK", "Error"); Close(); }
         }

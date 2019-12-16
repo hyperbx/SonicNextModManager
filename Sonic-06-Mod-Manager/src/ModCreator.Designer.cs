@@ -53,8 +53,16 @@
             this.lbl_Save = new System.Windows.Forms.Label();
             this.btn_SaveBrowser = new System.Windows.Forms.Button();
             this.text_Save = new System.Windows.Forms.TextBox();
+            this.lbl_Server = new System.Windows.Forms.Label();
+            this.text_Server = new System.Windows.Forms.TextBox();
+            this.list_Console = new System.Windows.Forms.ListBox();
+            this.pnl_Console = new System.Windows.Forms.Panel();
+            this.btn_TestConnection = new System.Windows.Forms.Button();
+            this.lbl_Data = new System.Windows.Forms.Label();
+            this.text_Data = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).BeginInit();
             this.group_DescriptionField.SuspendLayout();
+            this.pnl_Console.SuspendLayout();
             this.SuspendLayout();
             // 
             // pic_Thumbnail
@@ -85,7 +93,7 @@
             this.btn_Delete.BackColor = System.Drawing.Color.Tomato;
             this.btn_Delete.FlatAppearance.BorderSize = 0;
             this.btn_Delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Delete.Location = new System.Drawing.Point(204, 435);
+            this.btn_Delete.Location = new System.Drawing.Point(204, 428);
             this.btn_Delete.Name = "btn_Delete";
             this.btn_Delete.Size = new System.Drawing.Size(75, 23);
             this.btn_Delete.TabIndex = 83;
@@ -101,7 +109,7 @@
             this.btn_ReadOnlyBrowser.FlatAppearance.BorderSize = 0;
             this.btn_ReadOnlyBrowser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ReadOnlyBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ReadOnlyBrowser.Location = new System.Drawing.Point(338, 381);
+            this.btn_ReadOnlyBrowser.Location = new System.Drawing.Point(338, 374);
             this.btn_ReadOnlyBrowser.Name = "btn_ReadOnlyBrowser";
             this.btn_ReadOnlyBrowser.Size = new System.Drawing.Size(22, 20);
             this.btn_ReadOnlyBrowser.TabIndex = 82;
@@ -113,7 +121,7 @@
             // 
             this.text_ReadOnly.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_ReadOnly.Enabled = false;
-            this.text_ReadOnly.Location = new System.Drawing.Point(69, 381);
+            this.text_ReadOnly.Location = new System.Drawing.Point(69, 374);
             this.text_ReadOnly.Name = "text_ReadOnly";
             this.text_ReadOnly.Size = new System.Drawing.Size(265, 20);
             this.text_ReadOnly.TabIndex = 80;
@@ -126,7 +134,7 @@
             "Xbox 360",
             "PlayStation 3",
             "All Systems"});
-            this.combo_System.Location = new System.Drawing.Point(69, 354);
+            this.combo_System.Location = new System.Drawing.Point(69, 347);
             this.combo_System.Name = "combo_System";
             this.combo_System.Size = new System.Drawing.Size(291, 21);
             this.combo_System.TabIndex = 79;
@@ -135,7 +143,7 @@
             // lbl_System
             // 
             this.lbl_System.AutoSize = true;
-            this.lbl_System.Location = new System.Drawing.Point(21, 357);
+            this.lbl_System.Location = new System.Drawing.Point(21, 350);
             this.lbl_System.Name = "lbl_System";
             this.lbl_System.Size = new System.Drawing.Size(44, 13);
             this.lbl_System.TabIndex = 78;
@@ -144,7 +152,7 @@
             // check_Merge
             // 
             this.check_Merge.AutoSize = true;
-            this.check_Merge.Location = new System.Drawing.Point(69, 439);
+            this.check_Merge.Location = new System.Drawing.Point(69, 432);
             this.check_Merge.Name = "check_Merge";
             this.check_Merge.Size = new System.Drawing.Size(62, 17);
             this.check_Merge.TabIndex = 77;
@@ -158,7 +166,7 @@
             this.btn_Create.Enabled = false;
             this.btn_Create.FlatAppearance.BorderSize = 0;
             this.btn_Create.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Create.Location = new System.Drawing.Point(285, 435);
+            this.btn_Create.Location = new System.Drawing.Point(285, 428);
             this.btn_Create.Name = "btn_Create";
             this.btn_Create.Size = new System.Drawing.Size(75, 23);
             this.btn_Create.TabIndex = 76;
@@ -169,7 +177,7 @@
             // lbl_Author
             // 
             this.lbl_Author.AutoSize = true;
-            this.lbl_Author.Location = new System.Drawing.Point(24, 331);
+            this.lbl_Author.Location = new System.Drawing.Point(24, 324);
             this.lbl_Author.Name = "lbl_Author";
             this.lbl_Author.Size = new System.Drawing.Size(41, 13);
             this.lbl_Author.TabIndex = 75;
@@ -178,7 +186,7 @@
             // text_Author
             // 
             this.text_Author.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.text_Author.Location = new System.Drawing.Point(69, 328);
+            this.text_Author.Location = new System.Drawing.Point(69, 321);
             this.text_Author.Name = "text_Author";
             this.text_Author.Size = new System.Drawing.Size(291, 20);
             this.text_Author.TabIndex = 74;
@@ -186,7 +194,7 @@
             // lbl_Date
             // 
             this.lbl_Date.AutoSize = true;
-            this.lbl_Date.Location = new System.Drawing.Point(32, 305);
+            this.lbl_Date.Location = new System.Drawing.Point(32, 298);
             this.lbl_Date.Name = "lbl_Date";
             this.lbl_Date.Size = new System.Drawing.Size(33, 13);
             this.lbl_Date.TabIndex = 73;
@@ -195,7 +203,7 @@
             // text_Date
             // 
             this.text_Date.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.text_Date.Location = new System.Drawing.Point(69, 302);
+            this.text_Date.Location = new System.Drawing.Point(69, 295);
             this.text_Date.Name = "text_Date";
             this.text_Date.Size = new System.Drawing.Size(291, 20);
             this.text_Date.TabIndex = 72;
@@ -203,7 +211,7 @@
             // lbl_Version
             // 
             this.lbl_Version.AutoSize = true;
-            this.lbl_Version.Location = new System.Drawing.Point(20, 279);
+            this.lbl_Version.Location = new System.Drawing.Point(20, 272);
             this.lbl_Version.Name = "lbl_Version";
             this.lbl_Version.Size = new System.Drawing.Size(45, 13);
             this.lbl_Version.TabIndex = 71;
@@ -212,7 +220,7 @@
             // text_Version
             // 
             this.text_Version.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.text_Version.Location = new System.Drawing.Point(69, 276);
+            this.text_Version.Location = new System.Drawing.Point(69, 269);
             this.text_Version.Name = "text_Version";
             this.text_Version.Size = new System.Drawing.Size(291, 20);
             this.text_Version.TabIndex = 70;
@@ -220,7 +228,7 @@
             // lbl_Title
             // 
             this.lbl_Title.AutoSize = true;
-            this.lbl_Title.Location = new System.Drawing.Point(35, 253);
+            this.lbl_Title.Location = new System.Drawing.Point(35, 246);
             this.lbl_Title.Name = "lbl_Title";
             this.lbl_Title.Size = new System.Drawing.Size(30, 13);
             this.lbl_Title.TabIndex = 69;
@@ -229,7 +237,7 @@
             // text_Title
             // 
             this.text_Title.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.text_Title.Location = new System.Drawing.Point(69, 250);
+            this.text_Title.Location = new System.Drawing.Point(69, 243);
             this.text_Title.Name = "text_Title";
             this.text_Title.Size = new System.Drawing.Size(291, 20);
             this.text_Title.TabIndex = 68;
@@ -238,7 +246,7 @@
             // lbl_ReadOnly
             // 
             this.lbl_ReadOnly.AutoSize = true;
-            this.lbl_ReadOnly.Location = new System.Drawing.Point(7, 384);
+            this.lbl_ReadOnly.Location = new System.Drawing.Point(7, 377);
             this.lbl_ReadOnly.Name = "lbl_ReadOnly";
             this.lbl_ReadOnly.Size = new System.Drawing.Size(58, 13);
             this.lbl_ReadOnly.TabIndex = 84;
@@ -253,7 +261,7 @@
             this.tb_Description.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tb_Description.Location = new System.Drawing.Point(3, 16);
             this.tb_Description.Name = "tb_Description";
-            this.tb_Description.Size = new System.Drawing.Size(352, 434);
+            this.tb_Description.Size = new System.Drawing.Size(352, 212);
             this.tb_Description.TabIndex = 85;
             this.tb_Description.Text = "";
             // 
@@ -264,7 +272,7 @@
             this.group_DescriptionField.ForeColor = System.Drawing.SystemColors.ControlText;
             this.group_DescriptionField.Location = new System.Drawing.Point(371, 6);
             this.group_DescriptionField.Name = "group_DescriptionField";
-            this.group_DescriptionField.Size = new System.Drawing.Size(358, 453);
+            this.group_DescriptionField.Size = new System.Drawing.Size(358, 231);
             this.group_DescriptionField.TabIndex = 86;
             this.group_DescriptionField.TabStop = false;
             this.group_DescriptionField.Text = "Description";
@@ -284,7 +292,7 @@
             // lbl_Save
             // 
             this.lbl_Save.AutoSize = true;
-            this.lbl_Save.Location = new System.Drawing.Point(30, 410);
+            this.lbl_Save.Location = new System.Drawing.Point(30, 403);
             this.lbl_Save.Name = "lbl_Save";
             this.lbl_Save.Size = new System.Drawing.Size(35, 13);
             this.lbl_Save.TabIndex = 93;
@@ -296,7 +304,7 @@
             this.btn_SaveBrowser.FlatAppearance.BorderSize = 0;
             this.btn_SaveBrowser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_SaveBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_SaveBrowser.Location = new System.Drawing.Point(338, 407);
+            this.btn_SaveBrowser.Location = new System.Drawing.Point(338, 400);
             this.btn_SaveBrowser.Name = "btn_SaveBrowser";
             this.btn_SaveBrowser.Size = new System.Drawing.Size(22, 20);
             this.btn_SaveBrowser.TabIndex = 92;
@@ -307,17 +315,93 @@
             // text_Save
             // 
             this.text_Save.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.text_Save.Location = new System.Drawing.Point(69, 407);
+            this.text_Save.Location = new System.Drawing.Point(69, 400);
             this.text_Save.Name = "text_Save";
             this.text_Save.Size = new System.Drawing.Size(265, 20);
             this.text_Save.TabIndex = 91;
+            // 
+            // lbl_Server
+            // 
+            this.lbl_Server.AutoSize = true;
+            this.lbl_Server.Location = new System.Drawing.Point(375, 246);
+            this.lbl_Server.Name = "lbl_Server";
+            this.lbl_Server.Size = new System.Drawing.Size(41, 13);
+            this.lbl_Server.TabIndex = 95;
+            this.lbl_Server.Text = "Server:";
+            // 
+            // text_Server
+            // 
+            this.text_Server.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.text_Server.Location = new System.Drawing.Point(420, 243);
+            this.text_Server.Name = "text_Server";
+            this.text_Server.Size = new System.Drawing.Size(309, 20);
+            this.text_Server.TabIndex = 94;
+            this.text_Server.TextChanged += new System.EventHandler(this.Text_UpdateURL_TextChanged);
+            // 
+            // list_Console
+            // 
+            this.list_Console.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.list_Console.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.list_Console.FormattingEnabled = true;
+            this.list_Console.HorizontalScrollbar = true;
+            this.list_Console.Location = new System.Drawing.Point(0, 0);
+            this.list_Console.Name = "list_Console";
+            this.list_Console.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.list_Console.Size = new System.Drawing.Size(356, 123);
+            this.list_Console.TabIndex = 96;
+            // 
+            // pnl_Console
+            // 
+            this.pnl_Console.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnl_Console.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_Console.Controls.Add(this.list_Console);
+            this.pnl_Console.Location = new System.Drawing.Point(371, 295);
+            this.pnl_Console.Name = "pnl_Console";
+            this.pnl_Console.Size = new System.Drawing.Size(358, 125);
+            this.pnl_Console.TabIndex = 97;
+            // 
+            // btn_TestConnection
+            // 
+            this.btn_TestConnection.BackColor = System.Drawing.Color.SkyBlue;
+            this.btn_TestConnection.Enabled = false;
+            this.btn_TestConnection.FlatAppearance.BorderSize = 0;
+            this.btn_TestConnection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_TestConnection.Location = new System.Drawing.Point(371, 428);
+            this.btn_TestConnection.Name = "btn_TestConnection";
+            this.btn_TestConnection.Size = new System.Drawing.Size(358, 23);
+            this.btn_TestConnection.TabIndex = 98;
+            this.btn_TestConnection.Text = "Test Connection to Update Server";
+            this.btn_TestConnection.UseVisualStyleBackColor = false;
+            this.btn_TestConnection.Click += new System.EventHandler(this.Btn_TestConnection_Click);
+            // 
+            // lbl_Data
+            // 
+            this.lbl_Data.AutoSize = true;
+            this.lbl_Data.Location = new System.Drawing.Point(383, 272);
+            this.lbl_Data.Name = "lbl_Data";
+            this.lbl_Data.Size = new System.Drawing.Size(33, 13);
+            this.lbl_Data.TabIndex = 100;
+            this.lbl_Data.Text = "Data:";
+            // 
+            // text_Data
+            // 
+            this.text_Data.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.text_Data.Location = new System.Drawing.Point(420, 269);
+            this.text_Data.Name = "text_Data";
+            this.text_Data.Size = new System.Drawing.Size(309, 20);
+            this.text_Data.TabIndex = 99;
             // 
             // ModCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(740, 467);
+            this.ClientSize = new System.Drawing.Size(740, 460);
+            this.Controls.Add(this.lbl_Data);
+            this.Controls.Add(this.text_Data);
+            this.Controls.Add(this.btn_TestConnection);
+            this.Controls.Add(this.lbl_Server);
+            this.Controls.Add(this.text_Server);
             this.Controls.Add(this.lbl_Save);
             this.Controls.Add(this.btn_SaveBrowser);
             this.Controls.Add(this.text_Save);
@@ -341,6 +425,7 @@
             this.Controls.Add(this.lbl_Title);
             this.Controls.Add(this.text_Title);
             this.Controls.Add(this.pic_Thumbnail);
+            this.Controls.Add(this.pnl_Console);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -351,6 +436,7 @@
             this.Text = "Mod Creator";
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).EndInit();
             this.group_DescriptionField.ResumeLayout(false);
+            this.pnl_Console.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -382,5 +468,12 @@
         private System.Windows.Forms.Label lbl_Save;
         private System.Windows.Forms.Button btn_SaveBrowser;
         private System.Windows.Forms.TextBox text_Save;
+        private System.Windows.Forms.Label lbl_Server;
+        private System.Windows.Forms.TextBox text_Server;
+        private System.Windows.Forms.ListBox list_Console;
+        private System.Windows.Forms.Panel pnl_Console;
+        private System.Windows.Forms.Button btn_TestConnection;
+        private System.Windows.Forms.Label lbl_Data;
+        private System.Windows.Forms.TextBox text_Data;
     }
 }

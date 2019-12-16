@@ -466,5 +466,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["disableSoftwareUpdater"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string saveData {
+            get {
+                return ((string)(this["saveData"]));
+            }
+            set {
+                this["saveData"] = value;
+            }
+        }
     }
 }

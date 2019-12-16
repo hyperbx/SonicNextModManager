@@ -4,6 +4,7 @@ using Unify.Tools;
 using System.Text;
 using Unify.Messages;
 using System.Drawing;
+using Unify.Networking;
 using System.Windows.Forms;
 
 // Project Unify is licensed under the MIT License:
@@ -60,18 +61,15 @@ namespace Sonic_06_Mod_Manager.src
                 BackColor = Color.FromArgb(28, 28, 28);
                 group_DescriptionField.BackColor = Color.FromArgb(45, 45, 48); group_DescriptionField.ForeColor = SystemColors.Control;
                 tb_Description.BackColor = Color.FromArgb(45, 45, 48); tb_Description.ForeColor = SystemColors.Control;
+                pnl_Console.BackColor = list_Console.BackColor = Color.FromArgb(45, 45, 48); list_Console.ForeColor = SystemColors.Control;
                 btn_RemoveThumbnail.BackColor = SystemColors.ControlLightLight;
                 btn_Browse.FlatAppearance.BorderSize = 0;
 
-                foreach (Control x in this.Controls)
-                {
+                foreach (Control x in this.Controls) {
                     if (x is Label)
-                    {
                         ((Label)x).ForeColor = SystemColors.Control;
-                    }
 
-                    if (x is TextBox)
-                    {
+                    if (x is TextBox) {
                         ((TextBox)x).BackColor = Color.FromArgb(45, 45, 48);
                         ((TextBox)x).ForeColor = SystemColors.Control;
                     }
@@ -164,6 +162,18 @@ namespace Sonic_06_Mod_Manager.src
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
                                 tb_Description.Text += entryValue.Replace(@"\n", Environment.NewLine);
                             }
+                            if (line.StartsWith("Metadata"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Server.Text += entryValue.Replace(@"\n", Environment.NewLine);
+                            }
+                            if (line.StartsWith("Data"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Data.Text += entryValue.Replace(@"\n", Environment.NewLine);
+                            }
                         }
                     }
                 }
@@ -216,6 +226,7 @@ namespace Sonic_06_Mod_Manager.src
 
                 using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
                 using (StreamWriter configInfo = new StreamWriter(configCreate)) {
+                    configInfo.WriteLine("[Main]");
                     configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
                     if (text_Version.Text != string.Empty) configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
                     if (text_Date.Text != string.Empty) configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
@@ -231,6 +242,12 @@ namespace Sonic_06_Mod_Manager.src
                             descriptionText += $"{newLine}\\n";
                         configInfo.WriteLine($"Description=\"{descriptionText}\"");
                     }
+                    if (text_Server.Text != string.Empty) {
+                        configInfo.WriteLine();
+                        configInfo.WriteLine("[Updater]");
+                        configInfo.WriteLine($"Metadata=\"{text_Server.Text}\"");
+                    }
+                    if (text_Data.Text != string.Empty) configInfo.WriteLine($"Data=\"{text_Data.Text}\"");
                     configInfo.Close();
                 }
 
@@ -359,6 +376,43 @@ namespace Sonic_06_Mod_Manager.src
                 text_Save.Enabled = true;
                 btn_SaveBrowser.Enabled = true;
             }
+        }
+
+        private void Text_UpdateURL_TextChanged(object sender, EventArgs e) {
+            if (text_Server.Text.Length != 0) btn_TestConnection.Enabled = true;
+            else btn_TestConnection.Enabled = false;
+        }
+
+        private void Log(string value) { list_Console.Items.Add($"[{DateTime.Now.ToString("HH:mm:ss tt")}] {value}"); }
+
+        private void Btn_TestConnection_Click(object sender, EventArgs e) {
+            string metadata = string.Empty;
+            list_Console.Items.Clear();
+
+            Log("Establishing connection to server...");
+            try { metadata = new TimedWebClient { Timeout = 100000 }.DownloadString(text_Server.Text); }
+            catch { Log("Failed to download data from server..."); return; }
+
+            if (metadata.Length != 0) {
+                Log("Connection was successful...");
+                list_Console.Items.Add("");
+
+                string[] splitMetadata = metadata.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+                foreach (string line in splitMetadata) {
+                    string entryValue = string.Empty;
+                    if (line.StartsWith("Version")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        Log($"Version: {entryValue}");
+                    }
+                    if (line.StartsWith("Data")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        Log($"Data: {entryValue}");
+                    }
+                }
+            } else Log("Connection was successful, but no data was found in the specified location...");
         }
     }
 }

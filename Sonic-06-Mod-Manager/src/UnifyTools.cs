@@ -54,6 +54,22 @@ namespace Unify.Tools
             return game.SelectedPath;
         }
 
+        public static string LocateSaves()
+        {
+            //Select game directory and save.
+            VistaFolderBrowserDialog save = new VistaFolderBrowserDialog {
+                Description = EmulatorMessages.msg_LocateSaves,
+                UseDescriptionForTitle = true,
+            };
+
+            if (save.ShowDialog() == DialogResult.OK) {
+                Sonic_06_Mod_Manager.Properties.Settings.Default.saveData = save.SelectedPath;
+                Sonic_06_Mod_Manager.Properties.Settings.Default.Save();
+            }
+
+            return save.SelectedPath;
+        }
+
         public static string LocateMods()
         {
             //Select mods directory and save.
@@ -224,19 +240,35 @@ namespace Unify.Tools
 
     public static class Archives
     {
-        public static void InstallFromZip(string ZipPath, string cache) {
+        public static void InstallFromZip(string ZipPath) {
             try {
                 // Extracts all contents inside of the zip file
                 ZipFile.ExtractToDirectory(ZipPath, Sonic_06_Mod_Manager.Properties.Settings.Default.modsDirectory);
+            } catch { InstallFrom7zArchive(ZipPath); }
+        }
 
-                // Deletes the temp folder with all of its contents
-                Directory.Delete(cache, true);
+        public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite) {
+            if (!overwrite) {
+                archive.ExtractToDirectory(destinationDirectoryName);
+                return;
             }
-            catch { InstallFrom7zArchive(ZipPath, cache); }
+            foreach (ZipArchiveEntry file in archive.Entries) {
+                string completeFileName = Path.Combine(destinationDirectoryName, file.FullName);
+                string directory = Path.GetDirectoryName(completeFileName);
+
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+
+                if (file.Name != "")
+                    if (Path.GetFileName(completeFileName) != "Sonic '06 Toolkit.exe")
+                        file.ExtractToFile(completeFileName, true);
+                    else
+                        file.ExtractToFile(Path.Combine(destinationDirectoryName, "Sonic '06 Toolkit.exe.new"), true);
+            }
         }
 
         // Requires 7-Zip to be installed.
-        public static void InstallFrom7zArchive(string ArchivePath, string cache) {
+        public static void InstallFrom7zArchive(string ArchivePath) {
             // Gets 7-Zip's Registry Key.
             var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\7-Zip");
             // If null then try get it from the 64-bit Registry.
@@ -253,16 +285,14 @@ namespace Unify.Tools
                 psi.CreateNoWindow = true;
                 Process.Start(psi).WaitForExit(1000 * 60 * 5);
 
-                // Deletes the temp folder with all of its contents.
-                Directory.Delete(cache, true);
                 key.Close();
             }
-            else { InstallFromWinRAR(ArchivePath, cache); }
+            else { InstallFromWinRAR(ArchivePath); }
 
         }
 
         // Requires WinRAR to be installed.
-        public static void InstallFromWinRAR(string ArchivePath, string cache) {
+        public static void InstallFromWinRAR(string ArchivePath) {
             // Gets WinRAR's Registry Key.
             var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
             // If null then try to get it from the 64-bit registry.
@@ -274,8 +304,6 @@ namespace Unify.Tools
                 psi.CreateNoWindow = true;
                 Process.Start(psi).WaitForExit(1000 * 60 * 5);
 
-                // Deletes the temp folder with all of its contents.
-                Directory.Delete(cache, true);
                 key.Close();
 
             } else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ExtractFailNoApp, SystemMessages.tl_ExtractError, "OK", "Error"); }

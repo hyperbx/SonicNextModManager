@@ -76,6 +76,8 @@
             this.group_Settings = new System.Windows.Forms.GroupBox();
             this.check_Discord = new System.Windows.Forms.CheckBox();
             this.check_Fullscreen = new System.Windows.Forms.CheckBox();
+            this.combo_API = new System.Windows.Forms.ComboBox();
+            this.lbl_API = new System.Windows.Forms.Label();
             this.check_Debug = new System.Windows.Forms.CheckBox();
             this.check_Gamma = new System.Windows.Forms.CheckBox();
             this.check_ProtectZero = new System.Windows.Forms.CheckBox();
@@ -85,11 +87,12 @@
             this.group_Setup = new System.Windows.Forms.GroupBox();
             this.combo_Emulator_System = new System.Windows.Forms.ComboBox();
             this.lbl_Emulator_System = new System.Windows.Forms.Label();
-            this.combo_API = new System.Windows.Forms.ComboBox();
-            this.lbl_API = new System.Windows.Forms.Label();
             this.btn_EmulatorPath = new System.Windows.Forms.Button();
             this.text_EmulatorPath = new System.Windows.Forms.TextBox();
             this.lbl_EmulatorEXE = new System.Windows.Forms.Label();
+            this.btn_SaveData = new System.Windows.Forms.Button();
+            this.text_SaveData = new System.Windows.Forms.TextBox();
+            this.lbl_SaveData = new System.Windows.Forms.Label();
             this.unifytb_Tab_Patches = new System.Windows.Forms.TabPage();
             this.split_Patches = new System.Windows.Forms.SplitContainer();
             this.pnl_PatchBackdrop = new System.Windows.Forms.Panel();
@@ -758,7 +761,7 @@
             // 
             this.lbl_Debug.AutoSize = true;
             this.lbl_Debug.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_Debug.Location = new System.Drawing.Point(39, 331);
+            this.lbl_Debug.Location = new System.Drawing.Point(39, 364);
             this.lbl_Debug.Name = "lbl_Debug";
             this.lbl_Debug.Size = new System.Drawing.Size(42, 15);
             this.lbl_Debug.TabIndex = 24;
@@ -768,7 +771,7 @@
             // 
             this.lbl_Discord.AutoSize = true;
             this.lbl_Discord.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_Discord.Location = new System.Drawing.Point(39, 306);
+            this.lbl_Discord.Location = new System.Drawing.Point(39, 339);
             this.lbl_Discord.Name = "lbl_Discord";
             this.lbl_Discord.Size = new System.Drawing.Size(123, 15);
             this.lbl_Discord.TabIndex = 23;
@@ -778,7 +781,7 @@
             // 
             this.lbl_Fullscreen.AutoSize = true;
             this.lbl_Fullscreen.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_Fullscreen.Location = new System.Drawing.Point(39, 281);
+            this.lbl_Fullscreen.Location = new System.Drawing.Point(39, 314);
             this.lbl_Fullscreen.Name = "lbl_Fullscreen";
             this.lbl_Fullscreen.Size = new System.Drawing.Size(115, 15);
             this.lbl_Fullscreen.TabIndex = 22;
@@ -788,7 +791,7 @@
             // 
             this.lbl_EnableGamma.AutoSize = true;
             this.lbl_EnableGamma.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_EnableGamma.Location = new System.Drawing.Point(39, 256);
+            this.lbl_EnableGamma.Location = new System.Drawing.Point(39, 289);
             this.lbl_EnableGamma.Name = "lbl_EnableGamma";
             this.lbl_EnableGamma.Size = new System.Drawing.Size(87, 15);
             this.lbl_EnableGamma.TabIndex = 21;
@@ -798,7 +801,7 @@
             // 
             this.lbl_ProtectZero.AutoSize = true;
             this.lbl_ProtectZero.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_ProtectZero.Location = new System.Drawing.Point(39, 231);
+            this.lbl_ProtectZero.Location = new System.Drawing.Point(39, 264);
             this.lbl_ProtectZero.Name = "lbl_ProtectZero";
             this.lbl_ProtectZero.Size = new System.Drawing.Size(72, 15);
             this.lbl_ProtectZero.TabIndex = 20;
@@ -808,7 +811,7 @@
             // 
             this.lbl_VSync.AutoSize = true;
             this.lbl_VSync.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_VSync.Location = new System.Drawing.Point(39, 206);
+            this.lbl_VSync.Location = new System.Drawing.Point(39, 239);
             this.lbl_VSync.Name = "lbl_VSync";
             this.lbl_VSync.Size = new System.Drawing.Size(44, 15);
             this.lbl_VSync.TabIndex = 19;
@@ -818,7 +821,7 @@
             // 
             this.lbl_2xResolution.AutoSize = true;
             this.lbl_2xResolution.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_2xResolution.Location = new System.Drawing.Point(39, 181);
+            this.lbl_2xResolution.Location = new System.Drawing.Point(39, 214);
             this.lbl_2xResolution.Name = "lbl_2xResolution";
             this.lbl_2xResolution.Size = new System.Drawing.Size(78, 15);
             this.lbl_2xResolution.TabIndex = 18;
@@ -828,7 +831,7 @@
             // 
             this.lbl_ForceRTV.AutoSize = true;
             this.lbl_ForceRTV.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_ForceRTV.Location = new System.Drawing.Point(39, 156);
+            this.lbl_ForceRTV.Location = new System.Drawing.Point(39, 189);
             this.lbl_ForceRTV.Name = "lbl_ForceRTV";
             this.lbl_ForceRTV.Size = new System.Drawing.Size(144, 15);
             this.lbl_ForceRTV.TabIndex = 17;
@@ -841,6 +844,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.group_Settings.Controls.Add(this.check_Discord);
             this.group_Settings.Controls.Add(this.check_Fullscreen);
+            this.group_Settings.Controls.Add(this.combo_API);
+            this.group_Settings.Controls.Add(this.lbl_API);
             this.group_Settings.Controls.Add(this.check_Debug);
             this.group_Settings.Controls.Add(this.check_Gamma);
             this.group_Settings.Controls.Add(this.check_ProtectZero);
@@ -859,7 +864,7 @@
             // 
             this.check_Discord.AutoSize = true;
             this.check_Discord.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_Discord.Location = new System.Drawing.Point(17, 179);
+            this.check_Discord.Location = new System.Drawing.Point(17, 212);
             this.check_Discord.Name = "check_Discord";
             this.check_Discord.Size = new System.Drawing.Size(15, 14);
             this.check_Discord.TabIndex = 16;
@@ -869,17 +874,42 @@
             // 
             this.check_Fullscreen.AutoSize = true;
             this.check_Fullscreen.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_Fullscreen.Location = new System.Drawing.Point(17, 154);
+            this.check_Fullscreen.Location = new System.Drawing.Point(17, 187);
             this.check_Fullscreen.Name = "check_Fullscreen";
             this.check_Fullscreen.Size = new System.Drawing.Size(15, 14);
             this.check_Fullscreen.TabIndex = 15;
             this.check_Fullscreen.UseVisualStyleBackColor = true;
             // 
+            // combo_API
+            // 
+            this.combo_API.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.combo_API.BackColor = System.Drawing.SystemColors.Window;
+            this.combo_API.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_API.FormattingEnabled = true;
+            this.combo_API.Items.AddRange(new object[] {
+            "Vulkan",
+            "DirectX 12"});
+            this.combo_API.Location = new System.Drawing.Point(97, 25);
+            this.combo_API.Name = "combo_API";
+            this.combo_API.Size = new System.Drawing.Size(411, 23);
+            this.combo_API.TabIndex = 9;
+            this.combo_API.SelectedIndexChanged += new System.EventHandler(this.Combo_API_SelectedIndexChanged);
+            // 
+            // lbl_API
+            // 
+            this.lbl_API.AutoSize = true;
+            this.lbl_API.Location = new System.Drawing.Point(14, 29);
+            this.lbl_API.Name = "lbl_API";
+            this.lbl_API.Size = new System.Drawing.Size(77, 15);
+            this.lbl_API.TabIndex = 8;
+            this.lbl_API.Text = "Graphics API:";
+            // 
             // check_Debug
             // 
             this.check_Debug.AutoSize = true;
             this.check_Debug.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_Debug.Location = new System.Drawing.Point(17, 204);
+            this.check_Debug.Location = new System.Drawing.Point(17, 237);
             this.check_Debug.Name = "check_Debug";
             this.check_Debug.Size = new System.Drawing.Size(15, 14);
             this.check_Debug.TabIndex = 14;
@@ -889,7 +919,7 @@
             // 
             this.check_Gamma.AutoSize = true;
             this.check_Gamma.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_Gamma.Location = new System.Drawing.Point(17, 129);
+            this.check_Gamma.Location = new System.Drawing.Point(17, 162);
             this.check_Gamma.Name = "check_Gamma";
             this.check_Gamma.Size = new System.Drawing.Size(15, 14);
             this.check_Gamma.TabIndex = 13;
@@ -899,7 +929,7 @@
             // 
             this.check_ProtectZero.AutoSize = true;
             this.check_ProtectZero.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_ProtectZero.Location = new System.Drawing.Point(17, 104);
+            this.check_ProtectZero.Location = new System.Drawing.Point(17, 137);
             this.check_ProtectZero.Name = "check_ProtectZero";
             this.check_ProtectZero.Size = new System.Drawing.Size(15, 14);
             this.check_ProtectZero.TabIndex = 12;
@@ -909,7 +939,7 @@
             // 
             this.check_VSync.AutoSize = true;
             this.check_VSync.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_VSync.Location = new System.Drawing.Point(17, 79);
+            this.check_VSync.Location = new System.Drawing.Point(17, 112);
             this.check_VSync.Name = "check_VSync";
             this.check_VSync.Size = new System.Drawing.Size(15, 14);
             this.check_VSync.TabIndex = 11;
@@ -919,7 +949,7 @@
             // 
             this.check_2xRes.AutoSize = true;
             this.check_2xRes.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_2xRes.Location = new System.Drawing.Point(17, 54);
+            this.check_2xRes.Location = new System.Drawing.Point(17, 87);
             this.check_2xRes.Name = "check_2xRes";
             this.check_2xRes.Size = new System.Drawing.Size(15, 14);
             this.check_2xRes.TabIndex = 10;
@@ -929,7 +959,7 @@
             // 
             this.check_RTV.AutoSize = true;
             this.check_RTV.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_RTV.Location = new System.Drawing.Point(17, 29);
+            this.check_RTV.Location = new System.Drawing.Point(17, 62);
             this.check_RTV.Name = "check_RTV";
             this.check_RTV.Size = new System.Drawing.Size(15, 14);
             this.check_RTV.TabIndex = 9;
@@ -941,11 +971,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.group_Setup.Controls.Add(this.combo_Emulator_System);
             this.group_Setup.Controls.Add(this.lbl_Emulator_System);
-            this.group_Setup.Controls.Add(this.combo_API);
-            this.group_Setup.Controls.Add(this.lbl_API);
             this.group_Setup.Controls.Add(this.btn_EmulatorPath);
             this.group_Setup.Controls.Add(this.text_EmulatorPath);
             this.group_Setup.Controls.Add(this.lbl_EmulatorEXE);
+            this.group_Setup.Controls.Add(this.btn_SaveData);
+            this.group_Setup.Controls.Add(this.text_SaveData);
+            this.group_Setup.Controls.Add(this.lbl_SaveData);
             this.group_Setup.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Setup.Location = new System.Drawing.Point(4, 1);
             this.group_Setup.Name = "group_Setup";
@@ -964,7 +995,7 @@
             this.combo_Emulator_System.Items.AddRange(new object[] {
             "Xbox 360",
             "PlayStation 3"});
-            this.combo_Emulator_System.Location = new System.Drawing.Point(97, 53);
+            this.combo_Emulator_System.Location = new System.Drawing.Point(97, 82);
             this.combo_Emulator_System.Name = "combo_Emulator_System";
             this.combo_Emulator_System.Size = new System.Drawing.Size(411, 23);
             this.combo_Emulator_System.TabIndex = 11;
@@ -973,36 +1004,11 @@
             // lbl_Emulator_System
             // 
             this.lbl_Emulator_System.AutoSize = true;
-            this.lbl_Emulator_System.Location = new System.Drawing.Point(43, 57);
+            this.lbl_Emulator_System.Location = new System.Drawing.Point(43, 86);
             this.lbl_Emulator_System.Name = "lbl_Emulator_System";
             this.lbl_Emulator_System.Size = new System.Drawing.Size(48, 15);
             this.lbl_Emulator_System.TabIndex = 10;
             this.lbl_Emulator_System.Text = "System:";
-            // 
-            // combo_API
-            // 
-            this.combo_API.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.combo_API.BackColor = System.Drawing.SystemColors.Window;
-            this.combo_API.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.combo_API.FormattingEnabled = true;
-            this.combo_API.Items.AddRange(new object[] {
-            "Vulkan",
-            "DirectX 12"});
-            this.combo_API.Location = new System.Drawing.Point(97, 82);
-            this.combo_API.Name = "combo_API";
-            this.combo_API.Size = new System.Drawing.Size(411, 23);
-            this.combo_API.TabIndex = 9;
-            this.combo_API.SelectedIndexChanged += new System.EventHandler(this.Combo_API_SelectedIndexChanged);
-            // 
-            // lbl_API
-            // 
-            this.lbl_API.AutoSize = true;
-            this.lbl_API.Location = new System.Drawing.Point(14, 86);
-            this.lbl_API.Name = "lbl_API";
-            this.lbl_API.Size = new System.Drawing.Size(77, 15);
-            this.lbl_API.TabIndex = 8;
-            this.lbl_API.Text = "Graphics API:";
             // 
             // btn_EmulatorPath
             // 
@@ -1041,6 +1047,43 @@
             this.lbl_EmulatorEXE.TabIndex = 0;
             this.lbl_EmulatorEXE.Text = "Emulator EXE:";
             this.lbl_EmulatorEXE.Click += new System.EventHandler(this.Lbl_EmulatorEXE_Click);
+            // 
+            // btn_SaveData
+            // 
+            this.btn_SaveData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_SaveData.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btn_SaveData.FlatAppearance.BorderSize = 0;
+            this.btn_SaveData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_SaveData.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btn_SaveData.Location = new System.Drawing.Point(483, 53);
+            this.btn_SaveData.Name = "btn_SaveData";
+            this.btn_SaveData.Size = new System.Drawing.Size(25, 23);
+            this.btn_SaveData.TabIndex = 14;
+            this.btn_SaveData.Text = "...";
+            this.btn_SaveData.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_SaveData.UseVisualStyleBackColor = false;
+            this.btn_SaveData.Click += new System.EventHandler(this.btn_SaveData_Click);
+            // 
+            // text_SaveData
+            // 
+            this.text_SaveData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.text_SaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.text_SaveData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.text_SaveData.ForeColor = System.Drawing.SystemColors.Control;
+            this.text_SaveData.Location = new System.Drawing.Point(97, 53);
+            this.text_SaveData.Name = "text_SaveData";
+            this.text_SaveData.Size = new System.Drawing.Size(380, 23);
+            this.text_SaveData.TabIndex = 13;
+            // 
+            // lbl_SaveData
+            // 
+            this.lbl_SaveData.AutoSize = true;
+            this.lbl_SaveData.Location = new System.Drawing.Point(30, 57);
+            this.lbl_SaveData.Name = "lbl_SaveData";
+            this.lbl_SaveData.Size = new System.Drawing.Size(61, 15);
+            this.lbl_SaveData.TabIndex = 12;
+            this.lbl_SaveData.Text = "Save Data:";
             // 
             // unifytb_Tab_Patches
             // 
@@ -2251,5 +2294,8 @@
         private System.Windows.Forms.SplitContainer split_ListControls;
         private System.Windows.Forms.SplitContainer split_Options;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Button btn_SaveData;
+        private System.Windows.Forms.TextBox text_SaveData;
+        private System.Windows.Forms.Label lbl_SaveData;
     }
 }

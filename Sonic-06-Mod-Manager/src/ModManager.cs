@@ -44,8 +44,8 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.28"; // Defines the version number to be used globally
-        public readonly string modLoaderVersion = "Version 2.0";
+        public readonly string versionNumber = "Version 2.29"; // Defines the version number to be used globally
+        public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
         public static DateTime dreamcastNA = new DateTime(1999, 09, 09);
@@ -81,6 +81,7 @@ namespace Sonic_06_Mod_Manager
 
             combo_API.SelectedIndex = Properties.Settings.Default.API;
             text_ModsDirectory.Text = Properties.Settings.Default.modsDirectory;
+            text_SaveData.Text = Properties.Settings.Default.saveData;
             text_FTPLocation.Text = Properties.Settings.Default.ftpLocation;
             text_Username.Text = Properties.Settings.Default.ftpUsername;
 
@@ -1981,5 +1982,7 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { btn_ModInfo.Enabled = clb_PatchesList.SelectedIndex >= 0; }
+
+        private void btn_SaveData_Click(object sender, EventArgs e) { text_SaveData.Text = Locations.LocateSaves(); }
     }
 }
