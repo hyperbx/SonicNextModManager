@@ -5,7 +5,6 @@ using System.Linq;
 using Unify.Tools;
 using System.Drawing;
 using Unify.Messages;
-using Unify.Networking;
 using System.Windows.Forms;
 using System.ComponentModel;
 using Unify.Networking.GameBanana;
@@ -65,21 +64,18 @@ namespace Sonic_06_Mod_Manager.src
 
             if (modID == 6666) return;
 
-            if (modID == 8021) pic_Thumbnail.BackgroundImage = Properties.Resources.logo_legacy;
-            else {
-                if (item.ScreenshotURL != null) {
-                    try {
-                        WebRequest request = WebRequest.Create(item.ScreenshotURL);
-                        using (var response = request.GetResponse())
-                        using (var stream = response.GetResponseStream()) {
-                            pic_Thumbnail.BackgroundImage = Image.FromStream(stream);
-                            pic_Thumbnail.BackgroundImageLayout = ImageLayout.Zoom;
-                        }
+            if (item.ScreenshotURL != null) {
+                try {
+                    WebRequest request = WebRequest.Create(item.ScreenshotURL);
+                    using (var response = request.GetResponse())
+                    using (var stream = response.GetResponseStream()) {
+                        pic_Thumbnail.BackgroundImage = Image.FromStream(stream);
+                        pic_Thumbnail.BackgroundImageLayout = ImageLayout.Zoom;
                     }
-                    catch { pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception; }
                 }
-                else { pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception; }
+                catch { pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception; }
             }
+            else { pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception; }
 
             if (lbl_Title.Width >= MinimumSize.Width) {
                 Width = lbl_Title.Width + 110;
@@ -101,67 +97,20 @@ namespace Sonic_06_Mod_Manager.src
             dl_Progress.Visible = true;
             btn_Decline.Text = "Cancel";
 
-            if (modID == 8021) {
-                try {
-                    var downloads = new TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/mods/legacy-of-solaris.sonic06mm");
-                    string[] lines = downloads.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            try {
+                var request = (HttpWebRequest)WebRequest.Create(downloadURL);
+                var response = request.GetResponse();
+                var URI = response.ResponseUri;
+                response.Close();
 
-                    for (int i = 0; i < lines.Length; i++) {
-                        var request = (HttpWebRequest)WebRequest.Create(lines[i]);
-                        var response = request.GetResponse();
-                        var URI = response.ResponseUri;
-                        response.Close();
+                archive = Path.GetTempFileName();
 
-                        using (WebClient wc = new WebClient()) {
-                            wc.DownloadProgressChanged += wc_DownloadProgressChanged;
-
-                            string getFile = URI.Segments.Last();
-                            string modFolder = Path.Combine(Properties.Settings.Default.modsDirectory, "Legacy of Solaris");
-                            string x_archives = Path.Combine(Properties.Settings.Default.modsDirectory, "Legacy of Solaris", "xenon", "archives"); Directory.CreateDirectory(x_archives);
-                            string x_sound = Path.Combine(Properties.Settings.Default.modsDirectory, "Legacy of Solaris", "xenon", "sound"); Directory.CreateDirectory(x_sound);
-                            string w_archives = Path.Combine(Properties.Settings.Default.modsDirectory, "Legacy of Solaris", "win32", "archives"); Directory.CreateDirectory(w_archives);
-
-                            if (getFile == "mod.ini")
-                                wc.DownloadFileAsync(URI, Path.Combine(modFolder, getFile));
-                            else if (getFile == "object.arc"  ||
-                                     getFile == "player.arc"  ||
-                                     getFile == "scripts.arc" ||
-                                     getFile == "stage.arc"   ||
-                                     getFile == "text.arc")
-                                wc.DownloadFileAsync(URI, Path.Combine(x_archives, getFile));
-                            else if (getFile == "title_loop_GBn.wmv")
-                                wc.DownloadFileAsync(URI, Path.Combine(x_sound, getFile));
-                            else if (getFile == "player_silver.arc" ||
-                                     getFile == "player_sonic.arc"  ||
-                                     getFile == "sprite.arc"        ||
-                                     getFile == "stage_e0023.arc"   ||
-                                     getFile == "stage_e0026.arc"   ||
-                                     getFile == "stage_e0104.arc"   ||
-                                     getFile == "stage_e0125.arc"   ||
-                                     getFile == "stage_kdv_a.arc"   ||
-                                     getFile == "stage_kdv_b.arc"   ||
-                                     getFile == "stage_kdv_c.arc"   ||
-                                     getFile == "stage_kdv_d.arc")
-                                wc.DownloadFileAsync(URI, Path.Combine(w_archives, getFile));
-                        }
-                    } UnifyMessages.UnifyMessage.Show(ModsMessages.msg_LoSInstalled, SystemMessages.tl_Success, "OK", "Information"); Close();
-                } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GitHubTimeout, SystemMessages.tl_ServerError, "OK", "Error"); Close(); }
-            } else {
-                try {
-                    var request = (HttpWebRequest)WebRequest.Create(downloadURL);
-                    var response = request.GetResponse();
-                    var URI = response.ResponseUri;
-                    response.Close();
-
-                    archive = Path.GetTempFileName();
-
-                    using (WebClient wc = new WebClient()) {
-                        wc.DownloadProgressChanged += wc_DownloadProgressChanged;
-                        wc.DownloadFileCompleted += wc_DownloadFileCompleted;
-                        wc.DownloadFileAsync(URI, archive);
-                    }
-                } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GameBananaTimeout, SystemMessages.tl_ServerError, "OK", "Error"); Close(); }
-            }
+                using (WebClient wc = new WebClient()) {
+                    wc.DownloadProgressChanged += wc_DownloadProgressChanged;
+                    wc.DownloadFileCompleted += wc_DownloadFileCompleted;
+                    wc.DownloadFileAsync(URI, archive);
+                }
+            } catch { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_GameBananaTimeout, SystemMessages.tl_ServerError, "OK", "Error"); Close(); }
         }
 
         private void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) { dl_Progress.Value = e.ProgressPercentage; }
@@ -170,7 +119,7 @@ namespace Sonic_06_Mod_Manager.src
         {
             try
             {
-                var bytes = File.ReadAllBytes($"{cache}\\{Path.GetFileName(downloadURL)}.bin").Take(2).ToArray();
+                var bytes = File.ReadAllBytes(archive).Take(2).ToArray();
                 var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
 
                 if (hexString == "50 4B") Archives.InstallFromZip(archive);
