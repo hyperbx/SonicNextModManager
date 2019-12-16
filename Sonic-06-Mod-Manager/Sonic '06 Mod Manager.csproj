@@ -190,7 +190,6 @@
     <None Include="res\dreamWarn.wav" />
     <Content Include="res\logo_exception.png" />
     <None Include="res\logo_gamebanana.png" />
-    <None Include="res\logo_legacy.png" />
     <Content Include="res\logo_main.png" />
     <None Include="res\Ookii.Dialogs.dll" />
   </ItemGroup>
