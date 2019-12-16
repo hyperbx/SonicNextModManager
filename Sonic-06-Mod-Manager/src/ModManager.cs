@@ -1583,6 +1583,7 @@ namespace Sonic_06_Mod_Manager
                 text_Password.BackColor = SystemColors.ControlLightLight; text_Password.ForeColor = SystemColors.ControlText;
                 text_Username.BackColor = SystemColors.ControlLightLight; text_Username.ForeColor = SystemColors.ControlText;
                 text_EmulatorPath.BackColor = SystemColors.ControlLightLight; text_EmulatorPath.ForeColor = SystemColors.ControlText;
+                text_SaveData.BackColor = SystemColors.ControlLightLight; text_SaveData.ForeColor = SystemColors.ControlText;
 
                 pnl_ModBackdrop.BackColor = clb_ModsList.BackColor = SystemColors.ControlLightLight;
                 clb_ModsList.ForeColor = SystemColors.ControlText;
@@ -1696,6 +1697,7 @@ namespace Sonic_06_Mod_Manager
                 text_Password.BackColor = Color.FromArgb(45, 45, 48); text_Password.ForeColor = SystemColors.Control;
                 text_Username.BackColor = Color.FromArgb(45, 45, 48); text_Username.ForeColor = SystemColors.Control;
                 text_EmulatorPath.BackColor = Color.FromArgb(45, 45, 48); text_EmulatorPath.ForeColor = SystemColors.Control;
+                text_SaveData.BackColor = Color.FromArgb(45, 45, 48); text_SaveData.ForeColor = SystemColors.Control;
 
                 pnl_ModBackdrop.BackColor = clb_ModsList.BackColor = Color.FromArgb(45, 45, 48); 
                 clb_ModsList.ForeColor = SystemColors.Control;
