@@ -54,22 +54,6 @@ namespace Unify.Tools
             return game.SelectedPath;
         }
 
-        public static string LocateSaves()
-        {
-            //Select game directory and save.
-            VistaFolderBrowserDialog save = new VistaFolderBrowserDialog {
-                Description = EmulatorMessages.msg_LocateSaves,
-                UseDescriptionForTitle = true,
-            };
-
-            if (save.ShowDialog() == DialogResult.OK) {
-                Sonic_06_Mod_Manager.Properties.Settings.Default.saveData = save.SelectedPath;
-                Sonic_06_Mod_Manager.Properties.Settings.Default.Save();
-            }
-
-            return save.SelectedPath;
-        }
-
         public static string LocateMods()
         {
             //Select mods directory and save.
@@ -141,21 +125,21 @@ namespace Unify.Tools
             if (system == 0) {
                 save = new OpenFileDialog {
                     Title = ModsMessages.msg_LocateSaveX,
-                    Filter = "Xbox 360 Save File (*.bin)|*.bin",
+                    Filter = "Xbox 360 Save Data (*.bin)|*.bin",
                     Multiselect = true
                 };
             }
             else if (system == 1) {
                 save = new OpenFileDialog {
                     Title = ModsMessages.msg_LocateSavePS,
-                    Filter = "PlayStation 3 Save File|SYS-DATA",
+                    Filter = "PlayStation 3 Save Data (SYS-DATA)|SYS-DATA",
                     Multiselect = true
                 };
             }
             else {
                 save = new OpenFileDialog {
                     Title = ModsMessages.msg_LocateSave,
-                    Filter = "Xbox 360 Save File (*.bin)|*.bin|PlayStation 3 Save File|SYS-DATA",
+                    Filter = "Xbox 360 Save Data (*.bin)|*.bin|PlayStation 3 Save Data (SYS-DATA)|SYS-DATA",
                     Multiselect = true
                 };
             }

@@ -299,10 +299,9 @@ namespace Unify.Patcher
 
         public static void CleanupSaves(string modPath, string modName)
         {
-            string saveLocation = Sonic_06_Mod_Manager.Properties.Settings.Default.saveData;
+            string saveLocation = Path.GetDirectoryName(Path.GetDirectoryName(Sonic_06_Mod_Manager.Properties.Settings.Default.saveData));
             string savedata = string.Empty;
 
-            //Check if Mod is a Merge Mod and if it contains any read-only files.
             using (Stream configRead = File.Open(Path.Combine(modPath, "mod.ini"), FileMode.Open))
             using (StreamReader configFile = new StreamReader(configRead, Encoding.Default)) {
                 string line;
@@ -369,14 +368,11 @@ namespace Unify.Patcher
         public static void RedirectSaves(string modPath, string modName)
         {
             string saveLocation = Sonic_06_Mod_Manager.Properties.Settings.Default.saveData;
-            List<string> saves = new List<string>();
             bool savedata = false;
 
-            //Check if Mod is a Merge Mod and if it contains any read-only files.
             using (Stream configRead = File.Open(Path.Combine(modPath, "mod.ini"), FileMode.Open))
             using (StreamReader configFile = new StreamReader(configRead, Encoding.Default)) {
                 string line;
-
                 while ((line = configFile.ReadLine()) != null)
                     if (line.StartsWith("Save"))
                         savedata = true;
@@ -384,36 +380,30 @@ namespace Unify.Patcher
 
             if (savedata)
             {
-                if (Directory.Exists(saveLocation))
-                    if (Directory.Exists(saveLocation)) saves = Directory.GetFiles(saveLocation, "*.*", SearchOption.AllDirectories)
-                                                        .Where(s => s.EndsWith("SYS-DATA") || s.EndsWith("SonicNextSaveData.bin")).ToList();
-
-                foreach (var save in saves) {
-                    if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
-                        try {
-                            if (!Directory.Exists($"{Path.GetDirectoryName(save)}_back")) {
-                                Directory.CreateDirectory($"{Path.GetDirectoryName(save)}_back");
-                                DirectoryInfo backupSave = new DirectoryInfo(Path.GetDirectoryName(save));
-                                foreach (FileInfo fi in backupSave.GetFiles())
-                                    fi.CopyTo(Path.Combine($"{Path.GetDirectoryName(save)}_back", fi.Name), true);
-                                File.Copy(Path.Combine(modPath, "savedata.360"), save, true);
-                            }
-                            else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); break; }
+                if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
+                    try {
+                        if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) {
+                            Directory.CreateDirectory($"{Path.GetDirectoryName(saveLocation)}_back");
+                            DirectoryInfo backupSave = new DirectoryInfo(Path.GetDirectoryName(saveLocation));
+                            foreach (FileInfo fi in backupSave.GetFiles())
+                                fi.CopyTo(Path.Combine($"{Path.GetDirectoryName(saveLocation)}_back", fi.Name), true);
+                            File.Copy(Path.Combine(modPath, "savedata.360"), saveLocation, true);
                         }
-                        catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "Xbox 360")); }
+                        else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); }
                     }
-                    else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
-                        try {
-                            if (File.Exists(Path.Combine(modPath, "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(save))) {
-                                if (!File.Exists($"{save}_back")) {
-                                    File.Move(save, $"{save}_back");
-                                    File.Copy(Path.Combine(modPath, "savedata.ps3"), save, true);
-                                }
-                                else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); break; }
+                    catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "Xbox 360")); }
+                }
+                else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
+                    try {
+                        if (File.Exists(Path.Combine(modPath, "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
+                            if (!File.Exists($"{saveLocation}_back")) {
+                                File.Move(saveLocation, $"{saveLocation}_back");
+                                File.Copy(Path.Combine(modPath, "savedata.ps3"), saveLocation, true);
                             }
+                            else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); }
                         }
-                        catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "PlayStation 3")); }
                     }
+                    catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "PlayStation 3")); }
                 }
             }
             else return;

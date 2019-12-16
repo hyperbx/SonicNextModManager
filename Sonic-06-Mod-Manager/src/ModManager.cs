@@ -1983,6 +1983,6 @@ namespace Sonic_06_Mod_Manager
 
         private void clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { btn_ModInfo.Enabled = clb_PatchesList.SelectedIndex >= 0; }
 
-        private void btn_SaveData_Click(object sender, EventArgs e) { text_SaveData.Text = Locations.LocateSaves(); }
+        private void btn_SaveData_Click(object sender, EventArgs e) { Properties.Settings.Default.saveData = text_SaveData.Text = Locations.LocateSaves(combo_Emulator_System.SelectedIndex); }
     }
 }
