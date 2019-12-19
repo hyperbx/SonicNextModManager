@@ -292,6 +292,7 @@ namespace Unify.Messages
         public static string warn_ModDeleteWarn(string mod) { return $"Are you sure you want to delete '{mod}?'"; }
         public static string ex_ModDeleteError(string mod) { return $"Failed to delete '{mod}.' Please ensure that nothing is accessing that mod's directory, or delete it manually."; }
         public static string ex_SkippedSave(string mod) { return $"\n► {mod} (save redirect failed because a save was already redirected)"; }
+        public static string ex_NoSaveData(string mod) { return $"\n► {mod} (save redirect failed because no save data was specified)"; }
     }
 
     class EmulatorMessages

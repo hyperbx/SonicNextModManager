@@ -378,33 +378,30 @@ namespace Unify.Patcher
                         savedata = true;
             }
 
-            if (savedata)
-            {
-                if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
-                    try {
-                        if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) {
-                            Directory.CreateDirectory($"{Path.GetDirectoryName(saveLocation)}_back");
-                            DirectoryInfo backupSave = new DirectoryInfo(Path.GetDirectoryName(saveLocation));
-                            foreach (FileInfo fi in backupSave.GetFiles())
-                                fi.CopyTo(Path.Combine($"{Path.GetDirectoryName(saveLocation)}_back", fi.Name), true);
-                            File.Copy(Path.Combine(modPath, "savedata.360"), saveLocation, true);
+            if (savedata) {
+                if (Sonic_06_Mod_Manager.Properties.Settings.Default.saveData != string.Empty &&
+                    File.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.saveData)) {
+                        if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) {
+                            try {
+                                if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) {
+                                    Directory.CreateDirectory($"{Path.GetDirectoryName(saveLocation)}_back");
+                                    DirectoryInfo backupSave = new DirectoryInfo(Path.GetDirectoryName(saveLocation));
+                                    foreach (FileInfo fi in backupSave.GetFiles())
+                                        fi.CopyTo(Path.Combine($"{Path.GetDirectoryName(saveLocation)}_back", fi.Name), true);
+                                    File.Copy(Path.Combine(modPath, "savedata.360"), saveLocation, true);
+                                } else skippedMods.Add(ModsMessages.ex_SkippedSave(modName));
+                            } catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "Xbox 360")); }
+                        } else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
+                            try {
+                                if (File.Exists(Path.Combine(modPath, "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
+                                    if (!File.Exists($"{saveLocation}_back")) {
+                                        File.Move(saveLocation, $"{saveLocation}_back");
+                                        File.Copy(Path.Combine(modPath, "savedata.ps3"), saveLocation, true);
+                                    } else skippedMods.Add(ModsMessages.ex_SkippedSave(modName));
+                                }
+                            } catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "PlayStation 3")); }
                         }
-                        else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); }
-                    }
-                    catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "Xbox 360")); }
-                }
-                else if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 1) {
-                    try {
-                        if (File.Exists(Path.Combine(modPath, "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
-                            if (!File.Exists($"{saveLocation}_back")) {
-                                File.Move(saveLocation, $"{saveLocation}_back");
-                                File.Copy(Path.Combine(modPath, "savedata.ps3"), saveLocation, true);
-                            }
-                            else { skippedMods.Add(ModsMessages.ex_SkippedSave(modName)); }
-                        }
-                    }
-                    catch { skippedMods.Add(ModsMessages.ex_IncorrectSaveTarget(modName, "PlayStation 3")); }
-                }
+                } else skippedMods.Add(ModsMessages.ex_NoSaveData(modName));
             }
             else return;
         }
