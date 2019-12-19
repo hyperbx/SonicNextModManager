@@ -61,7 +61,13 @@
             this.btn_DeselectAll = new System.Windows.Forms.Button();
             this.btn_SelectAll = new System.Windows.Forms.Button();
             this.pnl_ModBackdrop = new System.Windows.Forms.Panel();
-            this.clb_ModsList = new System.Windows.Forms.CheckedListBox();
+            this.view_ModsList = new System.Windows.Forms.ListView();
+            this.column_Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column_Version = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column_Author = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column_System = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column_Merge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column_Blank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.unifytb_Tab_Emulator = new System.Windows.Forms.TabPage();
             this.lbl_SetupOverlay = new System.Windows.Forms.Label();
             this.lbl_SettingsOverlay = new System.Windows.Forms.Label();
@@ -125,6 +131,13 @@
             this.combo_Renderer = new System.Windows.Forms.ComboBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
+            this.group_Appearance = new System.Windows.Forms.GroupBox();
+            this.btn_GridStyle_Default = new System.Windows.Forms.Button();
+            this.combo_GridStyle = new System.Windows.Forms.ComboBox();
+            this.lbl_GridStyle = new System.Windows.Forms.Label();
+            this.btn_ColourPicker = new System.Windows.Forms.Button();
+            this.lbl_AccentColour = new System.Windows.Forms.Label();
+            this.btn_ColourPicker_Default = new System.Windows.Forms.Button();
             this.lbl_DisableSoftwareUpdater = new System.Windows.Forms.Label();
             this.check_DisableSoftwareUpdater = new System.Windows.Forms.CheckBox();
             this.lbl_SaveRedirect = new System.Windows.Forms.Label();
@@ -132,9 +145,6 @@
             this.lbl_GameBanana = new System.Windows.Forms.Label();
             this.check_GameBanana = new System.Windows.Forms.CheckBox();
             this.lbl_ManualInstall = new System.Windows.Forms.Label();
-            this.btn_ColourPicker_Default = new System.Windows.Forms.Button();
-            this.lbl_AccentColour = new System.Windows.Forms.Label();
-            this.btn_ColourPicker = new System.Windows.Forms.Button();
             this.check_ManualInstall = new System.Windows.Forms.CheckBox();
             this.lbl_ManualPatches = new System.Windows.Forms.Label();
             this.check_ManualPatches = new System.Windows.Forms.CheckBox();
@@ -200,6 +210,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).BeginInit();
             this.unifytb_Tab_Settings.SuspendLayout();
             this.group_Options.SuspendLayout();
+            this.group_Appearance.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.split_Options)).BeginInit();
             this.split_Options.Panel1.SuspendLayout();
             this.split_Options.Panel2.SuspendLayout();
@@ -693,26 +704,71 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnl_ModBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.pnl_ModBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnl_ModBackdrop.Controls.Add(this.clb_ModsList);
+            this.pnl_ModBackdrop.Controls.Add(this.view_ModsList);
             this.pnl_ModBackdrop.Location = new System.Drawing.Point(4, 9);
             this.pnl_ModBackdrop.Name = "pnl_ModBackdrop";
             this.pnl_ModBackdrop.Size = new System.Drawing.Size(522, 438);
             this.pnl_ModBackdrop.TabIndex = 43;
             // 
-            // clb_ModsList
+            // view_ModsList
             // 
-            this.clb_ModsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.view_ModsList.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.view_ModsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.clb_ModsList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.clb_ModsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.clb_ModsList.ForeColor = System.Drawing.SystemColors.Control;
-            this.clb_ModsList.FormattingEnabled = true;
-            this.clb_ModsList.Location = new System.Drawing.Point(3, 2);
-            this.clb_ModsList.Name = "clb_ModsList";
-            this.clb_ModsList.Size = new System.Drawing.Size(515, 432);
-            this.clb_ModsList.TabIndex = 0;
-            this.clb_ModsList.SelectedIndexChanged += new System.EventHandler(this.Clb_ModsList_SelectedIndexChanged);
+            this.view_ModsList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.view_ModsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.view_ModsList.CheckBoxes = true;
+            this.view_ModsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.column_Title,
+            this.column_Version,
+            this.column_Author,
+            this.column_System,
+            this.column_Merge,
+            this.column_Blank});
+            this.view_ModsList.FullRowSelect = true;
+            this.view_ModsList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.view_ModsList.HideSelection = false;
+            this.view_ModsList.Location = new System.Drawing.Point(0, 0);
+            this.view_ModsList.MultiSelect = false;
+            this.view_ModsList.Name = "view_ModsList";
+            this.view_ModsList.OwnerDraw = true;
+            this.view_ModsList.Size = new System.Drawing.Size(520, 453);
+            this.view_ModsList.TabIndex = 1;
+            this.view_ModsList.UseCompatibleStateImageBehavior = false;
+            this.view_ModsList.View = System.Windows.Forms.View.Details;
+            this.view_ModsList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.view_ModsList_DrawColumnHeader);
+            this.view_ModsList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.view_ModsList_DrawItem);
+            this.view_ModsList.SelectedIndexChanged += new System.EventHandler(this.view_ModsList_SelectedIndexChanged);
+            // 
+            // column_Title
+            // 
+            this.column_Title.Text = "Title";
+            this.column_Title.Width = 250;
+            // 
+            // column_Version
+            // 
+            this.column_Version.Text = "Version";
+            this.column_Version.Width = 52;
+            // 
+            // column_Author
+            // 
+            this.column_Author.Text = "Author";
+            this.column_Author.Width = 90;
+            // 
+            // column_System
+            // 
+            this.column_System.Text = "System";
+            this.column_System.Width = 80;
+            // 
+            // column_Merge
+            // 
+            this.column_Merge.Text = "Merge";
+            this.column_Merge.Width = 48;
+            // 
+            // column_Blank
+            // 
+            this.column_Blank.Text = "";
             // 
             // unifytb_Tab_Emulator
             // 
@@ -1577,6 +1633,7 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Options.Controls.Add(this.group_Appearance);
             this.group_Options.Controls.Add(this.lbl_DisableSoftwareUpdater);
             this.group_Options.Controls.Add(this.check_DisableSoftwareUpdater);
             this.group_Options.Controls.Add(this.lbl_SaveRedirect);
@@ -1584,9 +1641,6 @@
             this.group_Options.Controls.Add(this.lbl_GameBanana);
             this.group_Options.Controls.Add(this.check_GameBanana);
             this.group_Options.Controls.Add(this.lbl_ManualInstall);
-            this.group_Options.Controls.Add(this.btn_ColourPicker_Default);
-            this.group_Options.Controls.Add(this.lbl_AccentColour);
-            this.group_Options.Controls.Add(this.btn_ColourPicker);
             this.group_Options.Controls.Add(this.check_ManualInstall);
             this.group_Options.Controls.Add(this.lbl_ManualPatches);
             this.group_Options.Controls.Add(this.check_ManualPatches);
@@ -1598,6 +1652,103 @@
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
+            // 
+            // group_Appearance
+            // 
+            this.group_Appearance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Appearance.Controls.Add(this.btn_GridStyle_Default);
+            this.group_Appearance.Controls.Add(this.combo_GridStyle);
+            this.group_Appearance.Controls.Add(this.lbl_GridStyle);
+            this.group_Appearance.Controls.Add(this.btn_ColourPicker);
+            this.group_Appearance.Controls.Add(this.lbl_AccentColour);
+            this.group_Appearance.Controls.Add(this.btn_ColourPicker_Default);
+            this.group_Appearance.ForeColor = System.Drawing.SystemColors.Control;
+            this.group_Appearance.Location = new System.Drawing.Point(261, 16);
+            this.group_Appearance.Name = "group_Appearance";
+            this.group_Appearance.Size = new System.Drawing.Size(248, 91);
+            this.group_Appearance.TabIndex = 103;
+            this.group_Appearance.TabStop = false;
+            this.group_Appearance.Text = "Appearance";
+            // 
+            // btn_GridStyle_Default
+            // 
+            this.btn_GridStyle_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_GridStyle_Default.FlatAppearance.BorderSize = 0;
+            this.btn_GridStyle_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_GridStyle_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_GridStyle_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_GridStyle_Default.Image = ((System.Drawing.Image)(resources.GetObject("btn_GridStyle_Default.Image")));
+            this.btn_GridStyle_Default.Location = new System.Drawing.Point(216, 54);
+            this.btn_GridStyle_Default.Name = "btn_GridStyle_Default";
+            this.btn_GridStyle_Default.Size = new System.Drawing.Size(21, 20);
+            this.btn_GridStyle_Default.TabIndex = 102;
+            this.btn_GridStyle_Default.UseVisualStyleBackColor = true;
+            this.btn_GridStyle_Default.Click += new System.EventHandler(this.btn_GridStyle_Default_Click);
+            // 
+            // combo_GridStyle
+            // 
+            this.combo_GridStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.combo_GridStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_GridStyle.FormattingEnabled = true;
+            this.combo_GridStyle.Items.AddRange(new object[] {
+            "Traditional",
+            "Original"});
+            this.combo_GridStyle.Location = new System.Drawing.Point(102, 52);
+            this.combo_GridStyle.Name = "combo_GridStyle";
+            this.combo_GridStyle.Size = new System.Drawing.Size(112, 23);
+            this.combo_GridStyle.TabIndex = 101;
+            this.combo_GridStyle.SelectedIndexChanged += new System.EventHandler(this.combo_GridStyle_SelectedIndexChanged);
+            // 
+            // lbl_GridStyle
+            // 
+            this.lbl_GridStyle.AutoSize = true;
+            this.lbl_GridStyle.Location = new System.Drawing.Point(38, 56);
+            this.lbl_GridStyle.Name = "lbl_GridStyle";
+            this.lbl_GridStyle.Size = new System.Drawing.Size(60, 15);
+            this.lbl_GridStyle.TabIndex = 89;
+            this.lbl_GridStyle.Text = "Grid Style:";
+            // 
+            // btn_ColourPicker
+            // 
+            this.btn_ColourPicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_ColourPicker.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btn_ColourPicker.FlatAppearance.BorderSize = 0;
+            this.btn_ColourPicker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ColourPicker.ForeColor = System.Drawing.SystemColors.Control;
+            this.btn_ColourPicker.Location = new System.Drawing.Point(102, 23);
+            this.btn_ColourPicker.Name = "btn_ColourPicker";
+            this.btn_ColourPicker.Size = new System.Drawing.Size(112, 23);
+            this.btn_ColourPicker.TabIndex = 44;
+            this.btn_ColourPicker.Text = "#BA0000";
+            this.btn_ColourPicker.UseVisualStyleBackColor = false;
+            this.btn_ColourPicker.Click += new System.EventHandler(this.Btn_ColourPicker_Click);
+            // 
+            // lbl_AccentColour
+            // 
+            this.lbl_AccentColour.AutoSize = true;
+            this.lbl_AccentColour.Location = new System.Drawing.Point(12, 27);
+            this.lbl_AccentColour.Name = "lbl_AccentColour";
+            this.lbl_AccentColour.Size = new System.Drawing.Size(86, 15);
+            this.lbl_AccentColour.TabIndex = 45;
+            this.lbl_AccentColour.Text = "Accent Colour:";
+            // 
+            // btn_ColourPicker_Default
+            // 
+            this.btn_ColourPicker_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_ColourPicker_Default.FlatAppearance.BorderSize = 0;
+            this.btn_ColourPicker_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ColourPicker_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ColourPicker_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ColourPicker_Default.Image = ((System.Drawing.Image)(resources.GetObject("btn_ColourPicker_Default.Image")));
+            this.btn_ColourPicker_Default.Location = new System.Drawing.Point(216, 25);
+            this.btn_ColourPicker_Default.Name = "btn_ColourPicker_Default";
+            this.btn_ColourPicker_Default.Size = new System.Drawing.Size(21, 20);
+            this.btn_ColourPicker_Default.TabIndex = 88;
+            this.btn_ColourPicker_Default.UseVisualStyleBackColor = true;
+            this.btn_ColourPicker_Default.Click += new System.EventHandler(this.Btn_ColourPicker_Default_Click);
             // 
             // lbl_DisableSoftwareUpdater
             // 
@@ -1671,45 +1822,6 @@
             this.lbl_ManualInstall.Size = new System.Drawing.Size(136, 15);
             this.lbl_ManualInstall.TabIndex = 19;
             this.lbl_ManualInstall.Text = "Manual mod installation";
-            // 
-            // btn_ColourPicker_Default
-            // 
-            this.btn_ColourPicker_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_ColourPicker_Default.FlatAppearance.BorderSize = 0;
-            this.btn_ColourPicker_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btn_ColourPicker_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btn_ColourPicker_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ColourPicker_Default.Image = ((System.Drawing.Image)(resources.GetObject("btn_ColourPicker_Default.Image")));
-            this.btn_ColourPicker_Default.Location = new System.Drawing.Point(492, 21);
-            this.btn_ColourPicker_Default.Name = "btn_ColourPicker_Default";
-            this.btn_ColourPicker_Default.Size = new System.Drawing.Size(21, 20);
-            this.btn_ColourPicker_Default.TabIndex = 88;
-            this.btn_ColourPicker_Default.UseVisualStyleBackColor = true;
-            this.btn_ColourPicker_Default.Click += new System.EventHandler(this.Btn_ColourPicker_Default_Click);
-            // 
-            // lbl_AccentColour
-            // 
-            this.lbl_AccentColour.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbl_AccentColour.AutoSize = true;
-            this.lbl_AccentColour.Location = new System.Drawing.Point(373, 24);
-            this.lbl_AccentColour.Name = "lbl_AccentColour";
-            this.lbl_AccentColour.Size = new System.Drawing.Size(86, 15);
-            this.lbl_AccentColour.TabIndex = 45;
-            this.lbl_AccentColour.Text = "Accent Colour:";
-            // 
-            // btn_ColourPicker
-            // 
-            this.btn_ColourPicker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_ColourPicker.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btn_ColourPicker.FlatAppearance.BorderSize = 0;
-            this.btn_ColourPicker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ColourPicker.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_ColourPicker.Location = new System.Drawing.Point(463, 20);
-            this.btn_ColourPicker.Name = "btn_ColourPicker";
-            this.btn_ColourPicker.Size = new System.Drawing.Size(25, 23);
-            this.btn_ColourPicker.TabIndex = 44;
-            this.btn_ColourPicker.UseVisualStyleBackColor = false;
-            this.btn_ColourPicker.Click += new System.EventHandler(this.Btn_ColourPicker_Click);
             // 
             // check_ManualInstall
             // 
@@ -2102,6 +2214,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";
             this.Shown += new System.EventHandler(this.ModManager_Shown);
+            this.Resize += new System.EventHandler(this.ModManager_Resize);
             this.split_MainControls.Panel1.ResumeLayout(false);
             this.split_MainControls.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.split_MainControls)).EndInit();
@@ -2145,6 +2258,8 @@
             this.unifytb_Tab_Settings.ResumeLayout(false);
             this.group_Options.ResumeLayout(false);
             this.group_Options.PerformLayout();
+            this.group_Appearance.ResumeLayout(false);
+            this.group_Appearance.PerformLayout();
             this.split_Options.Panel1.ResumeLayout(false);
             this.split_Options.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.split_Options)).EndInit();
@@ -2169,7 +2284,6 @@
         private System.Windows.Forms.TabPage unifytb_Tab_Emulator;
         private System.Windows.Forms.TabPage unifytb_Tab_Patches;
         private System.Windows.Forms.TabPage unifytb_Tab_Settings;
-        private System.Windows.Forms.CheckedListBox clb_ModsList;
         private System.Windows.Forms.Button btn_DeselectAll;
         private System.Windows.Forms.Button btn_SelectAll;
         private System.Windows.Forms.Button btn_Priority;
@@ -2297,5 +2411,16 @@
         private System.Windows.Forms.Button btn_SaveData;
         private System.Windows.Forms.TextBox text_SaveData;
         private System.Windows.Forms.Label lbl_SaveData;
+        private System.Windows.Forms.ListView view_ModsList;
+        private System.Windows.Forms.ColumnHeader column_Title;
+        private System.Windows.Forms.ColumnHeader column_Version;
+        private System.Windows.Forms.ColumnHeader column_Author;
+        private System.Windows.Forms.ColumnHeader column_System;
+        private System.Windows.Forms.ColumnHeader column_Merge;
+        private System.Windows.Forms.ColumnHeader column_Blank;
+        private System.Windows.Forms.GroupBox group_Appearance;
+        private System.Windows.Forms.Button btn_GridStyle_Default;
+        private System.Windows.Forms.ComboBox combo_GridStyle;
+        private System.Windows.Forms.Label lbl_GridStyle;
     }
 }

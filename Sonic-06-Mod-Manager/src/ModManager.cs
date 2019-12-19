@@ -12,6 +12,7 @@ using Unify.Networking;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using static System.Windows.Forms.ListViewItem;
 
 // Welcome to Project Unify!
 
@@ -44,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.3"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.31-indev-191219r1"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -80,6 +81,7 @@ namespace Sonic_06_Mod_Manager
                 text_EmulatorPath.Text = Properties.Settings.Default.RPCS3Path;
 
             combo_API.SelectedIndex = Properties.Settings.Default.API;
+            combo_GridStyle.SelectedIndex = Properties.Settings.Default.gridStyle;
             text_ModsDirectory.Text = Properties.Settings.Default.modsDirectory;
             text_SaveData.Text = Properties.Settings.Default.saveData;
             text_FTPLocation.Text = Properties.Settings.Default.ftpLocation;
@@ -174,6 +176,7 @@ namespace Sonic_06_Mod_Manager
             }
             #endregion
 
+            SizeLastColumn(view_ModsList);
             Text = $"{SystemMessages.tl_DefaultTitle} ({versionNumber})";
         }
 
@@ -223,8 +226,8 @@ namespace Sonic_06_Mod_Manager
         private void Btn_ModInfo_Click(object sender, EventArgs e) {
             if (unifytb_Main.SelectedIndex == 0) {
                 Status = SystemMessages.msg_ModInfo;
-                if (File.Exists(configs[clb_ModsList.SelectedIndex]))
-                    new src.ModInfo(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex])).ShowDialog();
+                if (File.Exists(configs[view_ModsList.SelectedItems[0].Index]))
+                    new src.ModInfo(Path.GetDirectoryName(configs[view_ModsList.SelectedItems[0].Index])).ShowDialog();
                 else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error"); }
                 GetMods();
             } else if (unifytb_Main.SelectedIndex == 2) {
@@ -264,8 +267,8 @@ namespace Sonic_06_Mod_Manager
 
         private void Btn_EditMod_Click(object sender, EventArgs e) {
             Status = SystemMessages.msg_EditMod;
-            if (File.Exists(configs[clb_ModsList.SelectedIndex]))
-                new src.ModCreator(Path.GetDirectoryName(configs[clb_ModsList.SelectedIndex]), true).ShowDialog();
+            if (File.Exists(configs[view_ModsList.SelectedItems[0].Index]))
+                new src.ModCreator(Path.GetDirectoryName(configs[view_ModsList.SelectedItems[0].Index]), true).ShowDialog();
             else { UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModInfoError, SystemMessages.tl_FileError, "OK", "Error"); }
             Status = SystemMessages.msg_DefaultStatus;
             GetMods();
@@ -301,30 +304,30 @@ namespace Sonic_06_Mod_Manager
 
                     if (Properties.Settings.Default.priority == false) {
                         //Top to Bottom Priority
-                        for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) {
-                            if (clb_ModsList.GetItemChecked(i)) {
-                                Status = SystemMessages.msg_InstallingMod(clb_ModsList.Items[i].ToString());
-                                ARC.InstallMods(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
+                        for (int i = view_ModsList.Items.Count - 1; i >= 0; i--) {
+                            if (view_ModsList.Items[i].Checked) {
+                                Status = SystemMessages.msg_InstallingMod(view_ModsList.Items[i].Text);
+                                ARC.InstallMods(Path.GetDirectoryName(configs[i]), view_ModsList.Items[i].Text);
                                 Status = SystemMessages.msg_DefaultStatus;
 
                                 if (check_SaveRedirect.Checked) {
-                                    Status = SystemMessages.msg_RedirectingSave(clb_ModsList.Items[i].ToString());
-                                    ARC.RedirectSaves(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
+                                    Status = SystemMessages.msg_RedirectingSave(view_ModsList.Items[i].Text);
+                                    ARC.RedirectSaves(Path.GetDirectoryName(configs[i]), view_ModsList.Items[i].Text);
                                     Status = SystemMessages.msg_DefaultStatus;
                                 }
                             }
                         }
                     } else {
                         //Bottom to Top Priority
-                        foreach (object mod in clb_ModsList.CheckedItems) {
-                            if (clb_ModsList.GetItemChecked(clb_ModsList.Items.IndexOf(mod))) {
-                                Status = SystemMessages.msg_InstallingMod(clb_ModsList.GetItemText(mod));
-                                ARC.InstallMods(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
+                        foreach (ListViewItem mod in view_ModsList.CheckedItems) {
+                            if (view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Checked) {
+                                Status = SystemMessages.msg_InstallingMod(view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Text);
+                                ARC.InstallMods(Path.GetDirectoryName(configs[view_ModsList.Items.IndexOf(mod)]), view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Text);
                                 Status = SystemMessages.msg_DefaultStatus;
 
                                 if (check_SaveRedirect.Checked) {
-                                    Status = SystemMessages.msg_RedirectingSave(clb_ModsList.GetItemText(mod));
-                                    ARC.RedirectSaves(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
+                                    Status = SystemMessages.msg_RedirectingSave(view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Text);
+                                    ARC.RedirectSaves(Path.GetDirectoryName(configs[view_ModsList.Items.IndexOf(mod)]), view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Text);
                                     Status = SystemMessages.msg_DefaultStatus;
                                 }
                             }
@@ -373,19 +376,19 @@ namespace Sonic_06_Mod_Manager
             } else {
                 if (Properties.Settings.Default.priority == false) {
                     //Top to Bottom Priority
-                    for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) {
-                        if (clb_ModsList.GetItemChecked(i)) {
-                            Status = SystemMessages.msg_TransferringMod(clb_ModsList.Items[i].ToString());
+                    for (int i = view_ModsList.Items.Count - 1; i >= 0; i--) {
+                        if (view_ModsList.Items[i].Checked) {
+                            Status = SystemMessages.msg_TransferringMod(view_ModsList.Items[i].Text);
                             FTP.InstallMods(text_FTPLocation.Text, Path.GetDirectoryName(configs[i]), text_Username.Text, text_Password.Text);
                             Status = SystemMessages.msg_DefaultStatus;
                         }
                     }
                 } else {
                     //Bottom to Top Priority
-                    foreach (object mod in clb_ModsList.CheckedItems) {
-                        if (clb_ModsList.GetItemChecked(clb_ModsList.Items.IndexOf(mod))) {
-                            Status = SystemMessages.msg_TransferringMod(clb_ModsList.GetItemText(mod));
-                            FTP.InstallMods(text_FTPLocation.Text, Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), text_Username.Text, text_Password.Text);
+                    foreach (ListViewItem mod in view_ModsList.CheckedItems) {
+                        if (view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Checked) {
+                            Status = SystemMessages.msg_TransferringMod(view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Text);
+                            FTP.InstallMods(text_FTPLocation.Text, Path.GetDirectoryName(configs[view_ModsList.Items.IndexOf(mod)]), text_Username.Text, text_Password.Text);
                             Status = SystemMessages.msg_DefaultStatus;
                         }
                     }
@@ -407,11 +410,11 @@ namespace Sonic_06_Mod_Manager
         {
             if (Properties.Settings.Default.priority == false) {
                 //Top to Bottom Priority
-                for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) {
-                    if (clb_ModsList.GetItemChecked(i)) {
+                for (int i = view_ModsList.Items.Count - 1; i >= 0; i--) {
+                    if (view_ModsList.Items[i].Checked) {
                         try {
                             Status = SystemMessages.msg_Cleanup;
-                            ARC.CleanupSaves(Path.GetDirectoryName(configs[i]), clb_ModsList.Items[i].ToString());
+                            ARC.CleanupSaves(Path.GetDirectoryName(configs[i]), view_ModsList.Items[i].Text);
                             Status = SystemMessages.msg_DefaultStatus;
                         }
                         catch { }
@@ -419,10 +422,10 @@ namespace Sonic_06_Mod_Manager
                 }
             } else {
                 //Bottom to Top Priority
-                foreach (object mod in clb_ModsList.CheckedItems) {
+                foreach (ListViewItem mod in view_ModsList.CheckedItems) {
                     try {
                         Status = SystemMessages.msg_Cleanup;
-                        ARC.CleanupSaves(Path.GetDirectoryName(configs[clb_ModsList.Items.IndexOf(mod)]), clb_ModsList.GetItemText(mod));
+                        ARC.CleanupSaves(Path.GetDirectoryName(configs[view_ModsList.Items.IndexOf(mod)]), view_ModsList.Items[view_ModsList.Items.IndexOf(mod)].Text);
                         Status = SystemMessages.msg_DefaultStatus;
                     }
                     catch { }
@@ -763,7 +766,7 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void GetMods() {
-            clb_ModsList.Items.Clear();
+            view_ModsList.Items.Clear();
             btn_UpperPriority.Enabled = false;
             btn_DownerPriority.Enabled = false;
             split_ListControls.Visible = false;
@@ -772,48 +775,66 @@ namespace Sonic_06_Mod_Manager
             try {
                 configs.Clear();
                 foreach (var mod in Directory.GetFiles(Properties.Settings.Default.modsDirectory, "mod.ini", SearchOption.AllDirectories)) {
-                    using (StreamReader configFile = new StreamReader(mod)) {
-                        string line = string.Empty;
-                        string entryValue = string.Empty;
-                        string modName = string.Empty;
+                    string line       = string.Empty,
+                           entryValue = string.Empty,
+                           title      = "N/A",
+                           version    = "N/A",
+                           author     = "N/A",
+                           system     = "N/A",
+                           merge      = "N/A";
 
+                    using (StreamReader configFile = new StreamReader(mod))
                         try {
                             while ((line = configFile.ReadLine()) != null) {
-                                if (line.Contains("Title=\"")) {
+                                if (line.StartsWith("Title")) {
                                     entryValue = line.Substring(line.IndexOf("=") + 2);
-                                    modName = entryValue.Remove(entryValue.Length - 1); // Gets title directly from 'mod.ini'
+                                    entryValue = entryValue.Remove(entryValue.Length - 1);
+                                    title = entryValue;
                                 }
-
-                                //Handle Platforms based on Radio Buttons.
-                                if (line.Contains("Platform=\"")) {
+                                if (line.StartsWith("Version")) {
+                                    entryValue = line.Substring(line.IndexOf("=") + 2);
+                                    entryValue = entryValue.Remove(entryValue.Length - 1);
+                                    version = entryValue;
+                                }
+                                if (line.StartsWith("Author")) {
+                                    entryValue = line.Substring(line.IndexOf("=") + 2);
+                                    entryValue = entryValue.Remove(entryValue.Length - 1);
+                                    author = entryValue;
+                                }
+                                if (line.StartsWith("Platform")) {
+                                    entryValue = line.Substring(line.IndexOf("=") + 2);
+                                    entryValue = entryValue.Remove(entryValue.Length - 1);
+                                    system = entryValue;
+                                }
+                                if (line.StartsWith("Merge")) {
                                     entryValue = line.Substring(line.IndexOf("=") + 2);
                                     entryValue = entryValue.Remove(entryValue.Length - 1);
 
-                                    if (!radio_PlayStation3.Checked && entryValue.Contains("Xbox 360")) {
-                                        clb_ModsList.Items.Add(modName);
-                                        configs.Add(mod);
-                                    }
-
-                                    if (!radio_Xbox360.Checked && entryValue.Contains("PlayStation 3")) {
-                                        clb_ModsList.Items.Add(modName);
-                                        configs.Add(mod);
-                                    }
-
-                                    if (entryValue.Contains("All Systems")) {
-                                        clb_ModsList.Items.Add(modName);
-                                        configs.Add(mod);
-                                    }
+                                    if (entryValue == "True") merge = "Yes";
+                                    else if (entryValue == "False") merge = "No";
+                                    else merge = "N/A";
                                 }
                             }
-                        }
-                        catch { }
-                    }
-                }
 
+                            if (!radio_PlayStation3.Checked && system == "Xbox 360") {
+                                view_ModsList.Items.Add(new ListViewItem(new[] { title, version, author, system, merge }));
+                                configs.Add(mod);
+                            }
+
+                            if (!radio_Xbox360.Checked && system == "PlayStation 3") {
+                                view_ModsList.Items.Add(new ListViewItem(new[] { title, version, author, system, merge }));
+                                configs.Add(mod);
+                            }
+
+                            if (system == "All Systems") {
+                                view_ModsList.Items.Add(new ListViewItem(new[] { title, version, author, system, merge }));
+                                configs.Add(mod);
+                            }
+                        } catch { }
+                }
                 GetModsChecks();
                 GetPatchesChecks();
-            }
-            catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", SystemMessages.tl_ListError, "OK", "Error"); }
+            } catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.ex_ModListError}\n\n{ex}", SystemMessages.tl_ListError, "OK", "Error"); }
         }
 
         private void GetModsChecks()
@@ -824,17 +845,27 @@ namespace Sonic_06_Mod_Manager
                 using (StreamReader mods = new StreamReader(Path.Combine(Properties.Settings.Default.modsDirectory, "mods.ini"))) { // Read 'mods.ini'
                     mods.ReadLine(); // Skip [Main] line
                     while ((line = mods.ReadLine()) != null) { // Read all lines until null
-                        if (clb_ModsList.Items.Contains(line)) { // If the mods list contains what's on the current line...
-                            int checkedIndex = clb_ModsList.Items.IndexOf(line); // Get the index of the mod already in the mods list
-                            string cachePath = configs[checkedIndex]; // Get the index of the mod in the configs list
+                        try {
+                            if (view_ModsList.Items.Contains(view_ModsList.FindItemWithText(line))) { // If the mods list contains what's on the current line...
+                                int checkedIndex = view_ModsList.Items.IndexOf(view_ModsList.FindItemWithText(line)); // Get the index of the mod already in the mods list
+                                string cachePath = configs[checkedIndex]; // Get the index of the mod in the configs list
+                                string[] listItem = new string[5];
+                                int i = 0;
 
-                            clb_ModsList.Items.RemoveAt(checkedIndex); // Remove the mod already in the mods list
-                            configs.Remove(cachePath); // Remove the config location from the configs list
+                                foreach (ListViewSubItem item in view_ModsList.FindItemWithText(line).SubItems) {
+                                    listItem[i] = item.Text;
+                                    i++;
+                                }
+                                ListViewItem shiftItem = new ListViewItem(listItem);
 
-                            clb_ModsList.Items.Insert(checkedIndex - checkedIndex, line); // Insert the mod by the name provided in 'mods.ini', given it's at least present in the list
-                            configs.Insert(checkedIndex - checkedIndex, cachePath); // Insert the mod at the top of the configs list to re-arrange the information
-                            clb_ModsList.SetItemChecked(checkedIndex - checkedIndex, true); // Set the new item to the checked state
-                        }
+                                view_ModsList.Items.RemoveAt(checkedIndex); // Remove the mod already in the mods list
+                                configs.Remove(cachePath); // Remove the config location from the configs list
+
+                                view_ModsList.Items.Insert(checkedIndex - checkedIndex, shiftItem); // Insert the mod by the name provided in 'mods.ini', given it's at least present in the list
+                                configs.Insert(checkedIndex - checkedIndex, cachePath); // Insert the mod at the top of the configs list to re-arrange the information
+                                shiftItem.Checked = true;
+                            }
+                        } catch { }
                     }
                 }
             }
@@ -857,8 +888,7 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        private void SaveChecks()
-        {
+        private void SaveChecks() {
             //Save the names of the selected mods and the indexes of the selected patches to their appropriate ini files
             string modCheckList = Path.Combine(text_ModsDirectory.Text, "mods.ini");
             string patchCheckList = Path.Combine(text_ModsDirectory.Text, "patches.ini");
@@ -866,17 +896,16 @@ namespace Sonic_06_Mod_Manager
             using (StreamWriter sw = File.CreateText(modCheckList))
                 sw.WriteLine("[Main]"); //Header
 
-            for (int i = clb_ModsList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
-                if (clb_ModsList.GetItemChecked(i)) 
-                    using (StreamWriter sw = File.AppendText(modCheckList)) 
-                        sw.WriteLine(clb_ModsList.Items[i].ToString()); //Mod Name
+            for (int i = view_ModsList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
+                if (view_ModsList.Items[i].Checked)
+                    using (StreamWriter sw = File.AppendText(modCheckList))
+                        sw.WriteLine(view_ModsList.Items[i].Text); //Mod Name
             }
 
             using (StreamWriter sw = File.CreateText(patchCheckList))
                 sw.WriteLine("[Main]"); //Header
 
-            for (int i = clb_PatchesList.Items.Count - 1; i >= 0; i--) // Writes in reverse so the mods list writes it in it's preferred order
-            {
+            for (int i = clb_PatchesList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
                 if (clb_PatchesList.GetItemChecked(i))
                     using (StreamWriter sw = File.AppendText(patchCheckList))
                         sw.WriteLine(clb_PatchesList.Items[i].ToString()); //Mod Name
@@ -926,57 +955,68 @@ namespace Sonic_06_Mod_Manager
         }
 
         //Checks all available checkboxes.
-        private void Btn_SelectAll_Click(object sender, EventArgs e) { for (int i = 0; i < clb_ModsList.Items.Count; i++) clb_ModsList.SetItemChecked(i, true); }
+        private void Btn_SelectAll_Click(object sender, EventArgs e) { foreach (ListViewItem item in view_ModsList.Items) item.Checked = true; }
 
         //Unchecks all available checkboxes.
         private void Btn_DeselectAll_Click(object sender, EventArgs e) {
-            for (int i = 0; i < clb_ModsList.Items.Count; i++) clb_ModsList.SetItemChecked(i, false);
-            clb_ModsList.ClearSelected();
-            split_ListControls.Visible = false;
+            try {
+                foreach (ListViewItem item in view_ModsList.Items) item.Checked = false;
+                view_ModsList.SelectedItems.Clear();
+                split_ListControls.Visible = false;
+            } catch { }
         }
 
         private void Btn_UpperPriority_Click(object sender, EventArgs e) { // Moves selected checkbox up the list
-            int selectedIndex = clb_ModsList.SelectedIndex; // Declares the selected index
-            object selectedItem = clb_ModsList.SelectedItem; // Selected checkbox
+            int selectedIndex = view_ModsList.SelectedItems[0].Index; // Declares the selected index
             string cachePath = configs[selectedIndex]; // Info based on selectedIndex
+            string[] listItem = new string[5];
             bool check = false; // Check state bool
+            int i = 0;
 
-            if (clb_ModsList.GetItemCheckState(selectedIndex) == CheckState.Checked) { check = true; } // Checks if the checkbox was checked
+            foreach (ListViewSubItem item in view_ModsList.SelectedItems[0].SubItems) {
+                listItem[i] = item.Text;
+                i++;
+            }
+            ListViewItem shiftItem = new ListViewItem(listItem);
 
-            clb_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
+            if (view_ModsList.Items[selectedIndex].Checked == true) { check = true; } // Checks if the checkbox was checked
+
+            view_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
             configs.Remove(cachePath); // Remove the selected item's info from the configs list
             selectedIndex -= 1; // Move index up the list
 
-            clb_ModsList.Items.Insert(selectedIndex, selectedItem); // Insert checkbox at selectedIndex
+            view_ModsList.Items.Insert(selectedIndex, shiftItem); // Insert checkbox at selectedIndex
             configs.Insert(selectedIndex, cachePath); // Shifts the moved checkbox's info up the configs list
-            clb_ModsList.SelectedIndex = selectedIndex; // Selects the recently moved checkbox
-            clb_ModsList.SetItemChecked(selectedIndex, check); // Calls the 'check' bool and sets the checked state
+
+            view_ModsList.Items[selectedIndex].Selected = true; // Selects the recently moved checkbox
+            if (check) shiftItem.Checked = true; // Calls the 'check' bool and sets the checked state
         }
 
         private void Btn_DownerPriority_Click(object sender, EventArgs e) { // Moves selected checkbox down the list
-            int selectedIndex = clb_ModsList.SelectedIndex; // Declares the selected index
-            object selectedItem = clb_ModsList.SelectedItem; // Selected checkbox
+            int selectedIndex = view_ModsList.SelectedItems[0].Index; // Declares the selected index
             string cachePath = configs[selectedIndex]; // Info based on selectedIndex
+            string[] listItem = new string[5];
             bool check = false; // Check state bool
+            int i = 0;
 
-            if (clb_ModsList.GetItemCheckState(selectedIndex) == CheckState.Checked) { check = true; } // Checks if the checkbox was checked
+            foreach (ListViewSubItem item in view_ModsList.SelectedItems[0].SubItems)
+            {
+                listItem[i] = item.Text;
+                i++;
+            }
+            ListViewItem shiftItem = new ListViewItem(listItem);
 
-            clb_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
+            if (view_ModsList.Items[selectedIndex].Checked == true) { check = true; } // Checks if the checkbox was checked
+
+            view_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
             configs.Remove(cachePath); // Remove the selected item's info from the configs list
-            selectedIndex += 1; // Move index down the list
+            selectedIndex += 1; // Move index up the list
 
-            clb_ModsList.Items.Insert(selectedIndex, selectedItem); // Insert checkbox at selectedIndex
+            view_ModsList.Items.Insert(selectedIndex, shiftItem); // Insert checkbox at selectedIndex
             configs.Insert(selectedIndex, cachePath); // Shifts the moved checkbox's info up the configs list
-            clb_ModsList.SelectedIndex = selectedIndex; // Selects the recently moved checkbox
-            clb_ModsList.SetItemChecked(selectedIndex, check); // Calls the 'check' bool and sets the checked state
-        }
 
-        private void Clb_ModsList_SelectedIndexChanged(object sender, EventArgs e) {
-            btn_ModInfo.Enabled = clb_ModsList.SelectedIndex >= 0; // Enables/disables the Mod Info button depending on if a checkbox is selected
-            if (clb_ModsList.SelectedIndex >= 0) split_ListControls.Visible = true;
-            else split_ListControls.Visible = false;
-            btn_UpperPriority.Enabled = clb_ModsList.SelectedIndex > 0; // Enables/disables the Upper Priority button depending on if a checkbox is selected
-            btn_DownerPriority.Enabled = clb_ModsList.SelectedIndex >= 0 && clb_ModsList.SelectedIndex < clb_ModsList.Items.Count - 1; // Enables/disables the Downer Priority button depending on if a checkbox is selected
+            view_ModsList.Items[selectedIndex].Selected = true; // Selects the recently moved checkbox
+            if (check) shiftItem.Checked = true; // Calls the 'check' bool and sets the checked state
         }
 
         private void Btn_CreateNewMod_Click(object sender, EventArgs e) { // Opens the Mod Creator form - refreshes upon exit
@@ -1374,8 +1414,10 @@ namespace Sonic_06_Mod_Manager
                 Color = Properties.Settings.Default.accentColour
             };
 
-            if (accentPicker.ShowDialog() == DialogResult.OK)
+            if (accentPicker.ShowDialog() == DialogResult.OK) {
                 Properties.Settings.Default.accentColour = accentPicker.Color;
+                btn_ColourPicker.Text = $"#{(accentPicker.Color.ToArgb() & 0x00FFFFFF).ToString("X6")}";
+            }
 
             Properties.Settings.Default.Save();
             ChangeAccentColours();
@@ -1392,13 +1434,14 @@ namespace Sonic_06_Mod_Manager
 
         private void ChangeAccentColours() {
             btn_ColourPicker.BackColor = Properties.Settings.Default.accentColour; //Change the colour of the selector button.
+            btn_ColourPicker.Text = $"#{(Properties.Settings.Default.accentColour.ToArgb() & 0x00FFFFFF).ToString("X6")}";
             unifytb_Main.ActiveColor = Properties.Settings.Default.accentColour; //Colour the selected tab is highlighted in.
             unifytb_Main.HorizontalLineColor = Properties.Settings.Default.accentColour; //Colour the line at the top is.
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
         }
 
         private void Unifytb_Main_SelectedIndexChanged(object sender, System.EventArgs e) {
-            clb_ModsList.ClearSelected();
+            view_ModsList.SelectedItems.Clear();
             clb_PatchesList.ClearSelected();
             btn_ModInfo.Text = "Mod Info";
 
@@ -1536,6 +1579,7 @@ namespace Sonic_06_Mod_Manager
 
                 lbl_EmulatorEXE.ForeColor = SystemColors.ControlText;
                 lbl_Emulator_System.ForeColor = SystemColors.ControlText;
+                lbl_GridStyle.ForeColor = SystemColors.ControlText;
                 if (combo_Emulator_System.SelectedIndex == 0) { //Depending on the selected system, change text to disabled colour.
                     lbl_API.ForeColor = SystemColors.ControlText;
                     if (combo_API.SelectedIndex == 0) {
@@ -1573,6 +1617,7 @@ namespace Sonic_06_Mod_Manager
                 group_Tweaks.ForeColor = SystemColors.ControlText;
                 group_Setup.ForeColor = SystemColors.ControlText;
                 group_Settings.ForeColor = SystemColors.ControlText;
+                group_Appearance.ForeColor = SystemColors.ControlText;
 
                 check_FTP.ForeColor = SystemColors.ControlText;
                 check_ManualInstall.ForeColor = SystemColors.ControlText;
@@ -1585,8 +1630,8 @@ namespace Sonic_06_Mod_Manager
                 text_EmulatorPath.BackColor = SystemColors.ControlLightLight; text_EmulatorPath.ForeColor = SystemColors.ControlText;
                 text_SaveData.BackColor = SystemColors.ControlLightLight; text_SaveData.ForeColor = SystemColors.ControlText;
 
-                pnl_ModBackdrop.BackColor = clb_ModsList.BackColor = SystemColors.ControlLightLight;
-                clb_ModsList.ForeColor = SystemColors.ControlText;
+                pnl_ModBackdrop.BackColor = view_ModsList.BackColor = SystemColors.ControlLightLight;
+                view_ModsList.ForeColor = SystemColors.ControlText;
                 pnl_PatchBackdrop.BackColor = clb_PatchesList.BackColor = SystemColors.ControlLightLight;
                 clb_PatchesList.ForeColor = SystemColors.ControlText;
 
@@ -1650,6 +1695,7 @@ namespace Sonic_06_Mod_Manager
 
                 lbl_EmulatorEXE.ForeColor = SystemColors.Control;
                 lbl_Emulator_System.ForeColor = SystemColors.Control;
+                lbl_GridStyle.ForeColor = SystemColors.Control;
                 if (combo_Emulator_System.SelectedIndex == 0) { //Depending on the selected system, change text to disabled colour.
                     lbl_API.ForeColor = SystemColors.Control;
                     if (combo_API.SelectedIndex == 0) {
@@ -1687,6 +1733,7 @@ namespace Sonic_06_Mod_Manager
                 group_Tweaks.ForeColor = SystemColors.Control;
                 group_Setup.ForeColor = SystemColors.Control;
                 group_Settings.ForeColor = SystemColors.Control;
+                group_Appearance.ForeColor = SystemColors.Control;
 
                 check_FTP.ForeColor = SystemColors.Control;
                 check_ManualInstall.ForeColor = SystemColors.Control;
@@ -1699,8 +1746,8 @@ namespace Sonic_06_Mod_Manager
                 text_EmulatorPath.BackColor = Color.FromArgb(45, 45, 48); text_EmulatorPath.ForeColor = SystemColors.Control;
                 text_SaveData.BackColor = Color.FromArgb(45, 45, 48); text_SaveData.ForeColor = SystemColors.Control;
 
-                pnl_ModBackdrop.BackColor = clb_ModsList.BackColor = Color.FromArgb(45, 45, 48); 
-                clb_ModsList.ForeColor = SystemColors.Control;
+                pnl_ModBackdrop.BackColor = view_ModsList.BackColor = Color.FromArgb(45, 45, 48);
+                view_ModsList.ForeColor = SystemColors.Control;
                 pnl_PatchBackdrop.BackColor = clb_PatchesList.BackColor = Color.FromArgb(45, 45, 48); 
                 clb_PatchesList.ForeColor = SystemColors.Control;
 
@@ -1948,7 +1995,7 @@ namespace Sonic_06_Mod_Manager
             Status = SystemMessages.msg_PatchInfo;
             UnifyMessages.UnifyMessage.Show("This tweak allows you to choose the reflection resolution. Changing this doesn't impact performance.\n\n" +
                                             "" +
-                                            "► Off - Disables reflections entirely.\n" +
+                                            "► Disabled - Disables reflections entirely.\n" +
                                             "► Quarter - Default (320x180).\n" +
                                             "► Half - Halved internal resolution for reflections (640x360).\n" +
                                             "► Full - Full internal resolution for reflections (1280x720).", "Reflections", "OK", "Information");
@@ -1986,5 +2033,66 @@ namespace Sonic_06_Mod_Manager
         private void clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { btn_ModInfo.Enabled = clb_PatchesList.SelectedIndex >= 0; }
 
         private void btn_SaveData_Click(object sender, EventArgs e) { Properties.Settings.Default.saveData = text_SaveData.Text = Locations.LocateSaves(combo_Emulator_System.SelectedIndex); }
+
+        private void view_ModsList_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
+                btn_ModInfo.Enabled = split_ListControls.Visible = view_ModsList.SelectedItems.Count > 0; // Enables/disables the controls depending on if a checkbox is selected
+                btn_UpperPriority.Enabled = view_ModsList.SelectedItems.Count > 0 && view_ModsList.SelectedItems[0].Index > 0; // Enables/disables the Upper Priority button depending on if a checkbox is selected
+                btn_DownerPriority.Enabled = view_ModsList.SelectedItems.Count > 0 && view_ModsList.SelectedItems[0].Index < view_ModsList.Items.Count - 1; // Enables/disables the Downer Priority button depending on if a checkbox is selected
+            } catch { }
+        }
+
+        private void view_ModsList_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e) {
+            Color theme = Color.FromArgb(255, 255, 255);
+            if (Properties.Settings.Default.theme) theme = Color.FromArgb(45, 45, 48);
+
+            e.Graphics.DrawLine(new Pen(Properties.Settings.Default.accentColour, 1), new Point(0, 21), new Point(Width, 21));
+            e.Graphics.FillRectangle(new SolidBrush(theme), e.Bounds);
+            var point = new Point(0, 3);
+            point.X = e.Bounds.X;
+            var column = view_ModsList.Columns[e.ColumnIndex];
+            e.Graphics.FillRectangle(new SolidBrush(theme), point.X, 0, 2, e.Bounds.Height);
+            point.X += column.Width / 2 - TextRenderer.MeasureText(column.Text, view_ModsList.Font).Width / 2;
+            TextRenderer.DrawText(e.Graphics, column.Text, view_ModsList.Font, point, view_ModsList.ForeColor);
+        }
+
+        private void view_ModsList_DrawItem(object sender, DrawListViewItemEventArgs e) { e.DrawDefault = true; }
+
+        private void ModManager_Resize(object sender, EventArgs e) { SizeLastColumn(view_ModsList); }
+
+        private void SizeLastColumn(ListView lv) {
+            if (combo_GridStyle.SelectedIndex == 0) {
+                view_ModsList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+                int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
+                lv.Columns[0].Width = x * 6;
+                lv.Columns[1].Width = (x * 2) - 20;
+                lv.Columns[2].Width = (x * 2) + 15;
+                lv.Columns[3].Width = (x * 2) + 15;
+                lv.Columns[4].Width = (x * 3) - 18;
+                lv.Columns[5].Width = x * 100;
+            } else {
+                view_ModsList.HeaderStyle = ColumnHeaderStyle.None;
+                int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
+                lv.Columns[0].Width = x * 100;
+                lv.Columns[1].Width = 0;
+                lv.Columns[2].Width = 0;
+                lv.Columns[3].Width = 0;
+                lv.Columns[4].Width = 0;
+                lv.Columns[5].Width = 0;
+            }
+
+        }
+
+        private void combo_GridStyle_SelectedIndexChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.gridStyle = combo_GridStyle.SelectedIndex;
+            Properties.Settings.Default.Save();
+            SizeLastColumn(view_ModsList);
+        }
+
+        private void btn_GridStyle_Default_Click(object sender, EventArgs e) {
+            Properties.Settings.Default.gridStyle = combo_GridStyle.SelectedIndex = 0;
+            Properties.Settings.Default.Save();
+            SizeLastColumn(view_ModsList);
+        }
     }
 }
