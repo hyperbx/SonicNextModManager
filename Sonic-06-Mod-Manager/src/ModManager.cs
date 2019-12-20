@@ -2114,11 +2114,13 @@ namespace Sonic_06_Mod_Manager
         // This is why we can't have nice things. =)
         // https://github.com/microsoft/vscode/issues/87268
         private void check_CancelChristmas_CheckedChanged(object sender, EventArgs e) {
-            if (check_CancelChristmas.Checked) { 
-                Properties.Settings.Default.cancelChristmas = christmas = false;
+            if (check_CancelChristmas.Checked) {
+                Properties.Settings.Default.cancelChristmas = true;
+                christmas = false;
                 Icon = Properties.Resources.icon;
             } else {
-                Properties.Settings.Default.cancelChristmas = christmas = true;
+                Properties.Settings.Default.cancelChristmas = false;
+                christmas = true;
                 Icon = Properties.Resources.icon_christmas;
             }
             Properties.Settings.Default.Save();
