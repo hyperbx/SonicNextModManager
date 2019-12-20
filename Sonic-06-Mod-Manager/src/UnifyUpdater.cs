@@ -41,12 +41,14 @@ namespace Sonic_06_Mod_Manager.src
         {
             InitializeComponent();
 
-             if (ModManager.dreamcastDay) {
-                if (Properties.Settings.Default.dream) 
-                    Icon = Properties.Resources.dreamcast_ntsc_icon;
-                else
-                    Icon = Properties.Resources.dreamcast_pal_icon;
-             }
+            if (ModManager.dreamcastDay) {
+               if (Properties.Settings.Default.dream) 
+                   Icon = Properties.Resources.dreamcast_ntsc_icon;
+               else
+                   Icon = Properties.Resources.dreamcast_pal_icon;
+            }
+
+            if (ModManager.christmas) Icon = Properties.Resources.icon_christmas;
 
             if (Properties.Settings.Default.theme) {
                 BackColor = Color.FromArgb(28, 28, 28);

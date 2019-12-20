@@ -131,6 +131,8 @@
             this.combo_Renderer = new System.Windows.Forms.ComboBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
+            this.lbl_CancelChristmas = new System.Windows.Forms.Label();
+            this.check_CancelChristmas = new System.Windows.Forms.CheckBox();
             this.group_Appearance = new System.Windows.Forms.GroupBox();
             this.btn_GridStyle_Default = new System.Windows.Forms.Button();
             this.combo_GridStyle = new System.Windows.Forms.ComboBox();
@@ -1633,6 +1635,8 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Options.Controls.Add(this.lbl_CancelChristmas);
+            this.group_Options.Controls.Add(this.check_CancelChristmas);
             this.group_Options.Controls.Add(this.group_Appearance);
             this.group_Options.Controls.Add(this.lbl_DisableSoftwareUpdater);
             this.group_Options.Controls.Add(this.check_DisableSoftwareUpdater);
@@ -1652,6 +1656,31 @@
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
+            // 
+            // lbl_CancelChristmas
+            // 
+            this.lbl_CancelChristmas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_CancelChristmas.AutoSize = true;
+            this.lbl_CancelChristmas.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_CancelChristmas.Location = new System.Drawing.Point(410, 120);
+            this.lbl_CancelChristmas.Name = "lbl_CancelChristmas";
+            this.lbl_CancelChristmas.Size = new System.Drawing.Size(99, 15);
+            this.lbl_CancelChristmas.TabIndex = 105;
+            this.lbl_CancelChristmas.Text = "Cancel Christmas";
+            this.lbl_CancelChristmas.Visible = false;
+            // 
+            // check_CancelChristmas
+            // 
+            this.check_CancelChristmas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.check_CancelChristmas.AutoSize = true;
+            this.check_CancelChristmas.ForeColor = System.Drawing.SystemColors.Control;
+            this.check_CancelChristmas.Location = new System.Drawing.Point(393, 121);
+            this.check_CancelChristmas.Name = "check_CancelChristmas";
+            this.check_CancelChristmas.Size = new System.Drawing.Size(15, 14);
+            this.check_CancelChristmas.TabIndex = 104;
+            this.check_CancelChristmas.UseVisualStyleBackColor = true;
+            this.check_CancelChristmas.Visible = false;
+            this.check_CancelChristmas.CheckedChanged += new System.EventHandler(this.check_CancelChristmas_CheckedChanged);
             // 
             // group_Appearance
             // 
@@ -2422,5 +2451,7 @@
         private System.Windows.Forms.Button btn_GridStyle_Default;
         private System.Windows.Forms.ComboBox combo_GridStyle;
         private System.Windows.Forms.Label lbl_GridStyle;
+        private System.Windows.Forms.Label lbl_CancelChristmas;
+        private System.Windows.Forms.CheckBox check_CancelChristmas;
     }
 }

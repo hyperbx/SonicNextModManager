@@ -54,6 +54,8 @@ namespace Sonic_06_Mod_Manager.src
                     Icon = Properties.Resources.dreamcast_pal_icon;
             }
 
+            if (ModManager.christmas) Icon = Properties.Resources.icon_christmas;
+
             if (Properties.Settings.Default.theme) {
                 lbl_Title.ForeColor = SystemColors.Control;
                 pnl_Backdrop.BackColor = Color.FromArgb(59, 59, 63);

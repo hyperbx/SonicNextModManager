@@ -11,6 +11,7 @@ using Microsoft.Win32;
 using Unify.Networking;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Globalization;
 using System.Collections.Generic;
 using static System.Windows.Forms.ListViewItem;
 
@@ -45,10 +46,12 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.31"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.32"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
+        public static bool christmas = false;
+
         public static DateTime dreamcastNA = new DateTime(1999, 09, 09);
         public static DateTime dreamcastEU = new DateTime(1999, 10, 14);
         public static DateTime dreamcastJP = new DateTime(1998, 11, 27);
@@ -71,6 +74,15 @@ namespace Sonic_06_Mod_Manager
                 if (!Properties.Settings.Default.dream) { Icon = Properties.Resources.dreamcast_ntsc_icon; Properties.Settings.Default.dream = true; }
                 else { Icon = Properties.Resources.dreamcast_pal_icon; Properties.Settings.Default.dream = false; }
                 Properties.Settings.Default.Save();
+            }
+
+            if (DateTime.Now >= new DateTime(DateTime.Today.Year, 12, 01) &&
+                DateTime.Now <= new DateTime(DateTime.Today.Year + 1, 01, 06)) {
+                    if (!Properties.Settings.Default.cancelChristmas) {
+                        christmas = true;
+                        Icon = Properties.Resources.icon_christmas;
+                    }
+                    check_CancelChristmas.Visible = lbl_CancelChristmas.Visible = true;
             }
 
             combo_Emulator_System.SelectedIndex = Properties.Settings.Default.emulatorSystem;
@@ -113,6 +125,7 @@ namespace Sonic_06_Mod_Manager
             check_ManualInstall.Checked = Properties.Settings.Default.manualInstall;
             nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
             check_DisableSoftwareUpdater.Checked = Properties.Settings.Default.disableSoftwareUpdater;
+            check_CancelChristmas.Checked = Properties.Settings.Default.cancelChristmas;
 
             if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView <= 90)
                 nud_CameraDistance.Value = 450;
@@ -1549,6 +1562,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_SetStatus.ForeColor = SystemColors.ControlText; lbl_SetStatus.BackColor = SystemColors.Control;
                 lbl_ManualPatches.ForeColor = SystemColors.ControlText;
                 lbl_DisableSoftwareUpdater.ForeColor = SystemColors.ControlText;
+                lbl_CancelChristmas.ForeColor = SystemColors.ControlText;
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
@@ -1665,6 +1679,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_SetStatus.ForeColor = SystemColors.Control; lbl_SetStatus.BackColor = Color.FromArgb(28, 28, 28);
                 lbl_ManualPatches.ForeColor = SystemColors.Control;
                 lbl_DisableSoftwareUpdater.ForeColor = SystemColors.Control;
+                lbl_CancelChristmas.ForeColor = SystemColors.Control;
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
@@ -2093,6 +2108,19 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.gridStyle = combo_GridStyle.SelectedIndex = 0;
             Properties.Settings.Default.Save();
             SizeLastColumn(view_ModsList);
+        }
+
+        // This is why we can't have nice things. =)
+        // https://github.com/microsoft/vscode/issues/87268
+        private void check_CancelChristmas_CheckedChanged(object sender, EventArgs e) {
+            if (check_CancelChristmas.Checked) { 
+                Properties.Settings.Default.cancelChristmas = christmas = false;
+                Icon = Properties.Resources.icon;
+            } else {
+                Properties.Settings.Default.cancelChristmas = christmas = true;
+                Icon = Properties.Resources.icon_christmas;
+            }
+            Properties.Settings.Default.Save();
         }
     }
 }

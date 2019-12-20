@@ -59,6 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="src\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,14 +116,9 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="src\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,6 +164,30 @@
     <None Include="res\icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="res\audio\Christmas\bell01.wav" />
+    <Content Include="res\audio\Christmas\bell02.wav" />
+    <Content Include="res\audio\Christmas\bell04.wav" />
+    <Content Include="res\audio\Christmas\bell05.wav" />
+    <Content Include="res\audio\Christmas\bell06.wav" />
+    <Content Include="res\audio\Christmas\bell07.wav" />
+    <Content Include="res\audio\Christmas\bell08.wav" />
+    <Content Include="res\audio\Christmas\bell09.wav" />
+    <Content Include="res\audio\Christmas\bell10.wav" />
+    <Content Include="res\audio\Christmas\bell11.wav" />
+    <Content Include="res\audio\Christmas\bell12.wav" />
+    <Content Include="res\audio\Christmas\bell13.wav" />
+    <Content Include="res\audio\Christmas\bell14.wav" />
+    <Content Include="res\audio\Christmas\bell15.wav" />
+    <Content Include="res\audio\Christmas\bell16.wav" />
+    <Content Include="res\audio\Christmas\bell17.wav" />
+    <Content Include="res\audio\Christmas\bell18.wav" />
+    <Content Include="res\audio\Christmas\bell19.wav" />
+    <Content Include="res\audio\Christmas\bell20.wav" />
+    <Content Include="res\audio\Dreamcast\dream.wav" />
+    <Content Include="res\audio\Dreamcast\dreamLaunch.wav" />
+    <Content Include="res\audio\Dreamcast\dreamWarn.wav" />
+    <Content Include="res\icon_christmas.ico" />
+    <Content Include="res\logo_main_christmas.png" />
     <None Include="res\xextool.exe" />
     <None Include="res\omega_Root_Fix.xno" />
     <None Include="res\omega_Root_Retail.xno" />
@@ -185,9 +209,6 @@
     <None Include="res\dreamcast_pal.png" />
     <None Include="res\dreamcast_ntsc_icon.ico" />
     <None Include="res\dreamcast_pal_icon.ico" />
-    <None Include="res\dream.wav" />
-    <None Include="res\dreamLaunch.wav" />
-    <None Include="res\dreamWarn.wav" />
     <Content Include="res\logo_exception.png" />
     <None Include="res\logo_gamebanana.png" />
     <Content Include="res\logo_main.png" />

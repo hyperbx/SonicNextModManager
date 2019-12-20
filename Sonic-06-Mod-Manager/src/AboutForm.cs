@@ -1,4 +1,5 @@
-﻿using System.Media;
+﻿using System;
+using System.Media;
 using Unify.Messages;
 using System.Drawing;
 using System.Diagnostics;
@@ -47,10 +48,14 @@ namespace Sonic_06_Mod_Manager.src
                     Icon = Properties.Resources.dreamcast_pal_icon;
                     pic_Logo.BackgroundImage = Properties.Resources.dreamcast_pal;
                 }
-            }
-            else if (ModManager.debugMode) {
+            } else if (ModManager.debugMode) {
                 lbl_Title.Text = SystemMessages.tl_DefaultTitle;
                 pic_Logo.BackgroundImage = Properties.Resources.logo_aldi;
+            }
+
+            if (ModManager.christmas) {
+                Icon = Properties.Resources.icon_christmas;
+                pic_Logo.BackgroundImage = Properties.Resources.logo_main_christmas;
             }
 
             if (Properties.Settings.Default.theme) {
@@ -93,11 +98,37 @@ namespace Sonic_06_Mod_Manager.src
         private void Link_ChaosX_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://twitter.com/ChaosX2006"); }
         //Never heard of 'em.
 
-        private void Pic_Logo_Click(object sender, System.EventArgs e)
-        {
+        private void Pic_Logo_Click(object sender, System.EventArgs e) {
             if (ModManager.dreamcastDay) {
                 SoundPlayer dreamLaunch = new SoundPlayer(Properties.Resources.dreamLaunch);
                 dreamLaunch.Play();
+            } else if (ModManager.christmas) {
+                int getRandomBell = new Random().Next(1, 19);
+                SoundPlayer bell = new SoundPlayer();
+
+                switch (getRandomBell) {
+                    case 1: bell = new SoundPlayer(Properties.Resources.bell01); break;
+                    case 2: bell = new SoundPlayer(Properties.Resources.bell02); break;
+                    case 3: bell = new SoundPlayer(Properties.Resources.bell04); break;
+                    case 5: bell = new SoundPlayer(Properties.Resources.bell05); break;
+                    case 6: bell = new SoundPlayer(Properties.Resources.bell06); break;
+                    case 7: bell = new SoundPlayer(Properties.Resources.bell07); break;
+                    case 8: bell = new SoundPlayer(Properties.Resources.bell08); break;
+                    case 9: bell = new SoundPlayer(Properties.Resources.bell09); break;
+                    case 10: bell = new SoundPlayer(Properties.Resources.bell10); break;
+                    case 11: bell = new SoundPlayer(Properties.Resources.bell11); break;
+                    case 12: bell = new SoundPlayer(Properties.Resources.bell12); break;
+                    case 13: bell = new SoundPlayer(Properties.Resources.bell13); break;
+                    case 14: bell = new SoundPlayer(Properties.Resources.bell14); break;
+                    case 15: bell = new SoundPlayer(Properties.Resources.bell15); break;
+                    case 16: bell = new SoundPlayer(Properties.Resources.bell16); break;
+                    case 17: bell = new SoundPlayer(Properties.Resources.bell17); break;
+                    case 18: bell = new SoundPlayer(Properties.Resources.bell18); break;
+                    case 19: bell = new SoundPlayer(Properties.Resources.bell19); break;
+                    case 20: bell = new SoundPlayer(Properties.Resources.bell20); break;
+                }
+
+                bell.Play();
             }
         }
 

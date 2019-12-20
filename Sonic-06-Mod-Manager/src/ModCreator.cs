@@ -55,6 +55,8 @@ namespace Sonic_06_Mod_Manager.src
                     Icon = Properties.Resources.dreamcast_pal_icon;
             }
 
+            if (ModManager.christmas) Icon = Properties.Resources.icon_christmas;
+
             if (Properties.Settings.Default.theme) {
                 pic_Thumbnail.BackColor = Color.FromArgb(45, 45, 48);
                 check_Merge.ForeColor = SystemColors.Control;

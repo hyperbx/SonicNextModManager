@@ -490,5 +490,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["gridStyle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool cancelChristmas {
+            get {
+                return ((bool)(this["cancelChristmas"]));
+            }
+            set {
+                this["cancelChristmas"] = value;
+            }
+        }
     }
 }

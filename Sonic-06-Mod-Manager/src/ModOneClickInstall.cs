@@ -26,12 +26,14 @@ namespace Sonic_06_Mod_Manager.src
         public ModOneClickInstall(GBAPIItemDataBasic item, string url, int downloadID, int modID) {
             InitializeComponent();
 
-             if (ModManager.dreamcastDay) {
-                if (Properties.Settings.Default.dream)
-                    Icon = Properties.Resources.dreamcast_ntsc_icon;
-                else
-                    Icon = Properties.Resources.dreamcast_pal_icon;
+            if (ModManager.dreamcastDay) {
+               if (Properties.Settings.Default.dream)
+                   Icon = Properties.Resources.dreamcast_ntsc_icon;
+               else
+                   Icon = Properties.Resources.dreamcast_pal_icon;
             }
+
+            if (ModManager.christmas) Icon = Properties.Resources.icon_christmas;
 
             if (!Properties.Settings.Default.theme) styleSheet = Properties.Resources.GBStyleSheetLight;
             else {
