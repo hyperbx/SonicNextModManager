@@ -1798,6 +1798,7 @@ namespace Sonic_06_Mod_Manager
                         $"Framework Version: {versionNumber.Substring(8)}\n" +
                         $"Sonic '06 Mod Loader Version: {modLoaderVersion.Substring(8)}\n\n" +
                         $"" +
+                        $"Christmas: {christmas.ToString()}\n" +
                         $"Dreamcast Day: {dreamcastDay.ToString()}\n" +
                         $"Vulkan Warning: {Properties.Settings.Default.seenVulkanWarning.ToString()}",
                         "Debug Information", "OK", "Information");
