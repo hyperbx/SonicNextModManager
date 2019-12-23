@@ -46,7 +46,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.32"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.33"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -858,25 +858,41 @@ namespace Sonic_06_Mod_Manager
                 using (StreamReader mods = new StreamReader(Path.Combine(Properties.Settings.Default.modsDirectory, "mods.ini"))) { // Read 'mods.ini'
                     mods.ReadLine(); // Skip [Main] line
                     while ((line = mods.ReadLine()) != null) { // Read all lines until null
+                        string entryValue = string.Empty;
+                        int configIndex = 0;
+
                         try {
-                            if (view_ModsList.Items.Contains(view_ModsList.FindItemWithText(line))) { // If the mods list contains what's on the current line...
-                                int checkedIndex = view_ModsList.Items.IndexOf(view_ModsList.FindItemWithText(line)); // Get the index of the mod already in the mods list
-                                string cachePath = configs[checkedIndex]; // Get the index of the mod in the configs list
-                                string[] listItem = new string[5];
-                                int i = 0;
+                            if (Directory.Exists(Path.Combine(text_ModsDirectory.Text, line))) {
+                                string configFile = File.ReadAllText(Path.Combine(text_ModsDirectory.Text, line, "mod.ini"));
+                                string[] splitMetadata = configFile.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-                                foreach (ListViewSubItem item in view_ModsList.FindItemWithText(line).SubItems) {
-                                    listItem[i] = item.Text;
-                                    i++;
+                                foreach (string entry in splitMetadata) {
+                                    if (entry.StartsWith("Title")) {
+                                        entryValue = entry.Substring(entry.IndexOf("=") + 2);
+                                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                                        configIndex = configs.IndexOf(Path.Combine(text_ModsDirectory.Text, line, "mod.ini"));
+
+                                        if (view_ModsList.Items.Contains(view_ModsList.FindItemWithText(entryValue))) { // If the mods list contains what's on the current line...
+                                            int checkedIndex = configIndex; // Get the index of the mod already in the mods list
+                                            string cachePath = configs[checkedIndex]; // Get the index of the mod in the configs list
+                                            string[] listItem = new string[5];
+                                            int i = 0;
+
+                                            foreach (ListViewSubItem item in view_ModsList.Items[configIndex].SubItems) {
+                                                listItem[i] = item.Text;
+                                                i++;
+                                            }
+                                            ListViewItem shiftItem = new ListViewItem(listItem);
+
+                                            view_ModsList.Items.RemoveAt(checkedIndex); // Remove the mod already in the mods list
+                                            configs.Remove(cachePath); // Remove the config location from the configs list
+
+                                            view_ModsList.Items.Insert(checkedIndex - checkedIndex, shiftItem); // Insert the mod by the name provided in 'mods.ini', given it's at least present in the list
+                                            configs.Insert(checkedIndex - checkedIndex, cachePath); // Insert the mod at the top of the configs list to re-arrange the information
+                                            shiftItem.Checked = true;
+                                        }
+                                    }
                                 }
-                                ListViewItem shiftItem = new ListViewItem(listItem);
-
-                                view_ModsList.Items.RemoveAt(checkedIndex); // Remove the mod already in the mods list
-                                configs.Remove(cachePath); // Remove the config location from the configs list
-
-                                view_ModsList.Items.Insert(checkedIndex - checkedIndex, shiftItem); // Insert the mod by the name provided in 'mods.ini', given it's at least present in the list
-                                configs.Insert(checkedIndex - checkedIndex, cachePath); // Insert the mod at the top of the configs list to re-arrange the information
-                                shiftItem.Checked = true;
                             }
                         } catch { }
                     }
@@ -901,7 +917,8 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        private void SaveChecks() {
+        private void SaveChecks()
+        {
             //Save the names of the selected mods and the indexes of the selected patches to their appropriate ini files
             string modCheckList = Path.Combine(text_ModsDirectory.Text, "mods.ini");
             string patchCheckList = Path.Combine(text_ModsDirectory.Text, "patches.ini");
@@ -912,7 +929,7 @@ namespace Sonic_06_Mod_Manager
             for (int i = view_ModsList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
                 if (view_ModsList.Items[i].Checked)
                     using (StreamWriter sw = File.AppendText(modCheckList))
-                        sw.WriteLine(view_ModsList.Items[i].Text); //Mod Name
+                        sw.WriteLine(Path.GetFileName(Path.GetDirectoryName(configs[i]))); //Mod Name
             }
 
             using (StreamWriter sw = File.CreateText(patchCheckList))
