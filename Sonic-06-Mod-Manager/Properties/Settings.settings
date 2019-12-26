@@ -122,5 +122,11 @@
     <Setting Name="cancelChristmas" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="highContrast" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="lastSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">554, 629</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -502,5 +502,29 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["cancelChristmas"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool highContrast {
+            get {
+                return ((bool)(this["highContrast"]));
+            }
+            set {
+                this["highContrast"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("554, 629")]
+        public global::System.Drawing.Size lastSize {
+            get {
+                return ((global::System.Drawing.Size)(this["lastSize"]));
+            }
+            set {
+                this["lastSize"] = value;
+            }
+        }
     }
 }

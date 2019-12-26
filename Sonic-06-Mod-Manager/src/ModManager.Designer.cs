@@ -134,6 +134,8 @@
             this.lbl_CancelChristmas = new System.Windows.Forms.Label();
             this.check_CancelChristmas = new System.Windows.Forms.CheckBox();
             this.group_Appearance = new System.Windows.Forms.GroupBox();
+            this.lbl_HighContrastText = new System.Windows.Forms.Label();
+            this.check_HighContrastText = new System.Windows.Forms.CheckBox();
             this.btn_GridStyle_Default = new System.Windows.Forms.Button();
             this.combo_GridStyle = new System.Windows.Forms.ComboBox();
             this.lbl_GridStyle = new System.Windows.Forms.Label();
@@ -292,7 +294,7 @@
             // status_Main
             // 
             this.status_Main.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.status_Main.Location = new System.Drawing.Point(0, 579);
+            this.status_Main.Location = new System.Drawing.Point(0, 594);
             this.status_Main.Name = "status_Main";
             this.status_Main.Size = new System.Drawing.Size(538, 22);
             this.status_Main.SizingGrip = false;
@@ -366,7 +368,7 @@
             this.lbl_SetStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.lbl_SetStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_SetStatus.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_SetStatus.Location = new System.Drawing.Point(3, 582);
+            this.lbl_SetStatus.Location = new System.Drawing.Point(3, 597);
             this.lbl_SetStatus.Name = "lbl_SetStatus";
             this.lbl_SetStatus.Size = new System.Drawing.Size(42, 15);
             this.lbl_SetStatus.TabIndex = 55;
@@ -388,7 +390,7 @@
             this.split_MainControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.split_MainControls.IsSplitterFixed = true;
-            this.split_MainControls.Location = new System.Drawing.Point(0, 506);
+            this.split_MainControls.Location = new System.Drawing.Point(0, 521);
             this.split_MainControls.Name = "split_MainControls";
             // 
             // split_MainControls.Panel1
@@ -601,12 +603,12 @@
             this.unifytb_Main.Location = new System.Drawing.Point(0, 0);
             this.unifytb_Main.Name = "unifytb_Main";
             this.unifytb_Main.SelectedIndex = 0;
-            this.unifytb_Main.SelectedTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.unifytb_Main.SelectedTextColor = System.Drawing.SystemColors.Control;
             this.unifytb_Main.ShowClosingButton = false;
             this.unifytb_Main.ShowClosingMessage = false;
-            this.unifytb_Main.Size = new System.Drawing.Size(538, 507);
+            this.unifytb_Main.Size = new System.Drawing.Size(538, 522);
             this.unifytb_Main.TabIndex = 0;
-            this.unifytb_Main.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.unifytb_Main.TextColor = System.Drawing.SystemColors.Control;
             this.unifytb_Main.SelectedIndexChanged += new System.EventHandler(this.Unifytb_Main_SelectedIndexChanged);
             // 
             // unifytb_Tab_Mods
@@ -621,7 +623,7 @@
             this.unifytb_Tab_Mods.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Mods.Name = "unifytb_Tab_Mods";
             this.unifytb_Tab_Mods.Padding = new System.Windows.Forms.Padding(3);
-            this.unifytb_Tab_Mods.Size = new System.Drawing.Size(530, 483);
+            this.unifytb_Tab_Mods.Size = new System.Drawing.Size(530, 498);
             this.unifytb_Tab_Mods.TabIndex = 0;
             this.unifytb_Tab_Mods.Text = "Mods";
             // 
@@ -631,7 +633,7 @@
             this.btn_Priority.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_Priority.FlatAppearance.BorderSize = 0;
             this.btn_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Priority.Location = new System.Drawing.Point(348, 456);
+            this.btn_Priority.Location = new System.Drawing.Point(348, 471);
             this.btn_Priority.Name = "btn_Priority";
             this.btn_Priority.Size = new System.Drawing.Size(178, 23);
             this.btn_Priority.TabIndex = 42;
@@ -647,7 +649,7 @@
             this.btn_DownerPriority.FlatAppearance.BorderSize = 0;
             this.btn_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_DownerPriority.Location = new System.Drawing.Point(316, 456);
+            this.btn_DownerPriority.Location = new System.Drawing.Point(316, 471);
             this.btn_DownerPriority.Name = "btn_DownerPriority";
             this.btn_DownerPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_DownerPriority.TabIndex = 41;
@@ -663,7 +665,7 @@
             this.btn_UpperPriority.FlatAppearance.BorderSize = 0;
             this.btn_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 456);
+            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 471);
             this.btn_UpperPriority.Name = "btn_UpperPriority";
             this.btn_UpperPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_UpperPriority.TabIndex = 40;
@@ -677,7 +679,7 @@
             this.btn_DeselectAll.BackColor = System.Drawing.Color.Tomato;
             this.btn_DeselectAll.FlatAppearance.BorderSize = 0;
             this.btn_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DeselectAll.Location = new System.Drawing.Point(145, 456);
+            this.btn_DeselectAll.Location = new System.Drawing.Point(145, 471);
             this.btn_DeselectAll.Name = "btn_DeselectAll";
             this.btn_DeselectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_DeselectAll.TabIndex = 2;
@@ -691,7 +693,7 @@
             this.btn_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
             this.btn_SelectAll.FlatAppearance.BorderSize = 0;
             this.btn_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SelectAll.Location = new System.Drawing.Point(5, 456);
+            this.btn_SelectAll.Location = new System.Drawing.Point(5, 471);
             this.btn_SelectAll.Name = "btn_SelectAll";
             this.btn_SelectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_SelectAll.TabIndex = 1;
@@ -709,7 +711,7 @@
             this.pnl_ModBackdrop.Controls.Add(this.view_ModsList);
             this.pnl_ModBackdrop.Location = new System.Drawing.Point(4, 9);
             this.pnl_ModBackdrop.Name = "pnl_ModBackdrop";
-            this.pnl_ModBackdrop.Size = new System.Drawing.Size(522, 438);
+            this.pnl_ModBackdrop.Size = new System.Drawing.Size(522, 453);
             this.pnl_ModBackdrop.TabIndex = 43;
             // 
             // view_ModsList
@@ -735,7 +737,7 @@
             this.view_ModsList.MultiSelect = false;
             this.view_ModsList.Name = "view_ModsList";
             this.view_ModsList.OwnerDraw = true;
-            this.view_ModsList.Size = new System.Drawing.Size(520, 453);
+            this.view_ModsList.Size = new System.Drawing.Size(520, 468);
             this.view_ModsList.TabIndex = 1;
             this.view_ModsList.UseCompatibleStateImageBehavior = false;
             this.view_ModsList.View = System.Windows.Forms.View.Details;
@@ -790,7 +792,7 @@
             this.unifytb_Tab_Emulator.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Emulator.Name = "unifytb_Tab_Emulator";
             this.unifytb_Tab_Emulator.Padding = new System.Windows.Forms.Padding(3);
-            this.unifytb_Tab_Emulator.Size = new System.Drawing.Size(530, 483);
+            this.unifytb_Tab_Emulator.Size = new System.Drawing.Size(530, 498);
             this.unifytb_Tab_Emulator.TabIndex = 1;
             this.unifytb_Tab_Emulator.Text = "Emulator";
             // 
@@ -913,7 +915,7 @@
             this.group_Settings.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Settings.Location = new System.Drawing.Point(4, 128);
             this.group_Settings.Name = "group_Settings";
-            this.group_Settings.Size = new System.Drawing.Size(522, 352);
+            this.group_Settings.Size = new System.Drawing.Size(522, 367);
             this.group_Settings.TabIndex = 10;
             this.group_Settings.TabStop = false;
             this.group_Settings.Text = "Settings";
@@ -1149,7 +1151,7 @@
             this.unifytb_Tab_Patches.Controls.Add(this.split_Patches);
             this.unifytb_Tab_Patches.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Patches.Name = "unifytb_Tab_Patches";
-            this.unifytb_Tab_Patches.Size = new System.Drawing.Size(530, 483);
+            this.unifytb_Tab_Patches.Size = new System.Drawing.Size(530, 498);
             this.unifytb_Tab_Patches.TabIndex = 2;
             this.unifytb_Tab_Patches.Text = "Patches";
             // 
@@ -1169,7 +1171,7 @@
             // split_Patches.Panel2
             // 
             this.split_Patches.Panel2.Controls.Add(this.group_Tweaks);
-            this.split_Patches.Size = new System.Drawing.Size(530, 480);
+            this.split_Patches.Size = new System.Drawing.Size(530, 495);
             this.split_Patches.SplitterDistance = 262;
             this.split_Patches.TabIndex = 3;
             // 
@@ -1183,7 +1185,7 @@
             this.pnl_PatchBackdrop.Controls.Add(this.clb_PatchesList);
             this.pnl_PatchBackdrop.Location = new System.Drawing.Point(2, 6);
             this.pnl_PatchBackdrop.Name = "pnl_PatchBackdrop";
-            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(259, 469);
+            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(259, 484);
             this.pnl_PatchBackdrop.TabIndex = 2;
             // 
             // clb_PatchesList
@@ -1249,7 +1251,7 @@
             this.group_Tweaks.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Tweaks.Location = new System.Drawing.Point(1, -2);
             this.group_Tweaks.Name = "group_Tweaks";
-            this.group_Tweaks.Size = new System.Drawing.Size(257, 478);
+            this.group_Tweaks.Size = new System.Drawing.Size(257, 493);
             this.group_Tweaks.TabIndex = 2;
             this.group_Tweaks.TabStop = false;
             this.group_Tweaks.Text = "Tweaks";
@@ -1626,7 +1628,7 @@
             this.unifytb_Tab_Settings.Controls.Add(this.group_Directories);
             this.unifytb_Tab_Settings.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Settings.Name = "unifytb_Tab_Settings";
-            this.unifytb_Tab_Settings.Size = new System.Drawing.Size(530, 483);
+            this.unifytb_Tab_Settings.Size = new System.Drawing.Size(530, 498);
             this.unifytb_Tab_Settings.TabIndex = 3;
             this.unifytb_Tab_Settings.Text = "Settings";
             // 
@@ -1652,17 +1654,16 @@
             this.group_Options.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Options.Location = new System.Drawing.Point(4, 256);
             this.group_Options.Name = "group_Options";
-            this.group_Options.Size = new System.Drawing.Size(522, 224);
+            this.group_Options.Size = new System.Drawing.Size(522, 239);
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
             // 
             // lbl_CancelChristmas
             // 
-            this.lbl_CancelChristmas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_CancelChristmas.AutoSize = true;
             this.lbl_CancelChristmas.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_CancelChristmas.Location = new System.Drawing.Point(410, 120);
+            this.lbl_CancelChristmas.Location = new System.Drawing.Point(32, 144);
             this.lbl_CancelChristmas.Name = "lbl_CancelChristmas";
             this.lbl_CancelChristmas.Size = new System.Drawing.Size(99, 15);
             this.lbl_CancelChristmas.TabIndex = 105;
@@ -1671,10 +1672,9 @@
             // 
             // check_CancelChristmas
             // 
-            this.check_CancelChristmas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.check_CancelChristmas.AutoSize = true;
             this.check_CancelChristmas.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_CancelChristmas.Location = new System.Drawing.Point(393, 121);
+            this.check_CancelChristmas.Location = new System.Drawing.Point(15, 145);
             this.check_CancelChristmas.Name = "check_CancelChristmas";
             this.check_CancelChristmas.Size = new System.Drawing.Size(15, 14);
             this.check_CancelChristmas.TabIndex = 104;
@@ -1686,6 +1686,8 @@
             // 
             this.group_Appearance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_Appearance.Controls.Add(this.lbl_HighContrastText);
+            this.group_Appearance.Controls.Add(this.check_HighContrastText);
             this.group_Appearance.Controls.Add(this.btn_GridStyle_Default);
             this.group_Appearance.Controls.Add(this.combo_GridStyle);
             this.group_Appearance.Controls.Add(this.lbl_GridStyle);
@@ -1695,10 +1697,31 @@
             this.group_Appearance.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Appearance.Location = new System.Drawing.Point(261, 16);
             this.group_Appearance.Name = "group_Appearance";
-            this.group_Appearance.Size = new System.Drawing.Size(248, 91);
+            this.group_Appearance.Size = new System.Drawing.Size(248, 116);
             this.group_Appearance.TabIndex = 103;
             this.group_Appearance.TabStop = false;
             this.group_Appearance.Text = "Appearance";
+            // 
+            // lbl_HighContrastText
+            // 
+            this.lbl_HighContrastText.AutoSize = true;
+            this.lbl_HighContrastText.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_HighContrastText.Location = new System.Drawing.Point(119, 87);
+            this.lbl_HighContrastText.Name = "lbl_HighContrastText";
+            this.lbl_HighContrastText.Size = new System.Drawing.Size(105, 15);
+            this.lbl_HighContrastText.TabIndex = 107;
+            this.lbl_HighContrastText.Text = "High Contrast Text";
+            // 
+            // check_HighContrastText
+            // 
+            this.check_HighContrastText.AutoSize = true;
+            this.check_HighContrastText.ForeColor = System.Drawing.SystemColors.Control;
+            this.check_HighContrastText.Location = new System.Drawing.Point(102, 88);
+            this.check_HighContrastText.Name = "check_HighContrastText";
+            this.check_HighContrastText.Size = new System.Drawing.Size(15, 14);
+            this.check_HighContrastText.TabIndex = 106;
+            this.check_HighContrastText.UseVisualStyleBackColor = true;
+            this.check_HighContrastText.CheckedChanged += new System.EventHandler(this.check_HighContrastText_CheckedChanged);
             // 
             // btn_GridStyle_Default
             // 
@@ -1889,7 +1912,7 @@
             this.split_Options.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.split_Options.IsSplitterFixed = true;
-            this.split_Options.Location = new System.Drawing.Point(6, 153);
+            this.split_Options.Location = new System.Drawing.Point(6, 168);
             this.split_Options.Name = "split_Options";
             // 
             // split_Options.Panel1
@@ -2227,7 +2250,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(538, 601);
+            this.ClientSize = new System.Drawing.Size(538, 616);
             this.Controls.Add(this.sonic06mm_Aldi);
             this.Controls.Add(this.lbl_SetStatus);
             this.Controls.Add(this.radio_PlayStation3);
@@ -2238,11 +2261,12 @@
             this.Controls.Add(this.split_MainControls);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(554, 640);
+            this.MinimumSize = new System.Drawing.Size(554, 655);
             this.Name = "ModManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";
             this.Shown += new System.EventHandler(this.ModManager_Shown);
+            this.ResizeEnd += new System.EventHandler(this.ModManager_ResizeEnd);
             this.Resize += new System.EventHandler(this.ModManager_Resize);
             this.split_MainControls.Panel1.ResumeLayout(false);
             this.split_MainControls.Panel2.ResumeLayout(false);
@@ -2453,5 +2477,7 @@
         private System.Windows.Forms.Label lbl_GridStyle;
         private System.Windows.Forms.Label lbl_CancelChristmas;
         private System.Windows.Forms.CheckBox check_CancelChristmas;
+        private System.Windows.Forms.Label lbl_HighContrastText;
+        private System.Windows.Forms.CheckBox check_HighContrastText;
     }
 }

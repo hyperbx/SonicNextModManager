@@ -46,7 +46,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.33"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.34"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -76,6 +76,9 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.Save();
             }
 
+            MinimumSize = new Size(554, 629);
+            Width = Properties.Settings.Default.lastSize.Width;
+            Height = Properties.Settings.Default.lastSize.Height;
             if (DateTime.Now >= new DateTime(DateTime.Today.Year, 12, 01) &&
                 DateTime.Now <= new DateTime(DateTime.Today.Year + 1, 01, 06)) {
                     if (!Properties.Settings.Default.cancelChristmas) {
@@ -83,6 +86,9 @@ namespace Sonic_06_Mod_Manager
                         Icon = Properties.Resources.icon_christmas;
                     }
                     check_CancelChristmas.Visible = lbl_CancelChristmas.Visible = true;
+                    Width = Properties.Settings.Default.lastSize.Width;
+                    Height = Properties.Settings.Default.lastSize.Height;
+                    MinimumSize = new Size(554, 655);
             }
 
             combo_Emulator_System.SelectedIndex = Properties.Settings.Default.emulatorSystem;
@@ -126,6 +132,7 @@ namespace Sonic_06_Mod_Manager
             nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
             check_DisableSoftwareUpdater.Checked = Properties.Settings.Default.disableSoftwareUpdater;
             check_CancelChristmas.Checked = Properties.Settings.Default.cancelChristmas;
+            check_HighContrastText.Checked = Properties.Settings.Default.highContrast;
 
             if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView <= 90)
                 nud_CameraDistance.Value = 450;
@@ -189,7 +196,6 @@ namespace Sonic_06_Mod_Manager
             }
             #endregion
 
-            SizeLastColumn(view_ModsList);
             Text = $"{SystemMessages.tl_DefaultTitle} ({versionNumber})";
         }
 
@@ -228,6 +234,8 @@ namespace Sonic_06_Mod_Manager
             if (Properties.Settings.Default.xeniaPath != string.Empty || Properties.Settings.Default.RPCS3Path != string.Empty)
                 if (Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.xeniaPath)) || Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.RPCS3Path)))
                     if (!check_ManualInstall.Checked) RestoreSaves(); // Ensures manual install is disabled first
+
+            SizeLastColumn(view_ModsList);
             if ((versionNumber.Contains("-indev") || versionNumber.Contains("-beta") || versionNumber.Contains("-test")) == false)
                 if (!Properties.Settings.Default.disableSoftwareUpdater)
                     Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
@@ -1465,6 +1473,8 @@ namespace Sonic_06_Mod_Manager
         private void ChangeAccentColours() {
             btn_ColourPicker.BackColor = Properties.Settings.Default.accentColour; //Change the colour of the selector button.
             btn_ColourPicker.Text = $"#{(Properties.Settings.Default.accentColour.ToArgb() & 0x00FFFFFF).ToString("X6")}";
+            if (check_HighContrastText.Checked) btn_ColourPicker.ForeColor = unifytb_Main.selectedTextColor = SystemColors.ControlText;
+            else btn_ColourPicker.ForeColor = unifytb_Main.selectedTextColor = SystemColors.Control;
             unifytb_Main.ActiveColor = Properties.Settings.Default.accentColour; //Colour the selected tab is highlighted in.
             unifytb_Main.HorizontalLineColor = Properties.Settings.Default.accentColour; //Colour the line at the top is.
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
@@ -1474,6 +1484,7 @@ namespace Sonic_06_Mod_Manager
             view_ModsList.SelectedItems.Clear();
             clb_PatchesList.ClearSelected();
             btn_ModInfo.Text = "Mod Info";
+            SizeLastColumn(view_ModsList);
 
             if (check_ManualInstall.Checked) {
                 Properties.Settings.Default.manualInstall = true;
@@ -1580,6 +1591,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_ManualPatches.ForeColor = SystemColors.ControlText;
                 lbl_DisableSoftwareUpdater.ForeColor = SystemColors.ControlText;
                 lbl_CancelChristmas.ForeColor = SystemColors.ControlText;
+                lbl_HighContrastText.ForeColor = SystemColors.ControlText;
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
@@ -1697,6 +1709,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_ManualPatches.ForeColor = SystemColors.Control;
                 lbl_DisableSoftwareUpdater.ForeColor = SystemColors.Control;
                 lbl_CancelChristmas.ForeColor = SystemColors.Control;
+                lbl_HighContrastText.ForeColor = SystemColors.Control;
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
@@ -2091,8 +2104,6 @@ namespace Sonic_06_Mod_Manager
 
         private void view_ModsList_DrawItem(object sender, DrawListViewItemEventArgs e) { e.DrawDefault = true; }
 
-        private void ModManager_Resize(object sender, EventArgs e) { SizeLastColumn(view_ModsList); }
-
         private void SizeLastColumn(ListView lv) {
             if (combo_GridStyle.SelectedIndex == 0) {
                 view_ModsList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
@@ -2140,6 +2151,19 @@ namespace Sonic_06_Mod_Manager
                 christmas = true;
                 Icon = Properties.Resources.icon_christmas;
             }
+            Properties.Settings.Default.Save();
+        }
+
+        private void check_HighContrastText_CheckedChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.highContrast = check_HighContrastText.Checked;
+            Properties.Settings.Default.Save();
+            ChangeAccentColours();
+        }
+
+        private void ModManager_Resize(object sender, EventArgs e) { SizeLastColumn(view_ModsList); }
+
+        private void ModManager_ResizeEnd(object sender, EventArgs e) {
+            Properties.Settings.Default.lastSize = new Size(Width, Height);
             Properties.Settings.Default.Save();
         }
     }
