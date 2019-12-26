@@ -46,7 +46,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.34"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.35-test-261219r1"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -871,14 +871,14 @@ namespace Sonic_06_Mod_Manager
 
                         try {
                             if (Directory.Exists(Path.Combine(text_ModsDirectory.Text, line))) {
-                                string configFile = File.ReadAllText(Path.Combine(text_ModsDirectory.Text, line, "mod.ini"));
-                                string[] splitMetadata = configFile.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                                string[] configFile = File.ReadAllLines(Path.Combine(text_ModsDirectory.Text, line, "mod.ini"));
 
-                                foreach (string entry in splitMetadata) {
+                                foreach (string entry in configFile) {
                                     if (entry.StartsWith("Title")) {
                                         entryValue = entry.Substring(entry.IndexOf("=") + 2);
                                         entryValue = entryValue.Remove(entryValue.Length - 1);
                                         configIndex = configs.IndexOf(Path.Combine(text_ModsDirectory.Text, line, "mod.ini"));
+                                        Console.WriteLine(entryValue);
 
                                         if (view_ModsList.Items.Contains(view_ModsList.FindItemWithText(entryValue))) { // If the mods list contains what's on the current line...
                                             int checkedIndex = configIndex; // Get the index of the mod already in the mods list
