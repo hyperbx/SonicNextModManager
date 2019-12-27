@@ -11,7 +11,6 @@ using Microsoft.Win32;
 using Unify.Networking;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Globalization;
 using System.Collections.Generic;
 using static System.Windows.Forms.ListViewItem;
 
@@ -46,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.35-test-261219r1"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.35"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -878,7 +877,6 @@ namespace Sonic_06_Mod_Manager
                                         entryValue = entry.Substring(entry.IndexOf("=") + 2);
                                         entryValue = entryValue.Remove(entryValue.Length - 1);
                                         configIndex = configs.IndexOf(Path.Combine(text_ModsDirectory.Text, line, "mod.ini"));
-                                        Console.WriteLine(entryValue);
 
                                         if (view_ModsList.Items.Contains(view_ModsList.FindItemWithText(entryValue))) { // If the mods list contains what's on the current line...
                                             int checkedIndex = configIndex; // Get the index of the mod already in the mods list
@@ -1210,6 +1208,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Debug.ForeColor = SystemColors.ControlText;
                     lbl_SettingsOverlay.ForeColor = SystemColors.ControlText;
                     lbl_FieldOfView.ForeColor = SystemColors.ControlText;
+                    lbl_API.ForeColor = SystemColors.ControlText;
                 }
                 else {
                     lbl_API.ForeColor = SystemColors.Control;
@@ -1223,6 +1222,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_Debug.ForeColor = SystemColors.Control;
                     lbl_SettingsOverlay.ForeColor = SystemColors.Control;
                     lbl_FieldOfView.ForeColor = SystemColors.Control;
+                    lbl_API.ForeColor = SystemColors.Control;
                 }
 
                 text_EmulatorPath.Text = Properties.Settings.Default.xeniaPath;
@@ -1242,6 +1242,7 @@ namespace Sonic_06_Mod_Manager
                 lbl_Debug.ForeColor = SystemColors.GrayText;
                 lbl_SettingsOverlay.ForeColor = SystemColors.GrayText;
                 lbl_FieldOfView.ForeColor = SystemColors.GrayText;
+                lbl_API.ForeColor = SystemColors.GrayText;
                 nud_FieldOfView.Enabled = false;
                 btn_ResetFOV.Enabled = false;
 
@@ -1439,7 +1440,7 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.Save();
         }
 
-        private void Btn_Update_Click(object sender, EventArgs e) { Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", "user"); }
+        private void Btn_Update_Click(object sender, EventArgs e) { new UpdaterChoice(versionNumber).ShowDialog(); }
 
         private void Btn_ModsFolder_Click(object sender, EventArgs e) { text_ModsDirectory.Text = Locations.LocateMods(); GetMods(); } // Locate Mods folder
 

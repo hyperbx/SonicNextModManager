@@ -41,6 +41,8 @@
             this.btn_Accept = new System.Windows.Forms.Button();
             this.lbl_Query = new System.Windows.Forms.Label();
             this.dl_Progress = new System.Windows.Forms.ProgressBar();
+            this.pnl_DescriptionBackdrop = new System.Windows.Forms.Panel();
+            this.pnl_InfoBackdrop = new System.Windows.Forms.Panel();
             this.pnl_Backdrop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainControls_Split)).BeginInit();
@@ -52,6 +54,8 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).BeginInit();
+            this.pnl_DescriptionBackdrop.SuspendLayout();
+            this.pnl_InfoBackdrop.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnl_Backdrop
@@ -99,7 +103,7 @@
             // 
             // mainControls_Split.Panel1
             // 
-            this.mainControls_Split.Panel1.Controls.Add(this.tb_Information);
+            this.mainControls_Split.Panel1.Controls.Add(this.pnl_InfoBackdrop);
             // 
             // mainControls_Split.Panel2
             // 
@@ -118,7 +122,7 @@
             this.tb_Information.Location = new System.Drawing.Point(0, 0);
             this.tb_Information.Name = "tb_Information";
             this.tb_Information.ReadOnly = true;
-            this.tb_Information.Size = new System.Drawing.Size(183, 461);
+            this.tb_Information.Size = new System.Drawing.Size(179, 459);
             this.tb_Information.TabIndex = 19;
             this.tb_Information.Text = "";
             // 
@@ -135,7 +139,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.web_Description);
+            this.splitContainer1.Panel2.Controls.Add(this.pnl_DescriptionBackdrop);
             this.splitContainer1.Size = new System.Drawing.Size(362, 461);
             this.splitContainer1.SplitterDistance = 202;
             this.splitContainer1.TabIndex = 22;
@@ -162,7 +166,7 @@
             this.web_Description.MinimumSize = new System.Drawing.Size(20, 20);
             this.web_Description.Name = "web_Description";
             this.web_Description.ScriptErrorsSuppressed = true;
-            this.web_Description.Size = new System.Drawing.Size(362, 255);
+            this.web_Description.Size = new System.Drawing.Size(360, 251);
             this.web_Description.TabIndex = 0;
             this.web_Description.WebBrowserShortcutsEnabled = false;
             // 
@@ -215,6 +219,30 @@
             this.dl_Progress.TabIndex = 56;
             this.dl_Progress.Visible = false;
             // 
+            // pnl_DescriptionBackdrop
+            // 
+            this.pnl_DescriptionBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_DescriptionBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_DescriptionBackdrop.Controls.Add(this.web_Description);
+            this.pnl_DescriptionBackdrop.Location = new System.Drawing.Point(0, 2);
+            this.pnl_DescriptionBackdrop.Name = "pnl_DescriptionBackdrop";
+            this.pnl_DescriptionBackdrop.Size = new System.Drawing.Size(362, 253);
+            this.pnl_DescriptionBackdrop.TabIndex = 1;
+            // 
+            // pnl_InfoBackdrop
+            // 
+            this.pnl_InfoBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_InfoBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_InfoBackdrop.Controls.Add(this.tb_Information);
+            this.pnl_InfoBackdrop.Location = new System.Drawing.Point(0, 0);
+            this.pnl_InfoBackdrop.Name = "pnl_InfoBackdrop";
+            this.pnl_InfoBackdrop.Size = new System.Drawing.Size(181, 461);
+            this.pnl_InfoBackdrop.TabIndex = 20;
+            // 
             // ModOneClickInstall
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,6 +272,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).EndInit();
+            this.pnl_DescriptionBackdrop.ResumeLayout(false);
+            this.pnl_InfoBackdrop.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -263,5 +293,7 @@
         private System.Windows.Forms.Label lbl_Query;
         private System.Windows.Forms.ProgressBar dl_Progress;
         private System.Windows.Forms.WebBrowser web_Description;
+        private System.Windows.Forms.Panel pnl_InfoBackdrop;
+        private System.Windows.Forms.Panel pnl_DescriptionBackdrop;
     }
 }

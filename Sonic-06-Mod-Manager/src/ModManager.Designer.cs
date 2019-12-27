@@ -79,11 +79,11 @@
             this.lbl_VSync = new System.Windows.Forms.Label();
             this.lbl_2xResolution = new System.Windows.Forms.Label();
             this.lbl_ForceRTV = new System.Windows.Forms.Label();
+            this.lbl_API = new System.Windows.Forms.Label();
             this.group_Settings = new System.Windows.Forms.GroupBox();
             this.check_Discord = new System.Windows.Forms.CheckBox();
             this.check_Fullscreen = new System.Windows.Forms.CheckBox();
             this.combo_API = new System.Windows.Forms.ComboBox();
-            this.lbl_API = new System.Windows.Forms.Label();
             this.check_Debug = new System.Windows.Forms.CheckBox();
             this.check_Gamma = new System.Windows.Forms.CheckBox();
             this.check_ProtectZero = new System.Windows.Forms.CheckBox();
@@ -787,6 +787,7 @@
             this.unifytb_Tab_Emulator.Controls.Add(this.lbl_VSync);
             this.unifytb_Tab_Emulator.Controls.Add(this.lbl_2xResolution);
             this.unifytb_Tab_Emulator.Controls.Add(this.lbl_ForceRTV);
+            this.unifytb_Tab_Emulator.Controls.Add(this.lbl_API);
             this.unifytb_Tab_Emulator.Controls.Add(this.group_Settings);
             this.unifytb_Tab_Emulator.Controls.Add(this.group_Setup);
             this.unifytb_Tab_Emulator.Location = new System.Drawing.Point(4, 20);
@@ -897,6 +898,16 @@
             this.lbl_ForceRTV.TabIndex = 17;
             this.lbl_ForceRTV.Text = "Force Render Target Views";
             // 
+            // lbl_API
+            // 
+            this.lbl_API.AutoSize = true;
+            this.lbl_API.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_API.Location = new System.Drawing.Point(18, 157);
+            this.lbl_API.Name = "lbl_API";
+            this.lbl_API.Size = new System.Drawing.Size(77, 15);
+            this.lbl_API.TabIndex = 8;
+            this.lbl_API.Text = "Graphics API:";
+            // 
             // group_Settings
             // 
             this.group_Settings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -905,7 +916,6 @@
             this.group_Settings.Controls.Add(this.check_Discord);
             this.group_Settings.Controls.Add(this.check_Fullscreen);
             this.group_Settings.Controls.Add(this.combo_API);
-            this.group_Settings.Controls.Add(this.lbl_API);
             this.group_Settings.Controls.Add(this.check_Debug);
             this.group_Settings.Controls.Add(this.check_Gamma);
             this.group_Settings.Controls.Add(this.check_ProtectZero);
@@ -955,15 +965,6 @@
             this.combo_API.Size = new System.Drawing.Size(411, 23);
             this.combo_API.TabIndex = 9;
             this.combo_API.SelectedIndexChanged += new System.EventHandler(this.Combo_API_SelectedIndexChanged);
-            // 
-            // lbl_API
-            // 
-            this.lbl_API.AutoSize = true;
-            this.lbl_API.Location = new System.Drawing.Point(14, 29);
-            this.lbl_API.Name = "lbl_API";
-            this.lbl_API.Size = new System.Drawing.Size(77, 15);
-            this.lbl_API.TabIndex = 8;
-            this.lbl_API.Text = "Graphics API:";
             // 
             // check_Debug
             // 

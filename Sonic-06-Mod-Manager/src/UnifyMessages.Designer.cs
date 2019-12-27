@@ -180,6 +180,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(264, 119);
+            this.ControlBox = false;
             this.Controls.Add(this.pic_Icon);
             this.Controls.Add(this.pnl_ButtonBackdrop);
             this.Controls.Add(this.rtb_Message);
