@@ -60,9 +60,9 @@ namespace Sonic_06_Mod_Manager.src
             tb_Information.Text = $"Published by {item.OwnerName}\n\n{GBAPI.ProcessCredits(item.Credits)}";
 
             if (item.Subtitle != string.Empty)
-                web_Description.DocumentText = $"<html><body><style>{styleSheet}</style><h1><center>{item.Subtitle}</center></h1><br>{item.Body}</body></html>";
+                web_Description.DocumentText = $"<html><head><meta charset=\"UTF-8\"><style>{styleSheet}</style></head><body><h1><center>{item.Subtitle}</center></h1><br>{item.Body}</body></html>";
             else
-                web_Description.DocumentText = $"<html><body><style>{styleSheet}</style>{item.Body}</body></html>";
+                web_Description.DocumentText = $"<html><head><meta charset=\"UTF-8\"><style>{styleSheet}</style></head><body>{item.Body}</body></html>";
 
             if (modID == 6666) return;
 

@@ -137,5 +137,8 @@ namespace Sonic_06_Mod_Manager.src
 
         private void link_Mefiresu_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://twitter.com/Mefiresu"); }
         //Debug Mode developer.
+
+        private void link_GerbilSoft_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { Process.Start("https://github.com/GerbilSoft"); }
+        //Helped unfuck the .NET WebClient
     }
 }

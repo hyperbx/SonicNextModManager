@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.35"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.36"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
