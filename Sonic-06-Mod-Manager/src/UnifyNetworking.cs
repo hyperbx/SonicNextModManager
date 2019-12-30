@@ -607,10 +607,7 @@ namespace Unify.Networking.GameBanana
             var handler = new GBAPIRequestHandler();
             handler.ProcessItemData(item);
             string request = handler.Build();
-            WebClient webClient = new WebClient {
-                Encoding = Encoding.UTF8
-            };
-            string response = webClient.DownloadString(request);
+            string response = new WebClient() { Encoding = Encoding.UTF8 }.DownloadString(request);
             return handler.ParseResponse(response, item);
         }
 
