@@ -755,6 +755,41 @@ namespace Unify.Patcher
             }
         }
 
+        public static void MSAA(string directoryRoot, int MSAA, SearchOption searchOption)
+        {
+            var files = Directory.GetFiles(directoryRoot, "*.lub", searchOption);
+
+            foreach (var lub in files) {
+                Decompile(lub);
+
+                if (Path.GetFileName(lub) == "render_utility.lub") {
+                    List<string> editedLua = File.ReadAllLines(lub).ToList();
+
+                    if (MSAA == 0)      editedLua.Add("MSAAType = \"1x\"");
+                    else if (MSAA == 1) editedLua.Add("MSAAType = \"2x\"");
+                    else if (MSAA == 2) editedLua.Add("MSAAType = \"4x\"");
+                    File.WriteAllLines(lub, editedLua);
+                } else {
+                    string[] editedLua = File.ReadAllLines(lub);
+                    int lineNum = 0;
+                    int modified = 0;
+
+                    foreach (string line in editedLua) {
+                        if (line.Contains("MSAAType")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            if (MSAA == 0) tempLine[2] = "\"1x\"";
+                            else if (MSAA == 1) tempLine[2] = "\"2x\"";
+                            else if (MSAA == 2) tempLine[2] = "\"4x\"";
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                            modified++;
+                        }
+                        lineNum++;
+                    }
+                    if (modified != 0) File.WriteAllLines(lub, editedLua); //Resave the Lua
+                }
+            }
+        }
+
         public static void DisableShadows(string directoryRoot, bool enabled)
         {
             var files = Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories);
@@ -995,38 +1030,6 @@ namespace Unify.Patcher
             if (enabled)
                 if (!editedLua.Contains("c_hair"))
                     File.WriteAllLines(directoryRoot, editedLua.Append("c_hair = {\n  \"TopHair\",\n  \"HighLeftHair\",\n  \"HighRightHair\",\n  \"LowLeftHair\",\n  \"LowRightHair\",\n  \"MiddleHair\"\n}")); //Resave the Lua
-        }
-
-        public static void MSAA(string directoryRoot, int scale)
-        {
-            Decompile(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
-
-            foreach (string line in editedLua) {
-                if (line.StartsWith("MSAAType")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
-                    if (scale == 0)
-                        tempLine[2] = "\"0x\""; //Replace the 2nd section (the original number)
-                    else if (scale == 1)
-                        tempLine[2] = "\"2x\""; //Replace the 2nd section (the original number)
-                    else if (scale == 2)
-                        tempLine[2] = "\"4x\""; //Replace the 2nd section (the original number)
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
-                }
-                if (line.EndsWith("MSAAType)")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
-                    if (scale == 0) {
-                        tempLine[13] = "0)"; //Replace the 2nd section (the original number)
-                        tempLine[14] = string.Empty; //Replace the 2nd section (the original number)
-                    }
-                    else
-                        tempLine[14] = "MSAAType)"; //Replace the 2nd section (the original number)
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
-                }
-                lineNum++;
-            }
-            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
         }
     }
 

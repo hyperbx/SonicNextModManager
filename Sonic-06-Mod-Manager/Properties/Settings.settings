@@ -128,5 +128,8 @@
     <Setting Name="lastSize" Type="System.Drawing.Size" Scope="User">
       <Value Profile="(Default)">554, 629</Value>
     </Setting>
+    <Setting Name="patches_ForceAA" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

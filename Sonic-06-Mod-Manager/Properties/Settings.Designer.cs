@@ -526,5 +526,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["lastSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool patches_ForceAA {
+            get {
+                return ((bool)(this["patches_ForceAA"]));
+            }
+            set {
+                this["patches_ForceAA"] = value;
+            }
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.36"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.37"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -99,6 +99,7 @@ namespace Sonic_06_Mod_Manager
 
             combo_API.SelectedIndex = Properties.Settings.Default.API;
             combo_GridStyle.SelectedIndex = Properties.Settings.Default.gridStyle;
+            combo_MSAA.SelectedIndex = Properties.Settings.Default.patches_MSAA;
             text_ModsDirectory.Text = Properties.Settings.Default.modsDirectory;
             text_SaveData.Text = Properties.Settings.Default.saveData;
             text_FTPLocation.Text = Properties.Settings.Default.ftpLocation;
@@ -132,6 +133,7 @@ namespace Sonic_06_Mod_Manager
             check_DisableSoftwareUpdater.Checked = Properties.Settings.Default.disableSoftwareUpdater;
             check_CancelChristmas.Checked = Properties.Settings.Default.cancelChristmas;
             check_HighContrastText.Checked = Properties.Settings.Default.highContrast;
+            check_ForceAA.Checked = Properties.Settings.Default.patches_ForceAA;
 
             if (Properties.Settings.Default.patches_CameraType == 1 && Properties.Settings.Default.patches_FieldOfView <= 90)
                 nud_CameraDistance.Value = 450;
@@ -512,6 +514,7 @@ namespace Sonic_06_Mod_Manager
                     int proceed = 0;
                     if (combo_Renderer.SelectedIndex != 0) proceed++;
                     if (combo_Reflections.SelectedIndex != 1) proceed++;
+                    if (combo_MSAA.SelectedIndex != 1 || check_ForceAA.Checked) proceed++;
                     if (combo_CameraType.SelectedIndex != 0 && system == "ps3") proceed++;
                     if (nud_CameraDistance.Value != 650 && system == "ps3") proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) proceed++;
@@ -523,7 +526,12 @@ namespace Sonic_06_Mod_Manager
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
 
-                        if (combo_Renderer.SelectedIndex == 1) {
+                        if (combo_Renderer.SelectedIndex == 0) {
+                            if (combo_MSAA.SelectedIndex != 1 || check_ForceAA.Checked) {
+                                Status = SystemMessages.msg_PatchingRenderer;
+                                Lua.MSAA(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\"), combo_MSAA.SelectedIndex, SearchOption.TopDirectoryOnly);
+                            }
+                        } else if (combo_Renderer.SelectedIndex == 1) {
                             Status = SystemMessages.msg_PatchingRenderer;
                             if (system == "xenon") File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.barebones_render_gamemode);
                             File.WriteAllBytes(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.barebones_render_main);
@@ -575,6 +583,7 @@ namespace Sonic_06_Mod_Manager
                     }
                 } else if (Path.GetFileName(arc) == "scripts.arc") {
                     int proceed = 0;
+                    if (combo_MSAA.SelectedIndex != 1 || check_ForceAA.Checked) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) proceed++;
                     if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows"))) proceed++;
@@ -583,6 +592,12 @@ namespace Sonic_06_Mod_Manager
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
+
+                        if (combo_Renderer.SelectedIndex == 0)
+                            if (combo_MSAA.SelectedIndex != 1 || check_ForceAA.Checked) {
+                                Status = SystemMessages.msg_PatchingRenderer;
+                                Lua.MSAA(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), combo_MSAA.SelectedIndex, SearchOption.AllDirectories);
+                            }
 
                         if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) {
                             Status = SystemMessages.msg_PatchingRenderer;
@@ -757,6 +772,7 @@ namespace Sonic_06_Mod_Manager
                 combo_Reflections.SelectedIndex = 1; Properties.Settings.Default.patches_Reflections = 1;
                 combo_CameraType.SelectedIndex = 0; Properties.Settings.Default.patches_CameraType = 0;
                 combo_Renderer.SelectedIndex = 0; Properties.Settings.Default.patches_Renderer = 0;
+                Properties.Settings.Default.patches_MSAA = combo_MSAA.SelectedIndex = 1;
                 for (int i = 0; i < clb_PatchesList.Items.Count; i++) clb_PatchesList.SetItemChecked(i, false);
                 Properties.Settings.Default.Save();
                 SaveChecks();
@@ -1296,6 +1312,24 @@ namespace Sonic_06_Mod_Manager
 
         #region Patches
         private void Combo_Renderer_SelectedIndexChanged(object sender, EventArgs e) {
+            if (combo_Renderer.SelectedIndex != 0) {
+                lbl_MSAA.ForeColor = SystemColors.GrayText;
+                lbl_ForceAA.ForeColor = SystemColors.GrayText;
+                btn_ResetMSAA.Enabled = false;
+                combo_MSAA.Enabled = false;
+                check_ForceAA.Enabled = false;
+            } else {
+                if (Properties.Settings.Default.theme) {
+                    lbl_MSAA.ForeColor = SystemColors.Control;
+                    lbl_ForceAA.ForeColor = SystemColors.Control;
+                } else {
+                    lbl_MSAA.ForeColor = SystemColors.ControlText;
+                    lbl_ForceAA.ForeColor = SystemColors.ControlText;
+                }
+                btn_ResetMSAA.Enabled = true;
+                combo_MSAA.Enabled = true;
+                check_ForceAA.Enabled = true;
+            }
             Properties.Settings.Default.patches_Renderer = combo_Renderer.SelectedIndex;
             Properties.Settings.Default.Save();
         }
@@ -1519,7 +1553,7 @@ namespace Sonic_06_Mod_Manager
                 } else {
                     check_ManualPatches.Enabled = false;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
-                    lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
+                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.GrayText;
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
                     clb_PatchesList.Enabled = false;
@@ -1576,7 +1610,7 @@ namespace Sonic_06_Mod_Manager
                 BackColor = SystemColors.ControlLight;
 
                 lbl_SetupOverlay.ForeColor = SystemColors.ControlText;
-                lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
+                lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.ControlText;
                 lbl_AccentColour.ForeColor = SystemColors.ControlText;
                 lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                 lbl_FTPLocation.ForeColor = SystemColors.ControlText;
@@ -1596,7 +1630,7 @@ namespace Sonic_06_Mod_Manager
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
-                    lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
+                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.GrayText;
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
@@ -1604,10 +1638,13 @@ namespace Sonic_06_Mod_Manager
                     lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                     lbl_Renderer.ForeColor = SystemColors.GrayText;
                     lbl_CameraHeight.ForeColor = SystemColors.GrayText;
+                    lbl_MSAA.ForeColor = SystemColors.GrayText;
+                    lbl_CameraTweaks.ForeColor = SystemColors.GrayText;
+                    lbl_ForceAA.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
-                    lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
+                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.ControlText;
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                     lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
@@ -1615,6 +1652,12 @@ namespace Sonic_06_Mod_Manager
                     if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.ControlText;
                     lbl_Renderer.ForeColor = SystemColors.ControlText;
                     lbl_CameraHeight.ForeColor = SystemColors.ControlText;
+                    lbl_MSAA.ForeColor = SystemColors.ControlText;
+                    lbl_CameraTweaks.ForeColor = SystemColors.ControlText;
+                    if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
+                        lbl_MSAA.ForeColor = SystemColors.ControlText;
+                        lbl_ForceAA.ForeColor = SystemColors.ControlText;
+                    }
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1658,7 +1701,7 @@ namespace Sonic_06_Mod_Manager
                 group_Directories.ForeColor = SystemColors.ControlText;
                 group_FTP.ForeColor = SystemColors.ControlText;
                 group_Options.ForeColor = SystemColors.ControlText;
-                group_Tweaks.ForeColor = SystemColors.ControlText;
+                group_GraphicsTweaks.ForeColor = SystemColors.ControlText;
                 group_Setup.ForeColor = SystemColors.ControlText;
                 group_Settings.ForeColor = SystemColors.ControlText;
                 group_Appearance.ForeColor = SystemColors.ControlText;
@@ -1694,7 +1737,7 @@ namespace Sonic_06_Mod_Manager
                 BackColor = Color.FromArgb(45, 45, 48);
 
                 lbl_SetupOverlay.ForeColor = SystemColors.Control;
-                lbl_TweaksOverlay.ForeColor = SystemColors.Control;
+                lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.Control;
                 lbl_AccentColour.ForeColor = SystemColors.Control;
                 lbl_CameraDistance.ForeColor = SystemColors.Control;
                 lbl_FTPLocation.ForeColor = SystemColors.Control;
@@ -1714,7 +1757,7 @@ namespace Sonic_06_Mod_Manager
                 if (check_FTP.Checked) {
                     lbl_ManualInstall.ForeColor = SystemColors.GrayText;
                     lbl_ManualPatches.ForeColor = SystemColors.GrayText;
-                    lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
+                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.GrayText;
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
                     lbl_SaveRedirect.ForeColor = SystemColors.GrayText;
@@ -1722,10 +1765,13 @@ namespace Sonic_06_Mod_Manager
                     lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                     lbl_Renderer.ForeColor = SystemColors.GrayText;
                     lbl_CameraHeight.ForeColor = SystemColors.GrayText;
+                    lbl_MSAA.ForeColor = SystemColors.GrayText;
+                    lbl_CameraTweaks.ForeColor = SystemColors.GrayText;
+                    lbl_ForceAA.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
-                    lbl_TweaksOverlay.ForeColor = SystemColors.Control;
+                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.Control;
                     lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_CameraDistance.ForeColor = SystemColors.Control;
                     lbl_SaveRedirect.ForeColor = SystemColors.Control;
@@ -1733,6 +1779,11 @@ namespace Sonic_06_Mod_Manager
                     if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.Control;
                     lbl_Renderer.ForeColor = SystemColors.Control;
                     lbl_CameraHeight.ForeColor = SystemColors.Control;
+                    lbl_CameraTweaks.ForeColor = SystemColors.Control;
+                    if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
+                        lbl_MSAA.ForeColor = SystemColors.Control;
+                        lbl_ForceAA.ForeColor = SystemColors.Control;
+                    }
                 }
                 if (check_ManualInstall.Checked)
                     lbl_FTP.ForeColor = SystemColors.GrayText;
@@ -1776,7 +1827,7 @@ namespace Sonic_06_Mod_Manager
                 group_Directories.ForeColor = SystemColors.Control;
                 group_FTP.ForeColor = SystemColors.Control;
                 group_Options.ForeColor = SystemColors.Control;
-                group_Tweaks.ForeColor = SystemColors.Control;
+                group_GraphicsTweaks.ForeColor = SystemColors.Control;
                 group_Setup.ForeColor = SystemColors.Control;
                 group_Settings.ForeColor = SystemColors.Control;
                 group_Appearance.ForeColor = SystemColors.Control;
@@ -1883,8 +1934,7 @@ namespace Sonic_06_Mod_Manager
 
         private void Check_FTP_CheckedChanged(object sender, EventArgs e)
         {
-            if (check_FTP.Checked)
-            {
+            if (check_FTP.Checked) {
                 Properties.Settings.Default.FTP = true;
                 check_ManualInstall.Enabled = false;
                 check_ManualPatches.Enabled = false;
@@ -1896,13 +1946,19 @@ namespace Sonic_06_Mod_Manager
                 split_Mods.Visible = true;
                 btn_UninstallMods.Visible = true;
 
-                lbl_TweaksOverlay.ForeColor = SystemColors.GrayText;
+                lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.GrayText;
                 lbl_Reflections.ForeColor = SystemColors.GrayText;
                 lbl_CameraDistance.ForeColor = SystemColors.GrayText;
                 lbl_CameraType.ForeColor = SystemColors.GrayText;
                 lbl_FieldOfView.ForeColor = SystemColors.GrayText;
                 lbl_Renderer.ForeColor = SystemColors.GrayText;
                 lbl_CameraHeight.ForeColor = SystemColors.GrayText;
+                lbl_MSAA.ForeColor = SystemColors.GrayText;
+                lbl_CameraTweaks.ForeColor = SystemColors.GrayText;
+                lbl_ForceAA.ForeColor = SystemColors.GrayText;
+                check_ForceAA.Enabled = false;
+                combo_MSAA.Enabled = false;
+                btn_ResetMSAA.Enabled = false;
                 combo_CameraType.Enabled = false;
                 btn_ResetCameraType.Enabled = false;
                 clb_PatchesList.Enabled = false;
@@ -1917,9 +1973,7 @@ namespace Sonic_06_Mod_Manager
                 btn_ResetRenderer.Enabled = false;
                 nud_CameraHeight.Enabled = false;
                 btn_ResetCameraHeight.Enabled = false;
-            }
-            else
-            {
+            } else {
                 Properties.Settings.Default.FTP = false;
                 check_ManualInstall.Enabled = true;
                 if (Prerequisites.JavaCheck()) check_ManualPatches.Enabled = true;
@@ -1932,10 +1986,15 @@ namespace Sonic_06_Mod_Manager
                     nud_CameraDistance.Enabled = true;
                     btn_ResetCameraDistance.Enabled = true;
                 }
+                if (combo_Renderer.SelectedIndex == 0) {
+                    btn_ResetMSAA.Enabled = true;
+                    combo_MSAA.Enabled = true;
+                    if (combo_MSAA.SelectedIndex == 1) check_ForceAA.Enabled = true;
+                }
                 if (!Properties.Settings.Default.theme) {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
-                    lbl_TweaksOverlay.ForeColor = SystemColors.ControlText;
+                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.ControlText;
                     lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
                     lbl_CameraType.ForeColor = SystemColors.ControlText;
@@ -1945,10 +2004,15 @@ namespace Sonic_06_Mod_Manager
                         lbl_CameraDistance.ForeColor = SystemColors.ControlText;
                     lbl_Renderer.ForeColor = SystemColors.ControlText;
                     lbl_CameraHeight.ForeColor = SystemColors.ControlText;
+                    lbl_CameraTweaks.ForeColor = SystemColors.ControlText;
+                    if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
+                        lbl_MSAA.ForeColor = SystemColors.ControlText;
+                        lbl_ForceAA.ForeColor = SystemColors.ControlText;
+                    }
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
-                    lbl_TweaksOverlay.ForeColor = SystemColors.Control;
+                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.Control;
                     lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_SaveRedirect.ForeColor = SystemColors.Control;
                     lbl_CameraType.ForeColor = SystemColors.Control;
@@ -1958,6 +2022,11 @@ namespace Sonic_06_Mod_Manager
                         lbl_CameraDistance.ForeColor = SystemColors.Control;
                     lbl_Renderer.ForeColor = SystemColors.Control;
                     lbl_CameraHeight.ForeColor = SystemColors.Control;
+                    lbl_CameraTweaks.ForeColor = SystemColors.Control;
+                    if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
+                        lbl_MSAA.ForeColor = SystemColors.Control;
+                        lbl_ForceAA.ForeColor = SystemColors.Control;
+                    }
                 }
                 split_Mods.Visible = false;
                 btn_UninstallMods.Visible = false;
@@ -2166,6 +2235,46 @@ namespace Sonic_06_Mod_Manager
         private void ModManager_ResizeEnd(object sender, EventArgs e) {
             Properties.Settings.Default.lastSize = new Size(Width, Height);
             Properties.Settings.Default.Save();
+        }
+
+        private void combo_MSAA_SelectedIndexChanged(object sender, EventArgs e) {
+            if (combo_MSAA.SelectedIndex == 1) {
+                check_ForceAA.Enabled = true;
+                if (Properties.Settings.Default.theme) lbl_ForceAA.ForeColor = SystemColors.Control;
+                else lbl_ForceAA.ForeColor = SystemColors.ControlText;
+            } else {
+                check_ForceAA.Enabled = false;
+                lbl_ForceAA.ForeColor = SystemColors.GrayText;
+            }
+            Properties.Settings.Default.patches_MSAA = combo_MSAA.SelectedIndex;
+            Properties.Settings.Default.Save();
+        }
+
+        private void btn_ResetMSAA_Click(object sender, EventArgs e) {
+            Properties.Settings.Default.patches_MSAA = combo_MSAA.SelectedIndex = 1;
+            Properties.Settings.Default.Save();
+        }
+
+        private void help_MSAA_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to change the anti-aliasing amount.\n\n" +
+                                            "" +
+                                            "► Disabled - Disables anti-aliasing entirely.\n" +
+                                            "► 2x MSAA - 2x multisampling.\n" +
+                                            "► 4x MSAA - 4x multisampling.", "Anti-Aliasing", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void check_ForceAA_CheckedChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.patches_ForceAA = check_ForceAA.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void help_ForceAA_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to force anti-aliasing on sections that disable it " +
+                                            "to improve performance.", "Force MSAA", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
         }
     }
 }
