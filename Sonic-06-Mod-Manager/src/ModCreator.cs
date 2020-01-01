@@ -45,7 +45,10 @@ namespace Sonic_06_Mod_Manager.src
             InitializeComponent();
             this.modPath = modPath;
             this.edit = edit;
-            if (!this.edit) text_Date.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            if (!this.edit) {
+                text_Date.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                text_Author.Text = Environment.UserName;
+            }
 
             combo_System.SelectedIndex = 0;
 

@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.37"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.38-indev-010120r1"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -1652,7 +1652,6 @@ namespace Sonic_06_Mod_Manager
                     if (combo_Emulator_System.SelectedIndex != 1) lbl_FieldOfView.ForeColor = SystemColors.ControlText;
                     lbl_Renderer.ForeColor = SystemColors.ControlText;
                     lbl_CameraHeight.ForeColor = SystemColors.ControlText;
-                    lbl_MSAA.ForeColor = SystemColors.ControlText;
                     lbl_CameraTweaks.ForeColor = SystemColors.ControlText;
                     if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
                         lbl_MSAA.ForeColor = SystemColors.ControlText;
