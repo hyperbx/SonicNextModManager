@@ -9,7 +9,6 @@ using Unify.Messages;
 using System.Drawing;
 using Microsoft.Win32;
 using Unify.Networking;
-using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
