@@ -8,7 +8,7 @@ using System.Drawing.Drawing2D;
 /*
  * MIT License
 
- * Copyright (c) 2019 Knuxfan24 & HyperPolygon64
+ * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
