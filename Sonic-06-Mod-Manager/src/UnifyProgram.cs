@@ -44,9 +44,6 @@ namespace Sonic_06_Mod_Manager
 
         static void Main(string[] args)
         {
-            if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool"))
-                Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool");
-
             if (!Directory.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub"))
                 Directory.CreateDirectory($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub");
 
