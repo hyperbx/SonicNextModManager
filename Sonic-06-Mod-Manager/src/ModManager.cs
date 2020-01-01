@@ -773,6 +773,7 @@ namespace Sonic_06_Mod_Manager
                 combo_CameraType.SelectedIndex = 0; Properties.Settings.Default.patches_CameraType = 0;
                 combo_Renderer.SelectedIndex = 0; Properties.Settings.Default.patches_Renderer = 0;
                 Properties.Settings.Default.patches_MSAA = combo_MSAA.SelectedIndex = 1;
+                Properties.Settings.Default.patches_ForceAA = check_ForceAA.Checked = false;
                 for (int i = 0; i < clb_PatchesList.Items.Count; i++) clb_PatchesList.SetItemChecked(i, false);
                 Properties.Settings.Default.Save();
                 SaveChecks();
