@@ -9,6 +9,7 @@ using Unify.Messages;
 using System.Drawing;
 using Microsoft.Win32;
 using Unify.Networking;
+using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.38"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.39"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -2052,20 +2053,16 @@ namespace Sonic_06_Mod_Manager
                     var key = Registry.ClassesRoot.OpenSubKey($"{Protocol}\\shell\\open\\command");
 
                     if (key == null) {
-                        if (!Program.RunningAsAdmin()) {
-                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
+                        string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistry, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
 
-                            switch (registry) {
-                                case "Yes":
-                                    Program.ExecuteAsAdmin(Application.ExecutablePath, "-registry_add");
-                                    Application.Exit();
-                                    break;
-                                case "No":
-                                    check_GameBanana.Checked = false;
-                                    break;
-                            }
+                        switch (registry) {
+                            case "Yes":
+                                Program.ProtocolManager();
+                                break;
+                            case "No":
+                                check_GameBanana.Checked = false;
+                                break;
                         }
-                        else GB_Registry.AddRegistry();
                     }
                 }
                 catch { }
@@ -2075,20 +2072,16 @@ namespace Sonic_06_Mod_Manager
                     var key = Registry.ClassesRoot.OpenSubKey(Protocol);
 
                     if (key != null) {
-                        if (!Program.RunningAsAdmin()) {
-                            string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistryUninstall, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
+                        string registry = UnifyMessages.UnifyMessage.Show(SystemMessages.msg_GameBananaRegistryUninstall, SystemMessages.tl_DefaultTitle, "YesNo", "Warning");
 
-                            switch (registry) {
-                                case "Yes":
-                                    Program.ExecuteAsAdmin(Application.ExecutablePath, "-registry_remove");
-                                    Application.Exit();
-                                    break;
-                                case "No":
-                                    check_GameBanana.Checked = true;
-                                    break;
-                            }
+                        switch (registry) {
+                            case "Yes":
+                                Program.ProtocolManager();
+                                break;
+                            case "No":
+                                check_GameBanana.Checked = true;
+                                break;
                         }
-                        else GB_Registry.RemoveRegistry();
                     }
                 }
                 catch { }

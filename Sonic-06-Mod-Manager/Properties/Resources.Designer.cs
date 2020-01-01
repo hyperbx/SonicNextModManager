@@ -567,6 +567,16 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Protocol_Manager {
+            get {
+                object obj = ResourceManager.GetObject("Protocol_Manager", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] render_cheap {
             get {
                 object obj = ResourceManager.GetObject("render_cheap", resourceCulture);

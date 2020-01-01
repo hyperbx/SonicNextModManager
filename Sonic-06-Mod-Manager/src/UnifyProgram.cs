@@ -2,6 +2,7 @@
 using System.IO;
 using Unify.Tools;
 using System.Linq;
+using Unify.Messages;
 using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -58,6 +59,9 @@ namespace Sonic_06_Mod_Manager
             if (!File.Exists(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll")))
                 File.WriteAllBytes(Path.Combine(Application.StartupPath, "Ookii.Dialogs.dll"), Properties.Resources.Ookii_Dialogs);
 
+            if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\Protocol Manager.exe"))
+                File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\Protocol Manager.exe", Properties.Resources.Protocol_Manager);
+
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php"))
                 File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\arctool\\arctool.php", Properties.Resources.arctoolphp);
 
@@ -81,16 +85,6 @@ namespace Sonic_06_Mod_Manager
 
             if ((Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1) == false) {
                 if (args.Length > 0) {
-                    if (args[0] == "-registry_add") {
-                        GB_Registry.AddRegistry();
-                        Application.Run(new ModManager(args));
-                    }
-                        
-                    if (args[0] == "-registry_remove") {
-                        GB_Registry.RemoveRegistry();
-                        Application.Run(new ModManager(args));
-                    }
-                        
                     if (args[0] == "-banana") {
                         string[] getIDs = args[1].Remove(0, 40).Split(',');
                         string modType = string.Empty;
@@ -134,19 +128,26 @@ namespace Sonic_06_Mod_Manager
 
         public static bool RunningAsAdmin() { return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator); }
 
-        public static void ExecuteAsAdmin(string fileName, string arguments) {
-            Process proc = new Process();
-            proc.StartInfo.FileName = fileName;
-            proc.StartInfo.Arguments = arguments;
-            proc.StartInfo.UseShellExecute = true;
-            proc.StartInfo.Verb = "runas";
-            proc.Start();
+        public static void ProtocolManager() {
+            string protocolManager = $"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\Protocol Manager.exe";
+            
+            if (File.Exists(protocolManager)) {
+                ProcessStartInfo info = new ProcessStartInfo() {
+                    FileName = protocolManager,
+                    Arguments = $"\"{Application.ExecutablePath}\" \"{Properties.Settings.Default.theme}\"",
+                    UseShellExecute = true,
+                    Verb = "runas"
+                };
+                Process.Start(info);
+                Application.Exit();
+            } else {
+                UnifyMessages.UnifyMessage.Show("Protocol Manager is missing, please restart Sonic '06 Mod Manager.", "Protocol Manager", "OK", "Error");
+            }
         }
 
         public static void Restart() {
-            Process proc = new Process();
-            proc.StartInfo.FileName = Application.ExecutablePath;
-            proc.Start();
+            ProcessStartInfo info = new ProcessStartInfo() { FileName = Application.ExecutablePath };
+            Process.Start(info);
             Application.Exit();
         }
     }

@@ -188,38 +188,6 @@ namespace Unify.Tools
     {
         public static string protocol = "sonic06mm";
         public static RegistryKey sonic06mmKey = Registry.ClassesRoot.OpenSubKey($"{protocol}\\shell\\open\\command");
-
-        public static void AddRegistry()
-        {
-            sonic06mmKey = Registry.ClassesRoot.OpenSubKey(protocol, true);
-            if (sonic06mmKey == null)
-                sonic06mmKey = Registry.ClassesRoot.CreateSubKey(protocol);
-            sonic06mmKey.SetValue("", "URL:Sonic '06 Mod Manager");
-            sonic06mmKey.SetValue("URL Protocol", "");
-            var prevkey = sonic06mmKey;
-            sonic06mmKey = sonic06mmKey.OpenSubKey("shell", true);
-            if (sonic06mmKey == null)
-                sonic06mmKey = prevkey.CreateSubKey("shell");
-            prevkey = sonic06mmKey;
-            sonic06mmKey = sonic06mmKey.OpenSubKey("open", true);
-            if (sonic06mmKey == null)
-                sonic06mmKey = prevkey.CreateSubKey("open");
-            prevkey = sonic06mmKey;
-            sonic06mmKey = sonic06mmKey.OpenSubKey("command", true);
-            if (sonic06mmKey == null)
-                sonic06mmKey = prevkey.CreateSubKey("command");
-
-            sonic06mmKey.SetValue("", $"\"{Application.ExecutablePath}\" \"-banana\" \"%1\"");
-            sonic06mmKey.Close();
-        }
-
-        public static void RemoveRegistry()
-        {
-            // Delete the key instead of trying to change it
-            var CurrentUser = Registry.ClassesRoot;
-            CurrentUser.DeleteSubKeyTree(protocol, false);
-            CurrentUser.Close();
-        }
     }
 
     public static class Archives

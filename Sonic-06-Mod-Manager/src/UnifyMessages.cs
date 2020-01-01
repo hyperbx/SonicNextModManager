@@ -220,9 +220,9 @@ namespace Unify.Messages
         public static string msg_Prereq_Newtonsoft = "Newtonsoft.Json.dll was written to the application path.";
         public static string tl_FatalError = "Fatal Error";
         public static string msg_Prereq_Ookii = "Ookii.Dialogs.dll was written to the application path.";
-        public static string msg_GameBananaRegistry = $"Do you want to run {tl_DefaultTitle} as an administrator to install the GameBanana 1-Click Install key?";
+        public static string msg_GameBananaRegistry = $"Do you want to run Protocol Manager as an administrator to install the GameBanana 1-Click Install key?";
         public static string tl_MissingRegistry = "Missing Registry";
-        public static string msg_GameBananaRegistryUninstall = $"Do you want to run {tl_DefaultTitle} as an administrator to uninstall the GameBanana 1-Click Install key?";
+        public static string msg_GameBananaRegistryUninstall = $"Do you want to run Protocol Manager as an administrator to uninstall the GameBanana 1-Click Install key?";
         public static string tl_AreYouSure = "Are you sure?";
         public static string tl_ServerError = "Server Error";
         public static string tl_FileError = "File Error";
