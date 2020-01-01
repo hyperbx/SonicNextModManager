@@ -118,14 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="arccphp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\arcc.php;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="arctool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\arctool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="arctoolphp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\arctool.php;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="barebones_render_gamemode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\barebones_render_gamemode.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -273,9 +267,6 @@
   </data>
   <data name="retail_render_title" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\retail_render_title.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="unarcphp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\unarc.php;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="unlub" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\unlub.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

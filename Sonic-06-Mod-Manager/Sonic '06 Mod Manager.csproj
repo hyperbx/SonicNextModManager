@@ -222,12 +222,9 @@
     <None Include="res\retail_render_main.lub" />
     <None Include="res\retail_render_title.lub" />
     <None Include="res\unlub.jar" />
-    <None Include="res\unarc.php" />
     <None Include="res\Newtonsoft.Json.dll" />
     <None Include="res\GBStyleSheetDark.css" />
     <None Include="res\arctool.exe" />
-    <None Include="res\arctool.php" />
-    <None Include="res\arcc.php" />
     <None Include="res\error.ico" />
     <None Include="res\GBStyleSheetLight.css" />
     <None Include="res\icon_aldi.ico" />

@@ -63,29 +63,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] arccphp {
-            get {
-                object obj = ResourceManager.GetObject("arccphp", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] arctool {
             get {
                 object obj = ResourceManager.GetObject("arctool", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] arctoolphp {
-            get {
-                object obj = ResourceManager.GetObject("arctoolphp", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -610,16 +590,6 @@ namespace Sonic_06_Mod_Manager.Properties {
         internal static byte[] retail_render_title {
             get {
                 object obj = ResourceManager.GetObject("retail_render_title", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] unarcphp {
-            get {
-                object obj = ResourceManager.GetObject("unarcphp", resourceCulture);
                 return ((byte[])(obj));
             }
         }
