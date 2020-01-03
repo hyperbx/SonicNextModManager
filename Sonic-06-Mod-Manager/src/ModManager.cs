@@ -1206,8 +1206,8 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void Btn_EmulatorPath_Click(object sender, EventArgs e) { // Locate the emulator of choice
-            string xenia = Locations.LocateEmulator();
-            if (xenia != string.Empty) text_EmulatorPath.Text = xenia;
+            string emulator = Locations.LocateEmulator();
+            if (emulator != string.Empty) text_EmulatorPath.Text = emulator;
         } 
 
         private void Combo_Emulator_System_SelectedIndexChanged(object sender, EventArgs e) {
