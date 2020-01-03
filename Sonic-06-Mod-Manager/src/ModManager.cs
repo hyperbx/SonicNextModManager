@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.4-indev-030120r1"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.4"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -1205,7 +1205,10 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
-        private void Btn_EmulatorPath_Click(object sender, EventArgs e) { text_EmulatorPath.Text = Locations.LocateEmulator(); } // Locate the emulator of choice
+        private void Btn_EmulatorPath_Click(object sender, EventArgs e) { // Locate the emulator of choice
+            string xenia = Locations.LocateEmulator();
+            if (xenia != string.Empty) text_EmulatorPath.Text = xenia;
+        } 
 
         private void Combo_Emulator_System_SelectedIndexChanged(object sender, EventArgs e) {
             //Depending on the selected system and theme, change text to disabled colour.
@@ -1480,13 +1483,17 @@ namespace Sonic_06_Mod_Manager
         private void Btn_Update_Click(object sender, EventArgs e) { new UpdaterChoice(versionNumber).ShowDialog(); }
 
         private void Btn_ModsFolder_Click(object sender, EventArgs e) { // Locate Mods folder
-            text_ModsDirectory.Text = Locations.LocateMods();
+            string modsDir = Locations.LocateMods();
+            if (modsDir != string.Empty) text_ModsDirectory.Text = modsDir;
+
             VerifyModsDirectory();
             GetMods();
         }
 
         private void Btn_GameFolder_Click(object sender, EventArgs e) { // Locate Game folder
-            text_GameDirectory.Text = Locations.LocateGame();
+            string gameDir = Locations.LocateGame();
+            if (gameDir != string.Empty) text_GameDirectory.Text = gameDir;
+
             VerifyModsDirectory();
             GetMods(); 
         } 
@@ -2150,7 +2157,10 @@ namespace Sonic_06_Mod_Manager
 
         private void clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { btn_ModInfo.Enabled = clb_PatchesList.SelectedIndex >= 0; }
 
-        private void btn_SaveData_Click(object sender, EventArgs e) { Properties.Settings.Default.saveData = text_SaveData.Text = Locations.LocateSaves(combo_Emulator_System.SelectedIndex); }
+        private void btn_SaveData_Click(object sender, EventArgs e) {
+            string save = Locations.LocateSaves(combo_Emulator_System.SelectedIndex);
+            if (save != string.Empty) Properties.Settings.Default.saveData = text_SaveData.Text = save;
+        }
 
         private void view_ModsList_SelectedIndexChanged(object sender, EventArgs e) {
             try {
@@ -2280,13 +2290,15 @@ namespace Sonic_06_Mod_Manager
         }
 
         private void VerifyModsDirectory() {
-            string root = Path.GetFullPath(text_GameDirectory.Text);
-            string secondDir = Path.GetFullPath(text_ModsDirectory.Text + Path.AltDirectorySeparatorChar);
+            try {
+                string root = Path.GetFullPath(text_GameDirectory.Text);
+                string secondDir = Path.GetFullPath(text_ModsDirectory.Text + Path.AltDirectorySeparatorChar);
 
-            if (secondDir.StartsWith(root))
-                UnifyMessages.UnifyMessage.Show("Placing the mods directory inside the game directory may cause issues when" +
-                                                " installing mods or patching game data.\n\nPlease consider changing this location...",
-                                                "Path Warning", "OK", "Warning");
+                if (secondDir.StartsWith(root))
+                    UnifyMessages.UnifyMessage.Show("Placing the mods directory inside the game directory may cause issues when" +
+                                                    " installing mods or patching game data.\n\nPlease consider changing this location...",
+                                                    "Path Warning", "OK", "Warning");
+            } catch { }
         }
     }
 }
