@@ -217,6 +217,9 @@
   <data name="GBStyleSheetLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\GBStyleSheetLight.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="hash_protocolManager" xml:space="preserve">
+    <value>0DA6501184DA0C9BB7E0D864A173ED9F</value>
+  </data>
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

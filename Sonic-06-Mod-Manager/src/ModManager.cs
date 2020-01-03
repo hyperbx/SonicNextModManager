@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.39"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.4-indev-030120r1"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.01";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -242,6 +242,8 @@ namespace Sonic_06_Mod_Manager
                     Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
 
             if (!Prerequisites.JavaCheck()) UnifyMessages.UnifyMessage.Show(SystemMessages.ex_JavaMissing, SystemMessages.tl_JavaError, "OK", "Information");
+
+            VerifyModsDirectory();
         }
 
         #region Mods
@@ -1477,9 +1479,17 @@ namespace Sonic_06_Mod_Manager
 
         private void Btn_Update_Click(object sender, EventArgs e) { new UpdaterChoice(versionNumber).ShowDialog(); }
 
-        private void Btn_ModsFolder_Click(object sender, EventArgs e) { text_ModsDirectory.Text = Locations.LocateMods(); GetMods(); } // Locate Mods folder
+        private void Btn_ModsFolder_Click(object sender, EventArgs e) { // Locate Mods folder
+            text_ModsDirectory.Text = Locations.LocateMods();
+            VerifyModsDirectory();
+            GetMods();
+        }
 
-        private void Btn_GameFolder_Click(object sender, EventArgs e) { text_GameDirectory.Text = Locations.LocateGame(); GetMods(); } // Locate Game folder
+        private void Btn_GameFolder_Click(object sender, EventArgs e) { // Locate Game folder
+            text_GameDirectory.Text = Locations.LocateGame();
+            VerifyModsDirectory();
+            GetMods(); 
+        } 
 
         private void Btn_ColourPicker_Click(object sender, System.EventArgs e) {
             //Create the Colour Picker, with the Custom Colours menu open and the colour set to the one from settings.
@@ -2267,6 +2277,16 @@ namespace Sonic_06_Mod_Manager
             UnifyMessages.UnifyMessage.Show("This tweak allows you to force anti-aliasing on sections that disable it " +
                                             "to improve performance.", "Force MSAA", "OK", "Information");
             Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void VerifyModsDirectory() {
+            string root = Path.GetFullPath(text_GameDirectory.Text);
+            string secondDir = Path.GetFullPath(text_ModsDirectory.Text + Path.AltDirectorySeparatorChar);
+
+            if (secondDir.StartsWith(root))
+                UnifyMessages.UnifyMessage.Show("Placing the mods directory inside the game directory may cause issues when" +
+                                                " installing mods or patching game data.\n\nPlease consider changing this location...",
+                                                "Path Warning", "OK", "Warning");
         }
     }
 }

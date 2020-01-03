@@ -2,6 +2,7 @@
 using System.IO;
 using System.Drawing;
 using Microsoft.Win32;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 // Protocol Manager is licensed under the MIT License:
@@ -130,6 +131,15 @@ namespace Protocol_Manager
                             "" +
                             "If otherwise, please update your protocol.",
                             "Invalid Protocol", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e) {
+            try {
+                if (modManager != string.Empty) Process.Start(modManager);
+            } catch {
+                MessageBox.Show("Failed to launch Sonic '06 Mod Manager... Please run it manually.",
+                                "Process Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

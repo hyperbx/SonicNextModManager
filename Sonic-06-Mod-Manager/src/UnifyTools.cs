@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 // Project Unify is licensed under the MIT License:
 /*
@@ -188,6 +189,30 @@ namespace Unify.Tools
     {
         public static string protocol = "sonic06mm";
         public static RegistryKey sonic06mmKey = Registry.ClassesRoot.OpenSubKey($"{protocol}\\shell\\open\\command");
+
+        public static void VerifyProtocolManager() {
+            string getHash = CalculateMD5Hash($"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\Protocol Manager.exe");
+            if (!CompareMD5Hash(getHash, Sonic_06_Mod_Manager.Properties.Resources.hash_protocolManager))
+                File.WriteAllBytes($"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\Protocol Manager.exe",
+                                   Sonic_06_Mod_Manager.Properties.Resources.Protocol_Manager);
+        }
+
+        public static string CalculateMD5Hash(string path) {
+            using (var md5 = MD5.Create())
+            using (var stream = File.OpenRead(path))
+                return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToUpperInvariant();
+        }
+
+        public static bool CompareMD5Hash(string one, string two) {
+            Console.WriteLine($"MD5 Comparison\nHash #1: {one}\nHash #2: {two}");
+            if (one == two) {
+                Console.WriteLine("The MD5 hashes are identical...");
+                return true;
+            } else {
+                Console.WriteLine("The MD5 hashes are not the same...");
+                return false;
+            }
+        }
     }
 
     public static class Archives

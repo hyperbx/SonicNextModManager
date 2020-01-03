@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using Unify.Tools;
 using System.Linq;
+using Unify.Tools;
 using Unify.Messages;
 using System.Reflection;
 using System.Diagnostics;
@@ -67,6 +67,8 @@ namespace Sonic_06_Mod_Manager
 
             if (!File.Exists($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar"))
                 File.WriteAllBytes($"{applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar", Properties.Resources.unlub);
+
+            GB_Registry.VerifyProtocolManager();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

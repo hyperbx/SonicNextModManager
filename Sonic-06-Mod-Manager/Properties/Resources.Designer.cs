@@ -425,6 +425,15 @@ namespace Sonic_06_Mod_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 0DA6501184DA0C9BB7E0D864A173ED9F.
+        /// </summary>
+        internal static string hash_protocolManager {
+            get {
+                return ResourceManager.GetString("hash_protocolManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon {
