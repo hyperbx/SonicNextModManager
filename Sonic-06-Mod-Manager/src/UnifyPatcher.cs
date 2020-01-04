@@ -445,10 +445,29 @@ namespace Unify.Patcher
             process.WaitForExit();
         }
 
+        public static void DecompressBIN(string filepath) {
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = $"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\xextool.exe",
+                Arguments = $"-c b \"{filepath}\""
+            };
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+        }
+
         public static void FieldOfView(string filepath, decimal fov) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
                 stream.Position = 0x4F4D;
                 stream.WriteByte(decimal.ToByte(fov));
+            }
+        }
+
+        public static void HomingFlips(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x21A3F0;
+                stream.WriteByte(0x41);
             }
         }
     }

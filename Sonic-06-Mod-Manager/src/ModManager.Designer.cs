@@ -1218,6 +1218,7 @@
             "Disable Intro Logos",
             "Disable Music",
             "Disable Shadows",
+            "Enable Homing Flips",
             "Omega Blur Fix",
             "Silver Grind Trick Fix",
             "Unlock Mid-air Momentum",

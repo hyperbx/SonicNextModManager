@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.5"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.51"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.1";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -272,6 +272,8 @@ namespace Sonic_06_Mod_Manager
                     UnifyMessages.UnifyMessage.Show("This patch will disable all music tracks. This may only be useful to Xbox 360 players, since the game doesn't save audio settings on that version.", "Disable Music", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Shadows")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable real-time shadow rendering and baked shadows. This may provide a significant performance boost, but looks pretty ugly.", "Disable Shadows", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Homing Flips")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will restore the homing flip animations for Sonic.", "Enable Homing Flips", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Omega Blur Fix")) {
                     UnifyMessages.UnifyMessage.Show("This patch will remove Omega's transparency materials to fix a bug on Xenia where the sprites become blurry.", "Omega Blur Fix", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix")) {
@@ -474,6 +476,18 @@ namespace Sonic_06_Mod_Manager
                         File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
                     XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
                     XEX.FieldOfView(Path.Combine(text_GameDirectory.Text, "default.xex"), nud_FieldOfView.Value);
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
+            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Enable Homing Flips"))) {
+                Status = SystemMessages.msg_PatchingCharacters;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.DecompressBIN(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.HomingFlips(Path.Combine(text_GameDirectory.Text, "default.xex"));
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }
