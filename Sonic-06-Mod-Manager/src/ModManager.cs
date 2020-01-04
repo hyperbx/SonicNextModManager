@@ -1895,7 +1895,7 @@ namespace Sonic_06_Mod_Manager
                         $"Architecture: {inst}\n\n" +
                         $"" +
                         $"Framework Version: {versionNumber.Substring(8)}\n" +
-                        $"Sonic '06 Mod Loader Version: {modLoaderVersion.Substring(8)}\n\n" +
+                        $"Mod Loader Version: {modLoaderVersion.Substring(8)}\n\n" +
                         $"" +
                         $"Christmas: {christmas.ToString()}\n" +
                         $"Dreamcast Day: {dreamcastDay.ToString()}\n" +
