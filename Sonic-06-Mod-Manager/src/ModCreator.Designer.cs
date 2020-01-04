@@ -508,7 +508,7 @@
             this.pnl_Console.Controls.Add(this.list_Console);
             this.pnl_Console.Location = new System.Drawing.Point(8, 69);
             this.pnl_Console.Name = "pnl_Console";
-            this.pnl_Console.Size = new System.Drawing.Size(357, 369);
+            this.pnl_Console.Size = new System.Drawing.Size(357, 368);
             this.pnl_Console.TabIndex = 97;
             // 
             // list_Console
@@ -523,7 +523,7 @@
             this.list_Console.Location = new System.Drawing.Point(0, 0);
             this.list_Console.Name = "list_Console";
             this.list_Console.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.list_Console.Size = new System.Drawing.Size(355, 367);
+            this.list_Console.Size = new System.Drawing.Size(355, 366);
             this.list_Console.TabIndex = 96;
             // 
             // text_Server
