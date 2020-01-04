@@ -470,6 +470,19 @@ namespace Unify.Patcher
                 stream.WriteByte(0x41);
             }
         }
+
+        public static void HomingSpam(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x21A4BC;
+                stream.WriteByte(0x60);
+                stream.Position = 0x21A4BD;
+                stream.WriteByte(0x00);
+                stream.Position = 0x21A4BE;
+                stream.WriteByte(0x00);
+                stream.Position = 0x21A4BF;
+                stream.WriteByte(0x00);
+            }
+        }
     }
 
     class PKG

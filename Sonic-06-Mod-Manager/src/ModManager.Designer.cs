@@ -1219,6 +1219,7 @@
             "Disable Music",
             "Disable Shadows",
             "Enable Homing Flips",
+            "Enable Homing Spam",
             "Omega Blur Fix",
             "Silver Grind Trick Fix",
             "Unlock Mid-air Momentum",
