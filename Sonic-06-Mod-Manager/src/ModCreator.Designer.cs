@@ -140,7 +140,7 @@
             this.btn_ReadOnlyBrowser.FlatAppearance.BorderSize = 0;
             this.btn_ReadOnlyBrowser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ReadOnlyBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ReadOnlyBrowser.Location = new System.Drawing.Point(343, 387);
+            this.btn_ReadOnlyBrowser.Location = new System.Drawing.Point(343, 386);
             this.btn_ReadOnlyBrowser.Name = "btn_ReadOnlyBrowser";
             this.btn_ReadOnlyBrowser.Size = new System.Drawing.Size(22, 23);
             this.btn_ReadOnlyBrowser.TabIndex = 94;
@@ -200,7 +200,7 @@
             this.lbl_Save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_Save.AutoSize = true;
             this.lbl_Save.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_Save.Location = new System.Drawing.Point(33, 420);
+            this.lbl_Save.Location = new System.Drawing.Point(33, 419);
             this.lbl_Save.Name = "lbl_Save";
             this.lbl_Save.Size = new System.Drawing.Size(34, 15);
             this.lbl_Save.TabIndex = 93;
@@ -225,7 +225,7 @@
             this.btn_SaveBrowser.FlatAppearance.BorderSize = 0;
             this.btn_SaveBrowser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_SaveBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_SaveBrowser.Location = new System.Drawing.Point(343, 415);
+            this.btn_SaveBrowser.Location = new System.Drawing.Point(343, 414);
             this.btn_SaveBrowser.Name = "btn_SaveBrowser";
             this.btn_SaveBrowser.Size = new System.Drawing.Size(22, 23);
             this.btn_SaveBrowser.TabIndex = 92;
@@ -251,7 +251,7 @@
             this.text_Save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.text_Save.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_Save.ForeColor = System.Drawing.SystemColors.Control;
-            this.text_Save.Location = new System.Drawing.Point(73, 415);
+            this.text_Save.Location = new System.Drawing.Point(73, 414);
             this.text_Save.Name = "text_Save";
             this.text_Save.Size = new System.Drawing.Size(265, 23);
             this.text_Save.TabIndex = 91;
@@ -313,7 +313,7 @@
             this.lbl_ReadOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_ReadOnly.AutoSize = true;
             this.lbl_ReadOnly.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_ReadOnly.Location = new System.Drawing.Point(3, 392);
+            this.lbl_ReadOnly.Location = new System.Drawing.Point(3, 391);
             this.lbl_ReadOnly.Name = "lbl_ReadOnly";
             this.lbl_ReadOnly.Size = new System.Drawing.Size(64, 15);
             this.lbl_ReadOnly.TabIndex = 84;
@@ -397,7 +397,7 @@
             this.text_ReadOnly.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_ReadOnly.Enabled = false;
             this.text_ReadOnly.ForeColor = System.Drawing.SystemColors.Control;
-            this.text_ReadOnly.Location = new System.Drawing.Point(73, 387);
+            this.text_ReadOnly.Location = new System.Drawing.Point(73, 386);
             this.text_ReadOnly.Name = "text_ReadOnly";
             this.text_ReadOnly.Size = new System.Drawing.Size(265, 23);
             this.text_ReadOnly.TabIndex = 80;
