@@ -2,6 +2,7 @@
 using System.IO;
 using Unify.Tools;
 using System.Text;
+using System.Linq;
 using Unify.Messages;
 using System.Drawing;
 using Unify.Networking;
@@ -46,6 +47,7 @@ namespace Sonic_06_Mod_Manager.src
             this.modPath = modPath;
             this.edit = edit;
             if (!this.edit) {
+                text_Version.Text = "1.0";
                 text_Date.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 text_Author.Text = Environment.UserName;
             }
@@ -280,8 +282,11 @@ namespace Sonic_06_Mod_Manager.src
                     else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"savedata.ps3\"");
                     if (tb_Description.Text != string.Empty) {
                         string descriptionText = string.Empty;
-                        foreach (var newLine in tb_Description.Lines)
-                            descriptionText += $"{newLine}\\n";
+                        string lastLine = tb_Description.Lines.Last();
+                        foreach (var newLine in tb_Description.Lines) {
+                            if (newLine != lastLine) descriptionText += $"{newLine}\\n";
+                            else descriptionText += newLine;
+                        }
                         configInfo.WriteLine($"Description=\"{descriptionText}\"");
                     }
                     if (text_Server.Text != string.Empty) {
@@ -301,15 +306,6 @@ namespace Sonic_06_Mod_Manager.src
                         File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.360"), true);
                     else if (combo_System.SelectedIndex == 1)
                         File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.ps3"), true);
-
-                //if (modThumbnail == string.Empty && edit) {
-                //    try {
-                //        string[] getThumbnail = Directory.GetFiles(newPath, "thumbnail*", SearchOption.TopDirectoryOnly);
-                //        foreach (var img in getThumbnail)
-                //            if (File.Exists(img)) File.Delete(img);
-                //    }
-                //    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_ThumbnailDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error", false); }
-                //}
 
                 if (text_Save.Text == string.Empty && edit) {
                     try {
