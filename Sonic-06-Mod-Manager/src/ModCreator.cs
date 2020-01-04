@@ -61,25 +61,61 @@ namespace Sonic_06_Mod_Manager.src
 
             if (ModManager.christmas) Icon = Properties.Resources.icon_christmas;
 
-            if (Properties.Settings.Default.theme) {
-                pic_Thumbnail.BackColor = Color.FromArgb(45, 45, 48);
-                check_Merge.ForeColor = SystemColors.Control;
-                BackColor = Color.FromArgb(28, 28, 28);
-                group_DescriptionField.BackColor = Color.FromArgb(45, 45, 48); group_DescriptionField.ForeColor = SystemColors.Control;
-                tb_Description.BackColor = Color.FromArgb(45, 45, 48); tb_Description.ForeColor = SystemColors.Control;
-                pnl_Console.BackColor = list_Console.BackColor = Color.FromArgb(45, 45, 48); list_Console.ForeColor = SystemColors.Control;
-                btn_RemoveThumbnail.BackColor = SystemColors.ControlLightLight;
-                btn_Browse.FlatAppearance.BorderSize = 0;
+            if (!Properties.Settings.Default.theme) { //Edit colours if the user is insane and opts to use the Light Theme
+                btn_Browse.FlatAppearance.BorderSize = 1; //Border Size in Light Theme
 
-                foreach (Control x in this.Controls) {
-                    if (x is Label)
-                        ((Label)x).ForeColor = SystemColors.Control;
+                //Set things to SystemColors.ControlText
+                unifytb_ModCreator.TextColor =
+                list_Console.ForeColor =
+                text_Title.ForeColor =
+                text_Version.ForeColor =
+                text_Date.ForeColor =
+                text_Author.ForeColor =
+                text_ReadOnly.ForeColor = 
+                text_Save.ForeColor = 
+                text_Server.ForeColor =
+                text_Data.ForeColor =
+                tb_Description.ForeColor =
+                lbl_Title.ForeColor =
+                lbl_Version.ForeColor =
+                lbl_Date.ForeColor =
+                lbl_Author.ForeColor =
+                lbl_System.ForeColor =
+                lbl_ReadOnly.ForeColor =
+                lbl_Save.ForeColor =
+                lbl_Server.ForeColor =
+                check_Merge.ForeColor =
+                group_DescriptionField.ForeColor = 
+                lbl_Data.ForeColor = SystemColors.ControlText;
 
-                    if (x is TextBox) {
-                        ((TextBox)x).BackColor = Color.FromArgb(45, 45, 48);
-                        ((TextBox)x).ForeColor = SystemColors.Control;
-                    }
-                }
+                //Set things to SystemColors.ControlLightLight
+                text_Title.BackColor =
+                text_Version.BackColor =
+                text_Date.BackColor =
+                text_Author.BackColor =
+                text_ReadOnly.BackColor =
+                text_Save.BackColor =
+                text_Server.BackColor =
+                text_Data.BackColor =
+                group_DescriptionField.BackColor =
+                tb_Description.BackColor =
+                pnl_Console.BackColor =
+                list_Console.BackColor =
+                btn_RemoveThumbnail.BackColor =
+                unifytb_ModCreator.HeaderColor =
+                pic_Thumbnail.BackColor =
+                group_DescriptionField.BackColor =
+                tb_Description.BackColor = 
+                SystemColors.ControlLightLight;
+
+                //Set things to SystemColors.Control
+                unifytb_ModCreator.BorderColor =
+                unifytb_ModCreator.BackTabColor =
+                unifytb_Tab_Description.BackColor =
+                unifytb_Tab_Details.BackColor =
+                unifytb_Tab_Networking.BackColor =
+                BackColor =
+                SystemColors.Control;
             }
 
             if (edit)
@@ -419,6 +455,10 @@ namespace Sonic_06_Mod_Manager.src
                     }
                 }
             } else Log("Connection was successful, but no data was found in the specified location...");
+        }
+
+        private void unifytb_ModCreator_SelectedIndexChanged(object sender, EventArgs e) {
+            unifytb_ModCreator.Refresh(); //Refresh user control to remove software rendering leftovers.
         }
     }
 }

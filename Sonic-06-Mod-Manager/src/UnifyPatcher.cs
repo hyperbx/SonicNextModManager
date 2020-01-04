@@ -81,6 +81,7 @@ namespace Unify.Patcher
 
             List<string> files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
             .Where(s => s.EndsWith(".arc") ||
+                        s.EndsWith(".arc_custom") ||
                         s.EndsWith(".wmv") ||
                         s.EndsWith(".xma") ||
                         s.EndsWith("default.xex") ||
@@ -103,37 +104,31 @@ namespace Unify.Patcher
                         //Pass off to MergeARCs
                         Console.WriteLine("Merging: " + file);
                         MergeARCs(origArcPath, file, origArcPath, false, string.Empty);
-                    }
-                    else {
+                    } else {
                         try {
                             if (!File.Exists(targetArcPath)) {
                                 //Copy a file if it isn't part of a merge mod or is marked as read-only.
                                 Console.WriteLine("Copying: " + file);
                                 File.Move(origArcPath, targetArcPath);
                                 File.Copy(file, origArcPath);
-                            }
-                            else {
+                            } else {
                                 //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
                                 skippedMods.Add(ModsMessages.ex_SkippedMod(modName, Path.GetFileName(file)));
                             }
-                        }
-                        catch (FileNotFoundException) { skippedMods.Add(ModsMessages.ex_SkippedModMissingFile(modName, Path.GetFileName(file))); }
+                        } catch (FileNotFoundException) { skippedMods.Add(ModsMessages.ex_SkippedModMissingFile(modName, Path.GetFileName(file))); }
                     }
-                }
-                else {
+                } else {
                     try {
                         if (!File.Exists(targetArcPath)) {
                             //Copy a file if it isn't part of a merge mod or is marked as read-only.
                             Console.WriteLine("Copying: " + file);
-                            File.Move(origArcPath, targetArcPath);
+                            if (!file.EndsWith(".arc_custom")) { File.Move(origArcPath, targetArcPath); } //Don't try and backup a file that doesn't exist in the base game
                             File.Copy(file, origArcPath);
-                        }
-                        else {
+                        } else {
                             //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
                             skippedMods.Add(ModsMessages.ex_SkippedMod(modName, Path.GetFileName(file)));
                         }
-                    }
-                    catch (FileNotFoundException) { skippedMods.Add(ModsMessages.ex_SkippedModMissingFile(modName, Path.GetFileName(file))); }
+                    } catch (FileNotFoundException) { skippedMods.Add(ModsMessages.ex_SkippedModMissingFile(modName, Path.GetFileName(file))); }
                 }
             }
         }
@@ -279,20 +274,18 @@ namespace Unify.Patcher
         {
             if (!Directory.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory)) return;
 
-            string[] files = Array.Empty<string>();
-            if (state == 0) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_back", SearchOption.AllDirectories);
-            else if (state == 1) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_orig", SearchOption.AllDirectories);
+            List<string> files = new List<string>();
+            if (state == 0) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith("_back") || s.EndsWith(".arc_custom")).ToList();
+            else if (state == 1) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_orig", SearchOption.AllDirectories).ToList();
 
             modManager.Status = SystemMessages.msg_Cleanup;
-            foreach (var file in files)
-            {
-                if (File.Exists(file.ToString().Remove(file.Length - 5)))
-                {
+            foreach (var file in files) {
+                if (File.Exists(file.ToString().Remove(file.Length - 5)) || file.EndsWith(".arc_custom")) {
                     Console.WriteLine("Removing: " + file);
-                    File.Delete(file.ToString().Remove(file.Length - 5));
+                    if (file.EndsWith(".arc_custom")) File.Delete(file);
+                    else File.Delete(file.ToString().Remove(file.Length - 5));
                 }
-
-                File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
+                if (!file.EndsWith(".arc_custom")) File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
             }
             modManager.Status = SystemMessages.msg_DefaultStatus;
         }
