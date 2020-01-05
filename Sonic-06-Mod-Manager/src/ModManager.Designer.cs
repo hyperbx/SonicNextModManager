@@ -1218,6 +1218,7 @@
             "Disable Intro Logos",
             "Disable Music",
             "Disable Shadows",
+            "E3 Bound Attack",
             "Enable Homing Flips",
             "Enable Homing Spam",
             "Omega Blur Fix",

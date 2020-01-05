@@ -471,6 +471,13 @@ namespace Unify.Patcher
             }
         }
 
+        public static void E3Bounce(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x21ADC8;
+                stream.WriteByte(0x40);
+            }
+        }
+
         public static void HomingSpam(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
                 stream.Position = 0x21A4BC;
