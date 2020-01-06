@@ -459,35 +459,65 @@ namespace Unify.Patcher
 
         public static void FieldOfView(string filepath, decimal fov) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
-                stream.Position = 0x4F4D;
-                stream.WriteByte(decimal.ToByte(fov));
+                stream.Position = 0x4F4D; stream.WriteByte(decimal.ToByte(fov));
             }
         }
 
         public static void HomingFlips(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
-                stream.Position = 0x21A3F0;
-                stream.WriteByte(0x41);
+                stream.Position = 0x21A3F0; stream.WriteByte(0x41);
             }
         }
 
         public static void BoundRecovery(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
-                stream.Position = 0x21ADC8;
-                stream.WriteByte(0x40);
+                stream.Position = 0x21ADC8; stream.WriteByte(0x40);
             }
         }
 
         public static void HomingSpam(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
-                stream.Position = 0x21A4BC;
-                stream.WriteByte(0x60);
-                stream.Position = 0x21A4BD;
-                stream.WriteByte(0x00);
-                stream.Position = 0x21A4BE;
-                stream.WriteByte(0x00);
-                stream.Position = 0x21A4BF;
-                stream.WriteByte(0x00);
+                stream.Position = 0x21A4BC; stream.WriteByte(0x60);
+                stream.Position = 0x21A4BD; stream.WriteByte(0x00);
+                stream.Position = 0x21A4BE; stream.WriteByte(0x00);
+                stream.Position = 0x21A4BF; stream.WriteByte(0x00);
+            }
+        }
+
+        public static void DisableStumble(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                // Sonic the Hedgehog
+                stream.Position = 0xB10DB3; stream.WriteByte(0x29);
+                stream.Position = 0xB10DB6; stream.WriteByte(0x15);
+                stream.Position = 0xB10DB7; stream.WriteByte(0xD0);
+                // Princess Elise
+                stream.Position = 0xB110EB; stream.WriteByte(0x29);
+                stream.Position = 0xB110EE; stream.WriteByte(0x15);
+                stream.Position = 0xB110EF; stream.WriteByte(0xD0);
+                // Shadow the Hedgehog
+                stream.Position = 0xB1124B; stream.WriteByte(0x29);
+                stream.Position = 0xB1124E; stream.WriteByte(0x15);
+                stream.Position = 0xB1124F; stream.WriteByte(0xD0);
+                // E-123 Omega
+                stream.Position = 0xB1190B; stream.WriteByte(0x29);
+                stream.Position = 0xB1190E; stream.WriteByte(0x15);
+                stream.Position = 0xB1190F; stream.WriteByte(0xD0);
+                // Amy Rose
+                stream.Position = 0xB11A33; stream.WriteByte(0x29);
+                stream.Position = 0xB11A36; stream.WriteByte(0x15);
+                stream.Position = 0xB11A37; stream.WriteByte(0xD0);
+                // Blaze the Cat
+                stream.Position = 0xB11B83; stream.WriteByte(0x29);
+                stream.Position = 0xB11B86; stream.WriteByte(0x15);
+                stream.Position = 0xB11B87; stream.WriteByte(0xD0);
+                // Knuckles the Echidna
+                stream.Position = 0xB11CCB; stream.WriteByte(0x29);
+                stream.Position = 0xB11CCE; stream.WriteByte(0x15);
+                stream.Position = 0xB11CCF; stream.WriteByte(0xD0);
+                // Rouge the Bat
+                stream.Position = 0xB11E1B; stream.WriteByte(0x29);
+                stream.Position = 0xB11E1E; stream.WriteByte(0x15);
+                stream.Position = 0xB11E1F; stream.WriteByte(0xD0);
             }
         }
     }

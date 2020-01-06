@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.54-indev-060120r1"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.54"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.1";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -260,6 +260,8 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_PatchInfo;
                 if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's Action Gauge draining and replenishment when using Gems.", "Action Gauge Fixes for Sonic", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Bound Attack Recovery")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will unlock mid-air momentum for the bound attack.\n\nUnlock Mid-air Momentum patch would be recommended to use with this.", "Bound Attack Recovery", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")) {
                     UnifyMessages.UnifyMessage.Show("This patch will swap Sonic's homing module with Blaze's to simulate the homing attack from early versions of Sonic '06. However, this removes Sonic's ability to destroy physics objects.", "Curved Homing Attack for Sonic", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Debug Mode")) {
@@ -274,8 +276,8 @@ namespace Sonic_06_Mod_Manager
                     UnifyMessages.UnifyMessage.Show("This patch will disable all music tracks. This may only be useful to Xbox 360 players, since the game doesn't save audio settings on that version.", "Disable Music", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Shadows")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable real-time shadow rendering and baked shadows. This may provide a significant performance boost, but looks pretty ugly.", "Disable Shadows", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Bound Attack Recovery")) {
-                    UnifyMessages.UnifyMessage.Show("This patch will unlock mid-air momentum for the bound attack.\n\nUnlock Mid-air Momentum patch would be recommended to use with this.", "Bound Attack Recovery", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Character Stumble")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will disable the stumble state when characters impact walls at high speed.", "Disable Character Stumble", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Homing Flips")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore the homing flip animations for Sonic.", "Enable Homing Flips", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Homing Spam")) {
@@ -482,6 +484,17 @@ namespace Sonic_06_Mod_Manager
                         File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
                     XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
                     XEX.FieldOfView(Path.Combine(text_GameDirectory.Text, "default.xex"), nud_FieldOfView.Value);
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
+            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Character Stumble"))) {
+                Status = SystemMessages.msg_PatchingCharacters;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.DisableStumble(Path.Combine(text_GameDirectory.Text, "default.xex"));
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }

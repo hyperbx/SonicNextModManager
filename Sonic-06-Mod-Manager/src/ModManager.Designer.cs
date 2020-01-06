@@ -1213,6 +1213,7 @@
             "Curved Homing Attack for Sonic",
             "Debug Mode",
             "Disable Bloom",
+            "Disable Character Stumble",
             "Disable HUD",
             "Disable Intro Logos",
             "Disable Music",

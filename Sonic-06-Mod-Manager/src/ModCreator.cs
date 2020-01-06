@@ -64,6 +64,7 @@ namespace Sonic_06_Mod_Manager.src
             if (ModManager.christmas) Icon = Properties.Resources.icon_christmas;
 
             unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Properties.Settings.Default.accentColour;
+            if (Properties.Settings.Default.highContrast) unifytb_ModCreator.SelectedTextColor = SystemColors.ControlText;
 
             if (!Properties.Settings.Default.theme) { //Edit colours if the user is insane and opts to use the Light Theme
                 btn_Browse.FlatAppearance.BorderSize = 1; //Border Size in Light Theme
