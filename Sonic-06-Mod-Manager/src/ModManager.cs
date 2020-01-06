@@ -76,8 +76,10 @@ namespace Sonic_06_Mod_Manager
             }
 
             //MinimumSize = new Size(554, 629);
-            //Width = Properties.Settings.Default.lastSize.Width;
-            //Height = Properties.Settings.Default.lastSize.Height;
+            Width = Properties.Settings.Default.lastSize.Width;
+            Height = Properties.Settings.Default.lastSize.Height;
+
+            /* Check Christmas dates - commented due to conflicting with UI... */
             //if (DateTime.Now >= new DateTime(DateTime.Today.Year, 12, 01) &&
             //    DateTime.Now <= new DateTime(DateTime.Today.Year + 1, 01, 06)) {
             //        if (!Properties.Settings.Default.cancelChristmas) {
