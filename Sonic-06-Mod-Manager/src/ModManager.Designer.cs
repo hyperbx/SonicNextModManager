@@ -140,8 +140,6 @@
             this.check_ForceAA = new System.Windows.Forms.CheckBox();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
-            this.lbl_CancelChristmas = new System.Windows.Forms.Label();
-            this.check_CancelChristmas = new System.Windows.Forms.CheckBox();
             this.group_Appearance = new System.Windows.Forms.GroupBox();
             this.lbl_HighContrastText = new System.Windows.Forms.Label();
             this.check_HighContrastText = new System.Windows.Forms.CheckBox();
@@ -304,7 +302,7 @@
             // status_Main
             // 
             this.status_Main.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.status_Main.Location = new System.Drawing.Point(0, 594);
+            this.status_Main.Location = new System.Drawing.Point(0, 568);
             this.status_Main.Name = "status_Main";
             this.status_Main.Size = new System.Drawing.Size(538, 22);
             this.status_Main.SizingGrip = false;
@@ -378,7 +376,7 @@
             this.lbl_SetStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.lbl_SetStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_SetStatus.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_SetStatus.Location = new System.Drawing.Point(3, 597);
+            this.lbl_SetStatus.Location = new System.Drawing.Point(3, 571);
             this.lbl_SetStatus.Name = "lbl_SetStatus";
             this.lbl_SetStatus.Size = new System.Drawing.Size(42, 15);
             this.lbl_SetStatus.TabIndex = 55;
@@ -400,7 +398,7 @@
             this.split_MainControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.split_MainControls.IsSplitterFixed = true;
-            this.split_MainControls.Location = new System.Drawing.Point(0, 521);
+            this.split_MainControls.Location = new System.Drawing.Point(0, 495);
             this.split_MainControls.Name = "split_MainControls";
             // 
             // split_MainControls.Panel1
@@ -616,7 +614,7 @@
             this.unifytb_Main.SelectedTextColor = System.Drawing.SystemColors.Control;
             this.unifytb_Main.ShowClosingButton = false;
             this.unifytb_Main.ShowClosingMessage = false;
-            this.unifytb_Main.Size = new System.Drawing.Size(538, 522);
+            this.unifytb_Main.Size = new System.Drawing.Size(538, 496);
             this.unifytb_Main.TabIndex = 0;
             this.unifytb_Main.TextColor = System.Drawing.SystemColors.Control;
             this.unifytb_Main.SelectedIndexChanged += new System.EventHandler(this.Unifytb_Main_SelectedIndexChanged);
@@ -633,7 +631,7 @@
             this.unifytb_Tab_Mods.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Mods.Name = "unifytb_Tab_Mods";
             this.unifytb_Tab_Mods.Padding = new System.Windows.Forms.Padding(3);
-            this.unifytb_Tab_Mods.Size = new System.Drawing.Size(530, 498);
+            this.unifytb_Tab_Mods.Size = new System.Drawing.Size(530, 472);
             this.unifytb_Tab_Mods.TabIndex = 0;
             this.unifytb_Tab_Mods.Text = "Mods";
             // 
@@ -643,7 +641,7 @@
             this.btn_Priority.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_Priority.FlatAppearance.BorderSize = 0;
             this.btn_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Priority.Location = new System.Drawing.Point(348, 471);
+            this.btn_Priority.Location = new System.Drawing.Point(348, 445);
             this.btn_Priority.Name = "btn_Priority";
             this.btn_Priority.Size = new System.Drawing.Size(178, 23);
             this.btn_Priority.TabIndex = 42;
@@ -659,7 +657,7 @@
             this.btn_DownerPriority.FlatAppearance.BorderSize = 0;
             this.btn_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_DownerPriority.Location = new System.Drawing.Point(316, 471);
+            this.btn_DownerPriority.Location = new System.Drawing.Point(316, 445);
             this.btn_DownerPriority.Name = "btn_DownerPriority";
             this.btn_DownerPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_DownerPriority.TabIndex = 41;
@@ -675,7 +673,7 @@
             this.btn_UpperPriority.FlatAppearance.BorderSize = 0;
             this.btn_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 471);
+            this.btn_UpperPriority.Location = new System.Drawing.Point(285, 445);
             this.btn_UpperPriority.Name = "btn_UpperPriority";
             this.btn_UpperPriority.Size = new System.Drawing.Size(26, 23);
             this.btn_UpperPriority.TabIndex = 40;
@@ -689,7 +687,7 @@
             this.btn_DeselectAll.BackColor = System.Drawing.Color.Tomato;
             this.btn_DeselectAll.FlatAppearance.BorderSize = 0;
             this.btn_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DeselectAll.Location = new System.Drawing.Point(145, 471);
+            this.btn_DeselectAll.Location = new System.Drawing.Point(145, 445);
             this.btn_DeselectAll.Name = "btn_DeselectAll";
             this.btn_DeselectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_DeselectAll.TabIndex = 2;
@@ -703,7 +701,7 @@
             this.btn_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
             this.btn_SelectAll.FlatAppearance.BorderSize = 0;
             this.btn_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_SelectAll.Location = new System.Drawing.Point(5, 471);
+            this.btn_SelectAll.Location = new System.Drawing.Point(5, 445);
             this.btn_SelectAll.Name = "btn_SelectAll";
             this.btn_SelectAll.Size = new System.Drawing.Size(134, 23);
             this.btn_SelectAll.TabIndex = 1;
@@ -721,7 +719,7 @@
             this.pnl_ModBackdrop.Controls.Add(this.view_ModsList);
             this.pnl_ModBackdrop.Location = new System.Drawing.Point(4, 9);
             this.pnl_ModBackdrop.Name = "pnl_ModBackdrop";
-            this.pnl_ModBackdrop.Size = new System.Drawing.Size(522, 453);
+            this.pnl_ModBackdrop.Size = new System.Drawing.Size(522, 427);
             this.pnl_ModBackdrop.TabIndex = 43;
             // 
             // view_ModsList
@@ -747,7 +745,7 @@
             this.view_ModsList.MultiSelect = false;
             this.view_ModsList.Name = "view_ModsList";
             this.view_ModsList.OwnerDraw = true;
-            this.view_ModsList.Size = new System.Drawing.Size(520, 468);
+            this.view_ModsList.Size = new System.Drawing.Size(520, 442);
             this.view_ModsList.TabIndex = 1;
             this.view_ModsList.UseCompatibleStateImageBehavior = false;
             this.view_ModsList.View = System.Windows.Forms.View.Details;
@@ -803,7 +801,7 @@
             this.unifytb_Tab_Emulator.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Emulator.Name = "unifytb_Tab_Emulator";
             this.unifytb_Tab_Emulator.Padding = new System.Windows.Forms.Padding(3);
-            this.unifytb_Tab_Emulator.Size = new System.Drawing.Size(530, 498);
+            this.unifytb_Tab_Emulator.Size = new System.Drawing.Size(530, 472);
             this.unifytb_Tab_Emulator.TabIndex = 1;
             this.unifytb_Tab_Emulator.Text = "Emulator";
             // 
@@ -935,7 +933,7 @@
             this.group_Settings.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Settings.Location = new System.Drawing.Point(4, 128);
             this.group_Settings.Name = "group_Settings";
-            this.group_Settings.Size = new System.Drawing.Size(522, 367);
+            this.group_Settings.Size = new System.Drawing.Size(522, 341);
             this.group_Settings.TabIndex = 10;
             this.group_Settings.TabStop = false;
             this.group_Settings.Text = "Settings";
@@ -1162,7 +1160,7 @@
             this.unifytb_Tab_Patches.Controls.Add(this.split_Patches);
             this.unifytb_Tab_Patches.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Patches.Name = "unifytb_Tab_Patches";
-            this.unifytb_Tab_Patches.Size = new System.Drawing.Size(530, 498);
+            this.unifytb_Tab_Patches.Size = new System.Drawing.Size(530, 472);
             this.unifytb_Tab_Patches.TabIndex = 2;
             this.unifytb_Tab_Patches.Text = "Patches";
             // 
@@ -1183,7 +1181,7 @@
             // 
             this.split_Patches.Panel2.Controls.Add(this.group_CameraTweaks);
             this.split_Patches.Panel2.Controls.Add(this.group_GraphicsTweaks);
-            this.split_Patches.Size = new System.Drawing.Size(530, 495);
+            this.split_Patches.Size = new System.Drawing.Size(530, 469);
             this.split_Patches.SplitterDistance = 262;
             this.split_Patches.TabIndex = 3;
             // 
@@ -1197,7 +1195,7 @@
             this.pnl_PatchBackdrop.Controls.Add(this.clb_PatchesList);
             this.pnl_PatchBackdrop.Location = new System.Drawing.Point(2, 6);
             this.pnl_PatchBackdrop.Name = "pnl_PatchBackdrop";
-            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(259, 484);
+            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(259, 458);
             this.pnl_PatchBackdrop.TabIndex = 2;
             // 
             // clb_PatchesList
@@ -1211,6 +1209,7 @@
             this.clb_PatchesList.FormattingEnabled = true;
             this.clb_PatchesList.Items.AddRange(new object[] {
             "Action Gauge Fixes for Sonic",
+            "Bound Attack Recovery",
             "Curved Homing Attack for Sonic",
             "Debug Mode",
             "Disable Bloom",
@@ -1218,7 +1217,6 @@
             "Disable Intro Logos",
             "Disable Music",
             "Disable Shadows",
-            "E3 Bound Attack",
             "Enable Homing Flips",
             "Enable Homing Spam",
             "Omega Blur Fix",
@@ -1229,7 +1227,7 @@
             "Xbox Live Arcade Radial Blur"});
             this.clb_PatchesList.Location = new System.Drawing.Point(3, 2);
             this.clb_PatchesList.Name = "clb_PatchesList";
-            this.clb_PatchesList.Size = new System.Drawing.Size(257, 468);
+            this.clb_PatchesList.Size = new System.Drawing.Size(257, 432);
             this.clb_PatchesList.TabIndex = 1;
             this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
             // 
@@ -1769,7 +1767,7 @@
             this.unifytb_Tab_Settings.Controls.Add(this.group_Directories);
             this.unifytb_Tab_Settings.Location = new System.Drawing.Point(4, 20);
             this.unifytb_Tab_Settings.Name = "unifytb_Tab_Settings";
-            this.unifytb_Tab_Settings.Size = new System.Drawing.Size(530, 498);
+            this.unifytb_Tab_Settings.Size = new System.Drawing.Size(530, 472);
             this.unifytb_Tab_Settings.TabIndex = 3;
             this.unifytb_Tab_Settings.Text = "Settings";
             // 
@@ -1778,8 +1776,6 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.group_Options.Controls.Add(this.lbl_CancelChristmas);
-            this.group_Options.Controls.Add(this.check_CancelChristmas);
             this.group_Options.Controls.Add(this.group_Appearance);
             this.group_Options.Controls.Add(this.lbl_DisableSoftwareUpdater);
             this.group_Options.Controls.Add(this.check_DisableSoftwareUpdater);
@@ -1795,33 +1791,10 @@
             this.group_Options.ForeColor = System.Drawing.SystemColors.Control;
             this.group_Options.Location = new System.Drawing.Point(4, 256);
             this.group_Options.Name = "group_Options";
-            this.group_Options.Size = new System.Drawing.Size(522, 239);
+            this.group_Options.Size = new System.Drawing.Size(522, 213);
             this.group_Options.TabIndex = 6;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
-            // 
-            // lbl_CancelChristmas
-            // 
-            this.lbl_CancelChristmas.AutoSize = true;
-            this.lbl_CancelChristmas.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_CancelChristmas.Location = new System.Drawing.Point(32, 144);
-            this.lbl_CancelChristmas.Name = "lbl_CancelChristmas";
-            this.lbl_CancelChristmas.Size = new System.Drawing.Size(99, 15);
-            this.lbl_CancelChristmas.TabIndex = 105;
-            this.lbl_CancelChristmas.Text = "Cancel Christmas";
-            this.lbl_CancelChristmas.Visible = false;
-            // 
-            // check_CancelChristmas
-            // 
-            this.check_CancelChristmas.AutoSize = true;
-            this.check_CancelChristmas.ForeColor = System.Drawing.SystemColors.Control;
-            this.check_CancelChristmas.Location = new System.Drawing.Point(15, 145);
-            this.check_CancelChristmas.Name = "check_CancelChristmas";
-            this.check_CancelChristmas.Size = new System.Drawing.Size(15, 14);
-            this.check_CancelChristmas.TabIndex = 104;
-            this.check_CancelChristmas.UseVisualStyleBackColor = true;
-            this.check_CancelChristmas.Visible = false;
-            this.check_CancelChristmas.CheckedChanged += new System.EventHandler(this.check_CancelChristmas_CheckedChanged);
             // 
             // group_Appearance
             // 
@@ -2053,7 +2026,7 @@
             this.split_Options.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.split_Options.IsSplitterFixed = true;
-            this.split_Options.Location = new System.Drawing.Point(6, 168);
+            this.split_Options.Location = new System.Drawing.Point(6, 142);
             this.split_Options.Name = "split_Options";
             // 
             // split_Options.Panel1
@@ -2391,7 +2364,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(538, 616);
+            this.ClientSize = new System.Drawing.Size(538, 590);
             this.Controls.Add(this.sonic06mm_Aldi);
             this.Controls.Add(this.lbl_SetStatus);
             this.Controls.Add(this.radio_PlayStation3);
@@ -2402,7 +2375,7 @@
             this.Controls.Add(this.split_MainControls);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(554, 655);
+            this.MinimumSize = new System.Drawing.Size(554, 629);
             this.Name = "ModManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";
@@ -2618,8 +2591,6 @@
         private System.Windows.Forms.Button btn_GridStyle_Default;
         private System.Windows.Forms.ComboBox combo_GridStyle;
         private System.Windows.Forms.Label lbl_GridStyle;
-        private System.Windows.Forms.Label lbl_CancelChristmas;
-        private System.Windows.Forms.CheckBox check_CancelChristmas;
         private System.Windows.Forms.Label lbl_HighContrastText;
         private System.Windows.Forms.CheckBox check_HighContrastText;
         private System.Windows.Forms.LinkLabel help_MSAA;

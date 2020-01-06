@@ -471,7 +471,7 @@ namespace Unify.Patcher
             }
         }
 
-        public static void E3Bounce(string filepath) {
+        public static void BoundRecovery(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
                 stream.Position = 0x21ADC8;
                 stream.WriteByte(0x40);
