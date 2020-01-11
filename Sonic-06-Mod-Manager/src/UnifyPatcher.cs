@@ -484,11 +484,57 @@ namespace Unify.Patcher
             }
         }
 
+        public static void MachSpeedAirControl(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x213380; stream.WriteByte(0x60);
+                stream.Position = 0x213381; stream.WriteByte(0x00);
+                stream.Position = 0x213382; stream.WriteByte(0x00);
+                stream.Position = 0x213383; stream.WriteByte(0x00);
+                stream.Position = 0x213384; stream.WriteByte(0x60);
+                stream.Position = 0x213385; stream.WriteByte(0x00);
+                stream.Position = 0x213386; stream.WriteByte(0x00);
+                stream.Position = 0x213387; stream.WriteByte(0x00);
+                stream.Position = 0x2133B4; stream.WriteByte(0x60);
+                stream.Position = 0x2133B5; stream.WriteByte(0x00);
+                stream.Position = 0x2133B6; stream.WriteByte(0x00);
+                stream.Position = 0x2133B7; stream.WriteByte(0x00);
+                stream.Position = 0x2133B8; stream.WriteByte(0x60);
+                stream.Position = 0x2133B9; stream.WriteByte(0x00);
+                stream.Position = 0x2133BA; stream.WriteByte(0x00);
+                stream.Position = 0x2133BB; stream.WriteByte(0x00);
+            }
+        }
+
+        public static void SnowboardAirControl(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x217710; stream.WriteByte(0x60);
+                stream.Position = 0x217711; stream.WriteByte(0x00);
+                stream.Position = 0x217712; stream.WriteByte(0x00);
+                stream.Position = 0x217713; stream.WriteByte(0x00);
+                stream.Position = 0x217878; stream.WriteByte(0x60);
+                stream.Position = 0x217879; stream.WriteByte(0x00);
+                stream.Position = 0x21787A; stream.WriteByte(0x00);
+                stream.Position = 0x21787B; stream.WriteByte(0x00);
+                stream.Position = 0x2175B8; stream.WriteByte(0x60);
+                stream.Position = 0x2175B9; stream.WriteByte(0x00);
+                stream.Position = 0x2175BA; stream.WriteByte(0x00);
+                stream.Position = 0x2175BB; stream.WriteByte(0x00);
+            }
+        }
+
         public static void ChaosSmash(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
                 stream.Position = 0xB1932B; stream.WriteByte(0x55);
                 stream.Position = 0xB1935B; stream.WriteByte(0x42);
                 stream.Position = 0x1AA1B3; stream.WriteByte(0x55);
+            }
+        }
+
+        public static void ControllableSpinkick(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x2E1B9; stream.WriteByte(0x00);
+                stream.Position = 0x19D987; stream.WriteByte(0xEF);
+                stream.Position = 0x1A2A07; stream.WriteByte(0xEF);
             }
         }
 
@@ -749,6 +795,23 @@ namespace Unify.Patcher
                         editedLua[lineNum] = "c_camera = { x = 0 * meter, y = " + (height / 100) + " * meter, z = 0 * meter }";
                     else
                         editedLua[lineNum += 2] = $"  y = {height / 100} * meter,";
+                }
+                lineNum++;
+            }
+            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+        }
+
+        public static void HammerRange(string directoryRoot, decimal range)
+        {
+            Decompile(directoryRoot);
+            string[] editedLua = File.ReadAllLines(directoryRoot);
+            int lineNum = 0;
+
+            foreach (string line in editedLua) {
+                string[] tempLine = line.Split(' '); //Split line into different sections
+                if (line.StartsWith("c_hammer_head")) {
+                    if (editedLua[lineNum].Contains("c_hammer_head"))
+                        editedLua[lineNum] = $"c_hammer_head = {range / 100} * meter";
                 }
                 lineNum++;
             }

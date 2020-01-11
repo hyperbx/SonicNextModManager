@@ -131,5 +131,8 @@
     <Setting Name="patches_ForceAA" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="patches_HammerRange" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">50.0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

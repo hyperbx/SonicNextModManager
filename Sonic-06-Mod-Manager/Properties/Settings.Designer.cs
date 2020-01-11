@@ -538,5 +538,17 @@ namespace Sonic_06_Mod_Manager.Properties {
                 this["patches_ForceAA"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50.0")]
+        public decimal patches_HammerRange {
+            get {
+                return ((decimal)(this["patches_HammerRange"]));
+            }
+            set {
+                this["patches_HammerRange"] = value;
+            }
+        }
     }
 }

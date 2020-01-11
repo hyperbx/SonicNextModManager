@@ -28,64 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModManager));
-            System.Windows.Forms.ListViewItem listViewItem96 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Action Gauge Fixes",
-            "Restores Action Gauge draining and replenishment for Sonic."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem97 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Restores gauge draining and replenishment for Sonic."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "Bound Attack Recovery",
             "Unlocks mid-air momentum for the bound attack."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem98 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Controllable Spinkick",
+            "Allows the player to move whilst using the Spinkick."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
             "Curved Homing Attack",
-            "Swaps Sonic\'s homing module with Blaze\'s to enable the curve."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem99 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Enables homing gravity for Sonic."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
             "Debug Mode",
             "Enables Debug Mode for all characters."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem100 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
             "Disable Bloom",
             "Disables bloom, obviously."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem101 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
             "Disable HUD",
             "Disables the heads-up display."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem102 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
             "Disable Intro Logos",
-            "Removes the SEGA, Sonic Team and CriWare logos on launch."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem103 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Disables the SEGA, Sonic Team and CriWare logos on launch."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
             "Disable Music",
             "Disables all music... is that not obvious enough, either?"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem104 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem(new string[] {
             "Disable Shadows",
             "What do you think? ;)"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem105 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem11 = new System.Windows.Forms.ListViewItem(new string[] {
             "Disable Character Stumble",
             "Disables the stumble state when you smack into a wall."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem106 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem12 = new System.Windows.Forms.ListViewItem(new string[] {
             "Enable Chaos Smash",
             "Restores Shadow\'s Chaos Smash."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem107 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem(new string[] {
             "Enable Homing Flips",
             "Restores Sonic\'s extra flipping animations after homing."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem108 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem14 = new System.Windows.Forms.ListViewItem(new string[] {
             "Enable Homing Spam",
             "Allows the player to spam Sonic\'s homing attack."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem109 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem15 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Mach Speed Air Control",
+            "Allows for free movement when jumping at Mach Speed."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem16 = new System.Windows.Forms.ListViewItem(new string[] {
             "Omega Blur Fix",
             "Fixes a Xenia bug that causes issues when rendering Omega."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem110 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem17 = new System.Windows.Forms.ListViewItem(new string[] {
             "Silver Grind Trick Fix",
-            "Fixes Silver\'s grind trick animation being referenced incorrectly."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem111 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Fixes Silver\'s grind trick animation playing incorrectly."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem18 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Snowboard Air Control",
+            "Allows for free movement when jumping on the snowboard."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem19 = new System.Windows.Forms.ListViewItem(new string[] {
             "Unlock Mid-air Momentum",
             "Allows for more free movement in the air with all characters."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem112 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem20 = new System.Windows.Forms.ListViewItem(new string[] {
             "Unlock Tails\' Flight Limit",
             "Removes the flight cap for Tails."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem113 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem21 = new System.Windows.Forms.ListViewItem(new string[] {
             "Snowboard Dynamic Bones",
-            "Restores Sonic\'s dynamic bones whilst using the snowboards."}, -1);
-            System.Windows.Forms.ListViewItem listViewItem114 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Restores Sonic\'s dynamic bones for the snowboards."}, -1);
+            System.Windows.Forms.ListViewItem listViewItem22 = new System.Windows.Forms.ListViewItem(new string[] {
             "XBLA Radial Blur",
             "Restores the higher quality radial blur from the XBLA demo."}, -1);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModManager));
             this.btn_Save = new System.Windows.Forms.Button();
             this.btn_Play = new System.Windows.Forms.Button();
             this.btn_RefreshMods = new System.Windows.Forms.Button();
@@ -157,7 +166,17 @@
             this.text_SaveData = new System.Windows.Forms.TextBox();
             this.lbl_SaveData = new System.Windows.Forms.Label();
             this.unifytb_Tab_Patches = new System.Windows.Forms.TabPage();
+            this.unifytb_Patches = new UnifyTabControl.UnifyTabControl();
+            this.Tab_Simple1 = new System.Windows.Forms.TabPage();
+            this.split_PatchCheckers = new System.Windows.Forms.SplitContainer();
+            this.btn_Patches_SelectAll = new System.Windows.Forms.Button();
+            this.btn_Patches_DeselectAll = new System.Windows.Forms.Button();
             this.pnl_PatchBackdrop = new System.Windows.Forms.Panel();
+            this.view_PatchesList = new System.Windows.Forms.ListView();
+            this.Column_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Column_Description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Column_CleanSpace = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Tab_Advanced1 = new System.Windows.Forms.TabPage();
             this.group_CameraTweaks = new System.Windows.Forms.GroupBox();
             this.lbl_CameraTweaks = new System.Windows.Forms.Label();
             this.combo_CameraType = new System.Windows.Forms.ComboBox();
@@ -193,6 +212,13 @@
             this.combo_Renderer = new System.Windows.Forms.ComboBox();
             this.lbl_ForceAA = new System.Windows.Forms.Label();
             this.check_ForceAA = new System.Windows.Forms.CheckBox();
+            this.Tab_Advanced2 = new System.Windows.Forms.TabPage();
+            this.group_CharacterTweaks = new System.Windows.Forms.GroupBox();
+            this.nud_HammerRange = new System.Windows.Forms.NumericUpDown();
+            this.lbl_HammerRange = new System.Windows.Forms.Label();
+            this.btn_ResetHammerRange = new System.Windows.Forms.Button();
+            this.help_HammerRange = new System.Windows.Forms.LinkLabel();
+            this.lbl_CharacterTweaksOverlay = new System.Windows.Forms.Label();
             this.unifytb_Tab_Settings = new System.Windows.Forms.TabPage();
             this.group_Options = new System.Windows.Forms.GroupBox();
             this.group_Appearance = new System.Windows.Forms.GroupBox();
@@ -238,16 +264,6 @@
             this.text_ModsDirectory = new System.Windows.Forms.TextBox();
             this.lbl_GameDirectory = new System.Windows.Forms.Label();
             this.lbl_ModsDirectory = new System.Windows.Forms.Label();
-            this.unifytb_Patches = new UnifyTabControl.UnifyTabControl();
-            this.Tab_Simple = new System.Windows.Forms.TabPage();
-            this.Tab_Advanced = new System.Windows.Forms.TabPage();
-            this.view_PatchesList = new System.Windows.Forms.ListView();
-            this.Column_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Column_Description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Column_CleanSpace = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.split_PatchCheckers = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.split_MainControls)).BeginInit();
             this.split_MainControls.Panel1.SuspendLayout();
             this.split_MainControls.Panel2.SuspendLayout();
@@ -275,12 +291,22 @@
             this.group_Settings.SuspendLayout();
             this.group_Setup.SuspendLayout();
             this.unifytb_Tab_Patches.SuspendLayout();
+            this.unifytb_Patches.SuspendLayout();
+            this.Tab_Simple1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.split_PatchCheckers)).BeginInit();
+            this.split_PatchCheckers.Panel1.SuspendLayout();
+            this.split_PatchCheckers.Panel2.SuspendLayout();
+            this.split_PatchCheckers.SuspendLayout();
             this.pnl_PatchBackdrop.SuspendLayout();
+            this.Tab_Advanced1.SuspendLayout();
             this.group_CameraTweaks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_FieldOfView)).BeginInit();
             this.group_GraphicsTweaks.SuspendLayout();
+            this.Tab_Advanced2.SuspendLayout();
+            this.group_CharacterTweaks.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_HammerRange)).BeginInit();
             this.unifytb_Tab_Settings.SuspendLayout();
             this.group_Options.SuspendLayout();
             this.group_Appearance.SuspendLayout();
@@ -294,13 +320,6 @@
             this.splitContainer2.SuspendLayout();
             this.group_FTP.SuspendLayout();
             this.group_Directories.SuspendLayout();
-            this.unifytb_Patches.SuspendLayout();
-            this.Tab_Simple.SuspendLayout();
-            this.Tab_Advanced.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.split_PatchCheckers)).BeginInit();
-            this.split_PatchCheckers.Panel1.SuspendLayout();
-            this.split_PatchCheckers.Panel2.SuspendLayout();
-            this.split_PatchCheckers.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Save
@@ -1232,6 +1251,94 @@
             this.unifytb_Tab_Patches.TabIndex = 2;
             this.unifytb_Tab_Patches.Text = "Patches";
             // 
+            // unifytb_Patches
+            // 
+            this.unifytb_Patches.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.unifytb_Patches.AllowDrop = true;
+            this.unifytb_Patches.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.unifytb_Patches.BackTabColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.unifytb_Patches.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.unifytb_Patches.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
+            this.unifytb_Patches.ClosingMessage = null;
+            this.unifytb_Patches.Controls.Add(this.Tab_Simple1);
+            this.unifytb_Patches.Controls.Add(this.Tab_Advanced1);
+            this.unifytb_Patches.Controls.Add(this.Tab_Advanced2);
+            this.unifytb_Patches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.unifytb_Patches.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.unifytb_Patches.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.unifytb_Patches.ItemSize = new System.Drawing.Size(240, 16);
+            this.unifytb_Patches.Location = new System.Drawing.Point(0, 3);
+            this.unifytb_Patches.Name = "unifytb_Patches";
+            this.unifytb_Patches.SelectedIndex = 0;
+            this.unifytb_Patches.SelectedTextColor = System.Drawing.SystemColors.Control;
+            this.unifytb_Patches.ShowClosingButton = false;
+            this.unifytb_Patches.ShowClosingMessage = false;
+            this.unifytb_Patches.Size = new System.Drawing.Size(530, 473);
+            this.unifytb_Patches.TabIndex = 4;
+            this.unifytb_Patches.TextColor = System.Drawing.SystemColors.Control;
+            this.unifytb_Patches.SelectedIndexChanged += new System.EventHandler(this.unifytb_Patches_SelectedIndexChanged);
+            // 
+            // Tab_Simple1
+            // 
+            this.Tab_Simple1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Simple1.Controls.Add(this.split_PatchCheckers);
+            this.Tab_Simple1.Controls.Add(this.pnl_PatchBackdrop);
+            this.Tab_Simple1.Location = new System.Drawing.Point(4, 20);
+            this.Tab_Simple1.Name = "Tab_Simple1";
+            this.Tab_Simple1.Size = new System.Drawing.Size(522, 449);
+            this.Tab_Simple1.TabIndex = 0;
+            this.Tab_Simple1.Text = "Simple #1";
+            // 
+            // split_PatchCheckers
+            // 
+            this.split_PatchCheckers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.split_PatchCheckers.Location = new System.Drawing.Point(-4, 416);
+            this.split_PatchCheckers.Name = "split_PatchCheckers";
+            // 
+            // split_PatchCheckers.Panel1
+            // 
+            this.split_PatchCheckers.Panel1.Controls.Add(this.btn_Patches_SelectAll);
+            // 
+            // split_PatchCheckers.Panel2
+            // 
+            this.split_PatchCheckers.Panel2.Controls.Add(this.btn_Patches_DeselectAll);
+            this.split_PatchCheckers.Size = new System.Drawing.Size(531, 32);
+            this.split_PatchCheckers.SplitterDistance = 264;
+            this.split_PatchCheckers.TabIndex = 3;
+            // 
+            // btn_Patches_SelectAll
+            // 
+            this.btn_Patches_SelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Patches_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
+            this.btn_Patches_SelectAll.FlatAppearance.BorderSize = 0;
+            this.btn_Patches_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Patches_SelectAll.Location = new System.Drawing.Point(5, 6);
+            this.btn_Patches_SelectAll.Name = "btn_Patches_SelectAll";
+            this.btn_Patches_SelectAll.Size = new System.Drawing.Size(258, 23);
+            this.btn_Patches_SelectAll.TabIndex = 3;
+            this.btn_Patches_SelectAll.Text = "Select All";
+            this.btn_Patches_SelectAll.UseVisualStyleBackColor = false;
+            this.btn_Patches_SelectAll.Click += new System.EventHandler(this.btn_Patches_SelectAll_Click);
+            // 
+            // btn_Patches_DeselectAll
+            // 
+            this.btn_Patches_DeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Patches_DeselectAll.BackColor = System.Drawing.Color.Tomato;
+            this.btn_Patches_DeselectAll.FlatAppearance.BorderSize = 0;
+            this.btn_Patches_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Patches_DeselectAll.Location = new System.Drawing.Point(2, 6);
+            this.btn_Patches_DeselectAll.Name = "btn_Patches_DeselectAll";
+            this.btn_Patches_DeselectAll.Size = new System.Drawing.Size(258, 23);
+            this.btn_Patches_DeselectAll.TabIndex = 4;
+            this.btn_Patches_DeselectAll.Text = "Deselect All";
+            this.btn_Patches_DeselectAll.UseVisualStyleBackColor = false;
+            this.btn_Patches_DeselectAll.Click += new System.EventHandler(this.btn_Patches_DeselectAll_Click);
+            // 
             // pnl_PatchBackdrop
             // 
             this.pnl_PatchBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1242,8 +1349,108 @@
             this.pnl_PatchBackdrop.Controls.Add(this.view_PatchesList);
             this.pnl_PatchBackdrop.Location = new System.Drawing.Point(0, 10);
             this.pnl_PatchBackdrop.Name = "pnl_PatchBackdrop";
-            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(520, 399);
+            this.pnl_PatchBackdrop.Size = new System.Drawing.Size(522, 403);
             this.pnl_PatchBackdrop.TabIndex = 2;
+            // 
+            // view_PatchesList
+            // 
+            this.view_PatchesList.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.view_PatchesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.view_PatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.view_PatchesList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.view_PatchesList.CheckBoxes = true;
+            this.view_PatchesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Column_Name,
+            this.Column_Description,
+            this.Column_CleanSpace});
+            this.view_PatchesList.ForeColor = System.Drawing.SystemColors.Control;
+            this.view_PatchesList.FullRowSelect = true;
+            this.view_PatchesList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.view_PatchesList.HideSelection = false;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.StateImageIndex = 0;
+            listViewItem5.StateImageIndex = 0;
+            listViewItem6.StateImageIndex = 0;
+            listViewItem7.StateImageIndex = 0;
+            listViewItem8.StateImageIndex = 0;
+            listViewItem9.StateImageIndex = 0;
+            listViewItem10.StateImageIndex = 0;
+            listViewItem11.StateImageIndex = 0;
+            listViewItem12.StateImageIndex = 0;
+            listViewItem13.StateImageIndex = 0;
+            listViewItem14.StateImageIndex = 0;
+            listViewItem15.StateImageIndex = 0;
+            listViewItem16.StateImageIndex = 0;
+            listViewItem17.StateImageIndex = 0;
+            listViewItem18.StateImageIndex = 0;
+            listViewItem19.StateImageIndex = 0;
+            listViewItem20.StateImageIndex = 0;
+            listViewItem21.StateImageIndex = 0;
+            listViewItem22.StateImageIndex = 0;
+            this.view_PatchesList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5,
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9,
+            listViewItem10,
+            listViewItem11,
+            listViewItem12,
+            listViewItem13,
+            listViewItem14,
+            listViewItem15,
+            listViewItem16,
+            listViewItem17,
+            listViewItem18,
+            listViewItem19,
+            listViewItem20,
+            listViewItem21,
+            listViewItem22});
+            this.view_PatchesList.Location = new System.Drawing.Point(0, 0);
+            this.view_PatchesList.MultiSelect = false;
+            this.view_PatchesList.Name = "view_PatchesList";
+            this.view_PatchesList.OwnerDraw = true;
+            this.view_PatchesList.Size = new System.Drawing.Size(537, 418);
+            this.view_PatchesList.TabIndex = 2;
+            this.view_PatchesList.UseCompatibleStateImageBehavior = false;
+            this.view_PatchesList.View = System.Windows.Forms.View.Details;
+            this.view_PatchesList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.view_PatchesList_DrawColumnHeader);
+            this.view_PatchesList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.view_ModsList_DrawItem);
+            this.view_PatchesList.SelectedIndexChanged += new System.EventHandler(this.view_PatchesList_SelectedIndexChanged);
+            // 
+            // Column_Name
+            // 
+            this.Column_Name.Text = "Name";
+            this.Column_Name.Width = 172;
+            // 
+            // Column_Description
+            // 
+            this.Column_Description.Text = "Blurb";
+            this.Column_Description.Width = 347;
+            // 
+            // Column_CleanSpace
+            // 
+            this.Column_CleanSpace.Text = "";
+            this.Column_CleanSpace.Width = 5000;
+            // 
+            // Tab_Advanced1
+            // 
+            this.Tab_Advanced1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Advanced1.Controls.Add(this.group_CameraTweaks);
+            this.Tab_Advanced1.Controls.Add(this.group_GraphicsTweaks);
+            this.Tab_Advanced1.Location = new System.Drawing.Point(4, 20);
+            this.Tab_Advanced1.Name = "Tab_Advanced1";
+            this.Tab_Advanced1.Size = new System.Drawing.Size(522, 449);
+            this.Tab_Advanced1.TabIndex = 1;
+            this.Tab_Advanced1.Text = "Advanced #1";
             // 
             // group_CameraTweaks
             // 
@@ -1269,7 +1476,7 @@
             this.group_CameraTweaks.ForeColor = System.Drawing.SystemColors.Control;
             this.group_CameraTweaks.Location = new System.Drawing.Point(5, 212);
             this.group_CameraTweaks.Name = "group_CameraTweaks";
-            this.group_CameraTweaks.Size = new System.Drawing.Size(513, 229);
+            this.group_CameraTweaks.Size = new System.Drawing.Size(512, 229);
             this.group_CameraTweaks.TabIndex = 3;
             this.group_CameraTweaks.TabStop = false;
             this.group_CameraTweaks.Text = "Camera Tweaks";
@@ -1295,7 +1502,7 @@
             "Electronic Entertainment Expo (E3)"});
             this.combo_CameraType.Location = new System.Drawing.Point(14, 41);
             this.combo_CameraType.Name = "combo_CameraType";
-            this.combo_CameraType.Size = new System.Drawing.Size(465, 23);
+            this.combo_CameraType.Size = new System.Drawing.Size(464, 23);
             this.combo_CameraType.TabIndex = 94;
             this.combo_CameraType.SelectedIndexChanged += new System.EventHandler(this.Combo_CameraType_SelectedIndexChanged);
             // 
@@ -1310,7 +1517,7 @@
             0,
             0});
             this.nud_CameraDistance.Name = "nud_CameraDistance";
-            this.nud_CameraDistance.Size = new System.Drawing.Size(465, 23);
+            this.nud_CameraDistance.Size = new System.Drawing.Size(464, 23);
             this.nud_CameraDistance.TabIndex = 84;
             this.nud_CameraDistance.Value = new decimal(new int[] {
             650,
@@ -1341,7 +1548,7 @@
             0,
             0});
             this.nud_CameraHeight.Name = "nud_CameraHeight";
-            this.nud_CameraHeight.Size = new System.Drawing.Size(465, 23);
+            this.nud_CameraHeight.Size = new System.Drawing.Size(464, 23);
             this.nud_CameraHeight.TabIndex = 103;
             this.nud_CameraHeight.Value = new decimal(new int[] {
             70,
@@ -1368,7 +1575,7 @@
             this.help_FieldOfView.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_FieldOfView.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_FieldOfView.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_FieldOfView.Location = new System.Drawing.Point(466, 170);
+            this.help_FieldOfView.Location = new System.Drawing.Point(465, 170);
             this.help_FieldOfView.Name = "help_FieldOfView";
             this.help_FieldOfView.Size = new System.Drawing.Size(18, 15);
             this.help_FieldOfView.TabIndex = 110;
@@ -1384,7 +1591,7 @@
             this.btn_ResetCameraHeight.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraHeight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraHeight.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraHeight.Image")));
-            this.btn_ResetCameraHeight.Location = new System.Drawing.Point(481, 140);
+            this.btn_ResetCameraHeight.Location = new System.Drawing.Point(480, 140);
             this.btn_ResetCameraHeight.Name = "btn_ResetCameraHeight";
             this.btn_ResetCameraHeight.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraHeight.TabIndex = 104;
@@ -1399,7 +1606,7 @@
             this.btn_ResetCameraDistance.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraDistance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraDistance.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraDistance.Image")));
-            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(481, 91);
+            this.btn_ResetCameraDistance.Location = new System.Drawing.Point(480, 91);
             this.btn_ResetCameraDistance.Name = "btn_ResetCameraDistance";
             this.btn_ResetCameraDistance.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraDistance.TabIndex = 85;
@@ -1414,7 +1621,7 @@
             this.btn_ResetFOV.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetFOV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetFOV.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetFOV.Image")));
-            this.btn_ResetFOV.Location = new System.Drawing.Point(481, 189);
+            this.btn_ResetFOV.Location = new System.Drawing.Point(480, 189);
             this.btn_ResetFOV.Name = "btn_ResetFOV";
             this.btn_ResetFOV.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetFOV.TabIndex = 98;
@@ -1429,7 +1636,7 @@
             this.help_CameraHeight.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_CameraHeight.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_CameraHeight.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_CameraHeight.Location = new System.Drawing.Point(466, 121);
+            this.help_CameraHeight.Location = new System.Drawing.Point(465, 121);
             this.help_CameraHeight.Name = "help_CameraHeight";
             this.help_CameraHeight.Size = new System.Drawing.Size(18, 15);
             this.help_CameraHeight.TabIndex = 109;
@@ -1448,7 +1655,7 @@
             0,
             0});
             this.nud_FieldOfView.Name = "nud_FieldOfView";
-            this.nud_FieldOfView.Size = new System.Drawing.Size(465, 23);
+            this.nud_FieldOfView.Size = new System.Drawing.Size(464, 23);
             this.nud_FieldOfView.TabIndex = 97;
             this.nud_FieldOfView.Value = new decimal(new int[] {
             90,
@@ -1487,7 +1694,7 @@
             this.help_CameraDistance.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_CameraDistance.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_CameraDistance.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_CameraDistance.Location = new System.Drawing.Point(466, 72);
+            this.help_CameraDistance.Location = new System.Drawing.Point(465, 72);
             this.help_CameraDistance.Name = "help_CameraDistance";
             this.help_CameraDistance.Size = new System.Drawing.Size(18, 15);
             this.help_CameraDistance.TabIndex = 108;
@@ -1503,7 +1710,7 @@
             this.help_CameraType.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_CameraType.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_CameraType.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_CameraType.Location = new System.Drawing.Point(466, 23);
+            this.help_CameraType.Location = new System.Drawing.Point(465, 23);
             this.help_CameraType.Name = "help_CameraType";
             this.help_CameraType.Size = new System.Drawing.Size(18, 15);
             this.help_CameraType.TabIndex = 107;
@@ -1519,7 +1726,7 @@
             this.btn_ResetCameraType.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetCameraType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetCameraType.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetCameraType.Image")));
-            this.btn_ResetCameraType.Location = new System.Drawing.Point(481, 42);
+            this.btn_ResetCameraType.Location = new System.Drawing.Point(480, 42);
             this.btn_ResetCameraType.Name = "btn_ResetCameraType";
             this.btn_ResetCameraType.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetCameraType.TabIndex = 95;
@@ -1549,7 +1756,7 @@
             this.group_GraphicsTweaks.ForeColor = System.Drawing.SystemColors.Control;
             this.group_GraphicsTweaks.Location = new System.Drawing.Point(5, 4);
             this.group_GraphicsTweaks.Name = "group_GraphicsTweaks";
-            this.group_GraphicsTweaks.Size = new System.Drawing.Size(513, 205);
+            this.group_GraphicsTweaks.Size = new System.Drawing.Size(512, 205);
             this.group_GraphicsTweaks.TabIndex = 2;
             this.group_GraphicsTweaks.TabStop = false;
             this.group_GraphicsTweaks.Text = "Graphics Tweaks";
@@ -1562,7 +1769,7 @@
             this.help_ForceAA.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_ForceAA.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_ForceAA.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_ForceAA.Location = new System.Drawing.Point(466, 175);
+            this.help_ForceAA.Location = new System.Drawing.Point(465, 175);
             this.help_ForceAA.Name = "help_ForceAA";
             this.help_ForceAA.Size = new System.Drawing.Size(18, 15);
             this.help_ForceAA.TabIndex = 118;
@@ -1578,7 +1785,7 @@
             this.help_MSAA.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_MSAA.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_MSAA.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_MSAA.Location = new System.Drawing.Point(466, 122);
+            this.help_MSAA.Location = new System.Drawing.Point(465, 122);
             this.help_MSAA.Name = "help_MSAA";
             this.help_MSAA.Size = new System.Drawing.Size(18, 15);
             this.help_MSAA.TabIndex = 114;
@@ -1594,7 +1801,7 @@
             this.btn_ResetMSAA.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetMSAA.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetMSAA.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetMSAA.Image")));
-            this.btn_ResetMSAA.Location = new System.Drawing.Point(481, 141);
+            this.btn_ResetMSAA.Location = new System.Drawing.Point(480, 141);
             this.btn_ResetMSAA.Name = "btn_ResetMSAA";
             this.btn_ResetMSAA.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetMSAA.TabIndex = 113;
@@ -1623,7 +1830,7 @@
             "4x MSAA"});
             this.combo_MSAA.Location = new System.Drawing.Point(14, 140);
             this.combo_MSAA.Name = "combo_MSAA";
-            this.combo_MSAA.Size = new System.Drawing.Size(465, 23);
+            this.combo_MSAA.Size = new System.Drawing.Size(464, 23);
             this.combo_MSAA.TabIndex = 112;
             this.combo_MSAA.SelectedIndexChanged += new System.EventHandler(this.combo_MSAA_SelectedIndexChanged);
             // 
@@ -1635,7 +1842,7 @@
             this.help_Reflections.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_Reflections.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_Reflections.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_Reflections.Location = new System.Drawing.Point(466, 73);
+            this.help_Reflections.Location = new System.Drawing.Point(465, 73);
             this.help_Reflections.Name = "help_Reflections";
             this.help_Reflections.Size = new System.Drawing.Size(18, 15);
             this.help_Reflections.TabIndex = 106;
@@ -1651,7 +1858,7 @@
             this.help_Renderer.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.help_Renderer.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.help_Renderer.LinkColor = System.Drawing.SystemColors.ControlDark;
-            this.help_Renderer.Location = new System.Drawing.Point(466, 24);
+            this.help_Renderer.Location = new System.Drawing.Point(465, 24);
             this.help_Renderer.Name = "help_Renderer";
             this.help_Renderer.Size = new System.Drawing.Size(18, 15);
             this.help_Renderer.TabIndex = 105;
@@ -1662,7 +1869,7 @@
             // lbl_GraphicsTweaksOverlay
             // 
             this.lbl_GraphicsTweaksOverlay.AutoSize = true;
-            this.lbl_GraphicsTweaksOverlay.Location = new System.Drawing.Point(7, 1);
+            this.lbl_GraphicsTweaksOverlay.Location = new System.Drawing.Point(6, 0);
             this.lbl_GraphicsTweaksOverlay.Name = "lbl_GraphicsTweaksOverlay";
             this.lbl_GraphicsTweaksOverlay.Size = new System.Drawing.Size(93, 15);
             this.lbl_GraphicsTweaksOverlay.TabIndex = 92;
@@ -1676,7 +1883,7 @@
             this.btn_ResetReflections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetReflections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetReflections.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetReflections.Image")));
-            this.btn_ResetReflections.Location = new System.Drawing.Point(481, 92);
+            this.btn_ResetReflections.Location = new System.Drawing.Point(480, 92);
             this.btn_ResetReflections.Name = "btn_ResetReflections";
             this.btn_ResetReflections.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetReflections.TabIndex = 87;
@@ -1706,7 +1913,7 @@
             "Full"});
             this.combo_Reflections.Location = new System.Drawing.Point(14, 91);
             this.combo_Reflections.Name = "combo_Reflections";
-            this.combo_Reflections.Size = new System.Drawing.Size(465, 23);
+            this.combo_Reflections.Size = new System.Drawing.Size(464, 23);
             this.combo_Reflections.TabIndex = 78;
             this.combo_Reflections.SelectedIndexChanged += new System.EventHandler(this.Combo_Reflections_SelectedIndexChanged);
             // 
@@ -1718,7 +1925,7 @@
             this.btn_ResetRenderer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btn_ResetRenderer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ResetRenderer.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetRenderer.Image")));
-            this.btn_ResetRenderer.Location = new System.Drawing.Point(481, 43);
+            this.btn_ResetRenderer.Location = new System.Drawing.Point(480, 43);
             this.btn_ResetRenderer.Name = "btn_ResetRenderer";
             this.btn_ResetRenderer.Size = new System.Drawing.Size(21, 20);
             this.btn_ResetRenderer.TabIndex = 101;
@@ -1748,7 +1955,7 @@
             "Cheap (Not Recommended)"});
             this.combo_Renderer.Location = new System.Drawing.Point(14, 42);
             this.combo_Renderer.Name = "combo_Renderer";
-            this.combo_Renderer.Size = new System.Drawing.Size(465, 23);
+            this.combo_Renderer.Size = new System.Drawing.Size(464, 23);
             this.combo_Renderer.TabIndex = 100;
             this.combo_Renderer.SelectedIndexChanged += new System.EventHandler(this.Combo_Renderer_SelectedIndexChanged);
             // 
@@ -1772,6 +1979,104 @@
             this.check_ForceAA.TabIndex = 116;
             this.check_ForceAA.UseVisualStyleBackColor = true;
             this.check_ForceAA.CheckedChanged += new System.EventHandler(this.check_ForceAA_CheckedChanged);
+            // 
+            // Tab_Advanced2
+            // 
+            this.Tab_Advanced2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Advanced2.Controls.Add(this.group_CharacterTweaks);
+            this.Tab_Advanced2.Location = new System.Drawing.Point(4, 20);
+            this.Tab_Advanced2.Name = "Tab_Advanced2";
+            this.Tab_Advanced2.Size = new System.Drawing.Size(522, 449);
+            this.Tab_Advanced2.TabIndex = 2;
+            this.Tab_Advanced2.Text = "Advanced #2";
+            // 
+            // group_CharacterTweaks
+            // 
+            this.group_CharacterTweaks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.group_CharacterTweaks.Controls.Add(this.nud_HammerRange);
+            this.group_CharacterTweaks.Controls.Add(this.lbl_HammerRange);
+            this.group_CharacterTweaks.Controls.Add(this.btn_ResetHammerRange);
+            this.group_CharacterTweaks.Controls.Add(this.help_HammerRange);
+            this.group_CharacterTweaks.Controls.Add(this.lbl_CharacterTweaksOverlay);
+            this.group_CharacterTweaks.ForeColor = System.Drawing.SystemColors.Control;
+            this.group_CharacterTweaks.Location = new System.Drawing.Point(5, 4);
+            this.group_CharacterTweaks.Name = "group_CharacterTweaks";
+            this.group_CharacterTweaks.Size = new System.Drawing.Size(512, 84);
+            this.group_CharacterTweaks.TabIndex = 4;
+            this.group_CharacterTweaks.TabStop = false;
+            this.group_CharacterTweaks.Text = "Character Tweaks";
+            // 
+            // nud_HammerRange
+            // 
+            this.nud_HammerRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nud_HammerRange.DecimalPlaces = 1;
+            this.nud_HammerRange.Location = new System.Drawing.Point(14, 42);
+            this.nud_HammerRange.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.nud_HammerRange.Name = "nud_HammerRange";
+            this.nud_HammerRange.Size = new System.Drawing.Size(464, 23);
+            this.nud_HammerRange.TabIndex = 117;
+            this.nud_HammerRange.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // lbl_HammerRange
+            // 
+            this.lbl_HammerRange.AutoSize = true;
+            this.lbl_HammerRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_HammerRange.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbl_HammerRange.Location = new System.Drawing.Point(11, 24);
+            this.lbl_HammerRange.Name = "lbl_HammerRange";
+            this.lbl_HammerRange.Size = new System.Drawing.Size(126, 15);
+            this.lbl_HammerRange.TabIndex = 116;
+            this.lbl_HammerRange.Text = "Amy\'s Hammer Range";
+            // 
+            // btn_ResetHammerRange
+            // 
+            this.btn_ResetHammerRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_ResetHammerRange.FlatAppearance.BorderSize = 0;
+            this.btn_ResetHammerRange.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetHammerRange.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_ResetHammerRange.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ResetHammerRange.Image = ((System.Drawing.Image)(resources.GetObject("btn_ResetHammerRange.Image")));
+            this.btn_ResetHammerRange.Location = new System.Drawing.Point(480, 43);
+            this.btn_ResetHammerRange.Name = "btn_ResetHammerRange";
+            this.btn_ResetHammerRange.Size = new System.Drawing.Size(21, 20);
+            this.btn_ResetHammerRange.TabIndex = 118;
+            this.btn_ResetHammerRange.UseVisualStyleBackColor = true;
+            this.btn_ResetHammerRange.Click += new System.EventHandler(this.btn_ResetHammerRange_Click);
+            // 
+            // help_HammerRange
+            // 
+            this.help_HammerRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.help_HammerRange.AutoSize = true;
+            this.help_HammerRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.help_HammerRange.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.help_HammerRange.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.help_HammerRange.LinkColor = System.Drawing.SystemColors.ControlDark;
+            this.help_HammerRange.Location = new System.Drawing.Point(465, 24);
+            this.help_HammerRange.Name = "help_HammerRange";
+            this.help_HammerRange.Size = new System.Drawing.Size(18, 15);
+            this.help_HammerRange.TabIndex = 119;
+            this.help_HammerRange.TabStop = true;
+            this.help_HammerRange.Text = " ? ";
+            this.help_HammerRange.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.help_HammerRange_LinkClicked);
+            // 
+            // lbl_CharacterTweaksOverlay
+            // 
+            this.lbl_CharacterTweaksOverlay.AutoSize = true;
+            this.lbl_CharacterTweaksOverlay.Location = new System.Drawing.Point(6, 0);
+            this.lbl_CharacterTweaksOverlay.Name = "lbl_CharacterTweaksOverlay";
+            this.lbl_CharacterTweaksOverlay.Size = new System.Drawing.Size(98, 15);
+            this.lbl_CharacterTweaksOverlay.TabIndex = 115;
+            this.lbl_CharacterTweaksOverlay.Text = "Character Tweaks";
             // 
             // unifytb_Tab_Settings
             // 
@@ -2373,184 +2678,6 @@
             this.lbl_ModsDirectory.Text = "Mods Directory:";
             this.lbl_ModsDirectory.Click += new System.EventHandler(this.Lbl_ModsDirectory_Click);
             // 
-            // unifytb_Patches
-            // 
-            this.unifytb_Patches.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.unifytb_Patches.AllowDrop = true;
-            this.unifytb_Patches.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.unifytb_Patches.BackTabColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.unifytb_Patches.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.unifytb_Patches.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
-            this.unifytb_Patches.ClosingMessage = null;
-            this.unifytb_Patches.Controls.Add(this.Tab_Simple);
-            this.unifytb_Patches.Controls.Add(this.Tab_Advanced);
-            this.unifytb_Patches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.unifytb_Patches.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.unifytb_Patches.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.unifytb_Patches.ItemSize = new System.Drawing.Size(240, 16);
-            this.unifytb_Patches.Location = new System.Drawing.Point(0, 3);
-            this.unifytb_Patches.Name = "unifytb_Patches";
-            this.unifytb_Patches.SelectedIndex = 0;
-            this.unifytb_Patches.SelectedTextColor = System.Drawing.SystemColors.Control;
-            this.unifytb_Patches.ShowClosingButton = false;
-            this.unifytb_Patches.ShowClosingMessage = false;
-            this.unifytb_Patches.Size = new System.Drawing.Size(531, 468);
-            this.unifytb_Patches.TabIndex = 4;
-            this.unifytb_Patches.TextColor = System.Drawing.SystemColors.Control;
-            // 
-            // Tab_Simple
-            // 
-            this.Tab_Simple.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.Tab_Simple.Controls.Add(this.split_PatchCheckers);
-            this.Tab_Simple.Controls.Add(this.pnl_PatchBackdrop);
-            this.Tab_Simple.Location = new System.Drawing.Point(4, 20);
-            this.Tab_Simple.Name = "Tab_Simple";
-            this.Tab_Simple.Size = new System.Drawing.Size(523, 444);
-            this.Tab_Simple.TabIndex = 0;
-            this.Tab_Simple.Text = "Simple";
-            // 
-            // Tab_Advanced
-            // 
-            this.Tab_Advanced.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.Tab_Advanced.Controls.Add(this.group_CameraTweaks);
-            this.Tab_Advanced.Controls.Add(this.group_GraphicsTweaks);
-            this.Tab_Advanced.Location = new System.Drawing.Point(4, 20);
-            this.Tab_Advanced.Name = "Tab_Advanced";
-            this.Tab_Advanced.Size = new System.Drawing.Size(523, 415);
-            this.Tab_Advanced.TabIndex = 1;
-            this.Tab_Advanced.Text = "Advanced";
-            // 
-            // view_PatchesList
-            // 
-            this.view_PatchesList.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.view_PatchesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.view_PatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.view_PatchesList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.view_PatchesList.CheckBoxes = true;
-            this.view_PatchesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Column_Name,
-            this.Column_Description,
-            this.Column_CleanSpace});
-            this.view_PatchesList.ForeColor = System.Drawing.SystemColors.Control;
-            this.view_PatchesList.FullRowSelect = true;
-            this.view_PatchesList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.view_PatchesList.HideSelection = false;
-            listViewItem96.StateImageIndex = 0;
-            listViewItem97.StateImageIndex = 0;
-            listViewItem98.StateImageIndex = 0;
-            listViewItem99.StateImageIndex = 0;
-            listViewItem100.StateImageIndex = 0;
-            listViewItem101.StateImageIndex = 0;
-            listViewItem102.StateImageIndex = 0;
-            listViewItem103.StateImageIndex = 0;
-            listViewItem104.StateImageIndex = 0;
-            listViewItem105.StateImageIndex = 0;
-            listViewItem106.StateImageIndex = 0;
-            listViewItem107.StateImageIndex = 0;
-            listViewItem108.StateImageIndex = 0;
-            listViewItem109.StateImageIndex = 0;
-            listViewItem110.StateImageIndex = 0;
-            listViewItem111.StateImageIndex = 0;
-            listViewItem112.StateImageIndex = 0;
-            listViewItem113.StateImageIndex = 0;
-            listViewItem114.StateImageIndex = 0;
-            this.view_PatchesList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem96,
-            listViewItem97,
-            listViewItem98,
-            listViewItem99,
-            listViewItem100,
-            listViewItem101,
-            listViewItem102,
-            listViewItem103,
-            listViewItem104,
-            listViewItem105,
-            listViewItem106,
-            listViewItem107,
-            listViewItem108,
-            listViewItem109,
-            listViewItem110,
-            listViewItem111,
-            listViewItem112,
-            listViewItem113,
-            listViewItem114});
-            this.view_PatchesList.Location = new System.Drawing.Point(0, 0);
-            this.view_PatchesList.MultiSelect = false;
-            this.view_PatchesList.Name = "view_PatchesList";
-            this.view_PatchesList.OwnerDraw = true;
-            this.view_PatchesList.Size = new System.Drawing.Size(518, 414);
-            this.view_PatchesList.TabIndex = 2;
-            this.view_PatchesList.UseCompatibleStateImageBehavior = false;
-            this.view_PatchesList.View = System.Windows.Forms.View.Details;
-            this.view_PatchesList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.view_PatchesList_DrawColumnHeader);
-            this.view_PatchesList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.view_ModsList_DrawItem);
-            this.view_PatchesList.SelectedIndexChanged += new System.EventHandler(this.view_PatchesList_SelectedIndexChanged);
-            // 
-            // Column_Name
-            // 
-            this.Column_Name.Text = "Name";
-            this.Column_Name.Width = 171;
-            // 
-            // Column_Description
-            // 
-            this.Column_Description.Text = "Blurb";
-            this.Column_Description.Width = 346;
-            // 
-            // Column_CleanSpace
-            // 
-            this.Column_CleanSpace.Text = "";
-            this.Column_CleanSpace.Width = 5000;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.Tomato;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(1, 6);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(256, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Deselect All";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.Color.SkyBlue;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(0, 6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(259, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Select All";
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // split_PatchCheckers
-            // 
-            this.split_PatchCheckers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.split_PatchCheckers.Location = new System.Drawing.Point(0, 411);
-            this.split_PatchCheckers.Name = "split_PatchCheckers";
-            // 
-            // split_PatchCheckers.Panel1
-            // 
-            this.split_PatchCheckers.Panel1.Controls.Add(this.button2);
-            // 
-            // split_PatchCheckers.Panel2
-            // 
-            this.split_PatchCheckers.Panel2.Controls.Add(this.button1);
-            this.split_PatchCheckers.Size = new System.Drawing.Size(521, 32);
-            this.split_PatchCheckers.SplitterDistance = 260;
-            this.split_PatchCheckers.TabIndex = 3;
-            // 
             // ModManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2604,7 +2731,14 @@
             this.group_Setup.ResumeLayout(false);
             this.group_Setup.PerformLayout();
             this.unifytb_Tab_Patches.ResumeLayout(false);
+            this.unifytb_Patches.ResumeLayout(false);
+            this.Tab_Simple1.ResumeLayout(false);
+            this.split_PatchCheckers.Panel1.ResumeLayout(false);
+            this.split_PatchCheckers.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.split_PatchCheckers)).EndInit();
+            this.split_PatchCheckers.ResumeLayout(false);
             this.pnl_PatchBackdrop.ResumeLayout(false);
+            this.Tab_Advanced1.ResumeLayout(false);
             this.group_CameraTweaks.ResumeLayout(false);
             this.group_CameraTweaks.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_CameraDistance)).EndInit();
@@ -2612,6 +2746,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_FieldOfView)).EndInit();
             this.group_GraphicsTweaks.ResumeLayout(false);
             this.group_GraphicsTweaks.PerformLayout();
+            this.Tab_Advanced2.ResumeLayout(false);
+            this.group_CharacterTweaks.ResumeLayout(false);
+            this.group_CharacterTweaks.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_HammerRange)).EndInit();
             this.unifytb_Tab_Settings.ResumeLayout(false);
             this.group_Options.ResumeLayout(false);
             this.group_Options.PerformLayout();
@@ -2629,13 +2767,6 @@
             this.group_FTP.PerformLayout();
             this.group_Directories.ResumeLayout(false);
             this.group_Directories.PerformLayout();
-            this.unifytb_Patches.ResumeLayout(false);
-            this.Tab_Simple.ResumeLayout(false);
-            this.Tab_Advanced.ResumeLayout(false);
-            this.split_PatchCheckers.Panel1.ResumeLayout(false);
-            this.split_PatchCheckers.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.split_PatchCheckers)).EndInit();
-            this.split_PatchCheckers.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2796,14 +2927,21 @@
         private System.Windows.Forms.CheckBox check_ForceAA;
         private System.Windows.Forms.LinkLabel help_ForceAA;
         private UnifyTabControl.UnifyTabControl unifytb_Patches;
-        private System.Windows.Forms.TabPage Tab_Simple;
-        private System.Windows.Forms.TabPage Tab_Advanced;
+        private System.Windows.Forms.TabPage Tab_Simple1;
+        private System.Windows.Forms.TabPage Tab_Advanced1;
         private System.Windows.Forms.ListView view_PatchesList;
         private System.Windows.Forms.ColumnHeader Column_Name;
         private System.Windows.Forms.ColumnHeader Column_Description;
         private System.Windows.Forms.ColumnHeader Column_CleanSpace;
         private System.Windows.Forms.SplitContainer split_PatchCheckers;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_Patches_SelectAll;
+        private System.Windows.Forms.Button btn_Patches_DeselectAll;
+        private System.Windows.Forms.TabPage Tab_Advanced2;
+        private System.Windows.Forms.GroupBox group_CharacterTweaks;
+        private System.Windows.Forms.NumericUpDown nud_HammerRange;
+        private System.Windows.Forms.Label lbl_HammerRange;
+        private System.Windows.Forms.Button btn_ResetHammerRange;
+        private System.Windows.Forms.LinkLabel help_HammerRange;
+        private System.Windows.Forms.Label lbl_CharacterTweaksOverlay;
     }
 }

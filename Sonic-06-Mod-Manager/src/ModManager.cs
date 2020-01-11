@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.55-test-110120r1"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.55-test-110120r2"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.1";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -132,6 +132,7 @@ namespace Sonic_06_Mod_Manager
             check_FTP.Checked = Properties.Settings.Default.FTP;
             check_ManualInstall.Checked = Properties.Settings.Default.manualInstall;
             nud_FieldOfView.Value = Properties.Settings.Default.patches_FieldOfView;
+            nud_HammerRange.Value = Properties.Settings.Default.patches_HammerRange;
             check_DisableSoftwareUpdater.Checked = Properties.Settings.Default.disableSoftwareUpdater;
             //check_CancelChristmas.Checked = Properties.Settings.Default.cancelChristmas;
             check_HighContrastText.Checked = Properties.Settings.Default.highContrast;
@@ -239,6 +240,7 @@ namespace Sonic_06_Mod_Manager
                     if (!check_ManualInstall.Checked) RestoreSaves(); // Ensures manual install is disabled first
 
             SizeLastColumn(view_ModsList);
+            SizeLastColumn(view_PatchesList);
             if ((versionNumber.Contains("-indev") || versionNumber.Contains("-beta") || versionNumber.Contains("-test")) == false)
                 if (!Properties.Settings.Default.disableSoftwareUpdater)
                     Updater.CheckForUpdates(versionNumber, "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest-master.exe", "https://segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt", string.Empty);
@@ -259,11 +261,13 @@ namespace Sonic_06_Mod_Manager
             } else if (unifytb_Main.SelectedIndex == 2) {
                 Status = SystemMessages.msg_PatchInfo;
                 if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Action Gauge Fixes")) {
-                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's Action Gauge draining and replenishment when using Gems.", "Action Gauge Fixes for Sonic", "OK", "Information");
+                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's Action Gauge draining and replenishment when using Gems.", "Action Gauge Fixes", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Bound Attack Recovery")) {
                     UnifyMessages.UnifyMessage.Show("This patch will unlock mid-air momentum for the bound attack.\n\nUnlock Mid-air Momentum patch would be recommended to use with this.", "Bound Attack Recovery", "OK", "Information");
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Controllable Spinkick")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will allow Sonic and/or Shadow to move whilst performing the Spinkick.", "Controllable Spinkick", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Curved Homing Attack")) {
-                    UnifyMessages.UnifyMessage.Show("This patch will swap Sonic's homing module with Blaze's to simulate the homing attack from early versions of Sonic '06. However, this removes Sonic's ability to destroy physics objects.", "Curved Homing Attack for Sonic", "OK", "Information");
+                    UnifyMessages.UnifyMessage.Show("This patch will swap Sonic's homing module with Blaze's to simulate the homing attack from early versions of Sonic '06. However, this removes Sonic's ability to destroy physics objects.", "Curved Homing Attack", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Debug Mode")) {
                     UnifyMessages.UnifyMessage.Show("This patch will enable Debug Mode, allowing you to navigate stages with no-clip.\n\nControls:\n► Left Analog Stick/Directional Pad - Move.\n► Right Bumper (R1) - Increase Ring count by 100.\n► Y (Triangle) - Increase height.\n► A (Cross) - Decrease height.", "Debug Mode", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Disable Bloom")) {
@@ -284,6 +288,10 @@ namespace Sonic_06_Mod_Manager
                     UnifyMessages.UnifyMessage.Show("This patch will restore the homing flip animations for Sonic.", "Enable Homing Flips", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Enable Homing Spam")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore homing spam from the E3 demo.", "Enable Homing Spam", "OK", "Information");
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Mach Speed Air Control")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will provide more free control in the air during Mach Speed sections.", "Mach Speed Air Control", "OK", "Information");
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Snowboard Air Control")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will provide more free control in the air when using the snowboards.", "Snowboard Air Control", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Omega Blur Fix")) {
                     UnifyMessages.UnifyMessage.Show("This patch will remove Omega's transparency materials to fix a bug on Xenia where the sprites become blurry.", "Omega Blur Fix", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Silver Grind Trick Fix")) {
@@ -293,9 +301,9 @@ namespace Sonic_06_Mod_Manager
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Unlock Tails' Flight Limit")) {
                     UnifyMessages.UnifyMessage.Show("This patch will unlock Tails' flight limit so he doesn't slam into a ceiling whilst flying. This provides more free control akin to Sonic Adventure.", "Unlock Tails' Flight Limit", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Snowboard Dynamic Bones")) {
-                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's hair bones whilst using the snowboards.", "Use Dynamic Bones for Snowboard States", "OK", "Information");
+                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's hair bones whilst using the snowboards.", "Snowboard Dynamic Bones", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("XBLA Radial Blur")) {
-                    UnifyMessages.UnifyMessage.Show("This patch will restore the higher quality radial blur from the Xbox Live Arcade Demo.", "Xbox Live Arcade Radial Blur", "OK", "Information");
+                    UnifyMessages.UnifyMessage.Show("This patch will restore the higher quality radial blur from the Xbox Live Arcade Demo.", "XBLA Radial Blur", "OK", "Information");
                 }
             }
             Status = SystemMessages.msg_DefaultStatus;
@@ -323,6 +331,7 @@ namespace Sonic_06_Mod_Manager
             Properties.Settings.Default.patches_CameraDistance = Convert.ToInt32(nud_CameraDistance.Value);
             Properties.Settings.Default.patches_FieldOfView = Convert.ToInt32(nud_FieldOfView.Value);
             Properties.Settings.Default.patches_CameraHeight = Convert.ToInt32(nud_CameraHeight.Value);
+            Properties.Settings.Default.patches_HammerRange = Convert.ToInt32(nud_HammerRange.Value);
             Properties.Settings.Default.Save();
         }
 
@@ -502,6 +511,17 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
+            if (view_PatchesList.FindItemWithText("Controllable Spinkick").Checked) {
+                Status = SystemMessages.msg_PatchingCharacters;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.ControllableSpinkick(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
             if (view_PatchesList.FindItemWithText("Bound Attack Recovery").Checked) {
                 Status = SystemMessages.msg_PatchingCharacters;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
@@ -510,6 +530,30 @@ namespace Sonic_06_Mod_Manager
                     XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
                     XEX.DecompressBIN(Path.Combine(text_GameDirectory.Text, "default.xex"));
                     XEX.BoundRecovery(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
+            if (view_PatchesList.FindItemWithText("Mach Speed Air Control").Checked) {
+                Status = SystemMessages.msg_PatchingCharacters;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.DecompressBIN(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.MachSpeedAirControl(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
+            if (view_PatchesList.FindItemWithText("Snowboard Air Control").Checked) {
+                Status = SystemMessages.msg_PatchingCharacters;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.DecompressBIN(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.SnowboardAirControl(Path.Combine(text_GameDirectory.Text, "default.xex"));
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }
@@ -772,6 +816,7 @@ namespace Sonic_06_Mod_Manager
                     int proceed = 0;
                     if (combo_CameraType.SelectedIndex != 0) proceed++;
                     if (nud_CameraHeight.Value != 70) proceed++;
+                    if (nud_HammerRange.Value != 50) proceed++;
                     if (view_PatchesList.FindItemWithText("Action Gauge Fixes").Checked) proceed++;
                     if (view_PatchesList.FindItemWithText("Curved Homing Attack").Checked) proceed++;
                     if (view_PatchesList.FindItemWithText("Debug Mode").Checked) proceed++;
@@ -827,9 +872,9 @@ namespace Sonic_06_Mod_Manager
                             Lua.CameraType(Path.Combine(unpack, $"player\\{system}\\player\\common.lub"), combo_CameraType.SelectedIndex, nud_FieldOfView.Value);
                         }
 
-                        if (nud_CameraHeight.Value != 70) {
-                            Lua.CameraHeight(Path.Combine(unpack, $"player\\{system}\\player\\common.lub"), nud_CameraHeight.Value);
-                        }
+                        if (nud_CameraHeight.Value != 70) Lua.CameraHeight(Path.Combine(unpack, $"player\\{system}\\player\\common.lub"), nud_CameraHeight.Value);
+
+                        if (nud_HammerRange.Value != 50) Lua.HammerRange(Path.Combine(unpack, $"player\\{system}\\player\\amy.lub"), nud_HammerRange.Value);
 
                         ARC.RepackARC(unpack, arc);
                         Status = SystemMessages.msg_DefaultStatus;
@@ -1087,11 +1132,9 @@ namespace Sonic_06_Mod_Manager
 
         //Unchecks all available checkboxes.
         private void Btn_DeselectAll_Click(object sender, EventArgs e) {
-            try {
-                foreach (ListViewItem item in view_ModsList.Items) item.Checked = false;
-                view_ModsList.SelectedItems.Clear();
-                split_ListControls.Visible = false;
-            } catch { }
+            foreach (ListViewItem item in view_ModsList.Items) item.Checked = false;
+            view_ModsList.SelectedItems.Clear();
+            split_ListControls.Visible = false;
         }
 
         private void Btn_UpperPriority_Click(object sender, EventArgs e) { // Moves selected checkbox up the list
@@ -1612,6 +1655,7 @@ namespace Sonic_06_Mod_Manager
             view_PatchesList.SelectedItems.Clear();
             btn_ModInfo.Text = "Mod Info";
             SizeLastColumn(view_ModsList);
+            SizeLastColumn(view_PatchesList);
 
             if (check_ManualInstall.Checked) {
                 Properties.Settings.Default.manualInstall = true;
@@ -2036,101 +2080,26 @@ namespace Sonic_06_Mod_Manager
                 btn_InstallMods.Text = "Install Mods";
                 split_Mods.Visible = true;
                 btn_UninstallMods.Visible = true;
-
-                lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.GrayText;
-                lbl_Reflections.ForeColor = SystemColors.GrayText;
-                lbl_CameraDistance.ForeColor = SystemColors.GrayText;
-                lbl_CameraType.ForeColor = SystemColors.GrayText;
-                lbl_FieldOfView.ForeColor = SystemColors.GrayText;
-                lbl_Renderer.ForeColor = SystemColors.GrayText;
-                lbl_CameraHeight.ForeColor = SystemColors.GrayText;
-                lbl_MSAA.ForeColor = SystemColors.GrayText;
-                lbl_CameraTweaks.ForeColor = SystemColors.GrayText;
-                lbl_ForceAA.ForeColor = SystemColors.GrayText;
-                check_ForceAA.Enabled = false;
-                combo_MSAA.Enabled = false;
-                btn_ResetMSAA.Enabled = false;
-                combo_CameraType.Enabled = false;
-                btn_ResetCameraType.Enabled = false;
-                view_PatchesList.Enabled = false;
-                btn_ResetReflections.Enabled = false;
-                btn_ResetCameraDistance.Enabled = false;
-                combo_Reflections.Enabled = false;
-                nud_CameraDistance.Enabled = false;
-                btn_Play.Enabled = false;
-                nud_FieldOfView.Enabled = false;
-                btn_ResetFOV.Enabled = false;
-                combo_Renderer.Enabled = false;
-                btn_ResetRenderer.Enabled = false;
-                nud_CameraHeight.Enabled = false;
-                btn_ResetCameraHeight.Enabled = false;
+                unifytb_Main.TabPages.Remove(unifytb_Tab_Patches);
             } else {
                 Properties.Settings.Default.FTP = false;
                 check_ManualInstall.Enabled = true;
                 if (Prerequisites.JavaCheck()) check_ManualPatches.Enabled = true;
                 check_SaveRedirect.Enabled = true;
-                if (combo_Emulator_System.SelectedIndex != 1) {
-                    nud_FieldOfView.Enabled = true;
-                    btn_ResetFOV.Enabled = true;
-                }
-                if (combo_CameraType.SelectedIndex != 1) {
-                    nud_CameraDistance.Enabled = true;
-                    btn_ResetCameraDistance.Enabled = true;
-                }
-                if (combo_Renderer.SelectedIndex == 0) {
-                    btn_ResetMSAA.Enabled = true;
-                    combo_MSAA.Enabled = true;
-                    if (combo_MSAA.SelectedIndex == 1) check_ForceAA.Enabled = true;
-                }
                 if (!Properties.Settings.Default.theme) {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
-                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.ControlText;
-                    lbl_Reflections.ForeColor = SystemColors.ControlText;
                     lbl_SaveRedirect.ForeColor = SystemColors.ControlText;
-                    lbl_CameraType.ForeColor = SystemColors.ControlText;
-                    if (combo_Emulator_System.SelectedIndex != 1)
-                        lbl_FieldOfView.ForeColor = SystemColors.ControlText;
-                    if (combo_CameraType.SelectedIndex != 1)
-                        lbl_CameraDistance.ForeColor = SystemColors.ControlText;
-                    lbl_Renderer.ForeColor = SystemColors.ControlText;
-                    lbl_CameraHeight.ForeColor = SystemColors.ControlText;
-                    lbl_CameraTweaks.ForeColor = SystemColors.ControlText;
-                    if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
-                        lbl_MSAA.ForeColor = SystemColors.ControlText;
-                        lbl_ForceAA.ForeColor = SystemColors.ControlText;
-                    }
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
-                    lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.Control;
-                    lbl_Reflections.ForeColor = SystemColors.Control;
                     lbl_SaveRedirect.ForeColor = SystemColors.Control;
-                    lbl_CameraType.ForeColor = SystemColors.Control;
-                    if (combo_Emulator_System.SelectedIndex != 1)
-                        lbl_FieldOfView.ForeColor = SystemColors.Control;
-                    if (combo_CameraType.SelectedIndex != 1)
-                        lbl_CameraDistance.ForeColor = SystemColors.Control;
-                    lbl_Renderer.ForeColor = SystemColors.Control;
-                    lbl_CameraHeight.ForeColor = SystemColors.Control;
-                    lbl_CameraTweaks.ForeColor = SystemColors.Control;
-                    if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
-                        lbl_MSAA.ForeColor = SystemColors.Control;
-                        lbl_ForceAA.ForeColor = SystemColors.Control;
-                    }
                 }
                 split_Mods.Visible = false;
                 btn_UninstallMods.Visible = false;
-                combo_CameraType.Enabled = true;
-                btn_ResetCameraType.Enabled = true;
-                view_PatchesList.Enabled = true;
-                btn_ResetReflections.Enabled = true;
-                combo_Reflections.Enabled = true;
-                btn_Play.Enabled = true;
-                combo_Renderer.Enabled = true;
-                btn_ResetRenderer.Enabled = true;
-                nud_CameraHeight.Enabled = true;
-                btn_ResetCameraHeight.Enabled = true;
+                unifytb_Main.TabPages.Remove(unifytb_Tab_Settings);
+                unifytb_Main.TabPages.Add(unifytb_Tab_Patches);
+                unifytb_Main.TabPages.Add(unifytb_Tab_Settings);
             }
 
             Properties.Settings.Default.Save();
@@ -2284,7 +2253,7 @@ namespace Sonic_06_Mod_Manager
             } else if (lv == view_PatchesList) {
                 int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
                 lv.Columns[0].Width = x * 5;
-                lv.Columns[1].Width = (x * 10) + 5;
+                lv.Columns[1].Width = (x * 10) - 6;
             }
         }
 
@@ -2396,5 +2365,25 @@ namespace Sonic_06_Mod_Manager
             point.X += column.Width / 2 - TextRenderer.MeasureText(column.Text, view_PatchesList.Font).Width / 2;
             TextRenderer.DrawText(e.Graphics, column.Text, view_PatchesList.Font, point, view_PatchesList.ForeColor);
         }
+
+        private void btn_Patches_SelectAll_Click(object sender, EventArgs e) { foreach (ListViewItem item in view_PatchesList.Items) item.Checked = true; }
+
+        private void btn_Patches_DeselectAll_Click(object sender, EventArgs e) {
+            foreach (ListViewItem item in view_PatchesList.Items) item.Checked = false;
+            view_ModsList.SelectedItems.Clear();
+        }
+
+        private void btn_ResetHammerRange_Click(object sender, EventArgs e) {
+            nud_HammerRange.Value = Properties.Settings.Default.patches_HammerRange = 50;
+            Properties.Settings.Default.Save();
+        }
+
+        private void help_HammerRange_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Status = SystemMessages.msg_PatchInfo;
+            UnifyMessages.UnifyMessage.Show("This tweak allows you to change Amy's abysmal hammer range.", "Amy's Hammer Range", "OK", "Information");
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void unifytb_Patches_SelectedIndexChanged(object sender, EventArgs e) { unifytb_Patches.Refresh(); }
     }
 }
