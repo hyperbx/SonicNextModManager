@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.54"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.55-test-110120r1"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.1";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -278,6 +278,8 @@ namespace Sonic_06_Mod_Manager
                     UnifyMessages.UnifyMessage.Show("This patch will disable real-time shadow rendering and baked shadows. This may provide a significant performance boost, but looks pretty ugly.", "Disable Shadows", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Character Stumble")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable the stumble state when characters impact walls at high speed.", "Disable Character Stumble", "OK", "Information");
+                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Chaos Smash")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will restore Shadow's Chaos Smash. Hold A to charge the attack, and release to knock enemies into each other.", "Enable Chaos Smash", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Homing Flips")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore the homing flip animations for Sonic.", "Enable Homing Flips", "OK", "Information");
                 } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Homing Spam")) {
@@ -507,6 +509,18 @@ namespace Sonic_06_Mod_Manager
                     XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
                     XEX.DecompressBIN(Path.Combine(text_GameDirectory.Text, "default.xex"));
                     XEX.BoundRecovery(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
+            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Enable Chaos Smash"))) {
+                Status = SystemMessages.msg_PatchingCharacters;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.DecompressBIN(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.ChaosSmash(Path.Combine(text_GameDirectory.Text, "default.xex"));
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }

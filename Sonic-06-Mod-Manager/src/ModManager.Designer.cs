@@ -1218,6 +1218,7 @@
             "Disable Intro Logos",
             "Disable Music",
             "Disable Shadows",
+            "Enable Chaos Smash",
             "Enable Homing Flips",
             "Enable Homing Spam",
             "Omega Blur Fix",
@@ -1228,7 +1229,7 @@
             "Xbox Live Arcade Radial Blur"});
             this.clb_PatchesList.Location = new System.Drawing.Point(3, 2);
             this.clb_PatchesList.Name = "clb_PatchesList";
-            this.clb_PatchesList.Size = new System.Drawing.Size(257, 432);
+            this.clb_PatchesList.Size = new System.Drawing.Size(257, 450);
             this.clb_PatchesList.TabIndex = 1;
             this.clb_PatchesList.SelectedIndexChanged += new System.EventHandler(this.clb_PatchesList_SelectedIndexChanged);
             // 

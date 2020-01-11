@@ -484,6 +484,14 @@ namespace Unify.Patcher
             }
         }
 
+        public static void ChaosSmash(string filepath) {
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0xB1932B; stream.WriteByte(0x55);
+                stream.Position = 0xB1935B; stream.WriteByte(0x42);
+                stream.Position = 0x1AA1B3; stream.WriteByte(0x55);
+            }
+        }
+
         public static void DisableStumble(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
                 // Sonic the Hedgehog
@@ -909,6 +917,28 @@ namespace Unify.Patcher
                                 tempLine[2] = "20";
                         }
                         editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                    }
+                    if (lub.Contains("amy") || lub.Contains("knuckles") || lub.Contains("rouge") || lub.Contains("silver") || lub.Contains("tails")) {
+                        if (line.Contains("c_jump_speed_brake")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            if (!enabled)
+                                tempLine[2] = "20"; //Replace the 2nd section (the original number)
+                            else {
+                                if (tempLine[2] == "20")
+                                    tempLine[2] = "10";
+                            }
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
+                        if (line.Contains("c_jump_run")) {
+                            string[] tempLine = line.Split(' '); //Split line into different sections
+                            if (!enabled)
+                                tempLine[2] = "9"; //Replace the 2nd section (the original number)
+                            else {
+                                if (tempLine[2] == "9")
+                                    tempLine[2] = "5.3";
+                            }
+                            editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        }
                     }
                     if (line.Contains("c_jump_walk")) {
                         if (!enabled)
