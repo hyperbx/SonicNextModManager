@@ -258,43 +258,43 @@ namespace Sonic_06_Mod_Manager
                 GetMods();
             } else if (unifytb_Main.SelectedIndex == 2) {
                 Status = SystemMessages.msg_PatchInfo;
-                if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")) {
+                if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Action Gauge Fixes")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's Action Gauge draining and replenishment when using Gems.", "Action Gauge Fixes for Sonic", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Bound Attack Recovery")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Bound Attack Recovery")) {
                     UnifyMessages.UnifyMessage.Show("This patch will unlock mid-air momentum for the bound attack.\n\nUnlock Mid-air Momentum patch would be recommended to use with this.", "Bound Attack Recovery", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Curved Homing Attack")) {
                     UnifyMessages.UnifyMessage.Show("This patch will swap Sonic's homing module with Blaze's to simulate the homing attack from early versions of Sonic '06. However, this removes Sonic's ability to destroy physics objects.", "Curved Homing Attack for Sonic", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Debug Mode")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Debug Mode")) {
                     UnifyMessages.UnifyMessage.Show("This patch will enable Debug Mode, allowing you to navigate stages with no-clip.\n\nControls:\n► Left Analog Stick/Directional Pad - Move.\n► Right Bumper (R1) - Increase Ring count by 100.\n► Y (Triangle) - Increase height.\n► A (Cross) - Decrease height.", "Debug Mode", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Bloom")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Disable Bloom")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable bloom entirely, as you would expect from a patch called 'Disable Bloom.'", "Disable Bloom", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable HUD")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Disable HUD")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable the HUD entirely; including the enemy gauge and water effects on the screen in Kingdom Valley.", "Disable HUD", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Intro Logos")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Disable Intro Logos")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable the logos that display when the game launches.", "Disable Intro Logos", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Music")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Disable Music")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable all music tracks. This may only be useful to Xbox 360 players, since the game doesn't save audio settings on that version.", "Disable Music", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Shadows")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Disable Shadows")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable real-time shadow rendering and baked shadows. This may provide a significant performance boost, but looks pretty ugly.", "Disable Shadows", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Disable Character Stumble")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Disable Character Stumble")) {
                     UnifyMessages.UnifyMessage.Show("This patch will disable the stumble state when characters impact walls at high speed.", "Disable Character Stumble", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Chaos Smash")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Enable Chaos Smash")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore Shadow's Chaos Smash. Hold A to charge the attack, and release to knock enemies into each other.", "Enable Chaos Smash", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Homing Flips")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Enable Homing Flips")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore the homing flip animations for Sonic.", "Enable Homing Flips", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Enable Homing Spam")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Enable Homing Spam")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore homing spam from the E3 demo.", "Enable Homing Spam", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Omega Blur Fix")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Omega Blur Fix")) {
                     UnifyMessages.UnifyMessage.Show("This patch will remove Omega's transparency materials to fix a bug on Xenia where the sprites become blurry.", "Omega Blur Fix", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Silver Grind Trick Fix")) {
                     UnifyMessages.UnifyMessage.Show("This patch will remove a duplicate file extension in Silver's model package for the grind trick animation name, therefore making the animation play in-game.", "Silver Grind Trick Fix", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Unlock Mid-air Momentum")) {
                     UnifyMessages.UnifyMessage.Show("This patch will unlock all mid-air momentum for every character, making it easier to move in the air.", "Unlock Mid-air Momentum", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Unlock Tails' Flight Limit")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Unlock Tails' Flight Limit")) {
                     UnifyMessages.UnifyMessage.Show("This patch will unlock Tails' flight limit so he doesn't slam into a ceiling whilst flying. This provides more free control akin to Sonic Adventure.", "Unlock Tails' Flight Limit", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")) {
-                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's hair bones whilst using the snowboard.", "Use Dynamic Bones for Snowboard States", "OK", "Information");
-                } else if (clb_PatchesList.SelectedIndex == clb_PatchesList.Items.IndexOf("Xbox Live Arcade Radial Blur")) {
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Snowboard Dynamic Bones")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's hair bones whilst using the snowboards.", "Use Dynamic Bones for Snowboard States", "OK", "Information");
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("XBLA Radial Blur")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore the higher quality radial blur from the Xbox Live Arcade Demo.", "Xbox Live Arcade Radial Blur", "OK", "Information");
                 }
             }
@@ -490,7 +490,8 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
-            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Character Stumble"))) {
+            
+            if (view_PatchesList.FindItemWithText("Disable Character Stumble").Checked) {
                 Status = SystemMessages.msg_PatchingCharacters;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
                     if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
@@ -501,7 +502,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
-            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Bound Attack Recovery"))) {
+            if (view_PatchesList.FindItemWithText("Bound Attack Recovery").Checked) {
                 Status = SystemMessages.msg_PatchingCharacters;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
                     if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
@@ -513,7 +514,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
-            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Enable Chaos Smash"))) {
+            if (view_PatchesList.FindItemWithText("Enable Chaos Smash").Checked) {
                 Status = SystemMessages.msg_PatchingCharacters;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
                     if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
@@ -525,7 +526,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
-            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Enable Homing Flips"))) {
+            if (view_PatchesList.FindItemWithText("Enable Homing Flips").Checked) {
                 Status = SystemMessages.msg_PatchingCharacters;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
                     if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
@@ -537,7 +538,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
-            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Enable Homing Spam"))) {
+            if (view_PatchesList.FindItemWithText("Enable Homing Spam").Checked) {
                 Status = SystemMessages.msg_PatchingCharacters;
                 if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
                     if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
@@ -549,7 +550,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
-            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Music"))) {
+            if (view_PatchesList.FindItemWithText("Disable Music").Checked) {
                 Status = SystemMessages.msg_PatchingAudio;
                 if (system == "xenon") {
                     AV.DisableMusic(Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound"));
@@ -561,7 +562,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_DefaultStatus;
             }
 
-            if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Intro Logos"))) {
+            if (view_PatchesList.FindItemWithText("Disable Intro Logos").Checked) {
                 string HDSEGARoot = Path.Combine(Properties.Settings.Default.gameDirectory, "xenon", "sound", "HD_SEGA");
                 Status = SystemMessages.msg_PatchingVideo;
                 if (system == "xenon") {
@@ -590,9 +591,9 @@ namespace Sonic_06_Mod_Manager
                     if (combo_MSAA.SelectedIndex != 1 || check_ForceAA.Checked) proceed++;
                     if (combo_CameraType.SelectedIndex != 0 && system == "ps3") proceed++;
                     if (nud_CameraDistance.Value != 650 && system == "ps3") proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows"))) proceed++;
+                    if (view_PatchesList.FindItemWithText("Disable Bloom").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Disable HUD").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Disable Shadows").Checked) proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
@@ -625,19 +626,19 @@ namespace Sonic_06_Mod_Manager
                             Lua.Reflections(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\core\\render_reflection.lub"), combo_Reflections.SelectedIndex);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) {
+                        if (view_PatchesList.FindItemWithText("Disable Bloom").Checked) {
                             Status = SystemMessages.msg_PatchingRenderer;
-                            Lua.DisableBloom(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom")));
+                            Lua.DisableBloom(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\"), !view_PatchesList.FindItemWithText("Disable Bloom").Checked);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) {
+                        if (view_PatchesList.FindItemWithText("Disable HUD").Checked) {
                             Status = SystemMessages.msg_PatchingRenderer;
-                            Lua.DisableHUD(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
+                            Lua.DisableHUD(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\"), !view_PatchesList.FindItemWithText("Disable HUD").Checked);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows"))) {
+                        if (view_PatchesList.FindItemWithText("Disable Shadows").Checked) {
                             Status = SystemMessages.msg_PatchingRenderer;
-                            Lua.DisableShadows(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows")));
+                            Lua.DisableShadows(Path.Combine(unpack, $"cache\\{system}\\scripts\\render\\"), !view_PatchesList.FindItemWithText("Disable Shadows").Checked);
                         }
 
                         if (system == "ps3") {
@@ -657,9 +658,9 @@ namespace Sonic_06_Mod_Manager
                 } else if (Path.GetFileName(arc) == "scripts.arc") {
                     int proceed = 0;
                     if (combo_MSAA.SelectedIndex != 1 || check_ForceAA.Checked) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows"))) proceed++;
+                    if (view_PatchesList.FindItemWithText("Disable Bloom").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Disable HUD").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Disable Shadows").Checked) proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
@@ -672,17 +673,17 @@ namespace Sonic_06_Mod_Manager
                                 Lua.MSAA(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), combo_MSAA.SelectedIndex, SearchOption.AllDirectories);
                             }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom"))) {
+                        if (view_PatchesList.FindItemWithText("Disable Bloom").Checked) {
                             Status = SystemMessages.msg_PatchingRenderer;
-                            Lua.DisableBloom(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Bloom")));
+                            Lua.DisableBloom(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), !view_PatchesList.FindItemWithText("Disable Bloom").Checked);
                         }
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD"))) {
+                        if (view_PatchesList.FindItemWithText("Disable HUD").Checked) {
                             Status = SystemMessages.msg_PatchingRenderer;
-                            Lua.DisableHUD(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable HUD")));
+                            Lua.DisableHUD(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), !view_PatchesList.FindItemWithText("Disable HUD").Checked);
                         }
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows"))) {
+                        if (view_PatchesList.FindItemWithText("Disable Shadows").Checked) {
                             Status = SystemMessages.msg_PatchingRenderer;
-                            Lua.DisableShadows(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Shadows")));
+                            Lua.DisableShadows(Path.Combine(unpack, $"scripts\\{system}\\scripts\\render\\"), !view_PatchesList.FindItemWithText("Disable Shadows").Checked);
                         }
 
                         ARC.RepackARC(unpack, arc);
@@ -714,14 +715,14 @@ namespace Sonic_06_Mod_Manager
                     }
                 } else if (Path.GetFileName(arc) == "player_omega.arc") {
                     int proceed = 0;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Omega Blur Fix"))) proceed++;
+                    if (view_PatchesList.FindItemWithText("Omega Blur Fix").Checked) proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Omega Blur Fix"))) {
+                        if (view_PatchesList.FindItemWithText("Omega Blur Fix").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
                             File.WriteAllBytes(Path.Combine(unpack, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Fix);
                         }
@@ -731,14 +732,14 @@ namespace Sonic_06_Mod_Manager
                     }
                 } else if (Path.GetFileName(arc) == "sprite.arc") {
                     int proceed = 0;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Intro Logos"))) proceed++;
+                    if (view_PatchesList.FindItemWithText("Disable Intro Logos").Checked) proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Disable Intro Logos"))) {
+                        if (view_PatchesList.FindItemWithText("Disable Intro Logos").Checked) {
                             Status = SystemMessages.msg_PatchingVideo;
                             string criLogo = Path.Combine(unpack, "sprite\\win32\\sprite\\logo\\cri_logo.xncp");
                             string sonicteamLogo = Path.Combine(unpack, "sprite\\win32\\sprite\\logo\\sonicteam_logo.xncp");
@@ -751,14 +752,14 @@ namespace Sonic_06_Mod_Manager
                     }
                 } else if (Path.GetFileName(arc) == "shader.arc") {
                     int proceed = 0;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Xbox Live Arcade Radial Blur"))) proceed++;
+                    if (view_PatchesList.FindItemWithText("XBLA Radial Blur").Checked) proceed++;
 
                     if (proceed != 0 && system == "xenon") {
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Xbox Live Arcade Radial Blur"))) {
+                        if (view_PatchesList.FindItemWithText("XBLA Radial Blur").Checked) {
                             Status = SystemMessages.msg_PatchingRenderer;
                             string blurShader = Path.Combine(unpack, "shader\\xenon\\shader\\std\\BurnoutBlurFilter.fxo");
                             File.WriteAllBytes(blurShader, Properties.Resources.BurnoutBlurFilter);
@@ -771,54 +772,54 @@ namespace Sonic_06_Mod_Manager
                     int proceed = 0;
                     if (combo_CameraType.SelectedIndex != 0) proceed++;
                     if (nud_CameraHeight.Value != 70) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Debug Mode"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Tails' Flight Limit"))) proceed++;
-                    if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States"))) proceed++;
+                    if (view_PatchesList.FindItemWithText("Action Gauge Fixes").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Curved Homing Attack").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Debug Mode").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Silver Grind Trick Fix").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Unlock Mid-air Momentum").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Unlock Tails' Flight Limit").Checked) proceed++;
+                    if (view_PatchesList.FindItemWithText("Snowboard Dynamic Bones").Checked) proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{arc}_back") && !File.Exists($"{arc}_orig"))
                             File.Copy(arc, $"{arc}_orig", true);
                         unpack = ARC.UnpackARC(arc);
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic"))) {
+                        if (view_PatchesList.FindItemWithText("Action Gauge Fixes").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
-                            Lua.ActionGaugeFixes(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Action Gauge Fixes for Sonic")));
+                            Lua.ActionGaugeFixes(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), view_PatchesList.FindItemWithText("Action Gauge Fixes").Checked);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Silver Grind Trick Fix"))) {
+                        if (view_PatchesList.FindItemWithText("Silver Grind Trick Fix").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
                             PKG.SilverGrindTrick(Path.Combine(unpack, $"player\\{system}\\player\\silver.pkg"));
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic"))) {
+                        if (view_PatchesList.FindItemWithText("Curved Homing Attack").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
-                            Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")));
-                            Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\princess.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Curved Homing Attack for Sonic")));
+                            Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\sonic_new.lub"), view_PatchesList.FindItemWithText("Curved Homing Attack").Checked);
+                            Lua.CurvedHomingAttack(Path.Combine(unpack, $"player\\{system}\\player\\princess.lub"), view_PatchesList.FindItemWithText("Curved Homing Attack").Checked);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Debug Mode"))) {
+                        if (view_PatchesList.FindItemWithText("Debug Mode").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
-                            Lua.DebugMode(Path.Combine(unpack, $"player\\{system}\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Debug Mode")));
+                            Lua.DebugMode(Path.Combine(unpack, $"player\\{system}\\player\\"), !view_PatchesList.FindItemWithText("Debug Mode").Checked);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum"))) {
+                        if (view_PatchesList.FindItemWithText("Unlock Mid-air Momentum").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
-                            Lua.UnlockMidairMomentum(Path.Combine(unpack, $"player\\{system}\\player\\"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Mid-air Momentum")));
+                            Lua.UnlockMidairMomentum(Path.Combine(unpack, $"player\\{system}\\player\\"), !view_PatchesList.FindItemWithText("Unlock Mid-air Momentum").Checked);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Tails' Flight Limit"))) {
+                        if (view_PatchesList.FindItemWithText("Unlock Tails' Flight Limit").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
-                            Lua.UnlockTailsFlightLimit(Path.Combine(unpack, $"player\\{system}\\player\\tails.lub"), !clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Unlock Tails' Flight Limit")));
+                            Lua.UnlockTailsFlightLimit(Path.Combine(unpack, $"player\\{system}\\player\\tails.lub"), !view_PatchesList.FindItemWithText("Unlock Tails' Flight Limit").Checked);
                         }
 
-                        if (clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States"))) {
+                        if (view_PatchesList.FindItemWithText("Snowboard Dynamic Bones").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
-                            Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
-                            Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board_wap.lub"), clb_PatchesList.GetItemChecked(clb_PatchesList.Items.IndexOf("Use Dynamic Bones for Snowboard States")));
+                            Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board.lub"), view_PatchesList.FindItemWithText("Snowboard Dynamic Bones").Checked);
+                            Lua.UseDynamicBonesForSnowboard(Path.Combine(unpack, $"player\\{system}\\player\\snow_board_wap.lub"), view_PatchesList.FindItemWithText("Snowboard Dynamic Bones").Checked);
                         }
 
                         if (combo_CameraType.SelectedIndex == 1) {
@@ -847,7 +848,7 @@ namespace Sonic_06_Mod_Manager
                 combo_Renderer.SelectedIndex = 0; Properties.Settings.Default.patches_Renderer = 0;
                 Properties.Settings.Default.patches_MSAA = combo_MSAA.SelectedIndex = 1;
                 Properties.Settings.Default.patches_ForceAA = check_ForceAA.Checked = false;
-                for (int i = 0; i < clb_PatchesList.Items.Count; i++) clb_PatchesList.SetItemChecked(i, false);
+                foreach (ListViewItem item in view_PatchesList.Items) item.Checked = false;
                 Properties.Settings.Default.Save();
                 SaveChecks();
             }
@@ -862,7 +863,7 @@ namespace Sonic_06_Mod_Manager
             GetMods();
 
             view_ModsList.SelectedItems.Clear();
-            clb_PatchesList.ClearSelected();
+            view_PatchesList.SelectedItems.Clear();
             Properties.Settings.Default.Save();
         }
 
@@ -1006,9 +1007,8 @@ namespace Sonic_06_Mod_Manager
                 using (StreamReader patches = new StreamReader(Path.Combine(Properties.Settings.Default.modsDirectory, "patches.ini"))) { // Read 'patches.ini'
                     patches.ReadLine(); // Skip [Main] line
                     while ((line = patches.ReadLine()) != null) { // Read all lines until null
-                        if (clb_PatchesList.Items.Contains(line)) { // If the mods list contains what's on the current line...
-                            int checkedIndex = clb_PatchesList.Items.IndexOf(line); // Get the index of the mod already in the mods list
-                            clb_PatchesList.SetItemChecked(checkedIndex, true); // Set the new item to the checked state
+                        if (view_PatchesList.Items.Contains(view_PatchesList.FindItemWithText(line))) { // If the mods list contains what's on the current line...
+                            view_PatchesList.FindItemWithText(line).Checked = true;
                         }
                     }
                 }
@@ -1033,10 +1033,10 @@ namespace Sonic_06_Mod_Manager
             using (StreamWriter sw = File.CreateText(patchCheckList))
                 sw.WriteLine("[Main]"); //Header
 
-            for (int i = clb_PatchesList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
-                if (clb_PatchesList.GetItemChecked(i))
+            for (int i = view_PatchesList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
+                if (view_PatchesList.Items[i].Checked)
                     using (StreamWriter sw = File.AppendText(patchCheckList))
-                        sw.WriteLine(clb_PatchesList.Items[i].ToString()); //Mod Name
+                        sw.WriteLine(view_PatchesList.Items[i].Text); //Mod Name
             }
         }
 
@@ -1599,16 +1599,17 @@ namespace Sonic_06_Mod_Manager
         private void ChangeAccentColours() {
             btn_ColourPicker.BackColor = Properties.Settings.Default.accentColour; //Change the colour of the selector button.
             btn_ColourPicker.Text = $"#{(Properties.Settings.Default.accentColour.ToArgb() & 0x00FFFFFF).ToString("X6")}";
-            if (check_HighContrastText.Checked) btn_ColourPicker.ForeColor = unifytb_Main.selectedTextColor = SystemColors.ControlText;
-            else btn_ColourPicker.ForeColor = unifytb_Main.selectedTextColor = SystemColors.Control;
-            unifytb_Main.ActiveColor = Properties.Settings.Default.accentColour; //Colour the selected tab is highlighted in.
-            unifytb_Main.HorizontalLineColor = Properties.Settings.Default.accentColour; //Colour the line at the top is.
+            if (check_HighContrastText.Checked) btn_ColourPicker.ForeColor = unifytb_Patches.selectedTextColor = unifytb_Main.selectedTextColor = SystemColors.ControlText;
+            else btn_ColourPicker.ForeColor = unifytb_Patches.selectedTextColor = unifytb_Main.selectedTextColor = SystemColors.Control;
+            unifytb_Patches.ActiveColor = unifytb_Main.ActiveColor = Properties.Settings.Default.accentColour; //Colour the selected tab is highlighted in.
+            unifytb_Patches.HorizontalLineColor = unifytb_Main.HorizontalLineColor = Properties.Settings.Default.accentColour; //Colour the line at the top is.
             unifytb_Main.Refresh(); //Refresh user control to remove software rendering leftovers.
+            unifytb_Patches.Refresh(); //Refresh user control to remove software rendering leftovers.
         }
 
         private void Unifytb_Main_SelectedIndexChanged(object sender, System.EventArgs e) {
             view_ModsList.SelectedItems.Clear();
-            clb_PatchesList.ClearSelected();
+            view_PatchesList.SelectedItems.Clear();
             btn_ModInfo.Text = "Mod Info";
             SizeLastColumn(view_ModsList);
 
@@ -1647,7 +1648,7 @@ namespace Sonic_06_Mod_Manager
                     lbl_GraphicsTweaksOverlay.ForeColor = SystemColors.GrayText;
                     lbl_Reflections.ForeColor = SystemColors.GrayText;
                     lbl_CameraDistance.ForeColor = SystemColors.GrayText;
-                    clb_PatchesList.Enabled = false;
+                    view_PatchesList.Enabled = false;
                     btn_ResetReflections.Enabled = false;
                     btn_ResetCameraDistance.Enabled = false;
                     combo_Reflections.Enabled = false;
@@ -1809,8 +1810,8 @@ namespace Sonic_06_Mod_Manager
 
                 pnl_ModBackdrop.BackColor = view_ModsList.BackColor = SystemColors.ControlLightLight;
                 view_ModsList.ForeColor = SystemColors.ControlText;
-                pnl_PatchBackdrop.BackColor = clb_PatchesList.BackColor = SystemColors.ControlLightLight;
-                clb_PatchesList.ForeColor = SystemColors.ControlText;
+                pnl_PatchBackdrop.BackColor = view_PatchesList.BackColor = SystemColors.ControlLightLight;
+                view_PatchesList.ForeColor = SystemColors.ControlText;
 
                 radio_All.ForeColor = SystemColors.ControlText; radio_All.BackColor = SystemColors.ControlLightLight;
                 radio_Xbox360.ForeColor = SystemColors.ControlText; radio_Xbox360.BackColor = SystemColors.ControlLightLight;
@@ -1935,8 +1936,8 @@ namespace Sonic_06_Mod_Manager
 
                 pnl_ModBackdrop.BackColor = view_ModsList.BackColor = Color.FromArgb(45, 45, 48);
                 view_ModsList.ForeColor = SystemColors.Control;
-                pnl_PatchBackdrop.BackColor = clb_PatchesList.BackColor = Color.FromArgb(45, 45, 48); 
-                clb_PatchesList.ForeColor = SystemColors.Control;
+                pnl_PatchBackdrop.BackColor = view_PatchesList.BackColor = Color.FromArgb(45, 45, 48); 
+                view_PatchesList.ForeColor = SystemColors.Control;
 
                 radio_All.ForeColor = SystemColors.Control; radio_All.BackColor = Color.FromArgb(45, 45, 48);
                 radio_Xbox360.ForeColor = SystemColors.Control; radio_Xbox360.BackColor = Color.FromArgb(45, 45, 48);
@@ -2051,7 +2052,7 @@ namespace Sonic_06_Mod_Manager
                 btn_ResetMSAA.Enabled = false;
                 combo_CameraType.Enabled = false;
                 btn_ResetCameraType.Enabled = false;
-                clb_PatchesList.Enabled = false;
+                view_PatchesList.Enabled = false;
                 btn_ResetReflections.Enabled = false;
                 btn_ResetCameraDistance.Enabled = false;
                 combo_Reflections.Enabled = false;
@@ -2122,7 +2123,7 @@ namespace Sonic_06_Mod_Manager
                 btn_UninstallMods.Visible = false;
                 combo_CameraType.Enabled = true;
                 btn_ResetCameraType.Enabled = true;
-                clb_PatchesList.Enabled = true;
+                view_PatchesList.Enabled = true;
                 btn_ResetReflections.Enabled = true;
                 combo_Reflections.Enabled = true;
                 btn_Play.Enabled = true;
@@ -2228,7 +2229,7 @@ namespace Sonic_06_Mod_Manager
             Status = SystemMessages.msg_DefaultStatus;
         }
 
-        private void clb_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { btn_ModInfo.Enabled = clb_PatchesList.SelectedIndex >= 0; }
+        private void view_PatchesList_SelectedIndexChanged(object sender, EventArgs e) { btn_ModInfo.Enabled = view_PatchesList.SelectedItems.Count >= 0; }
 
         private void btn_SaveData_Click(object sender, EventArgs e) {
             string save = Locations.LocateSaves(combo_Emulator_System.SelectedIndex);
@@ -2260,26 +2261,31 @@ namespace Sonic_06_Mod_Manager
         private void view_ModsList_DrawItem(object sender, DrawListViewItemEventArgs e) { e.DrawDefault = true; }
 
         private void SizeLastColumn(ListView lv) {
-            if (combo_GridStyle.SelectedIndex == 0) {
-                view_ModsList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            if (lv == view_ModsList) {
+                if (combo_GridStyle.SelectedIndex == 0) {
+                    view_ModsList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+                    int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
+                    lv.Columns[0].Width = x * 6;
+                    lv.Columns[1].Width = (x * 2) - 20;
+                    lv.Columns[2].Width = (x * 2) + 15;
+                    lv.Columns[3].Width = (x * 2) + 15;
+                    lv.Columns[4].Width = (x * 3) - 18;
+                    lv.Columns[5].Width = x * 100;
+                } else {
+                    view_ModsList.HeaderStyle = ColumnHeaderStyle.None;
+                    int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
+                    lv.Columns[0].Width = x * 100;
+                    lv.Columns[1].Width = 0;
+                    lv.Columns[2].Width = 0;
+                    lv.Columns[3].Width = 0;
+                    lv.Columns[4].Width = 0;
+                    lv.Columns[5].Width = 0;
+                }
+            } else if (lv == view_PatchesList) {
                 int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
-                lv.Columns[0].Width = x * 6;
-                lv.Columns[1].Width = (x * 2) - 20;
-                lv.Columns[2].Width = (x * 2) + 15;
-                lv.Columns[3].Width = (x * 2) + 15;
-                lv.Columns[4].Width = (x * 3) - 18;
-                lv.Columns[5].Width = x * 100;
-            } else {
-                view_ModsList.HeaderStyle = ColumnHeaderStyle.None;
-                int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
-                lv.Columns[0].Width = x * 100;
-                lv.Columns[1].Width = 0;
-                lv.Columns[2].Width = 0;
-                lv.Columns[3].Width = 0;
-                lv.Columns[4].Width = 0;
-                lv.Columns[5].Width = 0;
+                lv.Columns[0].Width = x * 5;
+                lv.Columns[1].Width = (x * 10) + 5;
             }
-
         }
 
         private void combo_GridStyle_SelectedIndexChanged(object sender, EventArgs e) {
@@ -2315,7 +2321,10 @@ namespace Sonic_06_Mod_Manager
             ChangeAccentColours();
         }
 
-        private void ModManager_Resize(object sender, EventArgs e) { SizeLastColumn(view_ModsList); }
+        private void ModManager_Resize(object sender, EventArgs e) {
+            SizeLastColumn(view_ModsList);
+            SizeLastColumn(view_PatchesList);
+        }
 
         private void ModManager_ResizeEnd(object sender, EventArgs e) {
             Properties.Settings.Default.lastSize = new Size(Width, Height);
@@ -2372,6 +2381,20 @@ namespace Sonic_06_Mod_Manager
                                                     " installing mods or patching game data.\n\nPlease consider changing this location...",
                                                     "Path Warning", "OK", "Warning");
             } catch { }
+        }
+
+        private void view_PatchesList_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e) {
+            Color theme = Color.FromArgb(255, 255, 255);
+            if (Properties.Settings.Default.theme) theme = Color.FromArgb(45, 45, 48);
+
+            e.Graphics.DrawLine(new Pen(Properties.Settings.Default.accentColour, 1), new Point(0, 21), new Point(Width, 21));
+            e.Graphics.FillRectangle(new SolidBrush(theme), e.Bounds);
+            var point = new Point(0, 3);
+            point.X = e.Bounds.X;
+            var column = view_PatchesList.Columns[e.ColumnIndex];
+            e.Graphics.FillRectangle(new SolidBrush(theme), point.X, 0, 2, e.Bounds.Height);
+            point.X += column.Width / 2 - TextRenderer.MeasureText(column.Text, view_PatchesList.Font).Width / 2;
+            TextRenderer.DrawText(e.Graphics, column.Text, view_PatchesList.Font, point, view_PatchesList.ForeColor);
         }
     }
 }
