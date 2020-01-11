@@ -37,6 +37,7 @@ namespace Sonic_06_Mod_Manager.src
         public AboutForm(string versionNumber)
         {
             InitializeComponent();
+            Size = new Size(717, 425);
             lbl_versionNumber.Text = versionNumber;
 
             if (ModManager.dreamcastDay) {
@@ -62,7 +63,7 @@ namespace Sonic_06_Mod_Manager.src
                 pic_Logo.BackColor = Color.FromArgb(45, 45, 48);
                 BackColor = Color.FromArgb(28, 28, 28);
 
-                foreach (Control x in this.Controls) {
+                foreach (Control x in Container_About.Panel2.Controls) {
                     if (x is Label)
                         ((Label)x).ForeColor = SystemColors.Control;
                     if (x is LinkLabel)

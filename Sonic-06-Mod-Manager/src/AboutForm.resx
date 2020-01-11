@@ -119,27 +119,57 @@
   </resheader>
   <data name="lbl_Contributors.Text" xml:space="preserve">
     <value>Contributors:
-Hyper - Core Contributor, GameBanana Integration and Designer
-Knuxfan24- Initial Mod Manager Developer and Co-developer
-Shadow LAG - Sonic '06 SDK (Lua decompiler)
-xose - ARC Unpacker
-g0ldenlink - ARC Repacker
-SuperSonic16 - GameBanana API for C#
-GerbilSoft - Fixed .NET WebClient Encoding
-SEGA Carnival - Software Update Hosting
-Nonami - Omega Blur Fix and Disable Character Stumble
-darkhero1337 - Unlock Mid-air Momentum
-ChaosX - TGS 2005 Camera Accuracy
-acro - TGS 2005 Camera Accuracy
-Mefiresu - Debug Mode
-Desko - Homing Flips, Homing Spam and Bound Attack Recovery
-xorloser - XexTool
+Hyper
+          Core Contributor,
+          GameBanana Integration,
+          Designer
+Knuxfan24
+          Initial Mod Manager Developer,
+          Co-developer
+Shadow LAG
+          Sonic '06 SDK (Lua decompiler)
+xose
+          ARC Unpacker
+g0ldenlink
+          ARC Repacker
+SuperSonic16
+          GameBanana API for C#
+GerbilSoft
+          Fixed .NET WebClient Encoding
+SEGA Carnival
+          Software Update Hosting
+Nonami
+          Windows Software Tester,
+          Omega Blur Fix,
+          Disable Character Stumble,
+          Controllable Spinkick
+darkhero1337
+          Unlock Mid-air Momentum
+ChaosX
+          TGS 2005 Camera Accuracy
+acro
+          Windows Software Tester,
+          TGS 2005 Camera Accuracy
+Mefiresu
+          Debug Mode
+Desko
+          Homing Flips,
+          Homing Spam,
+          Bound Attack Recovery,
+          Mach Speed Air Control,
+          Snowboard Air Control
+xorloser
+          XexTool
 
 Testers:
-sharu6262- Xbox Hardware Tester
-Melpontro - Xbox Hardware Tester
-ChrisHighwind - Linux Software Tester
-Velcomia - Windows Software Tester</value>
+sharu6262
+          Xbox Hardware Tester
+Melpontro
+          Xbox Hardware Tester
+ChrisHighwind
+          Linux Software Tester
+Velcomia
+          Windows Software Tester</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
