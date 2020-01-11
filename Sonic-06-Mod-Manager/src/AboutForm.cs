@@ -37,7 +37,7 @@ namespace Sonic_06_Mod_Manager.src
         public AboutForm(string versionNumber)
         {
             InitializeComponent();
-            Size = new Size(717, 425);
+            Size = new Size(624, 425);
             lbl_versionNumber.Text = versionNumber;
 
             if (ModManager.dreamcastDay) {

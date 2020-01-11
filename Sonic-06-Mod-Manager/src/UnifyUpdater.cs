@@ -36,6 +36,7 @@ namespace Sonic_06_Mod_Manager.src
     {
         string url;
         bool enabled;
+        string version;
 
         public UnifyUpdater(string versionNumber, string url, bool enabled)
         {
@@ -60,6 +61,7 @@ namespace Sonic_06_Mod_Manager.src
 
             this.url = url;
             this.enabled = enabled;
+            this.version = versionNumber;
 
             Text = SystemMessages.tl_DefaultTitle;
             lbl_Title.Text = $"Updating Sonic '06 Mod Manager to {versionNumber}...";
@@ -71,14 +73,18 @@ namespace Sonic_06_Mod_Manager.src
         }
 
         private void UpdateVersion() {
-            var clientApplication = new WebClient();
-            clientApplication.DownloadProgressChanged += (s, e) => { pgb_Progress.Value = e.ProgressPercentage; };
-            clientApplication.DownloadFileAsync(new Uri(url), Application.ExecutablePath + ".pak");
-            clientApplication.DownloadFileCompleted += (s, e) => {
-                File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
-                UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateComplete, SystemMessages.tl_Success, "OK", "Information");
-                Program.Restart();
-            };
+            try {
+                var clientApplication = new WebClient();
+                clientApplication.DownloadProgressChanged += (s, e) => { pgb_Progress.Value = e.ProgressPercentage; };
+                clientApplication.DownloadFileAsync(new Uri(url), Application.ExecutablePath + ".pak");
+                clientApplication.DownloadFileCompleted += (s, e) => {
+                    File.Replace(Application.ExecutablePath + ".pak", Application.ExecutablePath, Application.ExecutablePath + ".bak");
+                    UnifyMessages.UnifyMessage.Show(SystemMessages.msg_UpdateComplete, SystemMessages.tl_Success, "OK", "Information");
+                    Program.Restart();
+                };
+            } catch {
+                UnifyMessages.UnifyMessage.Show($"Failed to update to {version}...", SystemMessages.tl_FatalError, "OK", "Error");
+            }
         }
     }
 }

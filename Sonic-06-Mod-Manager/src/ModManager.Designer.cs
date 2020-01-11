@@ -2014,7 +2014,7 @@
             this.nud_HammerRange.DecimalPlaces = 1;
             this.nud_HammerRange.Location = new System.Drawing.Point(14, 42);
             this.nud_HammerRange.Maximum = new decimal(new int[] {
-            999999,
+            999999999,
             0,
             0,
             0});

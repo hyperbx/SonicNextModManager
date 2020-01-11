@@ -44,19 +44,26 @@ namespace Unify.Networking
 
         public static void CheckForUpdates(string currentVersion, string newVersionDownloadLink, string versionInfoLink, string updateState)
         {
-            try
-            {
+            try {
                 string latestVersion = string.Empty;
                 string changeLogs = string.Empty;
 
-                try { latestVersion = new TimedWebClient { Timeout = 100000 }.DownloadString(versionInfoLink); }
-                catch { return; }
+                try { latestVersion = new TimedWebClient { Timeout = 5000 }.DownloadString(versionInfoLink); }
+                catch {
+                    latestVersion = new TimedWebClient { Timeout = 5000 }.DownloadString(@"https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest_master.txt");
+                    Console.WriteLine("SEGA Carnival is down.");
+                    newVersionDownloadLink = @"https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest-master.exe";
+                }
 
                 try {
-                    changeLogs = new TimedWebClient { Timeout = 100000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt");
+                    changeLogs = new TimedWebClient { Timeout = 5000 }.DownloadString("https://segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt");
+                    if (Sonic_06_Mod_Manager.ModManager.dreamcastDay) changeLogs += "\n\nHappy birthday, Dreamcast!";
+                } catch {
+                    changeLogs = new TimedWebClient { Timeout = 5000 }.DownloadString(@"https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/changelogs.txt");
+                    Console.WriteLine("SEGA Carnival is down.");
+                    newVersionDownloadLink = @"https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest-master.exe";
                     if (Sonic_06_Mod_Manager.ModManager.dreamcastDay) changeLogs += "\n\nHappy birthday, Dreamcast!";
                 }
-                catch { changeLogs = "► Allan please add details"; }
 
                 if (latestVersion.Contains("Version")) {
                     if (latestVersion != currentVersion) {
@@ -371,7 +378,7 @@ namespace Unify.Networking
     {
         public int Timeout { get; set; }
 
-        public TimedWebClient() { Timeout = 100000; }
+        public TimedWebClient() { Timeout = 5000; }
 
         protected override WebRequest GetWebRequest(Uri address) {
             var objWebRequest = base.GetWebRequest(address);

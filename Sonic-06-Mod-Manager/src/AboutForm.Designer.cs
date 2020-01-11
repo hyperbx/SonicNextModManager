@@ -197,7 +197,7 @@
             this.pic_Logo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pic_Logo.Location = new System.Drawing.Point(-4, -3);
             this.pic_Logo.Name = "pic_Logo";
-            this.pic_Logo.Size = new System.Drawing.Size(250, 843);
+            this.pic_Logo.Size = new System.Drawing.Size(250, 851);
             this.pic_Logo.TabIndex = 15;
             this.pic_Logo.TabStop = false;
             this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
@@ -286,7 +286,7 @@
             this.Container_About.Panel2.Controls.Add(this.link_Melpontro);
             this.Container_About.Panel2.Controls.Add(this.link_Nonami);
             this.Container_About.Panel2.Controls.Add(this.lbl_Contributors);
-            this.Container_About.Size = new System.Drawing.Size(700, 839);
+            this.Container_About.Size = new System.Drawing.Size(608, 847);
             this.Container_About.SplitterDistance = 246;
             this.Container_About.TabIndex = 34;
             // 
@@ -294,7 +294,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 839);
+            this.ClientSize = new System.Drawing.Size(608, 847);
             this.Controls.Add(this.Container_About);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

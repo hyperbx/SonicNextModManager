@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.55-test-110120r2"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.55"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.1";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         public static bool debugMode = false;
@@ -1048,16 +1048,18 @@ namespace Sonic_06_Mod_Manager
         {
             string line = string.Empty; // Declare empty string for StreamReader
 
-            if (File.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, "patches.ini"))) {
-                using (StreamReader patches = new StreamReader(Path.Combine(Properties.Settings.Default.modsDirectory, "patches.ini"))) { // Read 'patches.ini'
-                    patches.ReadLine(); // Skip [Main] line
-                    while ((line = patches.ReadLine()) != null) { // Read all lines until null
-                        if (view_PatchesList.Items.Contains(view_PatchesList.FindItemWithText(line))) { // If the mods list contains what's on the current line...
-                            view_PatchesList.FindItemWithText(line).Checked = true;
+            try {
+                if (File.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, "patches.ini"))) {
+                    using (StreamReader patches = new StreamReader(Path.Combine(Properties.Settings.Default.modsDirectory, "patches.ini"))) { // Read 'patches.ini'
+                        patches.ReadLine(); // Skip [Main] line
+                        while ((line = patches.ReadLine()) != null) { // Read all lines until null
+                            if (view_PatchesList.Items.Contains(view_PatchesList.FindItemWithText(line))) { // If the mods list contains what's on the current line...
+                                view_PatchesList.FindItemWithText(line).Checked = true;
+                            }
                         }
                     }
                 }
-            }
+            } catch { }
         }
 
         private void SaveChecks()
@@ -1075,14 +1077,16 @@ namespace Sonic_06_Mod_Manager
                         sw.WriteLine(Path.GetFileName(Path.GetDirectoryName(configs[i]))); //Mod Name
             }
 
-            using (StreamWriter sw = File.CreateText(patchCheckList))
-                sw.WriteLine("[Main]"); //Header
+            try {
+                using (StreamWriter sw = File.CreateText(patchCheckList))
+                    sw.WriteLine("[Main]"); //Header
 
-            for (int i = view_PatchesList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
-                if (view_PatchesList.Items[i].Checked)
-                    using (StreamWriter sw = File.AppendText(patchCheckList))
-                        sw.WriteLine(view_PatchesList.Items[i].Text); //Mod Name
-            }
+                for (int i = view_PatchesList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
+                    if (view_PatchesList.Items[i].Checked)
+                        using (StreamWriter sw = File.AppendText(patchCheckList))
+                            sw.WriteLine(view_PatchesList.Items[i].Text); //Mod Name
+                }
+            } catch { }
         }
 
         private void Radio_All_CheckedChanged(object sender, EventArgs e) { // Refreshes mods list based on All filter
