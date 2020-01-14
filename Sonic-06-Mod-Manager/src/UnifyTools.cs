@@ -169,11 +169,6 @@ namespace Unify.Tools
             else
                 return string.Empty;
         }
-
-        internal static string LocateARCs(object msg_LocateARCs)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public static class Threading
