@@ -42,11 +42,14 @@ namespace Unify.Patcher
         public static string targetArcPath = string.Empty; //Modded ARC File
         public static string origArcPath = string.Empty; //Original Game ARC File
         public static string arcPath = string.Empty; //Paths to ARC in the game files
+        public static List<string> coreList = new List<string>() { }; //List of custom core (xenon/ps3) arcs to add to our PKG
+        public static List<string> win32List = new List<string>() { }; //List of custom win32 arcs to add to our PKG
 
         public static void InstallMods(string modPath, string modName) {
             bool merge = false;
             string[] read_only = { };
             string platform = string.Empty;
+            string[] custom = { };
             skippedMods.Clear();
 
             //Check if Mod is a Merge Mod and if it contains any read-only files.
@@ -65,6 +68,11 @@ namespace Unify.Patcher
                         entryValue = entryValue.Remove(entryValue.Length - 1);
                         merge = bool.Parse(entryValue);
                     }
+                    if (line.StartsWith("Custom")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        custom = entryValue.Split(',');
+                    }
                     if (line.StartsWith("Read-only")) {
                         entryValue = line.Substring(line.IndexOf("=") + 2);
                         entryValue = entryValue.Remove(entryValue.Length - 1);
@@ -81,7 +89,6 @@ namespace Unify.Patcher
 
             List<string> files = Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories)
             .Where(s => s.EndsWith(".arc") ||
-                        s.EndsWith(".arc_custom") ||
                         s.EndsWith(".wmv") ||
                         s.EndsWith(".xma") ||
                         s.EndsWith("default.xex") ||
@@ -99,17 +106,24 @@ namespace Unify.Patcher
                     origArcPath = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, arcPath);
                 targetArcPath = $"{origArcPath}_back";
 
+                //Build lists for custom PKG
+                if (custom.Contains(Path.GetFileName(file)) && file.EndsWith(".arc")) {
+                    if (arcPath.Contains("win32")) win32List.Add(Path.GetFileName(file));
+                    else coreList.Add(Path.GetFileName(file));
+                }
+
                 if (file.EndsWith(".arc")) {
                     if (merge && !read_only.Contains(Path.GetFileName(file))) {
                         //Pass off to MergeARCs
                         Console.WriteLine("Merging: " + file);
-                        MergeARCs(origArcPath, file, origArcPath, false, string.Empty);
+                        if (File.Exists(origArcPath)) MergeARCs(origArcPath, file, origArcPath, false, string.Empty);
+                        else if (custom.Contains(Path.GetFileName(file))) File.Copy(file, origArcPath);
                     } else {
                         try {
                             if (!File.Exists(targetArcPath)) {
                                 //Copy a file if it isn't part of a merge mod or is marked as read-only.
                                 Console.WriteLine("Copying: " + file);
-                                File.Move(origArcPath, targetArcPath);
+                                if (!custom.Contains(Path.GetFileName(file))) File.Move(origArcPath, targetArcPath);
                                 File.Copy(file, origArcPath);
                             } else {
                                 //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
@@ -122,7 +136,7 @@ namespace Unify.Patcher
                         if (!File.Exists(targetArcPath)) {
                             //Copy a file if it isn't part of a merge mod or is marked as read-only.
                             Console.WriteLine("Copying: " + file);
-                            if (!file.EndsWith(".arc_custom")) { File.Move(origArcPath, targetArcPath); } //Don't try and backup a file that doesn't exist in the base game
+                            if (File.Exists(origArcPath)) File.Move(origArcPath, targetArcPath); //Don't try and backup a file that doesn't exist in the base game
                             File.Copy(file, origArcPath);
                         } else {
                             //Skip the file if it needs to be copied but can't due a modded file already existing on its slot.
@@ -131,6 +145,51 @@ namespace Unify.Patcher
                     } catch (FileNotFoundException) { skippedMods.Add(ModsMessages.ex_SkippedModMissingFile(modName, Path.GetFileName(file))); }
                 }
             }
+
+            //Pass the current system to CustomFilesystemPackage
+            if (coreList.Count != 0 || win32List.Count != 0) {
+                if (platform == "Xbox 360") CustomFilesystemPackage("xenon");
+                else if (platform == "PlayStation 3") CustomFilesystemPackage("ps3");
+            }
+        }
+
+        public static void CustomFilesystemPackage(string platform) { //Create a custom PKG based on all the custom arcs specified in mods
+            string system = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, platform, "archives", "system.arc");
+            if (!File.Exists($"{system}_back"))
+                File.Copy(system, $"{system}_back", true);
+            string unpack = UnpackARC(system);
+
+            //Unpack PKG
+            string directoryRoot = Path.Combine(unpack, $"system\\{platform}\\archive");
+            PKG.PKGTool($"{directoryRoot}.pkg");
+            List<string> basePKG = File.ReadAllLines($"{directoryRoot}.txt").ToList();
+
+            //Edited text file
+            if (coreList.Count != 0) {
+                basePKG.Add("\"archive\"\n{");
+                foreach (string arc in coreList) {
+                    basePKG.Add($"\t\"{Path.GetFileNameWithoutExtension(arc)}\" = \"archives/{arc}\";");
+                }
+                basePKG.Add("}");
+            }
+
+            if (win32List.Count != 0) {
+                basePKG.Add("\"archive_win32\"\n{");
+                foreach (string arc in win32List) {
+                    basePKG.Add($"\t\"{Path.GetFileNameWithoutExtension(arc)}\" = \"archives/{arc}\";");
+                }
+                basePKG.Add("}");
+            }
+
+            File.WriteAllLines($"{directoryRoot}.txt", basePKG); //Resave the edited text file
+
+            //Resave PKG file
+            PKG.PKGTool($"{directoryRoot}.txt");
+            RepackARC(unpack, system);
+
+            //Clear lists
+            coreList.Clear();
+            win32List.Clear();
         }
 
         public static void MergeARCs(string arc1, string arc2, string output, bool ftp, string ftpPath)
@@ -268,26 +327,6 @@ namespace Unify.Patcher
             catch { return tempPath; }
 
             return tempPath;
-        }
-
-        public static void CleanupMods(int state)
-        {
-            if (!Directory.Exists(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory)) return;
-
-            List<string> files = new List<string>();
-            if (state == 0) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith("_back") || s.EndsWith(".arc_custom")).ToList();
-            else if (state == 1) files = Directory.GetFiles(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, "*.*_orig", SearchOption.AllDirectories).ToList();
-
-            modManager.Status = SystemMessages.msg_Cleanup;
-            foreach (var file in files) {
-                if (File.Exists(file.ToString().Remove(file.Length - 5)) || file.EndsWith(".arc_custom")) {
-                    Console.WriteLine("Removing: " + file);
-                    if (file.EndsWith(".arc_custom")) File.Delete(file);
-                    else File.Delete(file.ToString().Remove(file.Length - 5));
-                }
-                if (!file.EndsWith(".arc_custom")) File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
-            }
-            modManager.Status = SystemMessages.msg_DefaultStatus;
         }
 
         public static void CleanupSaves(string modPath, string modName)
@@ -578,6 +617,22 @@ namespace Unify.Patcher
 
     class PKG
     {
+        //Use the PKGTool to encode/decode the given file
+        public static void PKGTool(string filepath) {
+            string pkgtool = $"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\pkgtool.exe";
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = pkgtool,
+                Arguments = filepath
+            };
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+
+            if (Path.GetExtension(filepath) == ".txt") File.Delete(filepath);
+        }
+
         public static void SilverGrindTrick(string filepath) {
             string hexString = BitConverter.ToString(File.ReadAllBytes(filepath).ToArray()).Replace("-", "");
             string brokenAnim = "73765F6772696E64747269636B30302E786E6D2E786E6D";
@@ -602,7 +657,7 @@ namespace Unify.Patcher
                 ProcessStartInfo startInfo = new ProcessStartInfo {
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
-                    Arguments = $"/C java.exe -jar \"{Sonic_06_Mod_Manager.Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar\" \"{filepath}\" > \"{luaName}\""
+                    Arguments = $"/C java.exe -jar \"{Program.applicationData}\\Sonic_06_Mod_Manager\\Tools\\unlub\\unlub.jar\" \"{filepath}\" > \"{luaName}\""
                 };
                 process.StartInfo = startInfo;
                 process.Start();

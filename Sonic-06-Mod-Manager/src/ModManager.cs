@@ -45,9 +45,10 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.55"; // Defines the version number to be used globally
-        public readonly string modLoaderVersion = "Version 2.1";
+        public readonly string versionNumber = "Version 2.56"; // Defines the version number to be used globally
+        public readonly string modLoaderVersion = "Version 2.11";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
+        ListViewItem[] patches = new ListViewItem[0];
         public static bool debugMode = false;
         public static bool christmas = false;
 
@@ -78,6 +79,9 @@ namespace Sonic_06_Mod_Manager
             //MinimumSize = new Size(554, 629);
             Width = Properties.Settings.Default.lastSize.Width;
             Height = Properties.Settings.Default.lastSize.Height;
+
+            patches = new ListViewItem[view_PatchesList.Items.Count];
+            view_PatchesList.Items.CopyTo(patches, 0);
 
             /* Check Christmas dates - commented due to conflicting with UI... */
             //if (DateTime.Now >= new DateTime(DateTime.Today.Year, 12, 01) &&
@@ -231,9 +235,9 @@ namespace Sonic_06_Mod_Manager
                     GetMods(); // Basically just refreshes and clears up mods on launch
             if (Properties.Settings.Default.gameDirectory != string.Empty) {
                 if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualInstall.Checked)
-                    ARC.CleanupMods(0); // Ensures manual mod install is disabled first
+                    RestoreMods(0); // Ensures manual mod install is disabled first
                 if (Directory.Exists(Properties.Settings.Default.gameDirectory) && !check_ManualPatches.Checked)
-                    ARC.CleanupMods(1); // Ensures manual patch install is disabled first
+                    RestoreMods(1); // Ensures manual patch install is disabled first
             }
             if (Properties.Settings.Default.xeniaPath != string.Empty || Properties.Settings.Default.RPCS3Path != string.Empty)
                 if (Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.xeniaPath)) || Directory.Exists(Path.GetDirectoryName(Properties.Settings.Default.RPCS3Path)))
@@ -344,8 +348,8 @@ namespace Sonic_06_Mod_Manager
             if (((sender as Button).Text == "Save and Play" || (sender as Button).Text == "Install Mods") && !check_FTP.Checked) {
                 try {
                     RestoreSaves();
-                    ARC.CleanupMods(0);
-                    ARC.CleanupMods(1);
+                    RestoreMods(0);
+                    RestoreMods(1);
 
                     if (Properties.Settings.Default.priority == false) {
                         //Top to Bottom Priority
@@ -411,7 +415,7 @@ namespace Sonic_06_Mod_Manager
             }
             else if ((sender as Button).Text == "Apply Patches") {
                 try {
-                    if (!check_FTP.Checked) { ARC.CleanupMods(1); PatchAll(); }
+                    if (!check_FTP.Checked) { RestoreMods(1); PatchAll(); }
                 }
                 catch (Exception ex) {
                     UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
@@ -883,9 +887,67 @@ namespace Sonic_06_Mod_Manager
             }
         }
 
+        private void RestoreMods(int state)
+        {
+            if (!Directory.Exists(Properties.Settings.Default.gameDirectory)) return;
+
+            List<string> files = new List<string>();
+            if (state == 0) files = Directory.GetFiles(Properties.Settings.Default.gameDirectory, "*.*_back", SearchOption.AllDirectories).ToList();
+            else if (state == 1) files = Directory.GetFiles(Properties.Settings.Default.gameDirectory, "*.*_orig", SearchOption.AllDirectories).ToList();
+
+            Status = SystemMessages.msg_Cleanup;
+            foreach (var file in files) {
+                if (File.Exists(file.ToString().Remove(file.Length - 5))) {
+                    Console.WriteLine("Removing: " + file);
+                    File.Delete(file.ToString().Remove(file.Length - 5));
+                }
+                File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
+            }
+
+            if (btn_InstallMods.Text != "Apply Patches") {
+                foreach (ListViewItem mod in view_ModsList.Items) {
+                    try {
+                        Status = SystemMessages.msg_Cleanup;
+                        CleanupCustomFiles(Path.GetDirectoryName(configs[view_ModsList.Items.IndexOf(mod)]));
+                        Status = SystemMessages.msg_DefaultStatus;
+                    }
+                    catch { }
+                }
+            }
+            Status = SystemMessages.msg_DefaultStatus;
+        }
+
+        private void CleanupCustomFiles(string modPath) {
+            string[] custom = { };
+
+            //Check if Mod is a Merge Mod and if it contains any read-only files.
+            using (Stream configRead = File.Open(Path.Combine(modPath, "mod.ini"), FileMode.Open))
+            using (StreamReader configFile = new StreamReader(configRead, Encoding.Default)) {
+                string line;
+                string entryValue;
+                while ((line = configFile.ReadLine()) != null) {
+                    if (line.StartsWith("Custom")) {
+                        entryValue = line.Substring(line.IndexOf("=") + 2);
+                        entryValue = entryValue.Remove(entryValue.Length - 1);
+                        custom = entryValue.Split(',');
+                    }
+                }
+            }
+
+            foreach (string archive in custom) {
+                List<string> files = Directory.GetFiles(Properties.Settings.Default.gameDirectory, archive, SearchOption.AllDirectories).ToList();
+                foreach (string customfile in files)
+                    try {
+                        File.Delete(customfile);
+                        Console.WriteLine("Removing: " + customfile);
+                    }
+                    catch { }
+            }
+        }
+
         private void Btn_UninstallMods_Click(object sender, EventArgs e) {
             if (btn_UninstallMods.Text == "Restore Defaults") {
-                ARC.CleanupMods(1);
+                RestoreMods(1);
                 nud_CameraDistance.Value = 650; Properties.Settings.Default.patches_CameraDistance = 650;
                 nud_FieldOfView.Value = 90; Properties.Settings.Default.patches_FieldOfView = 90;
                 combo_Reflections.SelectedIndex = 1; Properties.Settings.Default.patches_Reflections = 1;
@@ -897,7 +959,7 @@ namespace Sonic_06_Mod_Manager
                 Properties.Settings.Default.Save();
                 SaveChecks();
             }
-            else if (!check_FTP.Checked) ARC.CleanupMods(0);
+            else if (!check_FTP.Checked) RestoreMods(0);
         }
 
         private void Btn_RefreshMods_Click(object sender, EventArgs e) { GetMods(); }
@@ -1111,7 +1173,7 @@ namespace Sonic_06_Mod_Manager
             ARC.skippedMods.Clear();
 
             try {
-                if (!check_FTP.Checked && !check_ManualPatches.Checked) { ARC.CleanupMods(1); PatchAll(); }
+                if (!check_FTP.Checked && !check_ManualPatches.Checked) { RestoreMods(1); PatchAll(); }
             }
             catch (Exception ex) {
                 UnifyMessages.UnifyMessage.Show($"{PatchesMessages.ex_PatchInstallFailure}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Warning");
@@ -1264,7 +1326,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_XeniaExitCall;
                 xenia.WaitForExit(); // Wait for Xenia to exit
                 if (!check_ManualInstall.Checked) {
-                    ARC.CleanupMods(0);
+                    RestoreMods(0);
                     if (check_SaveRedirect.Checked) RestoreSaves();
                 }
                 Status = SystemMessages.msg_DefaultStatus;
@@ -1314,7 +1376,7 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_RPCS3ExitCall;
                 RPCS3.WaitForExit(); // Wait for RPCS3 to exit
                 if (!check_ManualInstall.Checked) {
-                    ARC.CleanupMods(0);
+                    RestoreMods(0);
                     if (check_SaveRedirect.Checked) RestoreSaves();
                 }
                 Status = SystemMessages.msg_DefaultStatus;
@@ -1368,8 +1430,10 @@ namespace Sonic_06_Mod_Manager
                 }
 
                 text_EmulatorPath.Text = Properties.Settings.Default.xeniaPath;
-            }
-            else {
+
+                view_PatchesList.Items.Clear();
+                view_PatchesList.Items.AddRange(patches);
+            } else {
                 //Disable Xenia specific objects when RPCS3 is selected
                 group_Settings.Enabled = false;
                 combo_API.Enabled = false;
@@ -1389,6 +1453,15 @@ namespace Sonic_06_Mod_Manager
                 btn_ResetFOV.Enabled = false;
 
                 text_EmulatorPath.Text = Properties.Settings.Default.RPCS3Path;
+
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Bound Attack Recovery"));
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Controllable Spinkick"));
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Disable Character Stumble"));
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Enable Chaos Smash"));
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Enable Homing Flips"));
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Enable Homing Spam"));
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Mach Speed Air Control"));
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Snowboard Air Control"));
             }
             Properties.Settings.Default.emulatorSystem = combo_Emulator_System.SelectedIndex;
             Properties.Settings.Default.Save();

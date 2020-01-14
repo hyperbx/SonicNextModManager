@@ -197,6 +197,12 @@ namespace Sonic_06_Mod_Manager.src
                                 entryValue = entryValue.Remove(entryValue.Length - 1);
                                 text_ReadOnly.Text = entryValue;
                             }
+                            if (line.StartsWith("Custom"))
+                            {
+                                entryValue = line.Substring(line.IndexOf("=") + 2);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+                                text_Custom.Text = entryValue;
+                            }
                             if (line.StartsWith("Save"))
                             {
                                 entryValue = line.Substring(line.IndexOf("=") + 2);
@@ -248,78 +254,98 @@ namespace Sonic_06_Mod_Manager.src
 
         private void Btn_Create_Click(object sender, EventArgs e)
         {
-            string safeTitle = text_Title.Text.Replace(@"\", "")
-                                              .Replace("/", " - ")
-                                              .Replace(":", " - ")
-                                              .Replace("*", "")
-                                              .Replace("?", "")
-                                              .Replace("\"", "'")
-                                              .Replace("<", "")
-                                              .Replace(">", "")
-                                              .Replace("|", "");
+            try {
+                string safeTitle = text_Title.Text.Replace(@"\", "")
+                                                  .Replace("/", " - ")
+                                                  .Replace(":", " - ")
+                                                  .Replace("*", "")
+                                                  .Replace("?", "")
+                                                  .Replace("\"", "'")
+                                                  .Replace("<", "")
+                                                  .Replace(">", "")
+                                                  .Replace("|", "");
 
-            if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle)) && !edit)
-                UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(safeTitle), SystemMessages.tl_NameError, "OK", "Error");
-            else {
-                pic_Thumbnail.BackgroundImage.Dispose();
-                pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception;
+                if (Directory.Exists(Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle)) && !edit)
+                    UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModExists(safeTitle), SystemMessages.tl_NameError, "OK", "Error");
+                else {
+                    pic_Thumbnail.BackgroundImage.Dispose();
+                    pic_Thumbnail.BackgroundImage = Properties.Resources.logo_exception;
 
-                string newPath = Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle);
+                    string newPath = Path.Combine(Properties.Settings.Default.modsDirectory, safeTitle);
 
-                if (!edit)
-                     Directory.CreateDirectory(newPath);
-                else if (!Directory.Exists(newPath))
-                    Directory.Move(modPath, newPath);
+                    if (!edit)
+                        Directory.CreateDirectory(newPath);
+                    else if (!Directory.Exists(newPath))
+                        Directory.Move(modPath, newPath);
 
-                using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
-                using (StreamWriter configInfo = new StreamWriter(configCreate)) {
-                    configInfo.WriteLine("[Main]");
-                    configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
-                    if (text_Version.Text != string.Empty) configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
-                    if (text_Date.Text != string.Empty) configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
-                    if (text_Author.Text != string.Empty) configInfo.WriteLine($"Author=\"{text_Author.Text}\"");
-                    configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
-                    configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
-                    if (text_ReadOnly.Text != string.Empty) configInfo.WriteLine($"Read-only=\"{text_ReadOnly.Text}\"");
-                    if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 0) configInfo.WriteLine($"Save=\"savedata.360\"");
-                    else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"savedata.ps3\"");
-                    if (tb_Description.Text != string.Empty) {
-                        string descriptionText = string.Empty;
-                        string lastLine = tb_Description.Lines.Last();
-                        foreach (var newLine in tb_Description.Lines) {
-                            if (newLine != lastLine) descriptionText += $"{newLine}\\n";
-                            else descriptionText += newLine;
+                    using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
+                    using (StreamWriter configInfo = new StreamWriter(configCreate)) {
+                        configInfo.WriteLine("[Details]");
+                        configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
+                        if (text_Version.Text != string.Empty) configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
+                        if (text_Date.Text != string.Empty) configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
+                        if (text_Author.Text != string.Empty) configInfo.WriteLine($"Author=\"{text_Author.Text}\"");
+                        configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
+
+                        configInfo.WriteLine("\n[Filesystem]");
+                        configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
+                        if (text_Custom.Text != string.Empty) configInfo.WriteLine($"Custom=\"{text_Custom.Text}\"");
+                        if (text_ReadOnly.Text != string.Empty) configInfo.WriteLine($"Read-only=\"{text_ReadOnly.Text}\"");
+                        if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 0) configInfo.WriteLine($"Save=\"savedata.360\"");
+                        else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1) configInfo.WriteLine($"Save=\"savedata.ps3\"");
+
+                        if (tb_Description.Text != string.Empty) {
+                            string descriptionText = string.Empty;
+                            string lastLine = tb_Description.Lines.Last();
+                            foreach (var newLine in tb_Description.Lines) {
+                                if (newLine != lastLine) descriptionText += $"{newLine}\\n";
+                                else descriptionText += newLine;
+                            }
+                            configInfo.WriteLine($"Description=\"{descriptionText}\"");
                         }
-                        configInfo.WriteLine($"Description=\"{descriptionText}\"");
+                        if (text_Server.Text != string.Empty) {
+                            configInfo.WriteLine();
+                            configInfo.WriteLine("[Updater]");
+                            configInfo.WriteLine($"Metadata=\"{text_Server.Text}\"");
+                        }
+                        if (text_Data.Text != string.Empty) configInfo.WriteLine($"Data=\"{text_Data.Text}\"");
+                        configInfo.Close();
                     }
-                    if (text_Server.Text != string.Empty) {
-                        configInfo.WriteLine();
-                        configInfo.WriteLine("[Updater]");
-                        configInfo.WriteLine($"Metadata=\"{text_Server.Text}\"");
+
+                    if (File.Exists(modThumbnail))
+                        File.Copy(modThumbnail, Path.Combine(newPath, $"thumbnail{Path.GetExtension(modThumbnail)}"), true);
+
+                    if (File.Exists(text_Save.Text))
+                        if (combo_System.SelectedIndex == 0)
+                            File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.360"), true);
+                        else if (combo_System.SelectedIndex == 1)
+                            File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.ps3"), true);
+
+                    if (text_Save.Text == string.Empty && edit) {
+                        try {
+                            string[] getSaveData = Directory.GetFiles(newPath, "savedata*", SearchOption.TopDirectoryOnly);
+                            foreach (var save in getSaveData)
+                                if (File.Exists(save)) File.Delete(save);
+                        }
+                        catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_SaveDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error"); }
                     }
-                    if (text_Data.Text != string.Empty) configInfo.WriteLine($"Data=\"{text_Data.Text}\"");
-                    configInfo.Close();
+
+                    if (check_GenerateFilesystem.Checked && Properties.Settings.Default.gameDirectory != string.Empty) {
+                        string[] directories = Directory.GetDirectories(Properties.Settings.Default.gameDirectory, "*.*", SearchOption.AllDirectories);
+                        foreach (string path in directories) {
+                            string pathTrim = path.Remove(0, Properties.Settings.Default.gameDirectory.Length).Substring(1);
+                            if (combo_System.SelectedIndex == 2) {
+                                if (!pathTrim.Contains("xenon") && !pathTrim.Contains("ps3"))
+                                    Directory.CreateDirectory(Path.Combine(newPath, pathTrim));
+                            } else
+                                Directory.CreateDirectory(Path.Combine(newPath, pathTrim));
+                        }
+                    }
+
+                    Close();
                 }
-
-                if (File.Exists(modThumbnail))
-                    File.Copy(modThumbnail, Path.Combine(newPath, $"thumbnail{Path.GetExtension(modThumbnail)}"), true);
-
-                if (File.Exists(text_Save.Text))
-                    if (combo_System.SelectedIndex == 0)
-                        File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.360"), true);
-                    else if (combo_System.SelectedIndex == 1)
-                        File.Copy(text_Save.Text, Path.Combine(newPath, "savedata.ps3"), true);
-
-                if (text_Save.Text == string.Empty && edit) {
-                    try {
-                        string[] getSaveData = Directory.GetFiles(newPath, "savedata*", SearchOption.TopDirectoryOnly);
-                        foreach (var save in getSaveData)
-                            if (File.Exists(save)) File.Delete(save);
-                    }
-                    catch (Exception ex) { UnifyMessages.UnifyMessage.Show($"{ModsMessages.msg_SaveDeleteError}\n\n{ex}", SystemMessages.tl_FileError, "OK", "Error"); }
-                }
-
-                Close();
+            } catch {
+                UnifyMessages.UnifyMessage.Show(ModsMessages.ex_ModEditError(Path.GetFileName(modPath)), SystemMessages.tl_DirectoryError, "OK", "Error");
             }
         }
 
@@ -364,7 +390,7 @@ namespace Sonic_06_Mod_Manager.src
         }
 
         private void Btn_ReadOnlyBrowser_Click(object sender, EventArgs e) {
-            string files = Locations.LocateARCs();
+            string files = Locations.LocateARCs(ModsMessages.msg_LocateARCs);
 
             if (files != string.Empty) {
                 if (text_ReadOnly.Text != string.Empty && !text_ReadOnly.Text.EndsWith(","))
@@ -458,6 +484,17 @@ namespace Sonic_06_Mod_Manager.src
 
         private void unifytb_ModCreator_SelectedIndexChanged(object sender, EventArgs e) {
             unifytb_ModCreator.Refresh(); //Refresh user control to remove software rendering leftovers.
+        }
+
+        private void Btn_CustomArchives_Click(object sender, EventArgs e) {
+            string files = Locations.LocateCustomData("Please select your custom data...");
+
+            if (files != string.Empty) {
+                if (text_Custom.Text != string.Empty && !text_Custom.Text.EndsWith(","))
+                    text_Custom.Text += $",{files.Substring(0, files.Length - 1)}";
+                else
+                    text_Custom.Text += files.Substring(0, files.Length - 1);
+            }
         }
     }
 }

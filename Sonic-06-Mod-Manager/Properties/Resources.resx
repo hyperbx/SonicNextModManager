@@ -256,6 +256,9 @@
   <data name="Ookii_Dialogs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Ookii.Dialogs.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="pkgtool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\pkgtool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Protocol_Manager" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Protocol Manager.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

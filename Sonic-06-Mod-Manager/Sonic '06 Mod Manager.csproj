@@ -214,6 +214,7 @@
     <Content Include="res\audio\Dreamcast\dreamWarn.wav" />
     <Content Include="res\icon_christmas.ico" />
     <Content Include="res\logo_main_christmas.png" />
+    <Content Include="res\pkgtool.exe" />
     <None Include="res\Protocol Manager.exe" />
     <None Include="res\xextool.exe" />
     <None Include="res\omega_Root_Fix.xno" />

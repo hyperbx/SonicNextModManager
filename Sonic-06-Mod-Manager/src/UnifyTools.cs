@@ -99,19 +99,38 @@ namespace Unify.Tools
             return emulator.FileName;
         }
 
-        public static string LocateARCs()
+        public static string LocateARCs(string title)
         {
             string csvList = string.Empty;
 
             //Select ARCs for Read-only parameters and save.
             OpenFileDialog readonlyARC = new OpenFileDialog {
-                Title = ModsMessages.msg_LocateARCs,
+                Title = title,
                 Filter = "ARC files (*.arc)|*.arc",
                 Multiselect = true
             };
 
             if (readonlyARC.ShowDialog() == DialogResult.OK)
                 foreach (string name in readonlyARC.FileNames)
+                    csvList += $"{Path.GetFileName(name)},";
+            else return string.Empty;
+
+            return csvList;
+        }
+
+        public static string LocateCustomData(string title)
+        {
+            string csvList = string.Empty;
+
+            //Select ARCs for Read-only parameters and save.
+            OpenFileDialog customData = new OpenFileDialog {
+                Title = title,
+                Filter = "All files (*.*)|*.*",
+                Multiselect = true
+            };
+
+            if (customData.ShowDialog() == DialogResult.OK)
+                foreach (string name in customData.FileNames)
                     csvList += $"{Path.GetFileName(name)},";
             else return string.Empty;
 
@@ -149,6 +168,11 @@ namespace Unify.Tools
                 return save.FileName;
             else
                 return string.Empty;
+        }
+
+        internal static string LocateARCs(object msg_LocateARCs)
+        {
+            throw new NotImplementedException();
         }
     }
 
