@@ -110,7 +110,7 @@
             this.link_Melpontro.AutoSize = true;
             this.link_Melpontro.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_Melpontro.LinkColor = System.Drawing.Color.Black;
-            this.link_Melpontro.Location = new System.Drawing.Point(5, 738);
+            this.link_Melpontro.Location = new System.Drawing.Point(5, 753);
             this.link_Melpontro.Name = "link_Melpontro";
             this.link_Melpontro.Size = new System.Drawing.Size(64, 14);
             this.link_Melpontro.TabIndex = 25;
@@ -123,7 +123,7 @@
             this.link_sharu6262.AutoSize = true;
             this.link_sharu6262.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_sharu6262.LinkColor = System.Drawing.Color.Black;
-            this.link_sharu6262.Location = new System.Drawing.Point(5, 708);
+            this.link_sharu6262.Location = new System.Drawing.Point(5, 723);
             this.link_sharu6262.Name = "link_sharu6262";
             this.link_sharu6262.Size = new System.Drawing.Size(62, 14);
             this.link_sharu6262.TabIndex = 23;
@@ -163,7 +163,7 @@
             this.lbl_Contributors.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Contributors.Location = new System.Drawing.Point(4, 47);
             this.lbl_Contributors.Name = "lbl_Contributors";
-            this.lbl_Contributors.Size = new System.Drawing.Size(210, 780);
+            this.lbl_Contributors.Size = new System.Drawing.Size(210, 795);
             this.lbl_Contributors.TabIndex = 18;
             this.lbl_Contributors.Text = resources.GetString("lbl_Contributors.Text");
             // 
@@ -197,7 +197,7 @@
             this.pic_Logo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pic_Logo.Location = new System.Drawing.Point(-4, -3);
             this.pic_Logo.Name = "pic_Logo";
-            this.pic_Logo.Size = new System.Drawing.Size(250, 851);
+            this.pic_Logo.Size = new System.Drawing.Size(250, 855);
             this.pic_Logo.TabIndex = 15;
             this.pic_Logo.TabStop = false;
             this.pic_Logo.Click += new System.EventHandler(this.Pic_Logo_Click);
@@ -220,7 +220,7 @@
             this.link_Velcomia.AutoSize = true;
             this.link_Velcomia.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.link_Velcomia.LinkColor = System.Drawing.Color.Black;
-            this.link_Velcomia.Location = new System.Drawing.Point(5, 798);
+            this.link_Velcomia.Location = new System.Drawing.Point(5, 813);
             this.link_Velcomia.Name = "link_Velcomia";
             this.link_Velcomia.Size = new System.Drawing.Size(57, 14);
             this.link_Velcomia.TabIndex = 31;
@@ -286,7 +286,7 @@
             this.Container_About.Panel2.Controls.Add(this.link_Melpontro);
             this.Container_About.Panel2.Controls.Add(this.link_Nonami);
             this.Container_About.Panel2.Controls.Add(this.lbl_Contributors);
-            this.Container_About.Size = new System.Drawing.Size(608, 847);
+            this.Container_About.Size = new System.Drawing.Size(608, 851);
             this.Container_About.SplitterDistance = 246;
             this.Container_About.TabIndex = 34;
             // 
@@ -294,7 +294,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 847);
+            this.ClientSize = new System.Drawing.Size(608, 851);
             this.Controls.Add(this.Container_About);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

@@ -45,7 +45,7 @@ namespace Sonic_06_Mod_Manager
 {
     public partial class ModManager : Form
     {
-        public readonly string versionNumber = "Version 2.56"; // Defines the version number to be used globally
+        public readonly string versionNumber = "Version 2.57"; // Defines the version number to be used globally
         public readonly string modLoaderVersion = "Version 2.11";
         public static List<string> configs = new List<string>() { }; // Defines the configs list for 'mod.ini' files
         ListViewItem[] patches = new ListViewItem[0];
@@ -266,6 +266,8 @@ namespace Sonic_06_Mod_Manager
                 Status = SystemMessages.msg_PatchInfo;
                 if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Action Gauge Fixes")) {
                     UnifyMessages.UnifyMessage.Show("This patch will restore Sonic's Action Gauge draining and replenishment when using Gems.", "Action Gauge Fixes", "OK", "Information");
+                } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Board Collision Anim Fix")) {
+                    UnifyMessages.UnifyMessage.Show("This patch will restore the board collision animation when you collide with terrain.", "Board Collision Anim Fix", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Bound Attack Recovery")) {
                     UnifyMessages.UnifyMessage.Show("This patch will unlock mid-air momentum for the bound attack.\n\nUnlock Mid-air Momentum patch would be recommended to use with this.", "Bound Attack Recovery", "OK", "Information");
                 } else if (view_PatchesList.SelectedItems[0] == view_PatchesList.FindItemWithText("Controllable Spinkick")) {
@@ -522,6 +524,18 @@ namespace Sonic_06_Mod_Manager
                         File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
                     XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
                     XEX.ControllableSpinkick(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                }
+                Status = SystemMessages.msg_DefaultStatus;
+            }
+
+            if (view_PatchesList.FindItemWithText("Board Collision Anim Fix").Checked) {
+                Status = SystemMessages.msg_PatchingCharacters;
+                if (text_GameDirectory.Text != string.Empty && Directory.Exists(text_GameDirectory.Text)) {
+                    if (!File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_back")) && !File.Exists(Path.Combine(text_GameDirectory.Text, "default.xex_orig")))
+                        File.Copy(Path.Combine(text_GameDirectory.Text, "default.xex"), Path.Combine(text_GameDirectory.Text, "default.xex_orig"), true);
+                    XEX.Decrypt(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.DecompressBIN(Path.Combine(text_GameDirectory.Text, "default.xex"));
+                    XEX.BoardCollision(Path.Combine(text_GameDirectory.Text, "default.xex"));
                 }
                 Status = SystemMessages.msg_DefaultStatus;
             }
@@ -1454,6 +1468,7 @@ namespace Sonic_06_Mod_Manager
 
                 text_EmulatorPath.Text = Properties.Settings.Default.RPCS3Path;
 
+                view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Board Collision Anim Fix"));
                 view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Bound Attack Recovery"));
                 view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Controllable Spinkick"));
                 view_PatchesList.Items.Remove(view_PatchesList.FindItemWithText("Disable Character Stumble"));

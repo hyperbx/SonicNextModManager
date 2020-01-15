@@ -508,6 +508,18 @@ namespace Unify.Patcher
             }
         }
 
+        public static void BoardCollision(string filepath) {
+            string platform = string.Empty;
+            if (Sonic_06_Mod_Manager.Properties.Settings.Default.emulatorSystem == 0) platform = "xenon";
+            else platform = "ps3";
+
+            string playerArchiveDir = Path.Combine(Sonic_06_Mod_Manager.Properties.Settings.Default.gameDirectory, platform, "archives", "player.arc");
+            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                stream.Position = 0x217A07; stream.WriteByte(0x0C);
+            }
+            PKG.AddEntry(playerArchiveDir, $"player\\{platform}\\player\\snow_board", "motion", "against", "player/sonic_new/so_brd_collision_Root.xnm");
+        }
+
         public static void BoundRecovery(string filepath) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
                 stream.Position = 0x21ADC8; stream.WriteByte(0x40);
@@ -631,6 +643,39 @@ namespace Unify.Patcher
             process.WaitForExit();
 
             if (Path.GetExtension(filepath) == ".txt") File.Delete(filepath);
+        }
+
+        public static void AddEntry(string filepath, string directoryRoot, string key, string _event, string reference) {
+            if (!File.Exists($"{filepath}_orig"))
+                File.Copy(filepath, $"{filepath}_orig", true);
+            string unpack = ARC.UnpackARC(filepath);
+
+            //Unpack PKG
+            PKGTool($"{Path.Combine(unpack, directoryRoot)}.pkg");
+            List<string> basePKG = File.ReadAllLines($"{Path.Combine(unpack, directoryRoot)}.txt").ToList();
+            bool keyfound = false;
+            int lineNum = 0;
+
+            foreach (string line in basePKG) {
+                if (line.StartsWith($"\"{key}\"")) {
+                    keyfound = true;
+                    basePKG.Insert(lineNum + 2, $"\t\"{_event}\" = \"{reference}\";");
+                    break;
+                }
+                lineNum++;
+            }
+
+            if (keyfound == false) {
+                basePKG.Add($"\"{key}\"\n{"{"}");
+                basePKG.Add($"\t\"{_event}\" = \"{reference}\";");
+                basePKG.Add("}");
+            }
+
+            File.WriteAllLines($"{Path.Combine(unpack, directoryRoot)}.txt", basePKG); //Resave the edited text file
+
+            //Resave PKG file
+            PKGTool($"{Path.Combine(unpack, directoryRoot)}.txt");
+            ARC.RepackARC(unpack, filepath);
         }
 
         public static void SilverGrindTrick(string filepath) {
