@@ -526,26 +526,6 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] omega_Root_Fix {
-            get {
-                object obj = ResourceManager.GetObject("omega_Root_Fix", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] omega_Root_Retail {
-            get {
-                object obj = ResourceManager.GetObject("omega_Root_Retail", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] Ookii_Dialogs {
             get {
                 object obj = ResourceManager.GetObject("Ookii_Dialogs", resourceCulture);

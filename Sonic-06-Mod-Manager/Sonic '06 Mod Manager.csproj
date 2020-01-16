@@ -66,16 +66,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="src\ModUpdater.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="src\ModUpdater.Designer.cs">
       <DependentUpon>ModUpdater.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="src\AboutForm.cs">
       <SubType>Form</SubType>
@@ -217,8 +217,6 @@
     <Content Include="res\pkgtool.exe" />
     <None Include="res\Protocol Manager.exe" />
     <None Include="res\xextool.exe" />
-    <None Include="res\omega_Root_Fix.xno" />
-    <None Include="res\omega_Root_Retail.xno" />
     <None Include="res\retail_render_gamemode.lub" />
     <None Include="res\retail_render_main.lub" />
     <None Include="res\retail_render_title.lub" />

@@ -247,12 +247,6 @@
   <data name="Newtonsoft_Json" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Newtonsoft.Json.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="omega_Root_Fix" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\omega_Root_Fix.xno;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="omega_Root_Retail" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\omega_Root_Retail.xno;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="Ookii_Dialogs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Ookii.Dialogs.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

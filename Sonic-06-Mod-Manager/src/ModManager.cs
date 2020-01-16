@@ -786,7 +786,9 @@ namespace Sonic_06_Mod_Manager
 
                         if (view_PatchesList.FindItemWithText("Omega Blur Fix").Checked) {
                             Status = SystemMessages.msg_PatchingCharacters;
-                            File.WriteAllBytes(Path.Combine(unpack, "player_omega\\win32\\player\\omega\\omega_Root.xno"), Properties.Resources.omega_Root_Fix);
+                            using (var stream = File.Open(Path.Combine(unpack, "player_omega\\win32\\player\\omega\\omega_Root.xno"), FileMode.Open, FileAccess.Write)) {
+                                stream.Position = 0x29A3; stream.WriteByte(0x46);
+                            }
                         }
 
                         ARC.RepackARC(unpack, arc);
@@ -1830,10 +1832,10 @@ namespace Sonic_06_Mod_Manager
             if (!Properties.Settings.Default.theme) {
                 btn_Theme.Text = "Theme: Light";
 
-                unifytb_Main.BackTabColor = SystemColors.Control;
-                unifytb_Main.BorderColor = SystemColors.Control;
-                unifytb_Main.HeaderColor = SystemColors.ControlLightLight;
-                unifytb_Main.TextColor = SystemColors.ControlText;
+                unifytb_Patches.BackTabColor = unifytb_Main.BackTabColor = SystemColors.Control;
+                unifytb_Patches.BorderColor = unifytb_Main.BorderColor = SystemColors.Control;
+                unifytb_Patches.HeaderColor = unifytb_Main.HeaderColor = SystemColors.ControlLightLight;
+                unifytb_Patches.TextColor = unifytb_Main.TextColor = SystemColors.ControlText;
                 status_Main.BackColor = SystemColors.Control;
                 BackColor = SystemColors.ControlLight;
 
@@ -1869,6 +1871,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_MSAA.ForeColor = SystemColors.GrayText;
                     lbl_CameraTweaks.ForeColor = SystemColors.GrayText;
                     lbl_ForceAA.ForeColor = SystemColors.GrayText;
+                    lbl_CharacterTweaksOverlay.ForeColor = SystemColors.GrayText;
+                    lbl_HammerRange.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.ControlText;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.ControlText;
@@ -1881,6 +1885,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_Renderer.ForeColor = SystemColors.ControlText;
                     lbl_CameraHeight.ForeColor = SystemColors.ControlText;
                     lbl_CameraTweaks.ForeColor = SystemColors.ControlText;
+                    lbl_CharacterTweaksOverlay.ForeColor = SystemColors.ControlText;
+                    lbl_HammerRange.ForeColor = SystemColors.ControlText;
                     if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
                         lbl_MSAA.ForeColor = SystemColors.ControlText;
                         lbl_ForceAA.ForeColor = SystemColors.ControlText;
@@ -1956,10 +1962,10 @@ namespace Sonic_06_Mod_Manager
             else {
                 btn_Theme.Text = "Theme: Dark";
 
-                unifytb_Main.BackTabColor = Color.FromArgb(28, 28, 28);
-                unifytb_Main.BorderColor = Color.FromArgb(30, 30, 30);
-                unifytb_Main.HeaderColor = Color.FromArgb(45, 45, 48);
-                unifytb_Main.TextColor = Color.FromArgb(255, 255, 255);
+                unifytb_Patches.BackTabColor = unifytb_Main.BackTabColor = Color.FromArgb(28, 28, 28);
+                unifytb_Patches.BorderColor = unifytb_Main.BorderColor = Color.FromArgb(30, 30, 30);
+                unifytb_Patches.HeaderColor = unifytb_Main.HeaderColor = Color.FromArgb(45, 45, 48);
+                unifytb_Patches.TextColor = unifytb_Main.TextColor = Color.FromArgb(255, 255, 255);
                 status_Main.BackColor = Color.FromArgb(28, 28, 28);
                 BackColor = Color.FromArgb(45, 45, 48);
 
@@ -1995,6 +2001,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_MSAA.ForeColor = SystemColors.GrayText;
                     lbl_CameraTweaks.ForeColor = SystemColors.GrayText;
                     lbl_ForceAA.ForeColor = SystemColors.GrayText;
+                    lbl_CharacterTweaksOverlay.ForeColor = SystemColors.GrayText;
+                    lbl_HammerRange.ForeColor = SystemColors.GrayText;
                 } else {
                     lbl_ManualInstall.ForeColor = SystemColors.Control;
                     if (Prerequisites.JavaCheck()) lbl_ManualPatches.ForeColor = SystemColors.Control;
@@ -2007,6 +2015,8 @@ namespace Sonic_06_Mod_Manager
                     lbl_Renderer.ForeColor = SystemColors.Control;
                     lbl_CameraHeight.ForeColor = SystemColors.Control;
                     lbl_CameraTweaks.ForeColor = SystemColors.Control;
+                    lbl_CharacterTweaksOverlay.ForeColor = SystemColors.Control;
+                    lbl_HammerRange.ForeColor = SystemColors.Control;
                     if (combo_Renderer.SelectedIndex == 0 && combo_MSAA.SelectedIndex == 1) {
                         lbl_MSAA.ForeColor = SystemColors.Control;
                         lbl_ForceAA.ForeColor = SystemColors.Control;
