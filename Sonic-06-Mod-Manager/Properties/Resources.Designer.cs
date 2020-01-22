@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sonic_06_Mod_Manager.Properties {
+namespace Unify.Environment.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Sonic_06_Mod_Manager.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sonic_06_Mod_Manager.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Unify.Environment.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,231 +61,71 @@ namespace Sonic_06_Mod_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] arctool {
+        internal static System.Drawing.Bitmap ConfigurationFile_16x {
             get {
-                object obj = ResourceManager.GetObject("arctool", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] barebones_render_gamemode {
-            get {
-                object obj = ResourceManager.GetObject("barebones_render_gamemode", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] barebones_render_main {
-            get {
-                object obj = ResourceManager.GetObject("barebones_render_main", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell01 {
-            get {
-                return ResourceManager.GetStream("bell01", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell02 {
-            get {
-                return ResourceManager.GetStream("bell02", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell04 {
-            get {
-                return ResourceManager.GetStream("bell04", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell05 {
-            get {
-                return ResourceManager.GetStream("bell05", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell06 {
-            get {
-                return ResourceManager.GetStream("bell06", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell07 {
-            get {
-                return ResourceManager.GetStream("bell07", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell08 {
-            get {
-                return ResourceManager.GetStream("bell08", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell09 {
-            get {
-                return ResourceManager.GetStream("bell09", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell10 {
-            get {
-                return ResourceManager.GetStream("bell10", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell11 {
-            get {
-                return ResourceManager.GetStream("bell11", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell12 {
-            get {
-                return ResourceManager.GetStream("bell12", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell13 {
-            get {
-                return ResourceManager.GetStream("bell13", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell14 {
-            get {
-                return ResourceManager.GetStream("bell14", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell15 {
-            get {
-                return ResourceManager.GetStream("bell15", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell16 {
-            get {
-                return ResourceManager.GetStream("bell16", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell17 {
-            get {
-                return ResourceManager.GetStream("bell17", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell18 {
-            get {
-                return ResourceManager.GetStream("bell18", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell19 {
-            get {
-                return ResourceManager.GetStream("bell19", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream bell20 {
-            get {
-                return ResourceManager.GetStream("bell20", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] BurnoutBlurFilter {
-            get {
-                object obj = ResourceManager.GetObject("BurnoutBlurFilter", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream dream {
-            get {
-                return ResourceManager.GetStream("dream", resourceCulture);
+                object obj = ResourceManager.GetObject("ConfigurationFile_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dreamcast_ntsc {
+        internal static System.Drawing.Bitmap Corner_Logo {
             get {
-                object obj = ResourceManager.GetObject("dreamcast_ntsc", resourceCulture);
+                object obj = ResourceManager.GetObject("Corner_Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Corner_Logo_Colour {
+            get {
+                object obj = ResourceManager.GetObject("Corner_Logo_Colour", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap debug_6 {
+            get {
+                object obj = ResourceManager.GetObject("debug_6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Disc {
+            get {
+                object obj = ResourceManager.GetObject("Disc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Exception_Logo {
+            get {
+                object obj = ResourceManager.GetObject("Exception_Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InformationSymbol_16x {
+            get {
+                object obj = ResourceManager.GetObject("InformationSymbol_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,9 +133,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon dreamcast_ntsc_icon {
+        internal static System.Drawing.Icon logo_main_icon {
             get {
-                object obj = ResourceManager.GetObject("dreamcast_ntsc_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("logo_main_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -303,172 +143,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dreamcast_pal {
+        internal static System.Drawing.Bitmap Menu_Logo {
             get {
-                object obj = ResourceManager.GetObject("dreamcast_pal", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon dreamcast_pal_icon {
-            get {
-                object obj = ResourceManager.GetObject("dreamcast_pal_icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream dreamLaunch {
-            get {
-                return ResourceManager.GetStream("dreamLaunch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream dreamWarn {
-            get {
-                return ResourceManager.GetStream("dreamWarn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon error {
-            get {
-                object obj = ResourceManager.GetObject("error", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to body
-        ///{
-        ///    background-color: #2D2D30;
-        ///    color: #e2e2e2;
-        ///    font-family: sans-serif;
-        ///}
-        ///
-        ///a
-        ///{
-        ///    color: #FFE033;
-        ///    text-decoration: none;
-        ///    vertical-align: baseline;
-        ///}
-        ///
-        ///h1
-        ///{
-        ///    font-size: 18px;
-        ///    margin: 0 0 0.75em;
-        ///    padding: 0 0 0.25em 0;
-        ///}
-        ///
-        ///li
-        ///{
-        ///    list-style-type: square;
-        ///}
-        ///
-        ///span.RedColor
-        ///{
-        ///    color: #D61111;
-        ///}.
-        /// </summary>
-        internal static string GBStyleSheetDark {
-            get {
-                return ResourceManager.GetString("GBStyleSheetDark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to body
-        ///{
-        ///    background-color: #FFFFFF;
-        ///    color: #000000;
-        ///    font-family: sans-serif;
-        ///}
-        ///
-        ///a
-        ///{
-        ///    color: #3e00db;
-        ///    text-decoration: none;
-        ///    vertical-align: baseline;
-        ///}
-        ///
-        ///h1
-        ///{
-        ///    font-size: 18px;
-        ///    margin: 0 0 0.75em;
-        ///    padding: 0 0 0.25em 0;
-        ///}
-        ///
-        ///li
-        ///{
-        ///    list-style-type: square;
-        ///}
-        ///
-        ///span.RedColor
-        ///{
-        ///    color: #D61111;
-        ///}.
-        /// </summary>
-        internal static string GBStyleSheetLight {
-            get {
-                return ResourceManager.GetString("GBStyleSheetLight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0DA6501184DA0C9BB7E0D864A173ED9F.
-        /// </summary>
-        internal static string hash_protocolManager {
-            get {
-                return ResourceManager.GetString("hash_protocolManager", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon icon {
-            get {
-                object obj = ResourceManager.GetObject("icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon icon_aldi {
-            get {
-                object obj = ResourceManager.GetObject("icon_aldi", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon icon_christmas {
-            get {
-                object obj = ResourceManager.GetObject("icon_christmas", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap logo_aldi {
-            get {
-                object obj = ResourceManager.GetObject("logo_aldi", resourceCulture);
+                object obj = ResourceManager.GetObject("Menu_Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -476,9 +153,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap logo_exception {
+        internal static System.Drawing.Bitmap Monaco_Settings_16x {
             get {
-                object obj = ResourceManager.GetObject("logo_exception", resourceCulture);
+                object obj = ResourceManager.GetObject("Monaco_Settings_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -486,9 +163,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap logo_gamebanana {
+        internal static System.Drawing.Bitmap PaintBrush_16x {
             get {
-                object obj = ResourceManager.GetObject("logo_gamebanana", resourceCulture);
+                object obj = ResourceManager.GetObject("PaintBrush_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -496,9 +173,9 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap logo_main {
+        internal static System.Drawing.Bitmap PatchPackage_16x {
             get {
-                object obj = ResourceManager.GetObject("logo_main", resourceCulture);
+                object obj = ResourceManager.GetObject("PatchPackage_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -506,140 +183,20 @@ namespace Sonic_06_Mod_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap logo_main_christmas {
+        internal static System.Drawing.Bitmap Refresh_grey_16x {
             get {
-                object obj = ResourceManager.GetObject("logo_main_christmas", resourceCulture);
+                object obj = ResourceManager.GetObject("Refresh_grey_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] Newtonsoft_Json {
+        internal static System.Drawing.Bitmap Update_4 {
             get {
-                object obj = ResourceManager.GetObject("Newtonsoft_Json", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Ookii_Dialogs {
-            get {
-                object obj = ResourceManager.GetObject("Ookii_Dialogs", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] pkgtool {
-            get {
-                object obj = ResourceManager.GetObject("pkgtool", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Protocol_Manager {
-            get {
-                object obj = ResourceManager.GetObject("Protocol_Manager", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] render_cheap {
-            get {
-                object obj = ResourceManager.GetObject("render_cheap", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] retail_render_gamemode {
-            get {
-                object obj = ResourceManager.GetObject("retail_render_gamemode", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] retail_render_main {
-            get {
-                object obj = ResourceManager.GetObject("retail_render_main", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] retail_render_title {
-            get {
-                object obj = ResourceManager.GetObject("retail_render_title", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] unlub {
-            get {
-                object obj = ResourceManager.GetObject("unlub", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] vulkan_render_gamemode {
-            get {
-                object obj = ResourceManager.GetObject("vulkan_render_gamemode", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] vulkan_render_main {
-            get {
-                object obj = ResourceManager.GetObject("vulkan_render_main", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] vulkan_render_title {
-            get {
-                object obj = ResourceManager.GetObject("vulkan_render_title", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] xextool {
-            get {
-                object obj = ResourceManager.GetObject("xextool", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("Update_4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
