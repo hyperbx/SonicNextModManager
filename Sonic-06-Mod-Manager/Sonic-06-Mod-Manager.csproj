@@ -256,8 +256,10 @@
     <Content Include="res\Images\Disc.png" />
     <Content Include="res\Images\Exception_Logo.png" />
     <Content Include="res\Images\InformationSymbol_16x.png" />
+    <Content Include="res\Images\InstallMods.png" />
     <Content Include="res\Images\Menu_Logo.png" />
     <Content Include="res\Images\Monaco_Settings_16x.png" />
+    <Content Include="res\Images\NewFileCollection_16x.png" />
     <Content Include="res\Images\PaintBrush_16x.png" />
     <Content Include="res\Images\PatchPackage_16x.png" />
     <Content Include="res\Images\Refresh_grey_16x.png" />

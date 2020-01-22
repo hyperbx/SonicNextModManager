@@ -131,6 +131,16 @@ namespace Unify.Environment.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InstallMods {
+            get {
+                object obj = ResourceManager.GetObject("InstallMods", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon logo_main_icon {
@@ -156,6 +166,16 @@ namespace Unify.Environment.Properties {
         internal static System.Drawing.Bitmap Monaco_Settings_16x {
             get {
                 object obj = ResourceManager.GetObject("Monaco_Settings_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NewFileCollection_16x {
+            get {
+                object obj = ResourceManager.GetObject("NewFileCollection_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
