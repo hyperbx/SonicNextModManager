@@ -1211,7 +1211,7 @@
             this.ListBox_Debug.ItemHeight = 15;
             this.ListBox_Debug.Location = new System.Drawing.Point(0, 4);
             this.ListBox_Debug.Name = "ListBox_Debug";
-            this.ListBox_Debug.Size = new System.Drawing.Size(591, 705);
+            this.ListBox_Debug.Size = new System.Drawing.Size(591, 870);
             this.ListBox_Debug.TabIndex = 0;
             // 
             // Panel_DebugControls
@@ -1220,7 +1220,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_DebugControls.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Panel_DebugControls.Controls.Add(this.SectionButton_ClearLog);
-            this.Panel_DebugControls.Location = new System.Drawing.Point(-1, 730);
+            this.Panel_DebugControls.Location = new System.Drawing.Point(-1, 876);
             this.Panel_DebugControls.Name = "Panel_DebugControls";
             this.Panel_DebugControls.Size = new System.Drawing.Size(596, 53);
             this.Panel_DebugControls.TabIndex = 1;
@@ -1236,7 +1236,7 @@
             this.SectionButton_ClearLog.SectionImage = global::Unify.Environment.Properties.Resources.Refresh_grey_16x;
             this.SectionButton_ClearLog.SectionText = "Clear debug log";
             this.SectionButton_ClearLog.SelectedSection = false;
-            this.SectionButton_ClearLog.Size = new System.Drawing.Size(250, 35);
+            this.SectionButton_ClearLog.Size = new System.Drawing.Size(584, 35);
             this.SectionButton_ClearLog.TabIndex = 24;
             this.SectionButton_ClearLog.Click += new System.EventHandler(this.SectionButton_ClearLog_Click);
             // 
