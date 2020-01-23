@@ -20,8 +20,7 @@ namespace Unify.Serialisers
                     }
                 } catch { }
 
-            if (entryValue == string.Empty) return "N/A";
-            else return entryValue;
+            return entryValue;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Unify.Messenger;
+using Microsoft.Win32;
 using Unify.Serialisers;
 using Unify.Environment3;
 using System.Diagnostics;
@@ -69,10 +71,10 @@ namespace Unify.Patcher
 
                 //Check if file should be merged
                 if (Path.GetExtension(file) == ".arc" && merge && !read_only.Contains(Path.GetFileName(file)) && !custom.Contains(Path.GetFileName(file))) {
-                    if (Properties.Settings.Default.Debug) Console.WriteLine($"Merging: {file}");
+                    if (RushInterface._debug) Console.WriteLine($"Merging: {file}");
                     Merge(vanillaFilePath, file);
                 } else { //If the file is not an archive or it shouldn't be merged, just copy it
-                    if (Properties.Settings.Default.Debug) Console.WriteLine($"Copying: {file}");
+                    if (RushInterface._debug) Console.WriteLine($"Copying: {file}");
                     File.Copy(file, vanillaFilePath, true);
                 }
 
@@ -286,6 +288,17 @@ namespace Unify.Patcher
     public static class ZIP
     {
         /// <summary>
+        /// Extracts a ZIP file.
+        /// </summary>
+        /// <param name="ZipPath"></param>
+        public static void InstallFromZip(string ZipPath) {
+            try {
+                // Extracts all contents inside of the zip file
+                ZipFile.ExtractToDirectory(ZipPath, Properties.Settings.Default.ModsDirectory);
+            } catch { InstallFrom7zArchive(ZipPath); }
+        }
+
+        /// <summary>
         /// Extracts a ZIP file with extra parameters.
         /// </summary>
         public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite) {
@@ -306,6 +319,53 @@ namespace Unify.Patcher
                         file.ExtractToFile(completeFileName, true);
                     else
                         file.ExtractToFile(Path.Combine(destinationDirectoryName, $"{Application.ExecutablePath}.new"), true);
+            }
+        }
+
+        /// <summary>
+        /// Requires 7-Zip to be installed.
+        /// </summary>
+        public static void InstallFrom7zArchive(string ArchivePath) {
+            // Gets 7-Zip's Registry Key.
+            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\7-Zip");
+            // If null then try get it from the 64-bit Registry.
+            if (key == null)
+                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+                    .OpenSubKey("SOFTWARE\\7-Zip");
+            // Checks if 7-Zip is installed by checking if the key and path value exists.
+            if (key != null && key.GetValue("Path") is string path) {
+                // Path to 7z.exe.
+                string exe = Path.Combine(path, "7z.exe");
+
+                // Extracts the archive to the temp folder.
+                var psi = new ProcessStartInfo(exe, $"x \"{ArchivePath}\" -o \"{Properties.Settings.Default.ModsDirectory}\" -y");
+                psi.CreateNoWindow = true;
+                Process.Start(psi).WaitForExit(1000 * 60 * 5);
+
+                key.Close();
+            } else { InstallFromWinRAR(ArchivePath); }
+        }
+
+        /// <summary>
+        /// Requires WinRAR to be installed.
+        /// </summary>
+        public static void InstallFromWinRAR(string ArchivePath) {
+            // Gets WinRAR's Registry Key.
+            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
+            // If null then try to get it from the 64-bit registry.
+            if (key == null)
+                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("SOFTWARE\\WinRAR");
+            if (key != null && key.GetValue("exe64") is string path) {
+                // Extracts the archive to the temp folder.
+                var psi = new ProcessStartInfo(path, $"x \"{ArchivePath}\" \"{Properties.Settings.Default.ModsDirectory}\"");
+                psi.CreateNoWindow = true;
+                Process.Start(psi).WaitForExit(1000 * 60 * 5);
+
+                key.Close();
+
+            } else {
+                UnifyMessenger.UnifyMessage.ShowDialog("Failed to install from archive because 7-Zip and/or WinRAR is not installed.",
+                                                       "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

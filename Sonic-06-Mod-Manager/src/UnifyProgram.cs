@@ -1,8 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Diagnostics;
 using System.Windows.Forms;
+using Unify.Networking.GameBanana;
 
-// Sonic '06 Toolkit is licensed under the MIT License:
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
@@ -36,7 +40,7 @@ namespace Unify.Environment3
 
         [STAThread]
 
-        static void Main() {
+        static void Main(string[] args) {
             // Write required pre-requisites to the Tools directory
             if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\"))
                 Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\");
@@ -47,9 +51,55 @@ namespace Unify.Environment3
             if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\pkgtool.exe"))
                 File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\pkgtool.exe", Properties.Resources.pkgtool);
 
+            if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe"))
+                File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe", Properties.Resources.Protocol_Manager);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UnifyEnvironment());
+            
+            // Ensure application can't be run more than once
+            if ((Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1) == false) {
+                if (args.Length > 0) {
+                    if (args[0] == "-banana") {
+                        string[] getIDs = args[1].Remove(0, 40).Split(','); // Split URL
+                        string modType = string.Empty;
+                        int downloadID = 0;
+                        int modID = 0;
+                        int i = 0;
+
+                        //Get IDs from URL
+                        foreach (var item in getIDs)
+                            if      (i == 0) { int.TryParse(item, out downloadID); { i++; } }
+                            else if (i == 1) { modType = item; i++; }
+                            else if (i == 2) { int.TryParse(item, out modID); { i++; } }
+
+                        var mod = new GBAPIItemDataBasic(modType, modID);
+                        if (GBAPI.RequestItemData(mod)) {
+                            new ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog(); // Load 1-Click Installer
+                            Application.Run(new UnifyEnvironment()); // Load everything after
+                        }
+                    }
+                } else
+                    // Load everything
+                    Application.Run(new UnifyEnvironment());
+
+            // If application is running, just load the 1-Click Installer only
+            } else if (args[0] == "-banana") {
+                string[] getIDs = args[1].Remove(0, 40).Split(','); // Split URL
+                string modType = string.Empty;
+                int downloadID = 0;
+                int modID = 0;
+                int i = 0;
+
+                //Get IDs from URL
+                foreach (var item in getIDs)
+                    if      (i == 0) { int.TryParse(item, out downloadID); { i++; } }
+                    else if (i == 1) { modType = item; i++; }
+                    else if (i == 2) { int.TryParse(item, out modID); { i++; } }
+
+                var mod = new GBAPIItemDataBasic(modType, modID);
+                if (GBAPI.RequestItemData(mod)) new ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog();
+            }
         }
     }
 }

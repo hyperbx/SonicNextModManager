@@ -40,7 +40,6 @@
             this.Unify_Rush.ForeColor = System.Drawing.SystemColors.Control;
             this.Unify_Rush.Location = new System.Drawing.Point(0, 0);
             this.Unify_Rush.Name = "Unify_Rush";
-            this.Unify_Rush.SelectedIndex = 0;
             this.Unify_Rush.Size = new System.Drawing.Size(849, 569);
             this.Unify_Rush.TabIndex = 0;
             // 

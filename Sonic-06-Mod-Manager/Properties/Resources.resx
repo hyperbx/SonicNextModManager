@@ -157,14 +157,29 @@
   <data name="EditPage_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Images\EditPage_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\icons\error.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Exception_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\exception_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Exception_Logo_Full_Colour" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\images\exception_logo_full_colour.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GameBanana_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\images\gamebanana_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GBStyleSheetDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\src\Environment3\GBStyleSheetDark.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="InformationSymbol_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Images\InformationSymbol_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="InstallMods" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\installmods.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\images\logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_main_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\icons\logo_main_icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -189,6 +204,9 @@
   </data>
   <data name="pkgtool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\applications\pkgtool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Protocol_Manager" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\protocol manager.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Refresh_grey_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\refresh_grey_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

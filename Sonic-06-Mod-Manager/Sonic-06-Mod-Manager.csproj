@@ -52,6 +52,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Environment3\Controls\UnifyMessenger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Environment3\Controls\UnifyMessenger.designer.cs">
+      <DependentUpon>UnifyMessenger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Environment3\ModCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Environment3\ModCreator.Designer.cs">
+      <DependentUpon>ModCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Environment3\ModInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Environment3\ModInfo.Designer.cs">
+      <DependentUpon>ModInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Environment3\ModOneClickInstall.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Environment3\ModOneClickInstall.designer.cs">
+      <DependentUpon>ModOneClickInstall.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\UnifyConsole.cs" />
     <Compile Include="src\UnifySerialisers.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -190,6 +214,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="src\Environment3\Controls\UnifyMessenger.resx">
+      <DependentUpon>UnifyMessenger.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\Controls\UnifyTabControl.resx">
       <DependentUpon>UnifyTabControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -198,6 +225,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\Controls\WindowsColourPicker.resx">
       <DependentUpon>WindowsColourPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Environment3\ModCreator.resx">
+      <DependentUpon>ModCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Environment3\ModInfo.resx">
+      <DependentUpon>ModInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Environment3\ModOneClickInstall.resx">
+      <DependentUpon>ModOneClickInstall.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\RushInterface.resx">
       <DependentUpon>RushInterface.cs</DependentUpon>
@@ -237,6 +273,8 @@
     <Content Include="license.txt" />
     <Content Include="res\Applications\arctool.exe" />
     <Content Include="res\Applications\pkgtool.exe" />
+    <Content Include="res\Applications\Protocol Manager.exe" />
+    <Content Include="res\Icons\error.ico" />
     <Content Include="res\Icons\logo_main_icon.ico" />
     <Content Include="res\Images\Cancel_16x.png" />
     <Content Include="res\Images\CheckBox_16x_24.bmp" />
@@ -247,8 +285,11 @@
     <Content Include="res\Images\Disc.png" />
     <Content Include="res\Images\EditPage_16x.png" />
     <Content Include="res\Images\Exception_Logo.png" />
+    <Content Include="res\Images\Exception_Logo_Full_Colour.png" />
+    <Content Include="res\Images\GameBanana_Logo.png" />
     <Content Include="res\Images\InformationSymbol_16x.png" />
     <Content Include="res\Images\InstallMods.png" />
+    <Content Include="res\Images\Logo.png" />
     <Content Include="res\Images\Menu_Logo.png" />
     <Content Include="res\Images\Monaco_Settings_16x.png" />
     <Content Include="res\Images\NewFileCollection_16x.png" />
@@ -257,6 +298,7 @@
     <Content Include="res\Images\PatchPackage_16x.png" />
     <Content Include="res\Images\Refresh_grey_16x.png" />
     <Content Include="res\Images\Update 4.png" />
+    <None Include="src\Environment3\GBStyleSheetDark.css" />
     <Content Include="third_party\Ookii.Dialogs\CustomDictionary.xml" />
     <Content Include="third_party\Ookii.Dialogs\InputDialog.bmp" />
     <Content Include="third_party\Ookii.Dialogs\license.txt" />

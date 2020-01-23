@@ -38,9 +38,10 @@ namespace Unify.Environment3
             this.TabControl_Rush = new Unify.Environment3.UnifyTabControl();
             this.Tab_Section_Mods = new System.Windows.Forms.TabPage();
             this.SplitContainer_ModsControls = new System.Windows.Forms.SplitContainer();
-            this.SectionButton_InstallMods = new Unify.Environment3.SectionButton();
-            this.SectionButton_SaveChecks = new Unify.Environment3.SectionButton();
             this.SectionButton_CreateNewMod = new Unify.Environment3.SectionButton();
+            this.SectionButton_InstallMods = new Unify.Environment3.SectionButton();
+            this.SectionButton_RefreshMods = new Unify.Environment3.SectionButton();
+            this.SectionButton_SaveChecks = new Unify.Environment3.SectionButton();
             this.Button_Priority = new System.Windows.Forms.Button();
             this.Button_DownerPriority = new System.Windows.Forms.Button();
             this.Button_UpperPriority = new System.Windows.Forms.Button();
@@ -54,8 +55,8 @@ namespace Unify.Environment3
             this.Column_ModsList_System = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Column_ModsList_Merge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Column_ModsList_Blank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Tab_Section_ModCreator = new System.Windows.Forms.TabPage();
             this.Tab_Section_Emulator = new System.Windows.Forms.TabPage();
+            this.Label_Description_GraphicsAPI = new System.Windows.Forms.Label();
             this.Button_Open_SaveData = new System.Windows.Forms.Button();
             this.Button_Open_EmulatorExecutable = new System.Windows.Forms.Button();
             this.Label_RPCS3Warning = new System.Windows.Forms.Label();
@@ -130,15 +131,20 @@ namespace Unify.Environment3
             this.SectionButton_ClearLog = new Unify.Environment3.SectionButton();
             this.ListBox_Debug = new System.Windows.Forms.ListBox();
             this.Tab_Section_Updates = new System.Windows.Forms.TabPage();
-            this.Label_LastUpdateCheck = new System.Windows.Forms.Label();
-            this.SectionButton_FetchLatestPatches = new Unify.Environment3.SectionButton();
+            this.Label_LastPatchUpdate = new System.Windows.Forms.Label();
+            this.Label_LastModUpdate = new System.Windows.Forms.Label();
+            this.SectionButton_FetchPatches = new Unify.Environment3.SectionButton();
+            this.SectionButton_CheckForModUpdates = new Unify.Environment3.SectionButton();
+            this.Label_LastSoftwareUpdate = new System.Windows.Forms.Label();
             this.SplitContainer_ModUpdate = new System.Windows.Forms.SplitContainer();
-            this.Button_ModUpdate = new System.Windows.Forms.Button();
             this.Panel_ModUpdateBackdrop = new System.Windows.Forms.Panel();
-            this.ListView_ModUpdate = new System.Windows.Forms.ListBox();
+            this.ListView_ModUpdates = new System.Windows.Forms.ListView();
+            this.Column_Updates_Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Column_Updates_Blank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SectionButton_UpdateMods = new Unify.Environment3.SectionButton();
             this.ProgressBar_ModUpdate = new System.Windows.Forms.ProgressBar();
             this.Panel_ModInfoBackdrop = new System.Windows.Forms.Panel();
-            this.RichTextBox_ModInformation = new System.Windows.Forms.RichTextBox();
+            this.ListBox_UpdateLogs = new System.Windows.Forms.ListBox();
             this.Label_Title_ModsAndPatches = new System.Windows.Forms.Label();
             this.Label_Subtitle_Changelogs = new System.Windows.Forms.Label();
             this.Label_UpdaterStatus = new System.Windows.Forms.Label();
@@ -146,10 +152,10 @@ namespace Unify.Environment3
             this.RichTextBox_Changelogs = new System.Windows.Forms.RichTextBox();
             this.Label_Title_Software = new System.Windows.Forms.Label();
             this.CheckBox_CheckUpdatesOnLaunch = new System.Windows.Forms.CheckBox();
-            this.Panel_Updates_UICleanSpace = new System.Windows.Forms.Panel();
             this.PictureBox_UpdaterIcon = new System.Windows.Forms.PictureBox();
+            this.SectionButton_CheckForSoftwareUpdates = new Unify.Environment3.SectionButton();
+            this.Panel_Updates_UICleanSpace = new System.Windows.Forms.Panel();
             this.ProgressBar_SoftwareUpdate = new System.Windows.Forms.ProgressBar();
-            this.SectionButton_CheckForUpdates = new Unify.Environment3.SectionButton();
             this.Tab_Section_About = new System.Windows.Forms.TabPage();
             this.Label_Version = new System.Windows.Forms.Label();
             this.Rush_Section_Settings = new Unify.Environment3.SectionButton();
@@ -158,6 +164,8 @@ namespace Unify.Environment3
             this.Rush_Section_Emulator = new Unify.Environment3.SectionButton();
             this.Rush_Section_Mods = new Unify.Environment3.SectionButton();
             this.Container_Rush = new Unify.Environment3.UserContainer();
+            this.Label_Description_ProtocolManager = new System.Windows.Forms.Label();
+            this.LinkLabel_ProtocolManager = new System.Windows.Forms.LinkLabel();
             this.TabControl_Rush.SuspendLayout();
             this.Tab_Section_Mods.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_ModsControls)).BeginInit();
@@ -188,7 +196,7 @@ namespace Unify.Environment3
             // StatusStrip_Main
             // 
             this.StatusStrip_Main.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.StatusStrip_Main.Location = new System.Drawing.Point(0, 944);
+            this.StatusStrip_Main.Location = new System.Drawing.Point(0, 1013);
             this.StatusStrip_Main.Name = "StatusStrip_Main";
             this.StatusStrip_Main.Size = new System.Drawing.Size(849, 22);
             this.StatusStrip_Main.TabIndex = 26;
@@ -199,7 +207,7 @@ namespace Unify.Environment3
             this.Label_Status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Label_Status.AutoSize = true;
             this.Label_Status.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Label_Status.Location = new System.Drawing.Point(3, 947);
+            this.Label_Status.Location = new System.Drawing.Point(3, 1016);
             this.Label_Status.Name = "Label_Status";
             this.Label_Status.Size = new System.Drawing.Size(42, 15);
             this.Label_Status.TabIndex = 27;
@@ -211,7 +219,7 @@ namespace Unify.Environment3
             this.Rush_Section_Updates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Rush_Section_Updates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.Rush_Section_Updates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rush_Section_Updates.Location = new System.Drawing.Point(0, 872);
+            this.Rush_Section_Updates.Location = new System.Drawing.Point(0, 941);
             this.Rush_Section_Updates.Name = "Rush_Section_Updates";
             this.Rush_Section_Updates.SectionImage = global::Unify.Properties.Resources.Update_4;
             this.Rush_Section_Updates.SectionText = "Updates";
@@ -226,7 +234,7 @@ namespace Unify.Environment3
             this.Rush_Section_Debug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Rush_Section_Debug.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.Rush_Section_Debug.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rush_Section_Debug.Location = new System.Drawing.Point(0, 836);
+            this.Rush_Section_Debug.Location = new System.Drawing.Point(0, 905);
             this.Rush_Section_Debug.Name = "Rush_Section_Debug";
             this.Rush_Section_Debug.SectionImage = global::Unify.Properties.Resources.debug_6;
             this.Rush_Section_Debug.SectionText = "Debug";
@@ -249,7 +257,6 @@ namespace Unify.Environment3
             this.TabControl_Rush.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
             this.TabControl_Rush.ClosingMessage = null;
             this.TabControl_Rush.Controls.Add(this.Tab_Section_Mods);
-            this.TabControl_Rush.Controls.Add(this.Tab_Section_ModCreator);
             this.TabControl_Rush.Controls.Add(this.Tab_Section_Emulator);
             this.TabControl_Rush.Controls.Add(this.Tab_Section_Patches);
             this.TabControl_Rush.Controls.Add(this.Tab_Section_Settings);
@@ -266,16 +273,15 @@ namespace Unify.Environment3
             this.TabControl_Rush.SelectedTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TabControl_Rush.ShowClosingButton = false;
             this.TabControl_Rush.ShowClosingMessage = false;
-            this.TabControl_Rush.Size = new System.Drawing.Size(599, 945);
+            this.TabControl_Rush.Size = new System.Drawing.Size(599, 1014);
             this.TabControl_Rush.TabIndex = 22;
             this.TabControl_Rush.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.TabControl_Rush.SelectedIndexChanged += new System.EventHandler(this.Rush_TabControl_SelectedIndexChanged);
+            this.TabControl_Rush.SelectedIndexChanged += new System.EventHandler(this.TabControl_Rush_SelectedIndexChanged);
             // 
             // Tab_Section_Mods
             // 
             this.Tab_Section_Mods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.Tab_Section_Mods.Controls.Add(this.SplitContainer_ModsControls);
-            this.Tab_Section_Mods.Controls.Add(this.SectionButton_CreateNewMod);
             this.Tab_Section_Mods.Controls.Add(this.Button_Priority);
             this.Tab_Section_Mods.Controls.Add(this.Button_DownerPriority);
             this.Tab_Section_Mods.Controls.Add(this.Button_UpperPriority);
@@ -284,7 +290,7 @@ namespace Unify.Environment3
             this.Tab_Section_Mods.Controls.Add(this.Panel_ModBackdrop);
             this.Tab_Section_Mods.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Mods.Name = "Tab_Section_Mods";
-            this.Tab_Section_Mods.Size = new System.Drawing.Size(591, 921);
+            this.Tab_Section_Mods.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Mods.TabIndex = 0;
             this.Tab_Section_Mods.Text = "Mods";
             this.Tab_Section_Mods.Visible = false;
@@ -294,20 +300,38 @@ namespace Unify.Environment3
             this.SplitContainer_ModsControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SplitContainer_ModsControls.IsSplitterFixed = true;
-            this.SplitContainer_ModsControls.Location = new System.Drawing.Point(1, 841);
+            this.SplitContainer_ModsControls.Location = new System.Drawing.Point(1, 910);
             this.SplitContainer_ModsControls.Name = "SplitContainer_ModsControls";
             // 
             // SplitContainer_ModsControls.Panel1
             // 
+            this.SplitContainer_ModsControls.Panel1.Controls.Add(this.SectionButton_CreateNewMod);
             this.SplitContainer_ModsControls.Panel1.Controls.Add(this.SectionButton_InstallMods);
             // 
             // SplitContainer_ModsControls.Panel2
             // 
+            this.SplitContainer_ModsControls.Panel2.Controls.Add(this.SectionButton_RefreshMods);
             this.SplitContainer_ModsControls.Panel2.Controls.Add(this.SectionButton_SaveChecks);
-            this.SplitContainer_ModsControls.Size = new System.Drawing.Size(586, 35);
+            this.SplitContainer_ModsControls.Size = new System.Drawing.Size(586, 77);
             this.SplitContainer_ModsControls.SplitterDistance = 292;
             this.SplitContainer_ModsControls.SplitterWidth = 1;
             this.SplitContainer_ModsControls.TabIndex = 2;
+            // 
+            // SectionButton_CreateNewMod
+            // 
+            this.SectionButton_CreateNewMod.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SectionButton_CreateNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SectionButton_CreateNewMod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.SectionButton_CreateNewMod.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SectionButton_CreateNewMod.Location = new System.Drawing.Point(2, 36);
+            this.SectionButton_CreateNewMod.Name = "SectionButton_CreateNewMod";
+            this.SectionButton_CreateNewMod.SectionImage = global::Unify.Properties.Resources.NewFileCollection_16x;
+            this.SectionButton_CreateNewMod.SectionText = "Create a new mod";
+            this.SectionButton_CreateNewMod.SelectedSection = false;
+            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(293, 35);
+            this.SectionButton_CreateNewMod.TabIndex = 51;
+            this.SectionButton_CreateNewMod.Click += new System.EventHandler(this.SectionButton_CreateNewMod_Click);
             // 
             // SectionButton_InstallMods
             // 
@@ -325,6 +349,22 @@ namespace Unify.Environment3
             this.SectionButton_InstallMods.TabIndex = 50;
             this.SectionButton_InstallMods.Click += new System.EventHandler(this.SectionButton_InstallMods_Click);
             // 
+            // SectionButton_RefreshMods
+            // 
+            this.SectionButton_RefreshMods.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SectionButton_RefreshMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SectionButton_RefreshMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.SectionButton_RefreshMods.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SectionButton_RefreshMods.Location = new System.Drawing.Point(0, 36);
+            this.SectionButton_RefreshMods.Name = "SectionButton_RefreshMods";
+            this.SectionButton_RefreshMods.SectionImage = global::Unify.Properties.Resources.Refresh_grey_16x;
+            this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
+            this.SectionButton_RefreshMods.SelectedSection = false;
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(401, 35);
+            this.SectionButton_RefreshMods.TabIndex = 52;
+            this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_RefreshMods_Click);
+            // 
             // SectionButton_SaveChecks
             // 
             this.SectionButton_SaveChecks.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -337,25 +377,9 @@ namespace Unify.Environment3
             this.SectionButton_SaveChecks.SectionImage = global::Unify.Properties.Resources.CheckBox_16x_24;
             this.SectionButton_SaveChecks.SectionText = "Save checked mods";
             this.SectionButton_SaveChecks.SelectedSection = false;
-            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(407, 35);
+            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(551, 35);
             this.SectionButton_SaveChecks.TabIndex = 52;
             this.SectionButton_SaveChecks.Click += new System.EventHandler(this.SectionButton_SaveChecks_Click);
-            // 
-            // SectionButton_CreateNewMod
-            // 
-            this.SectionButton_CreateNewMod.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SectionButton_CreateNewMod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SectionButton_CreateNewMod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.SectionButton_CreateNewMod.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_CreateNewMod.Location = new System.Drawing.Point(3, 877);
-            this.SectionButton_CreateNewMod.Name = "SectionButton_CreateNewMod";
-            this.SectionButton_CreateNewMod.SectionImage = global::Unify.Properties.Resources.NewFileCollection_16x;
-            this.SectionButton_CreateNewMod.SectionText = "Create a new mod";
-            this.SectionButton_CreateNewMod.SelectedSection = false;
-            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(584, 35);
-            this.SectionButton_CreateNewMod.TabIndex = 51;
-            this.SectionButton_CreateNewMod.Click += new System.EventHandler(this.SectionButton_CreateNewMod_Click);
             // 
             // Button_Priority
             // 
@@ -364,7 +388,7 @@ namespace Unify.Environment3
             this.Button_Priority.FlatAppearance.BorderSize = 0;
             this.Button_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_Priority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Priority.Location = new System.Drawing.Point(409, 812);
+            this.Button_Priority.Location = new System.Drawing.Point(409, 881);
             this.Button_Priority.Name = "Button_Priority";
             this.Button_Priority.Size = new System.Drawing.Size(178, 23);
             this.Button_Priority.TabIndex = 49;
@@ -381,7 +405,7 @@ namespace Unify.Environment3
             this.Button_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Button_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_DownerPriority.Location = new System.Drawing.Point(377, 812);
+            this.Button_DownerPriority.Location = new System.Drawing.Point(377, 881);
             this.Button_DownerPriority.Name = "Button_DownerPriority";
             this.Button_DownerPriority.Size = new System.Drawing.Size(26, 23);
             this.Button_DownerPriority.TabIndex = 48;
@@ -398,7 +422,7 @@ namespace Unify.Environment3
             this.Button_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Button_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_UpperPriority.Location = new System.Drawing.Point(346, 812);
+            this.Button_UpperPriority.Location = new System.Drawing.Point(346, 881);
             this.Button_UpperPriority.Name = "Button_UpperPriority";
             this.Button_UpperPriority.Size = new System.Drawing.Size(26, 23);
             this.Button_UpperPriority.TabIndex = 47;
@@ -413,7 +437,7 @@ namespace Unify.Environment3
             this.Button_Mods_DeselectAll.FlatAppearance.BorderSize = 0;
             this.Button_Mods_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_Mods_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Mods_DeselectAll.Location = new System.Drawing.Point(175, 812);
+            this.Button_Mods_DeselectAll.Location = new System.Drawing.Point(175, 881);
             this.Button_Mods_DeselectAll.Name = "Button_Mods_DeselectAll";
             this.Button_Mods_DeselectAll.Size = new System.Drawing.Size(165, 23);
             this.Button_Mods_DeselectAll.TabIndex = 46;
@@ -428,7 +452,7 @@ namespace Unify.Environment3
             this.Button_Mods_SelectAll.FlatAppearance.BorderSize = 0;
             this.Button_Mods_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_Mods_SelectAll.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Mods_SelectAll.Location = new System.Drawing.Point(3, 812);
+            this.Button_Mods_SelectAll.Location = new System.Drawing.Point(3, 881);
             this.Button_Mods_SelectAll.Name = "Button_Mods_SelectAll";
             this.Button_Mods_SelectAll.Size = new System.Drawing.Size(166, 23);
             this.Button_Mods_SelectAll.TabIndex = 45;
@@ -446,7 +470,7 @@ namespace Unify.Environment3
             this.Panel_ModBackdrop.Controls.Add(this.ListView_ModsList);
             this.Panel_ModBackdrop.Location = new System.Drawing.Point(3, 5);
             this.Panel_ModBackdrop.Name = "Panel_ModBackdrop";
-            this.Panel_ModBackdrop.Size = new System.Drawing.Size(584, 801);
+            this.Panel_ModBackdrop.Size = new System.Drawing.Size(584, 870);
             this.Panel_ModBackdrop.TabIndex = 44;
             // 
             // ListView_ModsList
@@ -473,7 +497,7 @@ namespace Unify.Environment3
             this.ListView_ModsList.MultiSelect = false;
             this.ListView_ModsList.Name = "ListView_ModsList";
             this.ListView_ModsList.OwnerDraw = true;
-            this.ListView_ModsList.Size = new System.Drawing.Size(582, 816);
+            this.ListView_ModsList.Size = new System.Drawing.Size(582, 885);
             this.ListView_ModsList.TabIndex = 1;
             this.ListView_ModsList.UseCompatibleStateImageBehavior = false;
             this.ListView_ModsList.View = System.Windows.Forms.View.Details;
@@ -495,35 +519,27 @@ namespace Unify.Environment3
             // Column_ModsList_Author
             // 
             this.Column_ModsList_Author.Text = "Author";
-            this.Column_ModsList_Author.Width = 90;
+            this.Column_ModsList_Author.Width = 100;
             // 
             // Column_ModsList_System
             // 
             this.Column_ModsList_System.Text = "System";
-            this.Column_ModsList_System.Width = 86;
+            this.Column_ModsList_System.Width = 85;
             // 
             // Column_ModsList_Merge
             // 
             this.Column_ModsList_Merge.Text = "Merge";
-            this.Column_ModsList_Merge.Width = 59;
+            this.Column_ModsList_Merge.Width = 50;
             // 
             // Column_ModsList_Blank
             // 
             this.Column_ModsList_Blank.Text = "";
-            this.Column_ModsList_Blank.Width = 904;
-            // 
-            // Tab_Section_ModCreator
-            // 
-            this.Tab_Section_ModCreator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.Tab_Section_ModCreator.Location = new System.Drawing.Point(4, 20);
-            this.Tab_Section_ModCreator.Name = "Tab_Section_ModCreator";
-            this.Tab_Section_ModCreator.Size = new System.Drawing.Size(591, 921);
-            this.Tab_Section_ModCreator.TabIndex = 7;
-            this.Tab_Section_ModCreator.Text = "Mod Creator";
+            this.Column_ModsList_Blank.Width = 1000;
             // 
             // Tab_Section_Emulator
             // 
             this.Tab_Section_Emulator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_Emulator.Controls.Add(this.Label_Description_GraphicsAPI);
             this.Tab_Section_Emulator.Controls.Add(this.Button_Open_SaveData);
             this.Tab_Section_Emulator.Controls.Add(this.Button_Open_EmulatorExecutable);
             this.Tab_Section_Emulator.Controls.Add(this.Label_RPCS3Warning);
@@ -548,10 +564,22 @@ namespace Unify.Environment3
             this.Tab_Section_Emulator.Controls.Add(this.Label_Optional_SaveData);
             this.Tab_Section_Emulator.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Emulator.Name = "Tab_Section_Emulator";
-            this.Tab_Section_Emulator.Size = new System.Drawing.Size(591, 921);
+            this.Tab_Section_Emulator.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Emulator.TabIndex = 1;
             this.Tab_Section_Emulator.Text = "Emulator";
             this.Tab_Section_Emulator.Visible = false;
+            // 
+            // Label_Description_GraphicsAPI
+            // 
+            this.Label_Description_GraphicsAPI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_GraphicsAPI.AutoSize = true;
+            this.Label_Description_GraphicsAPI.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_GraphicsAPI.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_GraphicsAPI.Location = new System.Drawing.Point(288, 205);
+            this.Label_Description_GraphicsAPI.Name = "Label_Description_GraphicsAPI";
+            this.Label_Description_GraphicsAPI.Size = new System.Drawing.Size(286, 15);
+            this.Label_Description_GraphicsAPI.TabIndex = 144;
+            this.Label_Description_GraphicsAPI.Text = "The graphics API the emulator will use to render with.";
             // 
             // Button_Open_SaveData
             // 
@@ -823,7 +851,7 @@ namespace Unify.Environment3
             this.Tab_Section_Patches.Controls.Add(this.TabControl_Patches);
             this.Tab_Section_Patches.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Patches.Name = "Tab_Section_Patches";
-            this.Tab_Section_Patches.Size = new System.Drawing.Size(591, 921);
+            this.Tab_Section_Patches.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Patches.TabIndex = 2;
             this.Tab_Section_Patches.Text = "Patches";
             this.Tab_Section_Patches.Visible = false;
@@ -852,7 +880,7 @@ namespace Unify.Environment3
             this.TabControl_Patches.SelectedTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TabControl_Patches.ShowClosingButton = false;
             this.TabControl_Patches.ShowClosingMessage = false;
-            this.TabControl_Patches.Size = new System.Drawing.Size(593, 956);
+            this.TabControl_Patches.Size = new System.Drawing.Size(593, 1025);
             this.TabControl_Patches.TabIndex = 0;
             this.TabControl_Patches.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             // 
@@ -865,7 +893,7 @@ namespace Unify.Environment3
             this.Tab_Patches_Simple.Location = new System.Drawing.Point(4, 20);
             this.Tab_Patches_Simple.Name = "Tab_Patches_Simple";
             this.Tab_Patches_Simple.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Patches_Simple.Size = new System.Drawing.Size(585, 932);
+            this.Tab_Patches_Simple.Size = new System.Drawing.Size(585, 1001);
             this.Tab_Patches_Simple.TabIndex = 0;
             this.Tab_Patches_Simple.Text = "Simple";
             // 
@@ -876,7 +904,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.FlatAppearance.BorderSize = 0;
             this.Button_Patches_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(296, 868);
+            this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(296, 937);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
             this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(289, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
@@ -893,7 +921,7 @@ namespace Unify.Environment3
             this.Panel_PatchBackdrop.Controls.Add(this.ListView_PatchesList);
             this.Panel_PatchBackdrop.Location = new System.Drawing.Point(0, 6);
             this.Panel_PatchBackdrop.Name = "Panel_PatchBackdrop";
-            this.Panel_PatchBackdrop.Size = new System.Drawing.Size(585, 854);
+            this.Panel_PatchBackdrop.Size = new System.Drawing.Size(585, 923);
             this.Panel_PatchBackdrop.TabIndex = 45;
             // 
             // ListView_PatchesList
@@ -919,7 +947,7 @@ namespace Unify.Environment3
             this.ListView_PatchesList.MultiSelect = false;
             this.ListView_PatchesList.Name = "ListView_PatchesList";
             this.ListView_PatchesList.OwnerDraw = true;
-            this.ListView_PatchesList.Size = new System.Drawing.Size(583, 869);
+            this.ListView_PatchesList.Size = new System.Drawing.Size(583, 938);
             this.ListView_PatchesList.TabIndex = 1;
             this.ListView_PatchesList.UseCompatibleStateImageBehavior = false;
             this.ListView_PatchesList.View = System.Windows.Forms.View.Details;
@@ -958,7 +986,7 @@ namespace Unify.Environment3
             this.Button_Patches_SelectAll.FlatAppearance.BorderSize = 0;
             this.Button_Patches_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_Patches_SelectAll.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_SelectAll.Location = new System.Drawing.Point(0, 868);
+            this.Button_Patches_SelectAll.Location = new System.Drawing.Point(0, 937);
             this.Button_Patches_SelectAll.Name = "Button_Patches_SelectAll";
             this.Button_Patches_SelectAll.Size = new System.Drawing.Size(289, 23);
             this.Button_Patches_SelectAll.TabIndex = 47;
@@ -971,7 +999,7 @@ namespace Unify.Environment3
             this.Tab_Patches_Advanced.Location = new System.Drawing.Point(4, 20);
             this.Tab_Patches_Advanced.Name = "Tab_Patches_Advanced";
             this.Tab_Patches_Advanced.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Patches_Advanced.Size = new System.Drawing.Size(585, 932);
+            this.Tab_Patches_Advanced.Size = new System.Drawing.Size(585, 1001);
             this.Tab_Patches_Advanced.TabIndex = 1;
             this.Tab_Patches_Advanced.Text = "Advanced";
             // 
@@ -1012,9 +1040,11 @@ namespace Unify.Environment3
             this.Tab_Section_Settings.Controls.Add(this.Button_Open_ModsDirectory);
             this.Tab_Section_Settings.Controls.Add(this.Button_ColourPicker_Default);
             this.Tab_Section_Settings.Controls.Add(this.Section_Appearance_ColourPicker);
+            this.Tab_Section_Settings.Controls.Add(this.Label_Description_ProtocolManager);
+            this.Tab_Section_Settings.Controls.Add(this.LinkLabel_ProtocolManager);
             this.Tab_Section_Settings.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Settings.Name = "Tab_Section_Settings";
-            this.Tab_Section_Settings.Size = new System.Drawing.Size(591, 921);
+            this.Tab_Section_Settings.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Settings.TabIndex = 3;
             this.Tab_Section_Settings.Text = "Settings";
             // 
@@ -1024,7 +1054,7 @@ namespace Unify.Environment3
             this.Label_Description_Reset.AutoSize = true;
             this.Label_Description_Reset.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_Reset.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_Reset.Location = new System.Drawing.Point(224, 298);
+            this.Label_Description_Reset.Location = new System.Drawing.Point(224, 323);
             this.Label_Description_Reset.Name = "Label_Description_Reset";
             this.Label_Description_Reset.Size = new System.Drawing.Size(352, 15);
             this.Label_Description_Reset.TabIndex = 158;
@@ -1036,7 +1066,7 @@ namespace Unify.Environment3
             this.LinkLabel_Reset.AutoSize = true;
             this.LinkLabel_Reset.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.LinkLabel_Reset.LinkColor = System.Drawing.Color.Tomato;
-            this.LinkLabel_Reset.Location = new System.Drawing.Point(11, 298);
+            this.LinkLabel_Reset.Location = new System.Drawing.Point(11, 323);
             this.LinkLabel_Reset.Name = "LinkLabel_Reset";
             this.LinkLabel_Reset.Size = new System.Drawing.Size(172, 15);
             this.LinkLabel_Reset.TabIndex = 157;
@@ -1050,7 +1080,7 @@ namespace Unify.Environment3
             this.Label_Description_DebugMode.AutoSize = true;
             this.Label_Description_DebugMode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_DebugMode.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_DebugMode.Location = new System.Drawing.Point(441, 887);
+            this.Label_Description_DebugMode.Location = new System.Drawing.Point(441, 920);
             this.Label_Description_DebugMode.Name = "Label_Description_DebugMode";
             this.Label_Description_DebugMode.Size = new System.Drawing.Size(133, 15);
             this.Label_Description_DebugMode.TabIndex = 156;
@@ -1062,7 +1092,7 @@ namespace Unify.Environment3
             this.Label_Description_HighContrastText.AutoSize = true;
             this.Label_Description_HighContrastText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_HighContrastText.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_HighContrastText.Location = new System.Drawing.Point(324, 862);
+            this.Label_Description_HighContrastText.Location = new System.Drawing.Point(324, 895);
             this.Label_Description_HighContrastText.Name = "Label_Description_HighContrastText";
             this.Label_Description_HighContrastText.Size = new System.Drawing.Size(250, 15);
             this.Label_Description_HighContrastText.TabIndex = 155;
@@ -1096,7 +1126,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_DebugMode.AutoSize = true;
             this.CheckBox_DebugMode.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_DebugMode.Location = new System.Drawing.Point(14, 886);
+            this.CheckBox_DebugMode.Location = new System.Drawing.Point(14, 919);
             this.CheckBox_DebugMode.Name = "CheckBox_DebugMode";
             this.CheckBox_DebugMode.Size = new System.Drawing.Size(95, 19);
             this.CheckBox_DebugMode.TabIndex = 150;
@@ -1142,7 +1172,7 @@ namespace Unify.Environment3
             // 
             this.WindowsColourPicker_AccentColour.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.WindowsColourPicker_AccentColour.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WindowsColourPicker_AccentColour.Location = new System.Drawing.Point(11, 480);
+            this.WindowsColourPicker_AccentColour.Location = new System.Drawing.Point(11, 513);
             this.WindowsColourPicker_AccentColour.Name = "WindowsColourPicker_AccentColour";
             this.WindowsColourPicker_AccentColour.Size = new System.Drawing.Size(379, 285);
             this.WindowsColourPicker_AccentColour.TabIndex = 146;
@@ -1164,7 +1194,7 @@ namespace Unify.Environment3
             // 
             this.Label_Title_Appearance.AutoSize = true;
             this.Label_Title_Appearance.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Title_Appearance.Location = new System.Drawing.Point(6, 326);
+            this.Label_Title_Appearance.Location = new System.Drawing.Point(6, 359);
             this.Label_Title_Appearance.Name = "Label_Title_Appearance";
             this.Label_Title_Appearance.Size = new System.Drawing.Size(189, 45);
             this.Label_Title_Appearance.TabIndex = 10;
@@ -1174,7 +1204,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_HighContrastText.AutoSize = true;
             this.CheckBox_HighContrastText.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_HighContrastText.Location = new System.Drawing.Point(14, 861);
+            this.CheckBox_HighContrastText.Location = new System.Drawing.Point(14, 894);
             this.CheckBox_HighContrastText.Name = "CheckBox_HighContrastText";
             this.CheckBox_HighContrastText.Size = new System.Drawing.Size(121, 19);
             this.CheckBox_HighContrastText.TabIndex = 144;
@@ -1196,7 +1226,7 @@ namespace Unify.Environment3
             // 
             this.Label_Subtitle_AccentColour.AutoSize = true;
             this.Label_Subtitle_AccentColour.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_Subtitle_AccentColour.Location = new System.Drawing.Point(9, 381);
+            this.Label_Subtitle_AccentColour.Location = new System.Drawing.Point(9, 414);
             this.Label_Subtitle_AccentColour.Name = "Label_Subtitle_AccentColour";
             this.Label_Subtitle_AccentColour.Size = new System.Drawing.Size(223, 25);
             this.Label_Subtitle_AccentColour.TabIndex = 45;
@@ -1228,7 +1258,7 @@ namespace Unify.Environment3
             // 
             this.Label_WindowsColours.AutoSize = true;
             this.Label_WindowsColours.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.Label_WindowsColours.Location = new System.Drawing.Point(11, 455);
+            this.Label_WindowsColours.Location = new System.Drawing.Point(11, 488);
             this.Label_WindowsColours.Name = "Label_WindowsColours";
             this.Label_WindowsColours.Size = new System.Drawing.Size(108, 17);
             this.Label_WindowsColours.TabIndex = 89;
@@ -1254,7 +1284,7 @@ namespace Unify.Environment3
             // 
             this.Label_Subtitle_Appearance_Options.AutoSize = true;
             this.Label_Subtitle_Appearance_Options.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_Subtitle_Appearance_Options.Location = new System.Drawing.Point(9, 824);
+            this.Label_Subtitle_Appearance_Options.Location = new System.Drawing.Point(9, 857);
             this.Label_Subtitle_Appearance_Options.Name = "Label_Subtitle_Appearance_Options";
             this.Label_Subtitle_Appearance_Options.Size = new System.Drawing.Size(76, 25);
             this.Label_Subtitle_Appearance_Options.TabIndex = 143;
@@ -1264,7 +1294,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_AutoColour.AutoSize = true;
             this.CheckBox_AutoColour.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_AutoColour.Location = new System.Drawing.Point(14, 419);
+            this.CheckBox_AutoColour.Location = new System.Drawing.Point(14, 452);
             this.CheckBox_AutoColour.Name = "CheckBox_AutoColour";
             this.CheckBox_AutoColour.Size = new System.Drawing.Size(354, 19);
             this.CheckBox_AutoColour.TabIndex = 142;
@@ -1292,7 +1322,7 @@ namespace Unify.Environment3
             this.Button_ColourPicker_Preview.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Button_ColourPicker_Preview.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Button_ColourPicker_Preview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_ColourPicker_Preview.Location = new System.Drawing.Point(357, 772);
+            this.Button_ColourPicker_Preview.Location = new System.Drawing.Point(357, 805);
             this.Button_ColourPicker_Preview.Name = "Button_ColourPicker_Preview";
             this.Button_ColourPicker_Preview.Size = new System.Drawing.Size(25, 25);
             this.Button_ColourPicker_Preview.TabIndex = 140;
@@ -1352,7 +1382,7 @@ namespace Unify.Environment3
             // 
             // Panel_Settings_UICleanSpace
             // 
-            this.Panel_Settings_UICleanSpace.Location = new System.Drawing.Point(14, 904);
+            this.Panel_Settings_UICleanSpace.Location = new System.Drawing.Point(14, 937);
             this.Panel_Settings_UICleanSpace.Name = "Panel_Settings_UICleanSpace";
             this.Panel_Settings_UICleanSpace.Size = new System.Drawing.Size(214, 17);
             this.Panel_Settings_UICleanSpace.TabIndex = 145;
@@ -1394,7 +1424,7 @@ namespace Unify.Environment3
             this.Button_ColourPicker_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Button_ColourPicker_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_ColourPicker_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_ColourPicker_Default.Image")));
-            this.Button_ColourPicker_Default.Location = new System.Drawing.Point(393, 774);
+            this.Button_ColourPicker_Default.Location = new System.Drawing.Point(393, 807);
             this.Button_ColourPicker_Default.Name = "Button_ColourPicker_Default";
             this.Button_ColourPicker_Default.Size = new System.Drawing.Size(21, 20);
             this.Button_ColourPicker_Default.TabIndex = 141;
@@ -1406,7 +1436,7 @@ namespace Unify.Environment3
             this.Section_Appearance_ColourPicker.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Section_Appearance_ColourPicker.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.Section_Appearance_ColourPicker.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Section_Appearance_ColourPicker.Location = new System.Drawing.Point(14, 767);
+            this.Section_Appearance_ColourPicker.Location = new System.Drawing.Point(14, 800);
             this.Section_Appearance_ColourPicker.Name = "Section_Appearance_ColourPicker";
             this.Section_Appearance_ColourPicker.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("Section_Appearance_ColourPicker.SectionImage")));
             this.Section_Appearance_ColourPicker.SectionText = "Custom colour";
@@ -1422,7 +1452,7 @@ namespace Unify.Environment3
             this.Tab_Section_Debug.Controls.Add(this.ListBox_Debug);
             this.Tab_Section_Debug.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Debug.Name = "Tab_Section_Debug";
-            this.Tab_Section_Debug.Size = new System.Drawing.Size(591, 921);
+            this.Tab_Section_Debug.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Debug.TabIndex = 5;
             this.Tab_Section_Debug.Text = "Debug";
             // 
@@ -1432,7 +1462,7 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_DebugControls.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Panel_DebugControls.Controls.Add(this.SectionButton_ClearLog);
-            this.Panel_DebugControls.Location = new System.Drawing.Point(-1, 869);
+            this.Panel_DebugControls.Location = new System.Drawing.Point(-1, 938);
             this.Panel_DebugControls.Name = "Panel_DebugControls";
             this.Panel_DebugControls.Size = new System.Drawing.Size(596, 53);
             this.Panel_DebugControls.TabIndex = 1;
@@ -1465,15 +1495,18 @@ namespace Unify.Environment3
             this.ListBox_Debug.ItemHeight = 15;
             this.ListBox_Debug.Location = new System.Drawing.Point(0, 4);
             this.ListBox_Debug.Name = "ListBox_Debug";
-            this.ListBox_Debug.Size = new System.Drawing.Size(591, 870);
+            this.ListBox_Debug.Size = new System.Drawing.Size(591, 930);
             this.ListBox_Debug.TabIndex = 0;
             // 
             // Tab_Section_Updates
             // 
             this.Tab_Section_Updates.AutoScroll = true;
             this.Tab_Section_Updates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.Tab_Section_Updates.Controls.Add(this.Label_LastUpdateCheck);
-            this.Tab_Section_Updates.Controls.Add(this.SectionButton_FetchLatestPatches);
+            this.Tab_Section_Updates.Controls.Add(this.Label_LastPatchUpdate);
+            this.Tab_Section_Updates.Controls.Add(this.Label_LastModUpdate);
+            this.Tab_Section_Updates.Controls.Add(this.SectionButton_FetchPatches);
+            this.Tab_Section_Updates.Controls.Add(this.SectionButton_CheckForModUpdates);
+            this.Tab_Section_Updates.Controls.Add(this.Label_LastSoftwareUpdate);
             this.Tab_Section_Updates.Controls.Add(this.SplitContainer_ModUpdate);
             this.Tab_Section_Updates.Controls.Add(this.Label_Title_ModsAndPatches);
             this.Tab_Section_Updates.Controls.Add(this.Label_Subtitle_Changelogs);
@@ -1481,53 +1514,92 @@ namespace Unify.Environment3
             this.Tab_Section_Updates.Controls.Add(this.Panel_ChangelogsBackdrop);
             this.Tab_Section_Updates.Controls.Add(this.Label_Title_Software);
             this.Tab_Section_Updates.Controls.Add(this.CheckBox_CheckUpdatesOnLaunch);
-            this.Tab_Section_Updates.Controls.Add(this.Panel_Updates_UICleanSpace);
             this.Tab_Section_Updates.Controls.Add(this.PictureBox_UpdaterIcon);
+            this.Tab_Section_Updates.Controls.Add(this.SectionButton_CheckForSoftwareUpdates);
+            this.Tab_Section_Updates.Controls.Add(this.Panel_Updates_UICleanSpace);
             this.Tab_Section_Updates.Controls.Add(this.ProgressBar_SoftwareUpdate);
-            this.Tab_Section_Updates.Controls.Add(this.SectionButton_CheckForUpdates);
             this.Tab_Section_Updates.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Updates.Name = "Tab_Section_Updates";
-            this.Tab_Section_Updates.Size = new System.Drawing.Size(591, 921);
+            this.Tab_Section_Updates.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Updates.TabIndex = 6;
             this.Tab_Section_Updates.Text = "Updates";
             // 
-            // Label_LastUpdateCheck
+            // Label_LastPatchUpdate
             // 
-            this.Label_LastUpdateCheck.AutoSize = true;
-            this.Label_LastUpdateCheck.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_LastUpdateCheck.Location = new System.Drawing.Point(72, 87);
-            this.Label_LastUpdateCheck.Name = "Label_LastUpdateCheck";
-            this.Label_LastUpdateCheck.Size = new System.Drawing.Size(216, 17);
-            this.Label_LastUpdateCheck.TabIndex = 147;
-            this.Label_LastUpdateCheck.Text = "Last checked: 21/01/2020, 08:59 PM";
+            this.Label_LastPatchUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_LastPatchUpdate.AutoSize = true;
+            this.Label_LastPatchUpdate.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_LastPatchUpdate.Location = new System.Drawing.Point(256, 554);
+            this.Label_LastPatchUpdate.Name = "Label_LastPatchUpdate";
+            this.Label_LastPatchUpdate.Size = new System.Drawing.Size(218, 17);
+            this.Label_LastPatchUpdate.TabIndex = 151;
+            this.Label_LastPatchUpdate.Text = "Last updated: 21/01/2020, 08:59 PM";
             // 
-            // SectionButton_FetchLatestPatches
+            // Label_LastModUpdate
             // 
-            this.SectionButton_FetchLatestPatches.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SectionButton_FetchLatestPatches.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Label_LastModUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_LastModUpdate.AutoSize = true;
+            this.Label_LastModUpdate.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_LastModUpdate.Location = new System.Drawing.Point(256, 513);
+            this.Label_LastModUpdate.Name = "Label_LastModUpdate";
+            this.Label_LastModUpdate.Size = new System.Drawing.Size(216, 17);
+            this.Label_LastModUpdate.TabIndex = 150;
+            this.Label_LastModUpdate.Text = "Last checked: 21/01/2020, 08:59 PM";
+            // 
+            // SectionButton_FetchPatches
+            // 
+            this.SectionButton_FetchPatches.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SectionButton_FetchPatches.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SectionButton_FetchLatestPatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.SectionButton_FetchLatestPatches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_FetchLatestPatches.Location = new System.Drawing.Point(14, 840);
-            this.SectionButton_FetchLatestPatches.Name = "SectionButton_FetchLatestPatches";
-            this.SectionButton_FetchLatestPatches.SectionImage = global::Unify.Properties.Resources.Update_4;
-            this.SectionButton_FetchLatestPatches.SectionText = "Fetch latest community patches";
-            this.SectionButton_FetchLatestPatches.SelectedSection = false;
-            this.SectionButton_FetchLatestPatches.Size = new System.Drawing.Size(563, 35);
-            this.SectionButton_FetchLatestPatches.TabIndex = 45;
+            this.SectionButton_FetchPatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.SectionButton_FetchPatches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SectionButton_FetchPatches.Location = new System.Drawing.Point(14, 545);
+            this.SectionButton_FetchPatches.Name = "SectionButton_FetchPatches";
+            this.SectionButton_FetchPatches.SectionImage = global::Unify.Properties.Resources.InstallMods;
+            this.SectionButton_FetchPatches.SectionText = "Fetch latest patches";
+            this.SectionButton_FetchPatches.SelectedSection = false;
+            this.SectionButton_FetchPatches.Size = new System.Drawing.Size(233, 35);
+            this.SectionButton_FetchPatches.TabIndex = 149;
+            this.SectionButton_FetchPatches.Click += new System.EventHandler(this.SectionButton_Updates_Click);
+            // 
+            // SectionButton_CheckForModUpdates
+            // 
+            this.SectionButton_CheckForModUpdates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SectionButton_CheckForModUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SectionButton_CheckForModUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.SectionButton_CheckForModUpdates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SectionButton_CheckForModUpdates.Location = new System.Drawing.Point(14, 504);
+            this.SectionButton_CheckForModUpdates.Name = "SectionButton_CheckForModUpdates";
+            this.SectionButton_CheckForModUpdates.SectionImage = global::Unify.Properties.Resources.Update_4;
+            this.SectionButton_CheckForModUpdates.SectionText = "Check for mod updates";
+            this.SectionButton_CheckForModUpdates.SelectedSection = false;
+            this.SectionButton_CheckForModUpdates.Size = new System.Drawing.Size(233, 35);
+            this.SectionButton_CheckForModUpdates.TabIndex = 94;
+            this.SectionButton_CheckForModUpdates.Click += new System.EventHandler(this.SectionButton_Updates_Click);
+            // 
+            // Label_LastSoftwareUpdate
+            // 
+            this.Label_LastSoftwareUpdate.AutoSize = true;
+            this.Label_LastSoftwareUpdate.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_LastSoftwareUpdate.Location = new System.Drawing.Point(72, 87);
+            this.Label_LastSoftwareUpdate.Name = "Label_LastSoftwareUpdate";
+            this.Label_LastSoftwareUpdate.Size = new System.Drawing.Size(216, 17);
+            this.Label_LastSoftwareUpdate.TabIndex = 147;
+            this.Label_LastSoftwareUpdate.Text = "Last checked: 21/01/2020, 08:59 PM";
             // 
             // SplitContainer_ModUpdate
             // 
             this.SplitContainer_ModUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SplitContainer_ModUpdate.Location = new System.Drawing.Point(14, 502);
+            this.SplitContainer_ModUpdate.Location = new System.Drawing.Point(14, 599);
             this.SplitContainer_ModUpdate.Name = "SplitContainer_ModUpdate";
             // 
             // SplitContainer_ModUpdate.Panel1
             // 
             this.SplitContainer_ModUpdate.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.SplitContainer_ModUpdate.Panel1.Controls.Add(this.Button_ModUpdate);
             this.SplitContainer_ModUpdate.Panel1.Controls.Add(this.Panel_ModUpdateBackdrop);
+            this.SplitContainer_ModUpdate.Panel1.Controls.Add(this.SectionButton_UpdateMods);
             this.SplitContainer_ModUpdate.Panel1MinSize = 201;
             // 
             // SplitContainer_ModUpdate.Panel2
@@ -1536,25 +1608,9 @@ namespace Unify.Environment3
             this.SplitContainer_ModUpdate.Panel2.Controls.Add(this.ProgressBar_ModUpdate);
             this.SplitContainer_ModUpdate.Panel2.Controls.Add(this.Panel_ModInfoBackdrop);
             this.SplitContainer_ModUpdate.Panel2MinSize = 300;
-            this.SplitContainer_ModUpdate.Size = new System.Drawing.Size(563, 331);
+            this.SplitContainer_ModUpdate.Size = new System.Drawing.Size(563, 375);
             this.SplitContainer_ModUpdate.SplitterDistance = 201;
             this.SplitContainer_ModUpdate.TabIndex = 44;
-            // 
-            // Button_ModUpdate
-            // 
-            this.Button_ModUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ModUpdate.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_ModUpdate.Enabled = false;
-            this.Button_ModUpdate.FlatAppearance.BorderSize = 0;
-            this.Button_ModUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_ModUpdate.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_ModUpdate.Location = new System.Drawing.Point(0, 308);
-            this.Button_ModUpdate.Name = "Button_ModUpdate";
-            this.Button_ModUpdate.Size = new System.Drawing.Size(199, 23);
-            this.Button_ModUpdate.TabIndex = 93;
-            this.Button_ModUpdate.Text = "Update Mod";
-            this.Button_ModUpdate.UseVisualStyleBackColor = false;
             // 
             // Panel_ModUpdateBackdrop
             // 
@@ -1563,34 +1619,75 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_ModUpdateBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.Panel_ModUpdateBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Panel_ModUpdateBackdrop.Controls.Add(this.ListView_ModUpdate);
+            this.Panel_ModUpdateBackdrop.Controls.Add(this.ListView_ModUpdates);
             this.Panel_ModUpdateBackdrop.Location = new System.Drawing.Point(0, 0);
             this.Panel_ModUpdateBackdrop.Name = "Panel_ModUpdateBackdrop";
-            this.Panel_ModUpdateBackdrop.Size = new System.Drawing.Size(199, 301);
+            this.Panel_ModUpdateBackdrop.Size = new System.Drawing.Size(199, 332);
             this.Panel_ModUpdateBackdrop.TabIndex = 1;
             // 
-            // ListView_ModUpdate
+            // ListView_ModUpdates
             // 
-            this.ListView_ModUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ListView_ModUpdate.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ListView_ModUpdate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ListView_ModUpdate.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.ListView_ModUpdate.ForeColor = System.Drawing.SystemColors.Control;
-            this.ListView_ModUpdate.FormattingEnabled = true;
-            this.ListView_ModUpdate.ItemHeight = 21;
-            this.ListView_ModUpdate.Location = new System.Drawing.Point(0, 0);
-            this.ListView_ModUpdate.Name = "ListView_ModUpdate";
-            this.ListView_ModUpdate.Size = new System.Drawing.Size(197, 299);
-            this.ListView_ModUpdate.TabIndex = 0;
+            this.ListView_ModUpdates.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.ListView_ModUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListView_ModUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.ListView_ModUpdates.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ListView_ModUpdates.CheckBoxes = true;
+            this.ListView_ModUpdates.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Column_Updates_Title,
+            this.Column_Updates_Blank});
+            this.ListView_ModUpdates.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.ListView_ModUpdates.ForeColor = System.Drawing.SystemColors.Control;
+            this.ListView_ModUpdates.FullRowSelect = true;
+            this.ListView_ModUpdates.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.ListView_ModUpdates.HideSelection = false;
+            this.ListView_ModUpdates.Location = new System.Drawing.Point(0, 0);
+            this.ListView_ModUpdates.MultiSelect = false;
+            this.ListView_ModUpdates.Name = "ListView_ModUpdates";
+            this.ListView_ModUpdates.OwnerDraw = true;
+            this.ListView_ModUpdates.Size = new System.Drawing.Size(197, 347);
+            this.ListView_ModUpdates.TabIndex = 2;
+            this.ListView_ModUpdates.UseCompatibleStateImageBehavior = false;
+            this.ListView_ModUpdates.View = System.Windows.Forms.View.Details;
+            this.ListView_ModUpdates.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView_DrawColumnHeader);
+            this.ListView_ModUpdates.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView_DrawItem);
+            this.ListView_ModUpdates.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.ListView_ModUpdates_ItemChecked);
+            // 
+            // Column_Updates_Title
+            // 
+            this.Column_Updates_Title.Text = "Title";
+            this.Column_Updates_Title.Width = 197;
+            // 
+            // Column_Updates_Blank
+            // 
+            this.Column_Updates_Blank.Text = "";
+            this.Column_Updates_Blank.Width = 1000;
+            // 
+            // SectionButton_UpdateMods
+            // 
+            this.SectionButton_UpdateMods.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SectionButton_UpdateMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SectionButton_UpdateMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.SectionButton_UpdateMods.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SectionButton_UpdateMods.Location = new System.Drawing.Point(0, 338);
+            this.SectionButton_UpdateMods.Name = "SectionButton_UpdateMods";
+            this.SectionButton_UpdateMods.SectionImage = global::Unify.Properties.Resources.InstallMods;
+            this.SectionButton_UpdateMods.SectionText = "Update selected mods";
+            this.SectionButton_UpdateMods.SelectedSection = false;
+            this.SectionButton_UpdateMods.Size = new System.Drawing.Size(199, 35);
+            this.SectionButton_UpdateMods.TabIndex = 45;
+            this.SectionButton_UpdateMods.Click += new System.EventHandler(this.SectionButton_Updates_Click);
             // 
             // ProgressBar_ModUpdate
             // 
             this.ProgressBar_ModUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ProgressBar_ModUpdate.Enabled = false;
-            this.ProgressBar_ModUpdate.Location = new System.Drawing.Point(2, 308);
+            this.ProgressBar_ModUpdate.Location = new System.Drawing.Point(2, 338);
             this.ProgressBar_ModUpdate.Name = "ProgressBar_ModUpdate";
-            this.ProgressBar_ModUpdate.Size = new System.Drawing.Size(356, 23);
+            this.ProgressBar_ModUpdate.Size = new System.Drawing.Size(356, 35);
             this.ProgressBar_ModUpdate.TabIndex = 94;
             // 
             // Panel_ModInfoBackdrop
@@ -1600,26 +1697,24 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_ModInfoBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.Panel_ModInfoBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Panel_ModInfoBackdrop.Controls.Add(this.RichTextBox_ModInformation);
+            this.Panel_ModInfoBackdrop.Controls.Add(this.ListBox_UpdateLogs);
             this.Panel_ModInfoBackdrop.Location = new System.Drawing.Point(2, 0);
             this.Panel_ModInfoBackdrop.Name = "Panel_ModInfoBackdrop";
-            this.Panel_ModInfoBackdrop.Size = new System.Drawing.Size(356, 301);
+            this.Panel_ModInfoBackdrop.Size = new System.Drawing.Size(356, 332);
             this.Panel_ModInfoBackdrop.TabIndex = 21;
             // 
-            // RichTextBox_ModInformation
+            // ListBox_UpdateLogs
             // 
-            this.RichTextBox_ModInformation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.RichTextBox_ModInformation.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.RichTextBox_ModInformation.Cursor = System.Windows.Forms.Cursors.Default;
-            this.RichTextBox_ModInformation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RichTextBox_ModInformation.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RichTextBox_ModInformation.ForeColor = System.Drawing.SystemColors.Control;
-            this.RichTextBox_ModInformation.Location = new System.Drawing.Point(0, 0);
-            this.RichTextBox_ModInformation.Name = "RichTextBox_ModInformation";
-            this.RichTextBox_ModInformation.ReadOnly = true;
-            this.RichTextBox_ModInformation.Size = new System.Drawing.Size(354, 299);
-            this.RichTextBox_ModInformation.TabIndex = 20;
-            this.RichTextBox_ModInformation.Text = "";
+            this.ListBox_UpdateLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.ListBox_UpdateLogs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ListBox_UpdateLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ListBox_UpdateLogs.ForeColor = System.Drawing.SystemColors.Control;
+            this.ListBox_UpdateLogs.FormattingEnabled = true;
+            this.ListBox_UpdateLogs.ItemHeight = 15;
+            this.ListBox_UpdateLogs.Location = new System.Drawing.Point(0, 0);
+            this.ListBox_UpdateLogs.Name = "ListBox_UpdateLogs";
+            this.ListBox_UpdateLogs.Size = new System.Drawing.Size(354, 330);
+            this.ListBox_UpdateLogs.TabIndex = 1;
             // 
             // Label_Title_ModsAndPatches
             // 
@@ -1699,13 +1794,6 @@ namespace Unify.Environment3
             this.CheckBox_CheckUpdatesOnLaunch.UseVisualStyleBackColor = false;
             this.CheckBox_CheckUpdatesOnLaunch.CheckedChanged += new System.EventHandler(this.CheckBox_Settings_CheckedChanged);
             // 
-            // Panel_Updates_UICleanSpace
-            // 
-            this.Panel_Updates_UICleanSpace.Location = new System.Drawing.Point(14, 874);
-            this.Panel_Updates_UICleanSpace.Name = "Panel_Updates_UICleanSpace";
-            this.Panel_Updates_UICleanSpace.Size = new System.Drawing.Size(214, 17);
-            this.Panel_Updates_UICleanSpace.TabIndex = 146;
-            // 
             // PictureBox_UpdaterIcon
             // 
             this.PictureBox_UpdaterIcon.BackgroundImage = global::Unify.Properties.Resources.Corner_Logo_Colour;
@@ -1715,6 +1803,29 @@ namespace Unify.Environment3
             this.PictureBox_UpdaterIcon.Size = new System.Drawing.Size(50, 50);
             this.PictureBox_UpdaterIcon.TabIndex = 38;
             this.PictureBox_UpdaterIcon.TabStop = false;
+            // 
+            // SectionButton_CheckForSoftwareUpdates
+            // 
+            this.SectionButton_CheckForSoftwareUpdates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SectionButton_CheckForSoftwareUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SectionButton_CheckForSoftwareUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.SectionButton_CheckForSoftwareUpdates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SectionButton_CheckForSoftwareUpdates.Location = new System.Drawing.Point(14, 114);
+            this.SectionButton_CheckForSoftwareUpdates.Name = "SectionButton_CheckForSoftwareUpdates";
+            this.SectionButton_CheckForSoftwareUpdates.SectionImage = global::Unify.Properties.Resources.Update_4;
+            this.SectionButton_CheckForSoftwareUpdates.SectionText = "Check for software updates";
+            this.SectionButton_CheckForSoftwareUpdates.SelectedSection = false;
+            this.SectionButton_CheckForSoftwareUpdates.Size = new System.Drawing.Size(233, 35);
+            this.SectionButton_CheckForSoftwareUpdates.TabIndex = 36;
+            this.SectionButton_CheckForSoftwareUpdates.Click += new System.EventHandler(this.SectionButton_Updates_Click);
+            // 
+            // Panel_Updates_UICleanSpace
+            // 
+            this.Panel_Updates_UICleanSpace.Location = new System.Drawing.Point(14, 973);
+            this.Panel_Updates_UICleanSpace.Name = "Panel_Updates_UICleanSpace";
+            this.Panel_Updates_UICleanSpace.Size = new System.Drawing.Size(214, 17);
+            this.Panel_Updates_UICleanSpace.TabIndex = 146;
             // 
             // ProgressBar_SoftwareUpdate
             // 
@@ -1726,29 +1837,13 @@ namespace Unify.Environment3
             this.ProgressBar_SoftwareUpdate.TabIndex = 148;
             this.ProgressBar_SoftwareUpdate.Visible = false;
             // 
-            // SectionButton_CheckForUpdates
-            // 
-            this.SectionButton_CheckForUpdates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SectionButton_CheckForUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SectionButton_CheckForUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.SectionButton_CheckForUpdates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_CheckForUpdates.Location = new System.Drawing.Point(14, 114);
-            this.SectionButton_CheckForUpdates.Name = "SectionButton_CheckForUpdates";
-            this.SectionButton_CheckForUpdates.SectionImage = global::Unify.Properties.Resources.Update_4;
-            this.SectionButton_CheckForUpdates.SectionText = "Check for software updates";
-            this.SectionButton_CheckForUpdates.SelectedSection = false;
-            this.SectionButton_CheckForUpdates.Size = new System.Drawing.Size(233, 35);
-            this.SectionButton_CheckForUpdates.TabIndex = 36;
-            this.SectionButton_CheckForUpdates.Click += new System.EventHandler(this.SectionButton_CheckForUpdates_Click);
-            // 
             // Tab_Section_About
             // 
             this.Tab_Section_About.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.Tab_Section_About.Controls.Add(this.Label_Version);
             this.Tab_Section_About.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_About.Name = "Tab_Section_About";
-            this.Tab_Section_About.Size = new System.Drawing.Size(591, 921);
+            this.Tab_Section_About.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_About.TabIndex = 4;
             this.Tab_Section_About.Text = "About";
             this.Tab_Section_About.Visible = false;
@@ -1759,7 +1854,7 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Version.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Version.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Version.Location = new System.Drawing.Point(2, 932);
+            this.Label_Version.Location = new System.Drawing.Point(2, 959);
             this.Label_Version.Name = "Label_Version";
             this.Label_Version.Size = new System.Drawing.Size(588, 25);
             this.Label_Version.TabIndex = 0;
@@ -1800,7 +1895,7 @@ namespace Unify.Environment3
             this.Rush_Section_About.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Rush_Section_About.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.Rush_Section_About.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rush_Section_About.Location = new System.Drawing.Point(0, 908);
+            this.Rush_Section_About.Location = new System.Drawing.Point(0, 977);
             this.Rush_Section_About.Name = "Rush_Section_About";
             this.Rush_Section_About.SectionImage = global::Unify.Properties.Resources.InformationSymbol_16x;
             this.Rush_Section_About.SectionText = "About";
@@ -1848,10 +1943,36 @@ namespace Unify.Environment3
             this.Container_Rush.Location = new System.Drawing.Point(0, 0);
             this.Container_Rush.Name = "Container_Rush";
             this.Container_Rush.SideColour = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.Container_Rush.Size = new System.Drawing.Size(849, 944);
+            this.Container_Rush.Size = new System.Drawing.Size(849, 1013);
             this.Container_Rush.SplitterDistance = 250;
             this.Container_Rush.TabIndex = 17;
             this.Container_Rush.Title = "Mods";
+            // 
+            // Label_Description_ProtocolManager
+            // 
+            this.Label_Description_ProtocolManager.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_ProtocolManager.AutoSize = true;
+            this.Label_Description_ProtocolManager.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_ProtocolManager.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_ProtocolManager.Location = new System.Drawing.Point(333, 298);
+            this.Label_Description_ProtocolManager.Name = "Label_Description_ProtocolManager";
+            this.Label_Description_ProtocolManager.Size = new System.Drawing.Size(243, 15);
+            this.Label_Description_ProtocolManager.TabIndex = 160;
+            this.Label_Description_ProtocolManager.Text = "Used to install the GameBanana registry key.";
+            // 
+            // LinkLabel_ProtocolManager
+            // 
+            this.LinkLabel_ProtocolManager.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_ProtocolManager.AutoSize = true;
+            this.LinkLabel_ProtocolManager.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.LinkLabel_ProtocolManager.LinkColor = System.Drawing.Color.Gold;
+            this.LinkLabel_ProtocolManager.Location = new System.Drawing.Point(11, 298);
+            this.LinkLabel_ProtocolManager.Name = "LinkLabel_ProtocolManager";
+            this.LinkLabel_ProtocolManager.Size = new System.Drawing.Size(144, 15);
+            this.LinkLabel_ProtocolManager.TabIndex = 159;
+            this.LinkLabel_ProtocolManager.TabStop = true;
+            this.LinkLabel_ProtocolManager.Text = "Launch Protocol Manager";
+            this.LinkLabel_ProtocolManager.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_ProtocolManager_LinkClicked);
             // 
             // RushInterface
             // 
@@ -1873,8 +1994,9 @@ namespace Unify.Environment3
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.Name = "RushInterface";
-            this.Size = new System.Drawing.Size(849, 966);
+            this.Size = new System.Drawing.Size(849, 1035);
             this.Load += new System.EventHandler(this.RushInterface_Load);
+            this.Resize += new System.EventHandler(this.RushInterface_Resize);
             this.TabControl_Rush.ResumeLayout(false);
             this.Tab_Section_Mods.ResumeLayout(false);
             this.SplitContainer_ModsControls.Panel1.ResumeLayout(false);
@@ -2004,17 +2126,14 @@ namespace Unify.Environment3
         private System.Windows.Forms.RichTextBox RichTextBox_Changelogs;
         private System.Windows.Forms.PictureBox PictureBox_UpdaterIcon;
         private System.Windows.Forms.Label Label_UpdaterStatus;
-        private SectionButton SectionButton_CheckForUpdates;
+        private SectionButton SectionButton_CheckForSoftwareUpdates;
         private System.Windows.Forms.Panel Panel_ChangelogsBackdrop;
         private System.Windows.Forms.Label Label_Subtitle_Changelogs;
-        private SectionButton SectionButton_FetchLatestPatches;
+        private SectionButton SectionButton_UpdateMods;
         private System.Windows.Forms.SplitContainer SplitContainer_ModUpdate;
-        private System.Windows.Forms.Button Button_ModUpdate;
         private System.Windows.Forms.Panel Panel_ModUpdateBackdrop;
-        private System.Windows.Forms.ListBox ListView_ModUpdate;
         private System.Windows.Forms.ProgressBar ProgressBar_ModUpdate;
         private System.Windows.Forms.Panel Panel_ModInfoBackdrop;
-        private System.Windows.Forms.RichTextBox RichTextBox_ModInformation;
         private System.Windows.Forms.Label Label_Title_ModsAndPatches;
         private System.Windows.Forms.Panel Panel_Updates_UICleanSpace;
         private System.Windows.Forms.Label Label_Description_LaunchEmulator;
@@ -2033,8 +2152,19 @@ namespace Unify.Environment3
         private System.Windows.Forms.SplitContainer SplitContainer_ModsControls;
         private System.Windows.Forms.Label Label_Description_Reset;
         private System.Windows.Forms.LinkLabel LinkLabel_Reset;
-        private System.Windows.Forms.Label Label_LastUpdateCheck;
-        private System.Windows.Forms.TabPage Tab_Section_ModCreator;
+        private System.Windows.Forms.Label Label_LastSoftwareUpdate;
         private System.Windows.Forms.ProgressBar ProgressBar_SoftwareUpdate;
+        private System.Windows.Forms.Label Label_Description_GraphicsAPI;
+        private SectionButton SectionButton_RefreshMods;
+        private SectionButton SectionButton_CheckForModUpdates;
+        private System.Windows.Forms.ListView ListView_ModUpdates;
+        private System.Windows.Forms.ColumnHeader Column_Updates_Title;
+        private System.Windows.Forms.ListBox ListBox_UpdateLogs;
+        private System.Windows.Forms.ColumnHeader Column_Updates_Blank;
+        private System.Windows.Forms.Label Label_LastPatchUpdate;
+        private System.Windows.Forms.Label Label_LastModUpdate;
+        private SectionButton SectionButton_FetchPatches;
+        private System.Windows.Forms.Label Label_Description_ProtocolManager;
+        private System.Windows.Forms.LinkLabel LinkLabel_ProtocolManager;
     }
 }

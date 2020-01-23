@@ -187,12 +187,80 @@ namespace Unify.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon error {
+            get {
+                object obj = ResourceManager.GetObject("error", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Exception_Logo {
             get {
                 object obj = ResourceManager.GetObject("Exception_Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Exception_Logo_Full_Colour {
+            get {
+                object obj = ResourceManager.GetObject("Exception_Logo_Full_Colour", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GameBanana_Logo {
+            get {
+                object obj = ResourceManager.GetObject("GameBanana_Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to body
+        ///{
+        ///    background-color: #2D2D30;
+        ///    color: #e2e2e2;
+        ///    font-family: sans-serif;
+        ///}
+        ///
+        ///a
+        ///{
+        ///    color: #FFE033;
+        ///    text-decoration: none;
+        ///    vertical-align: baseline;
+        ///}
+        ///
+        ///h1
+        ///{
+        ///    font-size: 18px;
+        ///    margin: 0 0 0.75em;
+        ///    padding: 0 0 0.25em 0;
+        ///}
+        ///
+        ///li
+        ///{
+        ///    list-style-type: square;
+        ///}
+        ///
+        ///span.RedColor
+        ///{
+        ///    color: #D61111;
+        ///}.
+        /// </summary>
+        internal static string GBStyleSheetDark {
+            get {
+                return ResourceManager.GetString("GBStyleSheetDark", resourceCulture);
             }
         }
         
@@ -212,6 +280,16 @@ namespace Unify.Properties {
         internal static System.Drawing.Bitmap InstallMods {
             get {
                 object obj = ResourceManager.GetObject("InstallMods", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Logo {
+            get {
+                object obj = ResourceManager.GetObject("Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -292,6 +370,16 @@ namespace Unify.Properties {
         internal static byte[] pkgtool {
             get {
                 object obj = ResourceManager.GetObject("pkgtool", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Protocol_Manager {
+            get {
+                object obj = ResourceManager.GetObject("Protocol_Manager", resourceCulture);
                 return ((byte[])(obj));
             }
         }

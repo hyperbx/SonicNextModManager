@@ -241,12 +241,12 @@ namespace Unify.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime LastUpdateCheck {
+        public global::System.DateTime LastSoftwareUpdate {
             get {
-                return ((global::System.DateTime)(this["LastUpdateCheck"]));
+                return ((global::System.DateTime)(this["LastSoftwareUpdate"]));
             }
             set {
-                this["LastUpdateCheck"] = value;
+                this["LastSoftwareUpdate"] = value;
             }
         }
         
@@ -259,6 +259,28 @@ namespace Unify.Properties {
             }
             set {
                 this["LaunchEmulator"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastModUpdate {
+            get {
+                return ((global::System.DateTime)(this["LastModUpdate"]));
+            }
+            set {
+                this["LastModUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastPatchUpdate {
+            get {
+                return ((global::System.DateTime)(this["LastPatchUpdate"]));
+            }
+            set {
+                this["LastPatchUpdate"] = value;
             }
         }
     }
