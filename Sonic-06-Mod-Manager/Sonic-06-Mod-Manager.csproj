@@ -65,12 +65,6 @@
     <Compile Include="src\Environment3\Controls\Components\ContextMenuDark.designer.cs">
       <DependentUpon>ContextMenuDark.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\ExplorerBrowser.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="src\Environment3\Controls\Components\ExplorerBrowser.Designer.cs">
-      <DependentUpon>ExplorerBrowser.cs</DependentUpon>
-    </Compile>
     <Compile Include="src\Environment3\Controls\Components\UserContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -195,9 +189,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment3\Controls\Components\ExplorerBrowser.resx">
-      <DependentUpon>ExplorerBrowser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\Controls\Components\UnifyTabControl.resx">
       <DependentUpon>UnifyTabControl.cs</DependentUpon>

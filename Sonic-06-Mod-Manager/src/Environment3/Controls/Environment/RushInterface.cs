@@ -7,6 +7,7 @@ using Ookii.Dialogs;
 using System.Drawing;
 using Microsoft.Win32;
 using Unify.Networking;
+using System.Threading;
 using Unify.Serialisers;
 using System.Diagnostics;
 using Unify.Globalisation;
@@ -84,7 +85,7 @@ namespace Unify.Environment3
                 Console.SetOut(new ListBoxWriter(ListBox_Debug));
             } else Rush_Section_Debug.Visible = false;
 
-            // Restore label strings.
+            // Restore label strings
             if (Properties.Settings.Default.LastUpdateCheck.ToString("dd/MM/yyyy") == "01/01/0001") Label_LastUpdateCheck.Text = $"Last checked: Never";
             else {
                 if (Properties.Settings.Default.LastUpdateCheck.Date == DateTime.Today)
@@ -95,24 +96,44 @@ namespace Unify.Environment3
                     Label_LastUpdateCheck.Text = $"Last checked: {Properties.Settings.Default.LastUpdateCheck.ToString("dd/MM/yyyy, hh:mm tt")}";
             }
 
-            // Restore text box strings.
-            TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory;
+            // Restore text box strings
             TextBox_GameDirectory.Text = Properties.Settings.Default.GameDirectory;
             TextBox_EmulatorExecutable.Text = Properties.Settings.Default.EmulatorDirectory;
             TextBox_SaveData.Text = Properties.Settings.Default.SaveData;
 
-            // Restore combo box states.
+            if ((TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory) != string.Empty &&
+                Directory.Exists(TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory)) {
+                    // Track the mods directory for changes
+                    FileSystemWatcher handleModsDir = new FileSystemWatcher() {
+                        Path = Properties.Settings.Default.ModsDirectory,
+                        EnableRaisingEvents = true
+                    };
+                    SynchronizationContext context = SynchronizationContext.Current;
+                    handleModsDir.Created += (s, e) => { context.Post(val => DeserialiseMods(), s); };
+                    handleModsDir.Renamed += (s, e) => { context.Post(val => DeserialiseMods(), s); };
+                    handleModsDir.Deleted += (s, e) => { context.Post(val => DeserialiseMods(), s); };
+            }
+
+            // Restore combo box states
             ComboBox_API.SelectedIndex = Properties.Settings.Default.GraphicsAPI;
 
-            // Restore check box states.
-            CheckBox_AutoColour.Checked = Properties.Settings.Default.AutoColour;
-            CheckBox_HighContrastText.Checked = Properties.Settings.Default.HighContrastText;
-            CheckBox_Xenia_ForceRTV.Checked = Properties.Settings.Default.ForceRTV;
+            // Restore check box states
+            CheckBox_AutoColour.Checked         = Properties.Settings.Default.AutoColour;
+            CheckBox_HighContrastText.Checked   = Properties.Settings.Default.HighContrastText;
+            CheckBox_Xenia_ForceRTV.Checked     = Properties.Settings.Default.ForceRTV;
             CheckBox_Xenia_2xResolution.Checked = Properties.Settings.Default.DoubleResolution;
             CheckBox_Xenia_VerticalSync.Checked = Properties.Settings.Default.VerticalSync;
-            CheckBox_Xenia_Gamma.Checked = Properties.Settings.Default.Gamma;
-            CheckBox_Xenia_Fullscreen.Checked = Properties.Settings.Default.Fullscreen;
-            CheckBox_Xenia_DiscordRPC.Checked = Properties.Settings.Default.DiscordRPC;
+            CheckBox_Xenia_Gamma.Checked        = Properties.Settings.Default.Gamma;
+            CheckBox_Xenia_Fullscreen.Checked   = Properties.Settings.Default.Fullscreen;
+            CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.DiscordRPC;
+
+            if (CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.LaunchEmulator) {
+                SectionButton_InstallMods.SectionText = "Install mods and launch Sonic '06";
+                SectionButton_InstallMods.Refresh();
+            } else {
+                SectionButton_InstallMods.SectionText = "Install mods";
+                SectionButton_InstallMods.Refresh();
+            }
 
             if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.CheckUpdatesOnLaunch)
                 try {
@@ -157,7 +178,7 @@ namespace Unify.Environment3
                 false;
             }
 
-            // Set controls to HighContrastText setting.
+            // Set controls to HighContrastText setting
             if (Properties.Settings.Default.HighContrastText) {
                 Label_Status.ForeColor =
                 TabControl_Patches.SelectedTextColor =
@@ -168,7 +189,7 @@ namespace Unify.Environment3
                 SystemColors.Control;
             }
 
-            // Set controls to AccentColour setting.
+            // Set controls to AccentColour setting
             Button_ColourPicker_Preview.FlatAppearance.MouseOverBackColor =
             Button_ColourPicker_Preview.FlatAppearance.MouseDownBackColor =
             Rush_Section_Settings.AccentColour =
@@ -179,14 +200,14 @@ namespace Unify.Environment3
             TabControl_Patches.ActiveColor =
             Properties.Settings.Default.AccentColour;
 
-            // Set controls depending on emulator.
+            // Set controls depending on emulator
             if (Literal.Emulator() == "Xenia") {
-                // Set text colour to Control.
+                // Set text colour to Control
                 Label_Subtitle_Emulator_Options.ForeColor =
                 Label_GraphicsAPI.ForeColor =
                 SystemColors.Control;
 
-                // Set enabled state of controls.
+                // Set enabled state of controls
                 CheckBox_Xenia_ForceRTV.Enabled =
                 CheckBox_Xenia_2xResolution.Enabled =
                 CheckBox_Xenia_VerticalSync.Enabled =
@@ -196,15 +217,15 @@ namespace Unify.Environment3
                 ComboBox_API.Enabled =
                 true;
 
-                // Set visibility state of controls.
+                // Set visibility state of controls
                 Label_RPCS3Warning.Visible = false;
             } else if (Literal.Emulator() == "RPCS3") {
-                // Set text colour to GrayText.
+                // Set text colour to GrayText
                 Label_Subtitle_Emulator_Options.ForeColor =
                 Label_GraphicsAPI.ForeColor =
                 SystemColors.GrayText;
 
-                // Set enabled state of controls.
+                // Set enabled state of controls
                 CheckBox_Xenia_ForceRTV.Enabled =
                 CheckBox_Xenia_2xResolution.Enabled =
                 CheckBox_Xenia_VerticalSync.Enabled =
@@ -214,7 +235,7 @@ namespace Unify.Environment3
                 ComboBox_API.Enabled =
                 false;
 
-                // Set visibility state of controls.
+                // Set visibility state of controls
                 Label_RPCS3Warning.Visible = true;
             }
         }
@@ -349,10 +370,11 @@ namespace Unify.Environment3
                     Properties.Settings.Default.AccentColour = Color.FromArgb(RegistryColour);
                 } else Properties.Settings.Default.AccentColour = Color.FromArgb(186, 0, 0);
                 Properties.Settings.Default.AutoColour = ((CheckBox)sender).Checked;
-            } else if   (sender == CheckBox_HighContrastText) Properties.Settings.Default.HighContrastText = ((CheckBox)sender).Checked;
-            else if            (sender == CheckBox_DebugMode) Properties.Settings.Default.Debug = ((CheckBox)sender).Checked;
-            else if  (sender == CheckBox_SaveFileRedirection) Properties.Settings.Default.SaveFileRedirection = ((CheckBox)sender).Checked;
+            } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.HighContrastText     = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.Debug                = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_SaveFileRedirection)  Properties.Settings.Default.SaveFileRedirection  = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_CheckUpdatesOnLaunch) Properties.Settings.Default.CheckUpdatesOnLaunch = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_LaunchEmulator)       Properties.Settings.Default.LaunchEmulator       = ((CheckBox)sender).Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -506,16 +528,19 @@ namespace Unify.Environment3
                 ListView_ModsList.Items.Clear(); // Clears the mods list
                 Button_UpperPriority.Enabled = Button_DownerPriority.Enabled = false; // Disable priority buttons to prevent index errors
                 foreach (string mod in Directory.GetFiles(Properties.Settings.Default.ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
-                    //Add mod to list, getting information from its mod.ini file
-                    ListView_ModsList.Items.Add(new ListViewItem(new[] {
-                        INISerialiser.DeserialiseKey("Title", mod), // Deserialise 'Title' key
-                        INISerialiser.DeserialiseKey("Version", mod), // Deserialise 'Version' key
-                        INISerialiser.DeserialiseKey("Author", mod), // Deserialise 'Author' key
-                        INISerialiser.DeserialiseKey("Platform", mod), // Deserialise 'Platform' key
-                        Literal.Bool(INISerialiser.DeserialiseKey("Merge", mod)), // Translates 'True' to 'Yes' and 'False' to 'No'
-                        string.Empty,
-                        mod
-                    }));
+                    try {
+                        //Add mod to list, getting information from its mod.ini file
+                        ListViewItem config = new ListViewItem(new[] {
+                                                   INISerialiser.DeserialiseKey("Title", mod), // Deserialise 'Title' key
+                                                   INISerialiser.DeserialiseKey("Version", mod), // Deserialise 'Version' key
+                                                   INISerialiser.DeserialiseKey("Author", mod), // Deserialise 'Author' key
+                                                   INISerialiser.DeserialiseKey("Platform", mod), // Deserialise 'Platform' key
+                                                   Literal.Bool(INISerialiser.DeserialiseKey("Merge", mod)), // Translates 'True' to 'Yes' and 'False' to 'No'
+                                                   string.Empty,
+                                                   mod
+                                               });
+                        ListView_ModsList.Items.Add(config);
+                    } catch { }
                 }
             } else { // Specify the mods directory if it doesn't exist (first thing the application will request)
                 if (MessageBox.Show("No mods directory specified, or the specified directory is invalid - please select your Sonic '06 mods directory...",
@@ -611,47 +636,63 @@ namespace Unify.Environment3
         /// Begins the mod installation process by calling the required methods.
         /// </summary>
         private void SectionButton_InstallMods_Click(object sender, EventArgs e) {
-            ModEngine.skipped.Clear(); // Clear the skipped list
-            UninstallThread(); // Uninstall everything before installing more mods
+            if (Properties.Settings.Default.GameDirectory != string.Empty ||
+                File.Exists(Properties.Settings.Default.GameDirectory)) {
+                    ModEngine.skipped.Clear(); // Clear the skipped list
+                    SaveChecks(); // Save checked items
+                    DeserialiseMods(); // Refresh mods list
+                    CheckDeserialisedMods(); // Check saved items
+                    UninstallThread(); // Uninstall everything before installing more mods
 
-            if (Properties.Settings.Default.Priority) { //Top to Bottom Priority
-                for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
-                    if (ListView_ModsList.Items[i].Checked) {
-                        Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
+                    if (Properties.Settings.Default.Priority) { //Top to Bottom Priority
+                        for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
+                            if (ListView_ModsList.Items[i].Checked) {
+                                Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
 
-                        // Install the specified mod
-                        ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                                // Install the specified mod
+                                ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
 
-                        if (Properties.Settings.Default.SaveFileRedirection) {
-                            Label_Status.Text = $"Redirecting save file for {ListView_ModsList.Items[i].Text}...";
+                                if (Properties.Settings.Default.SaveFileRedirection) {
+                                    Label_Status.Text = $"Redirecting save file for {ListView_ModsList.Items[i].Text}...";
 
-                            // Redirect save data from the specified mod
-                            RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
-                        }
+                                    // Redirect save data from the specified mod
+                                    RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                                }
+                            }
+                    } else { //Bottom to Top Priority
+                        foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
+                            if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
+                                Label_Status.Text = $"Installing {mod.Text}...";
+
+                                // Install the specified mod
+                                ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
+
+                                if (Properties.Settings.Default.SaveFileRedirection) {
+                                    Label_Status.Text = $"Redirecting save file for {mod.Text}...";
+
+                                    // Redirect save data from the specified mod
+                                    RedirectSaves(mod.SubItems[6].Text, mod.Text);
+                                }
+                            }
                     }
-            } else { //Bottom to Top Priority
-                foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
-                    if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
-                        Label_Status.Text = $"Installing {mod.Text}...";
 
-                        // Install the specified mod
-                        ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
+                    if (ModEngine.skipped.Count != 0)
+                        MessageBox.Show($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
+                                        "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        if (Properties.Settings.Default.SaveFileRedirection) {
-                            Label_Status.Text = $"Redirecting save file for {mod.Text}...";
+                    if (Properties.Settings.Default.LaunchEmulator) LaunchEmulator(Literal.Emulator());
+                    Label_Status.Text = $"Ready.";
+            } else {
+                OpenFileDialog browseGame = new OpenFileDialog() {
+                    Title = "Please select an executable for Sonic '06...",
+                    Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
+                };
 
-                            // Redirect save data from the specified mod
-                            RedirectSaves(mod.SubItems[6].Text, mod.Text);
-                        }
-                    }
+                if (browseGame.ShowDialog() == DialogResult.OK) {
+                    Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
+                    Properties.Settings.Default.Save();
+                }
             }
-
-            if (ModEngine.skipped.Count != 0)
-                MessageBox.Show($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
-                                "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            LaunchEmulator(Literal.Emulator());
-            Label_Status.Text = $"Ready.";
         }
 
         /// <summary>
@@ -659,9 +700,9 @@ namespace Unify.Environment3
         /// </summary>
         private void RedirectSaves(string mod, string name) {
             string saveLocation = Properties.Settings.Default.SaveData; // Stores Save Data location in string for ease of use
-            bool savedata = INISerialiser.DeserialiseKey("Save", mod) != string.Empty; // Deserialise 'Save' key
 
-            if (savedata) {
+            // Deserialise 'Save' key
+            if (INISerialiser.DeserialiseKey("Save", mod).Contains("savedata")) {
                 if (File.Exists(saveLocation)) {
                         if (Literal.System() == "Xbox 360") {
                             try {
@@ -689,7 +730,7 @@ namespace Unify.Environment3
                                 }
                             } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the PlayStation 3)"); }
                         }
-                } else ModEngine.skipped.Add($"► {mod} (save redirect failed because no save data was specified)");
+                } else ModEngine.skipped.Add($"► {name} (save redirect failed because no save data was specified)");
             } else return;
         }
 
@@ -822,91 +863,77 @@ namespace Unify.Environment3
         /// Launches Xenia or RPCS3 depending on the selected game executable.
         /// </summary>
         private void LaunchEmulator(string emulator) {
-            if (Properties.Settings.Default.GameDirectory == string.Empty ||
-                !File.Exists(Properties.Settings.Default.GameDirectory)) { // If the game directory is empty/doesn't exist, prompt the user to select one
-                    OpenFileDialog browseGame = new OpenFileDialog() {
-                        Title = "Please select an executable for Sonic '06...",
-                        Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
+            if (Properties.Settings.Default.EmulatorDirectory == string.Empty ||
+                !File.Exists(Properties.Settings.Default.EmulatorDirectory)) { // If the emulator is empty/doesn't exist, prompt the user to select one
+                    OpenFileDialog browseEmulator = new OpenFileDialog() {
+                        Title = $"Please select an executable for {emulator}...",
+                        Filter = "Programs (*.exe)|*.exe"
                     };
 
-                    if (browseGame.ShowDialog() == DialogResult.OK) {
-                        Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
+                    if (browseEmulator.ShowDialog() == DialogResult.OK) {
+                        Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
                         Properties.Settings.Default.Save();
-                        LaunchEmulator(Literal.Emulator()); // Perform task again with specified emulator.
+                        LaunchEmulator(Literal.Emulator()); // Perform task again with specified emulator
                     }
             } else {
-                if (Properties.Settings.Default.EmulatorDirectory == string.Empty ||
-                    !File.Exists(Properties.Settings.Default.EmulatorDirectory)) { // If the emulator is empty/doesn't exist, prompt the user to select one
-                        OpenFileDialog browseEmulator = new OpenFileDialog() {
-                            Title = $"Please select an executable for {emulator}...",
-                            Filter = "Programs (*.exe)|*.exe"
+                if (emulator == "Xenia") {
+                    List<string> parameters = new List<string>();
+
+                    if (File.Exists(Properties.Settings.Default.GameDirectory)) parameters.Add($"\"{Properties.Settings.Default.GameDirectory}\"");
+                    else { // If the game directory is invalid, prompt the user to select a new one
+                        OpenFileDialog browseGame = new OpenFileDialog() {
+                            Title = "Please select an executable for Sonic '06...",
+                            Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
                         };
 
-                        if (browseEmulator.ShowDialog() == DialogResult.OK) {
-                            Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
+                        if (browseGame.ShowDialog() == DialogResult.OK) {
+                            Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
                             Properties.Settings.Default.Save();
                             LaunchEmulator(Literal.Emulator()); // Perform task again with specified emulator
                         }
-                } else {
-                    if (emulator == "Xenia") {
-                        List<string> parameters = new List<string>();
-
-                        if (File.Exists(Properties.Settings.Default.GameDirectory)) parameters.Add($"\"{Properties.Settings.Default.GameDirectory}\"");
-                        else { // If the game directory is invalid, prompt the user to select a new one
-                            OpenFileDialog browseGame = new OpenFileDialog() {
-                                Title = "Please select an executable for Sonic '06...",
-                                Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
-                            };
-
-                            if (browseGame.ShowDialog() == DialogResult.OK) {
-                                Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
-                                Properties.Settings.Default.Save();
-                                LaunchEmulator(Literal.Emulator()); // Perform task again with specified emulator
-                            }
-                        }
-
-                        // Xenia parameter setup
-                        if (ComboBox_API.SelectedIndex == 0) {
-                            parameters.Add("--gpu=d3d12"); // Use DirectX 12
-                            if (CheckBox_Xenia_ForceRTV.Checked) parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
-                            if (CheckBox_Xenia_2xResolution.Checked) parameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
-                        } else parameters.Add("--gpu=vulkan"); // Use Vulkan
-
-                        if (!CheckBox_Xenia_VerticalSync.Checked) parameters.Add("--vsync=false"); // V-Sync
-                        if (CheckBox_Xenia_Gamma.Checked) parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
-                        if (CheckBox_Xenia_Fullscreen.Checked) parameters.Add("--fullscreen"); // Launch in Fullscreen
-                        if (!CheckBox_Xenia_DiscordRPC.Checked) parameters.Add("--discord=false"); // Discord Rich Presence
-
-                        ProcessStartInfo xeniaProc = new ProcessStartInfo() {
-                            FileName = Properties.Settings.Default.EmulatorDirectory,
-
-                            // Ensure emulator directory is the working dir - prevents 'xenia.log' and save data being in the wrong locations
-                            WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.EmulatorDirectory),
-
-                            Arguments = string.Join(" ", parameters.ToArray()) // Join all parameters for args
-                        };
-
-                        Process xenia = Process.Start(xeniaProc); // Launch Xenia
-                        Label_Status.Text = "Waiting for Xenia exit call...";
-                        xenia.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
-                        UninstallThread(); // Uninstall mods after emulator quits
-                    } else if (emulator == "RPCS3") {
-                        ProcessStartInfo rpcs3Proc = new ProcessStartInfo() {
-                            FileName = Properties.Settings.Default.EmulatorDirectory,
-
-                            // Same reason for Xenia, except this is just as a precaution in case RPCS3 changes anything
-                            WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.EmulatorDirectory),
-                        };
-
-                        Process rpcs3 = Process.Start(rpcs3Proc); // Launch RPCS3
-                        Label_Status.Text = "Waiting for RPCS3 exit call...";
-                        rpcs3.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
-                        UninstallThread(); // Uninstall mods after emulator quits
-                    } else { // Emulator not detected...
-                        MessageBox.Show("Unable to detect the required emulator for the game's executable. The specified game directory may be invalid.",
-                                        "Unable to load...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        UninstallThread(); // Failed to load emulator, so uninstall mods
                     }
+
+                    // Xenia parameter setup
+                    if (ComboBox_API.SelectedIndex == 0) {
+                        parameters.Add("--gpu=d3d12"); // Use DirectX 12
+                        if (CheckBox_Xenia_ForceRTV.Checked) parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
+                        if (CheckBox_Xenia_2xResolution.Checked) parameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
+                    } else parameters.Add("--gpu=vulkan"); // Use Vulkan
+
+                    if (!CheckBox_Xenia_VerticalSync.Checked) parameters.Add("--vsync=false"); // V-Sync
+                    if (CheckBox_Xenia_Gamma.Checked) parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
+                    if (CheckBox_Xenia_Fullscreen.Checked) parameters.Add("--fullscreen"); // Launch in Fullscreen
+                    if (!CheckBox_Xenia_DiscordRPC.Checked) parameters.Add("--discord=false"); // Discord Rich Presence
+
+                    ProcessStartInfo xeniaProc = new ProcessStartInfo() {
+                        FileName = Properties.Settings.Default.EmulatorDirectory,
+
+                        // Ensure emulator directory is the working dir - prevents 'xenia.log' and save data being in the wrong locations
+                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.EmulatorDirectory),
+
+                        Arguments = string.Join(" ", parameters.ToArray()) // Join all parameters for args
+                    };
+
+                    Process xenia = Process.Start(xeniaProc); // Launch Xenia
+                    Label_Status.Text = "Waiting for Xenia exit call...";
+                    xenia.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
+                    UninstallThread(); // Uninstall mods after emulator quits
+                } else if (emulator == "RPCS3") {
+                    ProcessStartInfo rpcs3Proc = new ProcessStartInfo() {
+                        FileName = Properties.Settings.Default.EmulatorDirectory,
+
+                        // Same reason for Xenia, except this is just as a precaution in case RPCS3 changes anything
+                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.EmulatorDirectory),
+                    };
+
+                    Process rpcs3 = Process.Start(rpcs3Proc); // Launch RPCS3
+                    Label_Status.Text = "Waiting for RPCS3 exit call...";
+                    rpcs3.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
+                    UninstallThread(); // Uninstall mods after emulator quits
+                } else { // Emulator not detected...
+                    MessageBox.Show("Unable to detect the required emulator for the game's executable. The specified game directory may be invalid.",
+                                    "Unable to load...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UninstallThread(); // Failed to load emulator, so uninstall mods
                 }
             }
         }
@@ -1070,7 +1097,7 @@ namespace Unify.Environment3
         private void UpdateVersion(bool useBackupServer) {
             // Set controls enabled and visibility state
             CheckBox_CheckUpdatesOnLaunch.Enabled = false;
-            Progress_SoftwareUpdate.Visible = true;
+            ProgressBar_SoftwareUpdate.Visible = true;
 
             // If SEGA Carnival is offline, use GitHub
             Uri serverUri = new Uri(Properties.Resources.DataURI_SEGACarnival);
@@ -1078,7 +1105,7 @@ namespace Unify.Environment3
 
             try {
                 using (WebClient client = new WebClient()) {
-                    client.DownloadProgressChanged += (s, clientEventArgs) => { ProgressBar_ModUpdate.Value = clientEventArgs.ProgressPercentage; };
+                    client.DownloadProgressChanged += (s, clientEventArgs) => { ProgressBar_SoftwareUpdate.Value = clientEventArgs.ProgressPercentage; };
                     client.DownloadFileTaskAsync(serverUri, $"{Application.ExecutablePath}.pak"); // Download archive from update servers
                     client.DownloadFileCompleted += (s, clientEventArgs) => {
                         using (ZipArchive archive = new ZipArchive(new MemoryStream(File.ReadAllBytes($"{Application.ExecutablePath}.pak")))) {

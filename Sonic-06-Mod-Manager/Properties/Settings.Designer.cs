@@ -249,5 +249,17 @@ namespace Unify.Properties {
                 this["LastUpdateCheck"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LaunchEmulator {
+            get {
+                return ((bool)(this["LaunchEmulator"]));
+            }
+            set {
+                this["LaunchEmulator"] = value;
+            }
+        }
     }
 }
