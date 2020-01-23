@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Unify.Environment.Properties {
+namespace Unify.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Unify.Environment.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Unify.Environment.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Unify.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,26 @@ namespace Unify.Environment.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] arctool {
+            get {
+                object obj = ResourceManager.GetObject("arctool", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CheckBox_16x_24 {
+            get {
+                object obj = ResourceManager.GetObject("CheckBox_16x_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -183,6 +203,16 @@ namespace Unify.Environment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Open_grey_16x {
+            get {
+                object obj = ResourceManager.GetObject("Open_grey_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PaintBrush_16x {
             get {
                 object obj = ResourceManager.GetObject("PaintBrush_16x", resourceCulture);
@@ -197,6 +227,16 @@ namespace Unify.Environment.Properties {
             get {
                 object obj = ResourceManager.GetObject("PatchPackage_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] pkgtool {
+            get {
+                object obj = ResourceManager.GetObject("pkgtool", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

@@ -1,4 +1,4 @@
-﻿namespace Unify.Environment
+﻿namespace Unify.Environment3
 {
     partial class UserContainer
     {
@@ -77,7 +77,7 @@
             // Image_Preferences_Logo
             // 
             this.Image_Preferences_Logo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Image_Preferences_Logo.BackgroundImage = global::Unify.Environment.Properties.Resources.Menu_Logo;
+            this.Image_Preferences_Logo.BackgroundImage = global::Unify.Properties.Resources.Menu_Logo;
             this.Image_Preferences_Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Image_Preferences_Logo.Location = new System.Drawing.Point(270, 173);
             this.Image_Preferences_Logo.Name = "Image_Preferences_Logo";

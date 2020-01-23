@@ -29,7 +29,7 @@ using System.Drawing.Drawing2D;
  * SOFTWARE.
  */
 
-namespace Unify.Environment
+namespace Unify.Environment3
 {
     public class UnifyTabControl : TabControl
     {

@@ -1,4 +1,4 @@
-﻿namespace Unify.Environment
+﻿namespace Unify.Environment3
 {
     partial class UnifyEnvironment
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UnifyEnvironment));
-            this.Unify_Rush = new Unify.Environment.RushInterface();
+            this.Unify_Rush = new Unify.Environment3.RushInterface();
             this.SuspendLayout();
             // 
             // Unify_Rush
@@ -65,34 +65,5 @@
 
         #endregion
         private RushInterface Unify_Rush;
-        private UnifyTabControl Rush_TabControl;
-        private System.Windows.Forms.TabPage Tab_Rush_Mods;
-        private System.Windows.Forms.TabPage Tab_Rush_Emulator;
-        private System.Windows.Forms.TabPage Tab_Rush_Patches;
-        private System.Windows.Forms.TabPage Tab_Rush_Settings;
-        private System.Windows.Forms.TabPage Tab_Rush_About;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox TextBox_ModsDirectory;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Label label5;
-        private WindowsColourPicker windowsColourPicker1;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckBox CheckBox_HighContrastText;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.CheckBox CheckBox_AutoColour;
-        private System.Windows.Forms.Button Button_ColourPicker_Preview;
-        private System.Windows.Forms.Button button3;
-        private SectionButton sectionButton1;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Web;
 using System.Windows.Forms;
 
 // Sonic '06 Toolkit is licensed under the MIT License:
@@ -26,18 +26,20 @@ using System.Windows.Forms;
  * SOFTWARE.
  */
 
-namespace Unify.Environment
+namespace Unify.Environment3
 {
-    public partial class WindowsColourPicker : UserControl
+    public partial class ExplorerBrowser : WebBrowser
     {
-        public WindowsColourPicker() { InitializeComponent(); }
+        public ExplorerBrowser() { InitializeComponent(); }
 
-        public event EventHandler ButtonClick;
+        public string CurrentLocation {
+            get {
+                if (Url != null) return HttpUtility.UrlDecode(Url.ToString().Replace("file:///", "").Replace("/", @"\") + @"\").Replace("file:", "");
+                else return string.Empty;
+            }
+            set { HttpUtility.UrlDecode(value.Replace("file:///", "").Replace("/", @"\") + @"\").Replace("file:", ""); }
+        }
 
-        private void Button_Colour_Click(object sender, EventArgs e) { if (this.ButtonClick != null) this.ButtonClick(sender, e); }
-
-        private void Button_Colour_MouseEnter(object sender, EventArgs e) { ((Button)sender).FlatAppearance.BorderSize = 1; }
-
-        private void Button_Colour_MouseLeave(object sender, EventArgs e) { ((Button)sender).FlatAppearance.BorderSize = 0; }
+        private void ExplorerBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e) { CurrentLocation = Url.ToString(); }
     }
 }

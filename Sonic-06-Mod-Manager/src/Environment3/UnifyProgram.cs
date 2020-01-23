@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
 
 // Sonic '06 Toolkit is licensed under the MIT License:
 /*
@@ -25,17 +27,28 @@
  * SOFTWARE.
  */
 
-namespace Unify.Environment
+namespace Unify.Environment3
 {
-    public partial class UnifyEnvironment : Form
+    static class Program
     {
-        public static readonly string VersionNumber = "3.0-prototype_rush-210120r1";
+        public static readonly string VersionNumber = "3.0-prototype_rush-230120r1";
+        public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-        public UnifyEnvironment() {
-            InitializeComponent();
+        [STAThread]
 
-            Text += $" ({VersionNumber})";
-            //Size = MinimumSize;
+        static void Main() {
+            if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\"))
+                Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\");
+
+            if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\arctool.exe"))
+                File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\arctool.exe", Properties.Resources.arctool);
+
+            if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\pkgtool.exe"))
+                File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\pkgtool.exe", Properties.Resources.pkgtool);
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new UnifyEnvironment());
         }
     }
 }

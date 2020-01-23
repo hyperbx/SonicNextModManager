@@ -1,5 +1,4 @@
 ﻿using System;
-using Unify.Environment;
 using System.Windows.Forms;
 
 // Sonic '06 Toolkit is licensed under the MIT License:
@@ -27,16 +26,18 @@ using System.Windows.Forms;
  * SOFTWARE.
  */
 
-namespace Toolkit
+namespace Unify.Environment3
 {
-    static class Program
+    public partial class WindowsColourPicker : UserControl
     {
-        [STAThread]
+        public WindowsColourPicker() { InitializeComponent(); }
 
-        static void Main() {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UnifyEnvironment());
-        }
+        public event EventHandler ButtonClick;
+
+        private void Button_Colour_Click(object sender, EventArgs e) { if (this.ButtonClick != null) this.ButtonClick(sender, e); }
+
+        private void Button_Colour_MouseEnter(object sender, EventArgs e) { ((Button)sender).FlatAppearance.BorderSize = 1; }
+
+        private void Button_Colour_MouseLeave(object sender, EventArgs e) { ((Button)sender).FlatAppearance.BorderSize = 0; }
     }
 }

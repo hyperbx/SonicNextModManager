@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Unify.Environment.Properties {
+namespace Unify.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -49,18 +49,6 @@ namespace Unify.Environment.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DefaultDirectory {
-            get {
-                return ((string)(this["DefaultDirectory"]));
-            }
-            set {
-                this["DefaultDirectory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool HighContrastText {
             get {
@@ -68,6 +56,174 @@ namespace Unify.Environment.Properties {
             }
             set {
                 this["HighContrastText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ModsDirectory {
+            get {
+                return ((string)(this["ModsDirectory"]));
+            }
+            set {
+                this["ModsDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Priority {
+            get {
+                return ((bool)(this["Priority"]));
+            }
+            set {
+                this["Priority"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GameDirectory {
+            get {
+                return ((string)(this["GameDirectory"]));
+            }
+            set {
+                this["GameDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Debug {
+            get {
+                return ((bool)(this["Debug"]));
+            }
+            set {
+                this["Debug"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EmulatorDirectory {
+            get {
+                return ((string)(this["EmulatorDirectory"]));
+            }
+            set {
+                this["EmulatorDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SaveData {
+            get {
+                return ((string)(this["SaveData"]));
+            }
+            set {
+                this["SaveData"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int GraphicsAPI {
+            get {
+                return ((int)(this["GraphicsAPI"]));
+            }
+            set {
+                this["GraphicsAPI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ForceRTV {
+            get {
+                return ((bool)(this["ForceRTV"]));
+            }
+            set {
+                this["ForceRTV"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DoubleResolution {
+            get {
+                return ((bool)(this["DoubleResolution"]));
+            }
+            set {
+                this["DoubleResolution"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool VerticalSync {
+            get {
+                return ((bool)(this["VerticalSync"]));
+            }
+            set {
+                this["VerticalSync"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Gamma {
+            get {
+                return ((bool)(this["Gamma"]));
+            }
+            set {
+                this["Gamma"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Fullscreen {
+            get {
+                return ((bool)(this["Fullscreen"]));
+            }
+            set {
+                this["Fullscreen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DiscordRPC {
+            get {
+                return ((bool)(this["DiscordRPC"]));
+            }
+            set {
+                this["DiscordRPC"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveFileRedirection {
+            get {
+                return ((bool)(this["SaveFileRedirection"]));
+            }
+            set {
+                this["SaveFileRedirection"] = value;
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using Ookii.Dialogs;
 using System.Windows.Forms;
 
 // Sonic '06 Toolkit is licensed under the MIT License:
@@ -26,20 +27,25 @@ using System.Windows.Forms;
  * SOFTWARE.
  */
 
-namespace Unify.Environment
+namespace Unify.Environment3
 {
-    public partial class ExplorerBrowser : WebBrowser
+    public partial class BatchLocation : UserControl
     {
-        public ExplorerBrowser() { InitializeComponent(); }
+        public BatchLocation() { InitializeComponent(); }
 
-        public string CurrentLocation {
-            get {
-                if (Url != null) return HttpUtility.UrlDecode(Url.ToString().Replace("file:///", "").Replace("/", @"\") + @"\").Replace("file:", "");
-                else return string.Empty;
-            }
-            set { HttpUtility.UrlDecode(value.Replace("file:///", "").Replace("/", @"\") + @"\").Replace("file:", ""); }
+        public string Location {
+            get { return TextBox_Location.Text; }
+            set { TextBox_Location.Text = value; }
         }
 
-        private void ExplorerBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e) { CurrentLocation = Url.ToString(); }
+        private void Button_Location_Click(object sender, EventArgs e) {
+            VistaFolderBrowserDialog browseLocation = new VistaFolderBrowserDialog() {
+                Description = "Please select a folder...",
+                UseDescriptionForTitle = true
+            };
+
+            if (browseLocation.ShowDialog() == DialogResult.OK)
+                Location = browseLocation.SelectedPath;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Ookii.Dialogs;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 // Sonic '06 Toolkit is licensed under the MIT License:
@@ -27,25 +26,35 @@ using System.Windows.Forms;
  * SOFTWARE.
  */
 
-namespace Unify.Environment
+namespace Unify.Environment3
 {
-    public partial class BatchLocation : UserControl
+    public partial class UserContainer : UserControl
     {
-        public BatchLocation() { InitializeComponent(); }
+        public UserContainer() { InitializeComponent(); }
 
-        public string Location {
-            get { return TextBox_Location.Text; }
-            set { TextBox_Location.Text = value; }
+        public string Title {
+            get { return Label_Title.Text; }
+            set { Label_Title.Text = value; }
         }
 
-        private void Button_Location_Click(object sender, EventArgs e) {
-            VistaFolderBrowserDialog browseLocation = new VistaFolderBrowserDialog() {
-                Description = "Please select a folder...",
-                UseDescriptionForTitle = true
-            };
+        public int SplitterDistance {
+            get { return Container_Control.SplitterDistance; }
+            set { Container_Control.SplitterDistance = value; }
+        }
 
-            if (browseLocation.ShowDialog() == DialogResult.OK)
-                Location = browseLocation.SelectedPath;
+        public int LeftPanelMinimumSize {
+            get { return Container_Control.Panel1MinSize; }
+            set { Container_Control.Panel1MinSize = value; }
+        }
+
+        public bool IsSplitterFixed {
+            get { return Container_Control.IsSplitterFixed; }
+            set { Container_Control.IsSplitterFixed = value; }
+        }
+
+        public Color SideColour {
+            get { return Container_Control.Panel1.BackColor; }
+            set { Container_Control.Panel1.BackColor = value; }
         }
     }
 }

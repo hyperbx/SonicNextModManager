@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{277111E3-79D8-41B5-B0D7-7609DFF6E36F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Unify.Environment</RootNamespace>
+    <RootNamespace>Unify</RootNamespace>
     <AssemblyName>Sonic %2706 Mod Manager</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -50,56 +50,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Environment3\Controls\Components\ConsoleWriter.cs" />
+    <Compile Include="src\INISerialiser.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\DarkMenuStrip.cs">
+    <Compile Include="src\Environment3\Controls\Components\DarkMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\DarkMenuStrip.designer.cs">
+    <Compile Include="src\Environment3\Controls\Components\DarkMenuStrip.designer.cs">
       <DependentUpon>DarkMenuStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\ExplorerBrowser.cs">
+    <Compile Include="src\Environment3\Controls\Components\ExplorerBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\ExplorerBrowser.Designer.cs">
+    <Compile Include="src\Environment3\Controls\Components\ExplorerBrowser.Designer.cs">
       <DependentUpon>ExplorerBrowser.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\BatchLocation.cs">
+    <Compile Include="src\Environment3\Controls\Components\BatchLocation.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\BatchLocation.Designer.cs">
+    <Compile Include="src\Environment3\Controls\Components\BatchLocation.Designer.cs">
       <DependentUpon>BatchLocation.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\UserContainer.cs">
+    <Compile Include="src\Environment3\Controls\Components\UserContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\UserContainer.Designer.cs">
+    <Compile Include="src\Environment3\Controls\Components\UserContainer.Designer.cs">
       <DependentUpon>UserContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\WindowsColourPicker.cs">
+    <Compile Include="src\Environment3\Controls\Components\WindowsColourPicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\WindowsColourPicker.Designer.cs">
+    <Compile Include="src\Environment3\Controls\Components\WindowsColourPicker.Designer.cs">
       <DependentUpon>WindowsColourPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment\UnifyEnvironment.cs">
+    <Compile Include="src\Environment3\UnifyEnvironment.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="src\Environment\UnifyEnvironment.Designer.cs">
+    <Compile Include="src\Environment3\UnifyEnvironment.Designer.cs">
       <DependentUpon>UnifyEnvironment.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment\UnifyProgram.cs" />
+    <Compile Include="src\Environment3\UnifyProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Environment\Controls\Components\UnifyTabControl.cs">
+    <Compile Include="src\Environment3\Controls\Components\UnifyTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\SectionButton.cs">
+    <Compile Include="src\Environment3\Controls\Components\SectionButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Components\SectionButton.Designer.cs">
+    <Compile Include="src\Environment3\Controls\Components\SectionButton.Designer.cs">
       <DependentUpon>SectionButton.cs</DependentUpon>
     </Compile>
     <Compile Include="third_party\Ookii.Dialogs\AdditionalVisualStyleElements.cs" />
@@ -184,39 +186,41 @@
     <Compile Include="third_party\Ookii.Dialogs\VistaSaveFileDialog.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Environment\RushInterface.cs">
+    <Compile Include="src\Environment3\Controls\Environment\RushInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment\Controls\Environment\RushInterface.Designer.cs">
+    <Compile Include="src\Environment3\Controls\Environment\RushInterface.Designer.cs">
       <DependentUpon>RushInterface.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\UnifyText.cs" />
+    <Compile Include="src\UnifyPatcher.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\Controls\Components\ExplorerBrowser.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\Components\ExplorerBrowser.resx">
       <DependentUpon>ExplorerBrowser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\Controls\Components\BatchLocation.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\Components\BatchLocation.resx">
       <DependentUpon>BatchLocation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\Controls\Components\UnifyTabControl.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\Components\UnifyTabControl.resx">
       <DependentUpon>UnifyTabControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\Controls\Components\UserContainer.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\Components\UserContainer.resx">
       <DependentUpon>UserContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\Controls\Components\WindowsColourPicker.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\Components\WindowsColourPicker.resx">
       <DependentUpon>WindowsColourPicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\Controls\Environment\RushInterface.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\Environment\RushInterface.resx">
       <DependentUpon>RushInterface.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\UnifyEnvironment.resx">
+    <EmbeddedResource Include="src\Environment3\UnifyEnvironment.resx">
       <DependentUpon>UnifyEnvironment.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment\Controls\Components\SectionButton.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\Components\SectionButton.resx">
       <DependentUpon>SectionButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="third_party\Ookii.Dialogs\ExtendedForm.resx">
@@ -244,11 +248,11 @@
     <None Include="third_party\Ookii.Dialogs\ookii.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="license.txt" />
+    <Content Include="res\Applications\arctool.exe" />
+    <Content Include="res\Applications\pkgtool.exe" />
     <Content Include="res\Icons\logo_main_icon.ico" />
+    <Content Include="res\Images\CheckBox_16x_24.bmp" />
     <Content Include="res\Images\ConfigurationFile_16x.png" />
     <Content Include="res\Images\Corner_Logo.png" />
     <Content Include="res\Images\Corner_Logo_Colour.png" />
@@ -260,6 +264,7 @@
     <Content Include="res\Images\Menu_Logo.png" />
     <Content Include="res\Images\Monaco_Settings_16x.png" />
     <Content Include="res\Images\NewFileCollection_16x.png" />
+    <Content Include="res\Images\Open_grey_16x.png" />
     <Content Include="res\Images\PaintBrush_16x.png" />
     <Content Include="res\Images\PatchPackage_16x.png" />
     <Content Include="res\Images\Refresh_grey_16x.png" />

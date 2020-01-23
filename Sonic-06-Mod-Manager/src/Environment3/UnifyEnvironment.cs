@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 // Sonic '06 Toolkit is licensed under the MIT License:
 /*
@@ -26,35 +25,14 @@ using System.Windows.Forms;
  * SOFTWARE.
  */
 
-namespace Unify.Environment
+namespace Unify.Environment3
 {
-    public partial class UserContainer : UserControl
+    public partial class UnifyEnvironment : Form
     {
-        public UserContainer() { InitializeComponent(); }
+        public UnifyEnvironment() {
+            InitializeComponent();
 
-        public string Title {
-            get { return Label_Title.Text; }
-            set { Label_Title.Text = value; }
-        }
-
-        public int SplitterDistance {
-            get { return Container_Control.SplitterDistance; }
-            set { Container_Control.SplitterDistance = value; }
-        }
-
-        public int LeftPanelMinimumSize {
-            get { return Container_Control.Panel1MinSize; }
-            set { Container_Control.Panel1MinSize = value; }
-        }
-
-        public bool IsSplitterFixed {
-            get { return Container_Control.IsSplitterFixed; }
-            set { Container_Control.IsSplitterFixed = value; }
-        }
-
-        public Color SideColour {
-            get { return Container_Control.Panel1.BackColor; }
-            set { Container_Control.Panel1.BackColor = value; }
+            Text += $" ({Program.VersionNumber})";
         }
     }
 }

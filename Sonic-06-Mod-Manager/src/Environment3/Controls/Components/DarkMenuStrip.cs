@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Unify.Environment {
+namespace Unify.Environment3 {
 	public partial class DarkMenuStrip : MenuStrip {
 		public DarkMenuStrip() {
 			InitializeComponent();
