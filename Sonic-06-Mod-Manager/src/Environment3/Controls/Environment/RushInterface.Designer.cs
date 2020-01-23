@@ -33,6 +33,8 @@ namespace Unify.Environment3
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
             this.StatusStrip_Main = new System.Windows.Forms.StatusStrip();
             this.Label_Status = new System.Windows.Forms.Label();
+            this.Rush_Section_Updates = new Unify.Environment3.SectionButton();
+            this.Rush_Section_Debug = new Unify.Environment3.SectionButton();
             this.TabControl_Rush = new Unify.Environment3.UnifyTabControl();
             this.Tab_Section_Mods = new System.Windows.Forms.TabPage();
             this.SplitContainer_ModsControls = new System.Windows.Forms.SplitContainer();
@@ -89,6 +91,8 @@ namespace Unify.Environment3
             this.Button_Patches_SelectAll = new System.Windows.Forms.Button();
             this.Tab_Patches_Advanced = new System.Windows.Forms.TabPage();
             this.Tab_Section_Settings = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.LinkLabel_Reset = new System.Windows.Forms.LinkLabel();
             this.Label_Description_DebugMode = new System.Windows.Forms.Label();
             this.Label_Description_HighContrastText = new System.Windows.Forms.Label();
             this.Label_Description_SaveFileRedirect = new System.Windows.Forms.Label();
@@ -145,16 +149,12 @@ namespace Unify.Environment3
             this.SectionButton_CheckForUpdates = new Unify.Environment3.SectionButton();
             this.Tab_Section_About = new System.Windows.Forms.TabPage();
             this.Label_Version = new System.Windows.Forms.Label();
-            this.Container_Rush = new Unify.Environment3.UserContainer();
-            this.Rush_Section_Updates = new Unify.Environment3.SectionButton();
-            this.Rush_Section_Debug = new Unify.Environment3.SectionButton();
             this.Rush_Section_Settings = new Unify.Environment3.SectionButton();
             this.Rush_Section_Patches = new Unify.Environment3.SectionButton();
             this.Rush_Section_About = new Unify.Environment3.SectionButton();
             this.Rush_Section_Emulator = new Unify.Environment3.SectionButton();
             this.Rush_Section_Mods = new Unify.Environment3.SectionButton();
-            this.LinkLabel_Reset = new System.Windows.Forms.LinkLabel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.Container_Rush = new Unify.Environment3.UserContainer();
             this.TabControl_Rush.SuspendLayout();
             this.Tab_Section_Mods.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_ModsControls)).BeginInit();
@@ -201,6 +201,37 @@ namespace Unify.Environment3
             this.Label_Status.Size = new System.Drawing.Size(42, 15);
             this.Label_Status.TabIndex = 27;
             this.Label_Status.Text = "Ready.";
+            // 
+            // Rush_Section_Updates
+            // 
+            this.Rush_Section_Updates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Rush_Section_Updates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Rush_Section_Updates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.Rush_Section_Updates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Rush_Section_Updates.Location = new System.Drawing.Point(0, 912);
+            this.Rush_Section_Updates.Name = "Rush_Section_Updates";
+            this.Rush_Section_Updates.SectionImage = global::Unify.Properties.Resources.Update_4;
+            this.Rush_Section_Updates.SectionText = "Updates";
+            this.Rush_Section_Updates.SelectedSection = false;
+            this.Rush_Section_Updates.Size = new System.Drawing.Size(250, 35);
+            this.Rush_Section_Updates.TabIndex = 28;
+            this.Rush_Section_Updates.Click += new System.EventHandler(this.Rush_Section_Click);
+            // 
+            // Rush_Section_Debug
+            // 
+            this.Rush_Section_Debug.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Rush_Section_Debug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Rush_Section_Debug.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.Rush_Section_Debug.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Rush_Section_Debug.Location = new System.Drawing.Point(0, 876);
+            this.Rush_Section_Debug.Name = "Rush_Section_Debug";
+            this.Rush_Section_Debug.SectionImage = global::Unify.Properties.Resources.debug_6;
+            this.Rush_Section_Debug.SectionText = "Debug";
+            this.Rush_Section_Debug.SelectedSection = false;
+            this.Rush_Section_Debug.Size = new System.Drawing.Size(250, 35);
+            this.Rush_Section_Debug.TabIndex = 25;
+            this.Rush_Section_Debug.Visible = false;
+            this.Rush_Section_Debug.Click += new System.EventHandler(this.Rush_Section_Click);
             // 
             // TabControl_Rush
             // 
@@ -302,7 +333,7 @@ namespace Unify.Environment3
             this.SectionButton_SaveChecks.SectionImage = global::Unify.Properties.Resources.CheckBox_16x_24;
             this.SectionButton_SaveChecks.SectionText = "Save checked mods";
             this.SectionButton_SaveChecks.SelectedSection = false;
-            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(299, 35);
+            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(326, 35);
             this.SectionButton_SaveChecks.TabIndex = 52;
             this.SectionButton_SaveChecks.Click += new System.EventHandler(this.SectionButton_SaveChecks_Click);
             // 
@@ -926,7 +957,7 @@ namespace Unify.Environment3
             this.Tab_Patches_Advanced.Location = new System.Drawing.Point(4, 20);
             this.Tab_Patches_Advanced.Name = "Tab_Patches_Advanced";
             this.Tab_Patches_Advanced.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Patches_Advanced.Size = new System.Drawing.Size(585, 899);
+            this.Tab_Patches_Advanced.Size = new System.Drawing.Size(585, 932);
             this.Tab_Patches_Advanced.TabIndex = 1;
             this.Tab_Patches_Advanced.Text = "Advanced";
             // 
@@ -972,6 +1003,32 @@ namespace Unify.Environment3
             this.Tab_Section_Settings.Size = new System.Drawing.Size(591, 961);
             this.Tab_Section_Settings.TabIndex = 3;
             this.Tab_Section_Settings.Text = "Settings";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label1.Location = new System.Drawing.Point(224, 298);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(352, 15);
+            this.label1.TabIndex = 158;
+            this.label1.Text = "Resets all settings and removes files created by the Mod Manager.";
+            // 
+            // LinkLabel_Reset
+            // 
+            this.LinkLabel_Reset.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Reset.AutoSize = true;
+            this.LinkLabel_Reset.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.LinkLabel_Reset.LinkColor = System.Drawing.Color.Tomato;
+            this.LinkLabel_Reset.Location = new System.Drawing.Point(11, 298);
+            this.LinkLabel_Reset.Name = "LinkLabel_Reset";
+            this.LinkLabel_Reset.Size = new System.Drawing.Size(172, 15);
+            this.LinkLabel_Reset.TabIndex = 157;
+            this.LinkLabel_Reset.TabStop = true;
+            this.LinkLabel_Reset.Text = "Reset Sonic \'06 Mod Manager...";
+            this.LinkLabel_Reset.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_Reset_LinkClicked);
             // 
             // Label_Description_DebugMode
             // 
@@ -1668,53 +1725,6 @@ namespace Unify.Environment3
             this.Label_Version.Text = "Rush 3.0";
             this.Label_Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // Container_Rush
-            // 
-            this.Container_Rush.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Container_Rush.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Container_Rush.IsSplitterFixed = true;
-            this.Container_Rush.LeftPanelMinimumSize = 250;
-            this.Container_Rush.Location = new System.Drawing.Point(0, 0);
-            this.Container_Rush.Name = "Container_Rush";
-            this.Container_Rush.SideColour = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.Container_Rush.Size = new System.Drawing.Size(849, 984);
-            this.Container_Rush.SplitterDistance = 250;
-            this.Container_Rush.TabIndex = 17;
-            this.Container_Rush.Title = "Mods";
-            // 
-            // Rush_Section_Updates
-            // 
-            this.Rush_Section_Updates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Rush_Section_Updates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Rush_Section_Updates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.Rush_Section_Updates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rush_Section_Updates.Location = new System.Drawing.Point(0, 912);
-            this.Rush_Section_Updates.Name = "Rush_Section_Updates";
-            this.Rush_Section_Updates.SectionImage = global::Unify.Properties.Resources.Update_4;
-            this.Rush_Section_Updates.SectionText = "Updates";
-            this.Rush_Section_Updates.SelectedSection = false;
-            this.Rush_Section_Updates.Size = new System.Drawing.Size(250, 35);
-            this.Rush_Section_Updates.TabIndex = 28;
-            this.Rush_Section_Updates.Click += new System.EventHandler(this.Rush_Section_Click);
-            // 
-            // Rush_Section_Debug
-            // 
-            this.Rush_Section_Debug.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Rush_Section_Debug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Rush_Section_Debug.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.Rush_Section_Debug.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rush_Section_Debug.Location = new System.Drawing.Point(0, 876);
-            this.Rush_Section_Debug.Name = "Rush_Section_Debug";
-            this.Rush_Section_Debug.SectionImage = global::Unify.Properties.Resources.debug_6;
-            this.Rush_Section_Debug.SectionText = "Debug";
-            this.Rush_Section_Debug.SelectedSection = false;
-            this.Rush_Section_Debug.Size = new System.Drawing.Size(250, 35);
-            this.Rush_Section_Debug.TabIndex = 25;
-            this.Rush_Section_Debug.Visible = false;
-            this.Rush_Section_Debug.Click += new System.EventHandler(this.Rush_Section_Click);
-            // 
             // Rush_Section_Settings
             // 
             this.Rush_Section_Settings.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1786,31 +1796,21 @@ namespace Unify.Environment3
             this.Rush_Section_Mods.TabIndex = 18;
             this.Rush_Section_Mods.Click += new System.EventHandler(this.Rush_Section_Click);
             // 
-            // LinkLabel_Reset
+            // Container_Rush
             // 
-            this.LinkLabel_Reset.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_Reset.AutoSize = true;
-            this.LinkLabel_Reset.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LinkLabel_Reset.LinkColor = System.Drawing.Color.Tomato;
-            this.LinkLabel_Reset.Location = new System.Drawing.Point(12, 298);
-            this.LinkLabel_Reset.Name = "LinkLabel_Reset";
-            this.LinkLabel_Reset.Size = new System.Drawing.Size(169, 15);
-            this.LinkLabel_Reset.TabIndex = 157;
-            this.LinkLabel_Reset.TabStop = true;
-            this.LinkLabel_Reset.Text = "Reset Sonic \'06 Mod Manager...";
-            this.LinkLabel_Reset.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_Reset_LinkClicked);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label1.Location = new System.Drawing.Point(199, 298);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(377, 15);
-            this.label1.TabIndex = 158;
-            this.label1.Text = "Resets all user settings and removes files created by the Mod Manager.";
+            this.Container_Rush.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Container_Rush.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Container_Rush.IsSplitterFixed = true;
+            this.Container_Rush.LeftPanelMinimumSize = 250;
+            this.Container_Rush.Location = new System.Drawing.Point(0, 0);
+            this.Container_Rush.Name = "Container_Rush";
+            this.Container_Rush.SideColour = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.Container_Rush.Size = new System.Drawing.Size(849, 984);
+            this.Container_Rush.SplitterDistance = 250;
+            this.Container_Rush.TabIndex = 17;
+            this.Container_Rush.Title = "Mods";
             // 
             // RushInterface
             // 

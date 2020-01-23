@@ -49,11 +49,18 @@ namespace Unify.Environment3
             Properties.Settings.Default.SettingsSaving += Settings_SettingsSaving;
             TabControl_Rush.Height += 23;
             SplitContainer_ModsControls.SplitterWidth = 1;
-
 #if DEBUG
             Properties.Settings.Default.Debug = true;
             Properties.Settings.Default.Save();
 #endif
+        }
+
+        private void RushInterface_Load(object sender, EventArgs e) {
+            if (!DesignMode) { // Prevents actions being performed in UnifyEnvironment's design time.
+                DeserialiseMods();
+                CheckDeserialisedMods();
+                UninstallThread();
+            }
         }
 
         public static string Log { set { Console.WriteLine(value); } }
@@ -378,12 +385,6 @@ namespace Unify.Environment3
                 point.X += column.Width / 2 - TextRenderer.MeasureText(column.Text, ListView_PatchesList.Font).Width / 2;
                 TextRenderer.DrawText(e.Graphics, column.Text, ListView_PatchesList.Font, point, ListView_PatchesList.ForeColor);
             }
-        }
-
-        private void RushInterface_Load(object sender, EventArgs e) {
-            DeserialiseMods();
-            CheckDeserialisedMods();
-            UninstallThread();
         }
 
         private void DeserialiseMods() {
