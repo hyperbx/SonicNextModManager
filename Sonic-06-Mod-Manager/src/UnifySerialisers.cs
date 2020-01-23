@@ -2,7 +2,7 @@
 
 namespace Unify.Serialisers
 {
-    class INISerialiser
+    class INI
     {
         /// <summary>
         /// If the specified key is found in the specified INI, return its value as a string. If it's not found, return N/A.

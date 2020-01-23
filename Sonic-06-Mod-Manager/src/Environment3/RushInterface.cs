@@ -531,11 +531,11 @@ namespace Unify.Environment3
                     try {
                         //Add mod to list, getting information from its mod.ini file
                         ListViewItem config = new ListViewItem(new[] {
-                                                   INISerialiser.DeserialiseKey("Title", mod), // Deserialise 'Title' key
-                                                   INISerialiser.DeserialiseKey("Version", mod), // Deserialise 'Version' key
-                                                   INISerialiser.DeserialiseKey("Author", mod), // Deserialise 'Author' key
-                                                   INISerialiser.DeserialiseKey("Platform", mod), // Deserialise 'Platform' key
-                                                   Literal.Bool(INISerialiser.DeserialiseKey("Merge", mod)), // Translates 'True' to 'Yes' and 'False' to 'No'
+                                                   INI.DeserialiseKey("Title", mod), // Deserialise 'Title' key
+                                                   INI.DeserialiseKey("Version", mod), // Deserialise 'Version' key
+                                                   INI.DeserialiseKey("Author", mod), // Deserialise 'Author' key
+                                                   INI.DeserialiseKey("Platform", mod), // Deserialise 'Platform' key
+                                                   Literal.Bool(INI.DeserialiseKey("Merge", mod)), // Translates 'True' to 'Yes' and 'False' to 'No'
                                                    string.Empty,
                                                    mod
                                                });
@@ -574,7 +574,7 @@ namespace Unify.Environment3
                         try {
                             if (Directory.Exists(Path.Combine(Properties.Settings.Default.ModsDirectory, line))) {
                                 // Deserialise 'Title' key.
-                                string title = INISerialiser.DeserialiseKey("Title", Path.Combine(Properties.Settings.Default.ModsDirectory, line, "mod.ini"));
+                                string title = INI.DeserialiseKey("Title", Path.Combine(Properties.Settings.Default.ModsDirectory, line, "mod.ini"));
 
                                 // If the mods list contains what's on the current line...
                                 if (ListView_ModsList.Items.Contains(ListView_ModsList.FindItemWithText(title))) {
@@ -702,7 +702,7 @@ namespace Unify.Environment3
             string saveLocation = Properties.Settings.Default.SaveData; // Stores Save Data location in string for ease of use
 
             // Deserialise 'Save' key
-            if (INISerialiser.DeserialiseKey("Save", mod).Contains("savedata")) {
+            if (INI.DeserialiseKey("Save", mod).Contains("savedata")) {
                 if (File.Exists(saveLocation)) {
                         if (Literal.System() == "Xbox 360") {
                             try {
@@ -773,7 +773,7 @@ namespace Unify.Environment3
             if (Properties.Settings.Default.GameDirectory != string.Empty ||
                 File.Exists(Properties.Settings.Default.GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
                     foreach (ListViewItem mod in ListView_ModsList.Items) {
-                        string[] custom = INISerialiser.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
+                        string[] custom = INI.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
 
                         if (custom[0] != "N/A") { // Speeds things up a bit - ensures it's not checking a default null parameter
                             foreach (string file in custom) {
@@ -801,7 +801,7 @@ namespace Unify.Environment3
                     string saveLocation = Path.GetDirectoryName(Path.GetDirectoryName(Properties.Settings.Default.SaveData));
 
                     // Deserialise 'Save' key
-                    string savedata = INISerialiser.DeserialiseKey("Save", mod.SubItems[6].Text);
+                    string savedata = INI.DeserialiseKey("Save", mod.SubItems[6].Text);
 
                     if (savedata != "N/A") { // Speeds things up a bit - ensures it's not checking a default null parameter
                         if (Literal.Emulator() == "Xenia") {

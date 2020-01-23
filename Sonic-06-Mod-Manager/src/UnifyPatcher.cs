@@ -23,10 +23,10 @@ namespace Unify.Patcher
         /// <param name="mod">File path to the mod's INI file.</param>
         /// <param name="name">Name of the mod by Title key.</param>
         public static void InstallMods(string mod, string name) {
-            string platform = INISerialiser.DeserialiseKey("Platform", mod); // Deserialise 'Platform' key
-            bool merge = bool.Parse(INISerialiser.DeserialiseKey("Merge", mod)); // Deserialise 'Merge' key and parse as a Boolean value
-            string[] custom = INISerialiser.DeserialiseKey("Custom", mod).Split(','); // Deserialise 'Custom' key
-            string[] read_only = INISerialiser.DeserialiseKey("Read-only", mod).Split(','); // Deserialise 'Read-only' key
+            string platform = INI.DeserialiseKey("Platform", mod); // Deserialise 'Platform' key
+            bool merge = bool.Parse(INI.DeserialiseKey("Merge", mod)); // Deserialise 'Merge' key and parse as a Boolean value
+            string[] custom = INI.DeserialiseKey("Custom", mod).Split(','); // Deserialise 'Custom' key
+            string[] read_only = INI.DeserialiseKey("Read-only", mod).Split(','); // Deserialise 'Read-only' key
             
             //Skip the mod if the platform is invalid
             if ((Literal.System() == "Xbox 360" && platform == "PlayStation 3") ||

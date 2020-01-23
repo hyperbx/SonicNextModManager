@@ -52,29 +52,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\Environment3\Controls\Components\ConsoleWriter.cs" />
-    <Compile Include="src\INISerialiser.cs" />
+    <Compile Include="src\UnifyConsole.cs" />
+    <Compile Include="src\UnifySerialisers.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\ContextMenuDark.cs">
+    <Compile Include="src\Environment3\Controls\ContextMenuDark.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\ContextMenuDark.designer.cs">
+    <Compile Include="src\Environment3\Controls\ContextMenuDark.designer.cs">
       <DependentUpon>ContextMenuDark.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\UserContainer.cs">
+    <Compile Include="src\Environment3\Controls\UserContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\UserContainer.Designer.cs">
+    <Compile Include="src\Environment3\Controls\UserContainer.Designer.cs">
       <DependentUpon>UserContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\WindowsColourPicker.cs">
+    <Compile Include="src\Environment3\Controls\WindowsColourPicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\WindowsColourPicker.Designer.cs">
+    <Compile Include="src\Environment3\Controls\WindowsColourPicker.Designer.cs">
       <DependentUpon>WindowsColourPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Environment3\UnifyEnvironment.cs">
@@ -83,15 +83,15 @@
     <Compile Include="src\Environment3\UnifyEnvironment.Designer.cs">
       <DependentUpon>UnifyEnvironment.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment3\UnifyProgram.cs" />
+    <Compile Include="src\UnifyProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Environment3\Controls\Components\UnifyTabControl.cs">
+    <Compile Include="src\Environment3\Controls\UnifyTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\SectionButton.cs">
+    <Compile Include="src\Environment3\Controls\SectionButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\SectionButton.Designer.cs">
+    <Compile Include="src\Environment3\Controls\SectionButton.Designer.cs">
       <DependentUpon>SectionButton.cs</DependentUpon>
     </Compile>
     <Compile Include="third_party\Ookii.Dialogs\AdditionalVisualStyleElements.cs" />
@@ -176,10 +176,10 @@
     <Compile Include="third_party\Ookii.Dialogs\VistaSaveFileDialog.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Environment\RushInterface.cs">
+    <Compile Include="src\Environment3\RushInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Environment\RushInterface.Designer.cs">
+    <Compile Include="src\Environment3\RushInterface.Designer.cs">
       <DependentUpon>RushInterface.cs</DependentUpon>
     </Compile>
     <Compile Include="src\UnifyGlobalisation.cs" />
@@ -190,22 +190,22 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment3\Controls\Components\UnifyTabControl.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\UnifyTabControl.resx">
       <DependentUpon>UnifyTabControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment3\Controls\Components\UserContainer.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\UserContainer.resx">
       <DependentUpon>UserContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment3\Controls\Components\WindowsColourPicker.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\WindowsColourPicker.resx">
       <DependentUpon>WindowsColourPicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment3\Controls\Environment\RushInterface.resx">
+    <EmbeddedResource Include="src\Environment3\RushInterface.resx">
       <DependentUpon>RushInterface.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\UnifyEnvironment.resx">
       <DependentUpon>UnifyEnvironment.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment3\Controls\Components\SectionButton.resx">
+    <EmbeddedResource Include="src\Environment3\Controls\SectionButton.resx">
       <DependentUpon>SectionButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="third_party\Ookii.Dialogs\ExtendedForm.resx">
