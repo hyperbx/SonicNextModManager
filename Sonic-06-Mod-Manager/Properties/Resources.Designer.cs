@@ -73,6 +73,34 @@ namespace Unify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Cancel_16x {
+            get {
+                object obj = ResourceManager.GetObject("Cancel_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/changelogs.txt.
+        /// </summary>
+        internal static string ChangelogsURI_GitHub {
+            get {
+                return ResourceManager.GetString("ChangelogsURI_GitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt.
+        /// </summary>
+        internal static string ChangelogsURI_SEGACarnival {
+            get {
+                return ResourceManager.GetString("ChangelogsURI_SEGACarnival", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CheckBox_16x_24 {
             get {
                 object obj = ResourceManager.GetObject("CheckBox_16x_24", resourceCulture);
@@ -111,6 +139,24 @@ namespace Unify.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest_master.zip.
+        /// </summary>
+        internal static string DataURI_GitHub {
+            get {
+                return ResourceManager.GetString("DataURI_GitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.zip.
+        /// </summary>
+        internal static string DataURI_SEGACarnival {
+            get {
+                return ResourceManager.GetString("DataURI_SEGACarnival", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap debug_6 {
@@ -126,6 +172,16 @@ namespace Unify.Properties {
         internal static System.Drawing.Bitmap Disc {
             get {
                 object obj = ResourceManager.GetObject("Disc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EditPage_16x {
+            get {
+                object obj = ResourceManager.GetObject("EditPage_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -257,6 +313,24 @@ namespace Unify.Properties {
             get {
                 object obj = ResourceManager.GetObject("Update_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest_master.txt.
+        /// </summary>
+        internal static string VersionURI_GitHub {
+            get {
+                return ResourceManager.GetString("VersionURI_GitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt.
+        /// </summary>
+        internal static string VersionURI_SEGACarnival {
+            get {
+                return ResourceManager.GetString("VersionURI_SEGACarnival", resourceCulture);
             }
         }
     }

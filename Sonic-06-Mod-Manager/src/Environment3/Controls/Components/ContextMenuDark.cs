@@ -2,16 +2,19 @@
 using System.Windows.Forms;
 
 namespace Unify.Environment3 {
-	public partial class DarkMenuStrip : MenuStrip {
-		public DarkMenuStrip() {
+
+	public partial class ContextMenuDark : ContextMenuStrip
+	{
+		public ContextMenuDark() {
 			InitializeComponent();
-			this.RenderMode = ToolStripRenderMode.Professional;
-			this.Renderer = new ToolStripProfessionalRenderer(new ColorTable());
+			RenderMode = ToolStripRenderMode.Professional;
+			Renderer = new ToolStripProfessionalRenderer(new ColorTable());
 			ForeColor = SystemColors.Control;
 		}
 	}
 
-	internal class ColorTable : ProfessionalColorTable {
+	internal class ColorTable : ProfessionalColorTable
+	{
 		public override Color MenuItemBorder => MenuItemSelected;
 		public override Color ButtonSelectedBorder => MenuItemBorder;
 		public override Color ToolStripDropDownBackground => Color.FromArgb(0x1B, 0x1B, 0x1C);

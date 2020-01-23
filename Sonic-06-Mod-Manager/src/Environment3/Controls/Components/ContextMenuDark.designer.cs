@@ -1,5 +1,5 @@
 ﻿namespace Unify.Environment3 {
-	partial class DarkMenuStrip {
+	partial class ContextMenuDark {
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>

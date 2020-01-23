@@ -38,6 +38,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,23 +59,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\DarkMenuStrip.cs">
+    <Compile Include="src\Environment3\Controls\Components\ContextMenuDark.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\Environment3\Controls\Components\DarkMenuStrip.designer.cs">
-      <DependentUpon>DarkMenuStrip.cs</DependentUpon>
+    <Compile Include="src\Environment3\Controls\Components\ContextMenuDark.designer.cs">
+      <DependentUpon>ContextMenuDark.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Environment3\Controls\Components\ExplorerBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="src\Environment3\Controls\Components\ExplorerBrowser.Designer.cs">
       <DependentUpon>ExplorerBrowser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Environment3\Controls\Components\BatchLocation.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="src\Environment3\Controls\Components\BatchLocation.Designer.cs">
-      <DependentUpon>BatchLocation.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Environment3\Controls\Components\UserContainer.cs">
       <SubType>UserControl</SubType>
@@ -192,8 +188,9 @@
     <Compile Include="src\Environment3\Controls\Environment\RushInterface.Designer.cs">
       <DependentUpon>RushInterface.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\UnifyText.cs" />
+    <Compile Include="src\UnifyGlobalisation.cs" />
     <Compile Include="src\UnifyPatcher.cs" />
+    <Compile Include="src\UnifyNetworking.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -201,9 +198,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\Controls\Components\ExplorerBrowser.resx">
       <DependentUpon>ExplorerBrowser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Environment3\Controls\Components\BatchLocation.resx">
-      <DependentUpon>BatchLocation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\Controls\Components\UnifyTabControl.resx">
       <DependentUpon>UnifyTabControl.cs</DependentUpon>
@@ -236,6 +230,7 @@
       <DependentUpon>ProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="third_party\Ookii.Dialogs\Properties\Resources.resx" />
+    <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -252,12 +247,14 @@
     <Content Include="res\Applications\arctool.exe" />
     <Content Include="res\Applications\pkgtool.exe" />
     <Content Include="res\Icons\logo_main_icon.ico" />
+    <Content Include="res\Images\Cancel_16x.png" />
     <Content Include="res\Images\CheckBox_16x_24.bmp" />
     <Content Include="res\Images\ConfigurationFile_16x.png" />
     <Content Include="res\Images\Corner_Logo.png" />
     <Content Include="res\Images\Corner_Logo_Colour.png" />
     <Content Include="res\Images\debug 6.png" />
     <Content Include="res\Images\Disc.png" />
+    <Content Include="res\Images\EditPage_16x.png" />
     <Content Include="res\Images\Exception_Logo.png" />
     <Content Include="res\Images\InformationSymbol_16x.png" />
     <Content Include="res\Images\InstallMods.png" />

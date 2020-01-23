@@ -4,8 +4,10 @@ namespace Unify.Serialisers
 {
     class INISerialiser
     {
+        /// <summary>
+        /// If the specified key is found in the specified INI, return its value as a string. If it's not found, return N/A.
+        /// </summary>
         public static string DeserialiseKey(string key, string ini) {
-            //If the specified key is found in the specified ini, return its value as a string, if it's not found, return N/A.
             string line, entryValue = string.Empty;
 
             using (StreamReader configFile = new StreamReader(ini))

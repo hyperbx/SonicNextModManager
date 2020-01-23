@@ -32,6 +32,7 @@ namespace Unify.Environment3
         public UnifyEnvironment() {
             InitializeComponent();
 
+            // Sets the text of the title bar to contain the version number
             Text += $" ({Program.VersionNumber})";
         }
     }
