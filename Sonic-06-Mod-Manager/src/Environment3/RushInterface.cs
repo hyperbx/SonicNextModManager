@@ -51,6 +51,7 @@ namespace Unify.Environment3
         public RushInterface() {
             InitializeComponent();
             LoadSettings(); // Load user settings
+            FirstTimeSetup();
 
             Label_Version.Text = Program.VersionNumber; // Sets the version string in the About section
             Properties.Settings.Default.SettingsSaving += Settings_SettingsSaving; // Define event for SettingsSaving
@@ -607,7 +608,7 @@ namespace Unify.Environment3
                         ListView_ModsList.Items.Add(config);
                     } catch { }
                 }
-            } else { // Specify the mods directory if it doesn't exist (first thing the application will request)
+            }/*Not Needed?? else { // Specify the mods directory if it doesn't exist (first thing the application will request)
                 if (UnifyMessenger.UnifyMessage.ShowDialog("No mods directory specified, or the specified directory is invalid - please select your Sonic '06 mods directory...",
                                                            "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK) {
                     VistaFolderBrowserDialog browseMods = new VistaFolderBrowserDialog() {
@@ -619,9 +620,9 @@ namespace Unify.Environment3
                         Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
                         Properties.Settings.Default.Save();
                         DeserialiseMods(); // Repeat function after directory is set
-                    } else Application.Exit(); // No directory is set, so just close...
+                    } //else Application.Exit(); // No directory is set, so just close...
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -1381,6 +1382,75 @@ namespace Unify.Environment3
             } else {
                 UnifyMessenger.UnifyMessage.ShowDialog("Protocol Manager is missing, please restart Sonic '06 Mod Manager.",
                                                        "Protocol Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void FirstTimeSetup()
+        {
+            //Check if both are true, as a user of Project Unify will have FirstLaunch but should already have things setup
+            if (Properties.Settings.Default.FirstLaunch && Properties.Settings.Default.ModsDirectory == string.Empty)
+            {
+                //Welcome Message
+                Properties.Settings.Default.FirstLaunch = false;
+                UnifyMessenger.UnifyMessage.ShowDialog("Welcome to the Sonic '06 Mod Manager. As this appears to be your first time launching this application, " +
+                                                       "please take a moment to configure the settings required to properly utilise the features the Mod Manager has to offer.",
+                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                //Mods Folder Setup
+                UnifyMessenger.UnifyMessage.ShowDialog("Please specify a folder that your mods will be saved into and managed from. " +
+                                                       "This should be kept seperate from your game directory.",
+                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                VistaFolderBrowserDialog browseMods = new VistaFolderBrowserDialog()
+                {
+                    Description = "Please select a folder...",
+                    UseDescriptionForTitle = true
+                };
+
+                if (browseMods.ShowDialog() == DialogResult.OK) Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
+
+                //Game Executable Setup
+                UnifyMessenger.UnifyMessage.ShowDialog("Please select the approriate game executable for your version of Sonic '06.\n\n" +
+                                                       "If you are running the Xbox 360 version, then this file should be titled default.xex.\n" +
+                                                       "If you are running the PlayStation 3 version, then it will be titled EBOOT.bin instead.\n\n" +
+                                                       "If you have a Disc Image of the game, then you will need to extract its contents using the Sonic '06 Toolkit first.",
+                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                OpenFileDialog browseGame = new OpenFileDialog()
+                {
+                    Title = "Please select an executable for Sonic '06...",
+                    Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
+                };
+
+                //Setup Emulator Executable if Game Executable was selected
+                if (browseGame.ShowDialog() == DialogResult.OK)
+                {
+                    Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
+
+                    UnifyMessenger.UnifyMessage.ShowDialog("If you are running the game on a PC, then you will need to specify an emulator to run the game through.\n\n" +
+                                                           "If you are running the Xbox 360 version of the game, then select your Xenia executable.\n" +
+                                                           "If you are running the PlayStation 3 version of the game, then select your RPCS3 executable.\n\n" +
+                                                           "If you intend to run the game on real hardware and just wish to use the Mod Manager to handle installing mods to an extracted copy on a USB stick, then you can skip this step.",
+                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    OpenFileDialog browseEmulator = new OpenFileDialog()
+                    {
+                        Title = $"Please select an executable for {Literal.Emulator()}...",
+                        Filter = "Programs (*.exe)|*.exe"
+                    };
+
+                    if (browseEmulator.ShowDialog() == DialogResult.OK)
+                    {
+                        Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
+                    }
+                    UnifyMessenger.UnifyMessage.ShowDialog("Successfully completed First Time Setup!",
+                                                             "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Properties.Settings.Default.Save();
+                    return;
+                }
+
+                //Mention that a game executable and emulator executable were not specified if Step 2 was skipped
+                UnifyMessenger.UnifyMessage.ShowDialog("First Time Setup has been completed, but the game directory has been skipped, " +
+                                                       "be sure to manually specify it from the Settings tab before attempting to install any mods.",
+                                                     "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Properties.Settings.Default.Save();
             }
         }
     }
