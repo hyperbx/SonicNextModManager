@@ -47,6 +47,7 @@ namespace Unify.Environment3
     public partial class RushInterface : UserControl
     {
         public static bool _debug = false;
+        private bool _isPathInvalid = false;
 
         public RushInterface() {
             InitializeComponent(); // Designer support
@@ -97,9 +98,33 @@ namespace Unify.Environment3
             Label_LastPatchUpdate.Text = Literal.Date("Last updated", Properties.Settings.Default.LastPatchUpdate);
             #endregion
 
-            #region Restore text box strings
+            #region Restore directories
+            _isPathInvalid = false;
+
             TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory;
+
+            if (Properties.Settings.Default.GameDirectory != string.Empty)
+                if (Literal.IsPathSubdirectory(Properties.Settings.Default.ModsDirectory, Path.GetDirectoryName(Properties.Settings.Default.GameDirectory)) ||
+                    Properties.Settings.Default.ModsDirectory == Path.GetDirectoryName(Properties.Settings.Default.GameDirectory)) {
+
+                    // If the mods directory is inside the game directory, warn the user
+                    Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                    _isPathInvalid = true;
+                } else
+                    Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
+
             TextBox_GameDirectory.Text = Properties.Settings.Default.GameDirectory;
+
+            if (Properties.Settings.Default.ModsDirectory != string.Empty)
+                if (Literal.IsPathSubdirectory(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), Properties.Settings.Default.ModsDirectory) ||
+                    Path.GetDirectoryName(Properties.Settings.Default.GameDirectory) == Properties.Settings.Default.ModsDirectory) {
+
+                    // If the mods directory is inside the game directory, warn the user
+                    Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                    _isPathInvalid = true;
+                } else
+                    Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
+
             TextBox_EmulatorExecutable.Text = Properties.Settings.Default.EmulatorDirectory;
             TextBox_SaveData.Text = Properties.Settings.Default.SaveData;
             #endregion
@@ -109,14 +134,14 @@ namespace Unify.Environment3
             #endregion
 
             #region Restore check box states
-            CheckBox_AutoColour.Checked                                      = Properties.Settings.Default.AutoColour;
-            CheckBox_HighContrastText.Checked                                = Properties.Settings.Default.HighContrastText;
-            CheckBox_Xenia_ForceRTV.Checked                                  = Properties.Settings.Default.ForceRTV;
-            CheckBox_Xenia_2xResolution.Checked                              = Properties.Settings.Default.DoubleResolution;
-            CheckBox_Xenia_VerticalSync.Checked                              = Properties.Settings.Default.VerticalSync;
-            CheckBox_Xenia_Gamma.Checked                                     = Properties.Settings.Default.Gamma;
-            CheckBox_Xenia_Fullscreen.Checked                                = Properties.Settings.Default.Fullscreen;
-            CheckBox_Xenia_DiscordRPC.Checked                                = Properties.Settings.Default.DiscordRPC;
+            CheckBox_AutoColour.Checked         = Properties.Settings.Default.AutoColour;
+            CheckBox_HighContrastText.Checked   = Properties.Settings.Default.HighContrastText;
+            CheckBox_Xenia_ForceRTV.Checked     = Properties.Settings.Default.ForceRTV;
+            CheckBox_Xenia_2xResolution.Checked = Properties.Settings.Default.DoubleResolution;
+            CheckBox_Xenia_VerticalSync.Checked = Properties.Settings.Default.VerticalSync;
+            CheckBox_Xenia_Gamma.Checked        = Properties.Settings.Default.Gamma;
+            CheckBox_Xenia_Fullscreen.Checked   = Properties.Settings.Default.Fullscreen;
+            CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.DiscordRPC;
 
             if (CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = _debug = Properties.Settings.Default.Debug) {
                 Console.SetOut(new ListBoxWriter(ListBox_Debug));
@@ -365,6 +390,7 @@ namespace Unify.Environment3
                     Properties.Settings.Default.Save();
                 }
             }
+            SaveAndRefreshList();
         }
 
         /// <summary>
@@ -731,6 +757,14 @@ namespace Unify.Environment3
                     SaveChecks(); // Save checked items
                     SaveAndRefreshList();
                     UninstallThread(); // Uninstall everything before installing more mods
+
+                    if (_isPathInvalid) {
+                        DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("Ensure that your mods directory is outside your game directory! " +
+                                                                                           "This may cause issues with mod and patch installation.",
+                                                                                           "Invalid directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                        if (confirmation == DialogResult.Cancel) return;
+                    }
 
                     if (Properties.Settings.Default.Priority) { //Top to Bottom Priority
                         for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
@@ -1315,10 +1349,9 @@ namespace Unify.Environment3
                 };
                 Process.Start(info);
                 Application.Exit();
-            } else {
+            } else
                 UnifyMessenger.UnifyMessage.ShowDialog("Protocol Manager is missing, please restart Sonic '06 Mod Manager.",
                                                        "Protocol Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         /// <summary>

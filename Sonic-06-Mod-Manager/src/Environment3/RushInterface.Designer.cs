@@ -30,12 +30,12 @@ namespace Unify.Environment3
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
             "Under Construction",
             "Hyper",
             "Windows",
             "This section is in development."}, -1);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
             this.StatusStrip_Main = new System.Windows.Forms.StatusStrip();
             this.Label_Status = new System.Windows.Forms.Label();
             this.Rush_Section_Updates = new Unify.Environment3.SectionButton();
@@ -117,7 +117,6 @@ namespace Unify.Environment3
             this.Label_Title_General = new System.Windows.Forms.Label();
             this.Label_Subtitle_AccentColour = new System.Windows.Forms.Label();
             this.Label_GameExecutable = new System.Windows.Forms.Label();
-            this.Label_Description_ModsDirectory = new System.Windows.Forms.Label();
             this.Label_WindowsColours = new System.Windows.Forms.Label();
             this.Button_GameDirectory = new System.Windows.Forms.Button();
             this.Label_Subtitle_Appearance_Options = new System.Windows.Forms.Label();
@@ -135,6 +134,8 @@ namespace Unify.Environment3
             this.Section_Appearance_ColourPicker = new Unify.Environment3.SectionButton();
             this.Label_Description_ProtocolManager = new System.Windows.Forms.Label();
             this.LinkLabel_ProtocolManager = new System.Windows.Forms.LinkLabel();
+            this.Label_Warning_ModsDirectoryInvalid = new System.Windows.Forms.Label();
+            this.Label_Description_ModsDirectory = new System.Windows.Forms.Label();
             this.Tab_Section_Debug = new System.Windows.Forms.TabPage();
             this.Panel_DebugControls = new System.Windows.Forms.Panel();
             this.SectionButton_ClearLog = new Unify.Environment3.SectionButton();
@@ -173,6 +174,12 @@ namespace Unify.Environment3
             this.Rush_Section_Emulator = new Unify.Environment3.SectionButton();
             this.Rush_Section_Mods = new Unify.Environment3.SectionButton();
             this.Container_Rush = new Unify.Environment3.UserContainer();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.TabControl_Rush.SuspendLayout();
             this.Tab_Section_Mods.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_ModsControls)).BeginInit();
@@ -373,7 +380,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(737, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(779, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_RefreshMods_Click);
@@ -390,7 +397,7 @@ namespace Unify.Environment3
             this.SectionButton_SaveChecks.SectionImage = global::Unify.Properties.Resources.CheckBox_16x_24;
             this.SectionButton_SaveChecks.SectionText = "Save checked mods";
             this.SectionButton_SaveChecks.SelectedSection = false;
-            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(887, 35);
+            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(929, 35);
             this.SectionButton_SaveChecks.TabIndex = 52;
             this.SectionButton_SaveChecks.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_SaveChecks.Click += new System.EventHandler(this.SectionButton_SaveChecks_Click);
@@ -961,9 +968,9 @@ namespace Unify.Environment3
             this.ListView_PatchesList.FullRowSelect = true;
             this.ListView_PatchesList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.ListView_PatchesList.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
+            listViewItem9.StateImageIndex = 0;
             this.ListView_PatchesList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem9});
             this.ListView_PatchesList.Location = new System.Drawing.Point(0, 0);
             this.ListView_PatchesList.MultiSelect = false;
             this.ListView_PatchesList.Name = "ListView_PatchesList";
@@ -1069,7 +1076,6 @@ namespace Unify.Environment3
             this.Tab_Section_Settings.Controls.Add(this.Label_Title_General);
             this.Tab_Section_Settings.Controls.Add(this.Label_Subtitle_AccentColour);
             this.Tab_Section_Settings.Controls.Add(this.Label_GameExecutable);
-            this.Tab_Section_Settings.Controls.Add(this.Label_Description_ModsDirectory);
             this.Tab_Section_Settings.Controls.Add(this.Label_WindowsColours);
             this.Tab_Section_Settings.Controls.Add(this.Button_GameDirectory);
             this.Tab_Section_Settings.Controls.Add(this.Label_Subtitle_Appearance_Options);
@@ -1087,6 +1093,8 @@ namespace Unify.Environment3
             this.Tab_Section_Settings.Controls.Add(this.Section_Appearance_ColourPicker);
             this.Tab_Section_Settings.Controls.Add(this.Label_Description_ProtocolManager);
             this.Tab_Section_Settings.Controls.Add(this.LinkLabel_ProtocolManager);
+            this.Tab_Section_Settings.Controls.Add(this.Label_Warning_ModsDirectoryInvalid);
+            this.Tab_Section_Settings.Controls.Add(this.Label_Description_ModsDirectory);
             this.Tab_Section_Settings.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Settings.Name = "Tab_Section_Settings";
             this.Tab_Section_Settings.Size = new System.Drawing.Size(591, 990);
@@ -1286,18 +1294,6 @@ namespace Unify.Environment3
             this.Label_GameExecutable.Size = new System.Drawing.Size(108, 17);
             this.Label_GameExecutable.TabIndex = 43;
             this.Label_GameExecutable.Text = "Game Executable";
-            // 
-            // Label_Description_ModsDirectory
-            // 
-            this.Label_Description_ModsDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Description_ModsDirectory.AutoSize = true;
-            this.Label_Description_ModsDirectory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Description_ModsDirectory.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_ModsDirectory.Location = new System.Drawing.Point(156, 98);
-            this.Label_Description_ModsDirectory.Name = "Label_Description_ModsDirectory";
-            this.Label_Description_ModsDirectory.Size = new System.Drawing.Size(362, 15);
-            this.Label_Description_ModsDirectory.TabIndex = 37;
-            this.Label_Description_ModsDirectory.Text = "Where the mods are located (ensure it\'s outside the game directory).";
             // 
             // Label_WindowsColours
             // 
@@ -1516,6 +1512,30 @@ namespace Unify.Environment3
             this.LinkLabel_ProtocolManager.TabStop = true;
             this.LinkLabel_ProtocolManager.Text = "Launch Protocol Manager";
             this.LinkLabel_ProtocolManager.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_ProtocolManager_LinkClicked);
+            // 
+            // Label_Warning_ModsDirectoryInvalid
+            // 
+            this.Label_Warning_ModsDirectoryInvalid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Warning_ModsDirectoryInvalid.AutoSize = true;
+            this.Label_Warning_ModsDirectoryInvalid.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Warning_ModsDirectoryInvalid.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Warning_ModsDirectoryInvalid.Location = new System.Drawing.Point(305, 98);
+            this.Label_Warning_ModsDirectoryInvalid.Name = "Label_Warning_ModsDirectoryInvalid";
+            this.Label_Warning_ModsDirectoryInvalid.Size = new System.Drawing.Size(213, 15);
+            this.Label_Warning_ModsDirectoryInvalid.TabIndex = 162;
+            this.Label_Warning_ModsDirectoryInvalid.Text = "(ensure it\'s outside the game directory).";
+            // 
+            // Label_Description_ModsDirectory
+            // 
+            this.Label_Description_ModsDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_ModsDirectory.AutoSize = true;
+            this.Label_Description_ModsDirectory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_ModsDirectory.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_ModsDirectory.Location = new System.Drawing.Point(156, 98);
+            this.Label_Description_ModsDirectory.Name = "Label_Description_ModsDirectory";
+            this.Label_Description_ModsDirectory.Size = new System.Drawing.Size(153, 15);
+            this.Label_Description_ModsDirectory.TabIndex = 161;
+            this.Label_Description_ModsDirectory.Text = "Where the mods are located";
             // 
             // Tab_Section_Debug
             // 
@@ -1920,6 +1940,12 @@ namespace Unify.Environment3
             // Tab_Section_About
             // 
             this.Tab_Section_About.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_About.Controls.Add(this.label6);
+            this.Tab_Section_About.Controls.Add(this.label5);
+            this.Tab_Section_About.Controls.Add(this.label4);
+            this.Tab_Section_About.Controls.Add(this.label3);
+            this.Tab_Section_About.Controls.Add(this.label2);
+            this.Tab_Section_About.Controls.Add(this.label1);
             this.Tab_Section_About.Controls.Add(this.Label_Version);
             this.Tab_Section_About.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_About.Name = "Tab_Section_About";
@@ -2033,6 +2059,66 @@ namespace Unify.Environment3
             this.Container_Rush.TabIndex = 17;
             this.Container_Rush.Title = "Mods";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.label1.Location = new System.Drawing.Point(6, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(199, 45);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "Contributors";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.label2.Location = new System.Drawing.Point(9, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(442, 150);
+            this.label2.TabIndex = 35;
+            this.label2.Text = resources.GetString("label2.Text");
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.label3.Location = new System.Drawing.Point(6, 229);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(228, 45);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "Special Thanks";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.label4.Location = new System.Drawing.Point(9, 283);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(294, 50);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.label5.Location = new System.Drawing.Point(6, 353);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(118, 45);
+            this.label5.TabIndex = 38;
+            this.label5.Text = "Testers";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.label6.Location = new System.Drawing.Point(9, 407);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(150, 125);
+            this.label6.TabIndex = 39;
+            this.label6.Text = "► sharu6262\r\n► Melpontro\r\n► ChrisHighwind\r\n► Velcomia\r\n► Radfordhound";
+            // 
             // RushInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -2086,6 +2172,7 @@ namespace Unify.Environment3
             this.Panel_ChangelogsBackdrop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_UpdaterIcon)).EndInit();
             this.Tab_Section_About.ResumeLayout(false);
+            this.Tab_Section_About.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2109,7 +2196,6 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label Label_Subtitle_AccentColour;
         private System.Windows.Forms.Label Label_GameExecutable;
         private System.Windows.Forms.Panel Panel_Settings_UICleanSpace;
-        private System.Windows.Forms.Label Label_Description_ModsDirectory;
         private System.Windows.Forms.Label Label_WindowsColours;
         private System.Windows.Forms.Button Button_GameDirectory;
         private System.Windows.Forms.Label Label_Subtitle_Appearance_Options;
@@ -2229,5 +2315,13 @@ namespace Unify.Environment3
         private System.Windows.Forms.LinkLabel LinkLabel_ProtocolManager;
         private System.Windows.Forms.Label Label_Description_Patches_Advanced_UnderConstruction;
         private System.Windows.Forms.Label Label_Patches_Advanced_UnderConstruction;
+        private System.Windows.Forms.Label Label_Warning_ModsDirectoryInvalid;
+        private System.Windows.Forms.Label Label_Description_ModsDirectory;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

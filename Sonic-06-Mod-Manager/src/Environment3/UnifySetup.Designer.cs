@@ -54,6 +54,7 @@
             this.Label_Description_LaunchEmulator = new System.Windows.Forms.Label();
             this.CheckBox_LaunchEmulator = new System.Windows.Forms.CheckBox();
             this.Button_Continue = new System.Windows.Forms.Button();
+            this.Label_Warning_ModsDirectoryInvalid = new System.Windows.Forms.Label();
             this.Panel_SectionBackdrop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_Logo)).BeginInit();
             this.SuspendLayout();
@@ -148,9 +149,9 @@
             this.Label_Description_ModsDirectory.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.Label_Description_ModsDirectory.Location = new System.Drawing.Point(219, 188);
             this.Label_Description_ModsDirectory.Name = "Label_Description_ModsDirectory";
-            this.Label_Description_ModsDirectory.Size = new System.Drawing.Size(362, 15);
+            this.Label_Description_ModsDirectory.Size = new System.Drawing.Size(153, 15);
             this.Label_Description_ModsDirectory.TabIndex = 58;
-            this.Label_Description_ModsDirectory.Text = "Where the mods are located (ensure it\'s outside the game directory).";
+            this.Label_Description_ModsDirectory.Text = "Where the mods are located";
             // 
             // Button_GameDirectory
             // 
@@ -370,12 +371,25 @@
             this.Button_Continue.UseVisualStyleBackColor = false;
             this.Button_Continue.Click += new System.EventHandler(this.Button_Continue_Click);
             // 
+            // Label_Warning_ModsDirectoryInvalid
+            // 
+            this.Label_Warning_ModsDirectoryInvalid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Warning_ModsDirectoryInvalid.AutoSize = true;
+            this.Label_Warning_ModsDirectoryInvalid.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Warning_ModsDirectoryInvalid.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Warning_ModsDirectoryInvalid.Location = new System.Drawing.Point(368, 188);
+            this.Label_Warning_ModsDirectoryInvalid.Name = "Label_Warning_ModsDirectoryInvalid";
+            this.Label_Warning_ModsDirectoryInvalid.Size = new System.Drawing.Size(213, 15);
+            this.Label_Warning_ModsDirectoryInvalid.TabIndex = 153;
+            this.Label_Warning_ModsDirectoryInvalid.Text = "(ensure it\'s outside the game directory).";
+            // 
             // UnifySetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(638, 476);
+            this.Controls.Add(this.Label_Warning_ModsDirectoryInvalid);
             this.Controls.Add(this.Button_Continue);
             this.Controls.Add(this.Label_Description_LaunchEmulator);
             this.Controls.Add(this.CheckBox_LaunchEmulator);
@@ -443,5 +457,6 @@
         private System.Windows.Forms.Label Label_Description_LaunchEmulator;
         private System.Windows.Forms.CheckBox CheckBox_LaunchEmulator;
         private System.Windows.Forms.Button Button_Continue;
+        private System.Windows.Forms.Label Label_Warning_ModsDirectoryInvalid;
     }
 }

@@ -97,5 +97,29 @@ namespace Unify.Globalisation
         /// Converts a string to an ARGB Color.
         /// </summary>
         public static string ColorToString(Color color) { return $"{color.R.ToString()},{color.G.ToString()},{color.B.ToString()}"; }
+
+        /// <summary>
+        /// Compares two strings to check if one is a subdirectory of the other.
+        /// </summary>
+        public static bool IsPathSubdirectory(string candidate, string other) {
+            var isChild = false;
+
+            try {
+                var candidateInfo = new DirectoryInfo(candidate);
+                var otherInfo = new DirectoryInfo(other);
+
+                while (candidateInfo.Parent != null) {
+                    if (candidateInfo.Parent.FullName == otherInfo.FullName) {
+                        isChild = true;
+                        break;
+                    } else candidateInfo = candidateInfo.Parent;
+                }
+            } catch (Exception error) {
+                var message = String.Format("Unable to check directories {0} and {1}: {2}", candidate, other, error);
+                Console.WriteLine(message);
+            }
+
+            return isChild;
+        }
     }
 }

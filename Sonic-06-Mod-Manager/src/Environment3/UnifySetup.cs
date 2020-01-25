@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using Ookii.Dialogs;
+using System.Drawing;
 using Unify.Messenger;
 using Unify.Environment3;
 using Unify.Globalisation;
@@ -104,7 +106,17 @@ namespace Unify
                     UseDescriptionForTitle = true
                 };
 
-                if (browseMods.ShowDialog() == DialogResult.OK) TextBox_ModsDirectory.Text = browseMods.SelectedPath;
+                if (browseMods.ShowDialog() == DialogResult.OK)
+                    TextBox_ModsDirectory.Text = browseMods.SelectedPath;
+
+                    if (TextBox_GameDirectory.Text != string.Empty)
+                        if (Literal.IsPathSubdirectory(browseMods.SelectedPath, Path.GetDirectoryName(TextBox_GameDirectory.Text)) ||
+                            browseMods.SelectedPath == Path.GetDirectoryName(TextBox_GameDirectory.Text))
+
+                            // If the mods directory is inside the game directory, warn the user
+                            Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                        else
+                            Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
             } else if (sender == Button_GameDirectory) {
                 // Browse for game executables
                 OpenFileDialog browseGame = new OpenFileDialog() {
@@ -112,7 +124,17 @@ namespace Unify
                     Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
                 };
 
-                if (browseGame.ShowDialog() == DialogResult.OK) TextBox_GameDirectory.Text = browseGame.FileName;
+                if (browseGame.ShowDialog() == DialogResult.OK)
+                    TextBox_GameDirectory.Text = browseGame.FileName;
+
+                    if (TextBox_ModsDirectory.Text != string.Empty)
+                        if (Literal.IsPathSubdirectory(Path.GetDirectoryName(browseGame.FileName), TextBox_ModsDirectory.Text) ||
+                            Path.GetDirectoryName(browseGame.FileName) == TextBox_ModsDirectory.Text)
+
+                            // If the mods directory is inside the game directory, warn the user
+                            Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                        else
+                            Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
             } else if (sender == Button_EmulatorExecutable) {
                 // Browse for emulator executables
                 OpenFileDialog browseEmulator = new OpenFileDialog() {
@@ -120,7 +142,8 @@ namespace Unify
                     Filter = "Programs (*.exe)|*.exe"
                 };
 
-                if (browseEmulator.ShowDialog() == DialogResult.OK) TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
+                if (browseEmulator.ShowDialog() == DialogResult.OK)
+                    TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
             } else if (sender == Button_SaveData) {
                 // Browse for save data
                 OpenFileDialog browseSave = new OpenFileDialog() {
