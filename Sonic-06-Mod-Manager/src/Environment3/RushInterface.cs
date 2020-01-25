@@ -60,9 +60,11 @@ namespace Unify.Environment3
                     Properties.Settings.Default.ModsDirectory == string.Empty) new UnifySetup().ShowDialog();
 
                 Label_Version.Text = Program.VersionNumber; // Sets the version string in the About section
-                Properties.Settings.Default.SettingsSaving += Settings_SettingsSaving; // Define event for SettingsSaving
+                Properties.Settings.Default.SettingsSaving += Settings_SettingsSaving; // Subscribe to event for SettingsSaving
                 TabControl_Rush.Height += 23; // Increase height on load to accommodate for lack of tabs in the section controller
-                SplitContainer_ModsControls.SplitterWidth = 1; // Force splitter width to one pixel, because WinForms is dumb
+
+                // Force splitter widths - because WinForms is dumb and ignores it at design time
+                SplitContainer_ModsControls.SplitterWidth = 1;
                 SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
                 // If the application is a debug build, force debug mode on
@@ -89,14 +91,6 @@ namespace Unify.Environment3
         /// Loads all user settings.
         /// </summary>
         private void LoadSettings() {
-            if (_debug) {
-                CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = true;
-                Console.SetOut(new ListBoxWriter(ListBox_Debug));
-                ListBox_Debug.Items.Clear();
-                ListBox_Debug.Items.Add($"Sonic '06 Mod Manager - {Program.VersionNumber}");
-                ListBox_Debug.Items.Add("");
-            } else Rush_Section_Debug.Visible = false;
-
             #region Restore label strings
             Label_LastSoftwareUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.LastSoftwareUpdate);
             Label_LastModUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.LastModUpdate);
@@ -115,14 +109,21 @@ namespace Unify.Environment3
             #endregion
 
             #region Restore check box states
-            CheckBox_AutoColour.Checked         = Properties.Settings.Default.AutoColour;
-            CheckBox_HighContrastText.Checked   = Properties.Settings.Default.HighContrastText;
-            CheckBox_Xenia_ForceRTV.Checked     = Properties.Settings.Default.ForceRTV;
-            CheckBox_Xenia_2xResolution.Checked = Properties.Settings.Default.DoubleResolution;
-            CheckBox_Xenia_VerticalSync.Checked = Properties.Settings.Default.VerticalSync;
-            CheckBox_Xenia_Gamma.Checked        = Properties.Settings.Default.Gamma;
-            CheckBox_Xenia_Fullscreen.Checked   = Properties.Settings.Default.Fullscreen;
-            CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.DiscordRPC;
+            CheckBox_AutoColour.Checked                                      = Properties.Settings.Default.AutoColour;
+            CheckBox_HighContrastText.Checked                                = Properties.Settings.Default.HighContrastText;
+            CheckBox_Xenia_ForceRTV.Checked                                  = Properties.Settings.Default.ForceRTV;
+            CheckBox_Xenia_2xResolution.Checked                              = Properties.Settings.Default.DoubleResolution;
+            CheckBox_Xenia_VerticalSync.Checked                              = Properties.Settings.Default.VerticalSync;
+            CheckBox_Xenia_Gamma.Checked                                     = Properties.Settings.Default.Gamma;
+            CheckBox_Xenia_Fullscreen.Checked                                = Properties.Settings.Default.Fullscreen;
+            CheckBox_Xenia_DiscordRPC.Checked                                = Properties.Settings.Default.DiscordRPC;
+
+            if (CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = _debug = Properties.Settings.Default.Debug) {
+                Console.SetOut(new ListBoxWriter(ListBox_Debug));
+                ListBox_Debug.Items.Clear();
+                Console.WriteLine($"Sonic '06 Mod Manager - {Program.VersionNumber}");
+                Console.WriteLine();
+            }
 
             if (CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.LaunchEmulator) {
                 SectionButton_InstallMods.SectionText = "Install mods and launch Sonic '06";
@@ -526,8 +527,8 @@ namespace Unify.Environment3
         /// </summary>
         private void SectionButton_ClearLog_Click(object sender, EventArgs e) {
             ListBox_Debug.Items.Clear();
-            ListBox_Debug.Items.Add($"Sonic '06 Mod Manager - {Program.VersionNumber}");
-            ListBox_Debug.Items.Add("");
+            Console.WriteLine($"Sonic '06 Mod Manager - {Program.VersionNumber}");
+            Console.WriteLine();
         }
 
         /// <summary>
