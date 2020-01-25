@@ -297,7 +297,7 @@ namespace Ookii.Dialogs
                         {
                             string[] filterElements = value.Split(new char[] { '|' });
                             if (filterElements == null || filterElements.Length % 2 != 0)
-                                throw new ArgumentException(Properties.Resources.InvalidFilterString);
+                                throw new ArgumentException("Invalid filter string,");
 
                         }
                         else
@@ -701,7 +701,7 @@ namespace Ookii.Dialogs
             if (_showHelp)
             {
                 Ookii.Dialogs.Interop.IFileDialogCustomize customize = (Ookii.Dialogs.Interop.IFileDialogCustomize)dialog;
-                customize.AddPushButton(HelpButtonId, Properties.Resources.Help);
+                customize.AddPushButton(HelpButtonId, "Help");
             }
 
             if (!string.IsNullOrEmpty(_title))

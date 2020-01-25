@@ -5,9 +5,10 @@ using System.Drawing;
 using Unify.Messenger;
 using Unify.Networking;
 using Unify.Serialisers;
+using Unify.Globalisation;
 using System.Windows.Forms;
 
-// Project Unify is licensed under the MIT License:
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
@@ -53,7 +54,7 @@ namespace Unify.Environment3
                 lbl_ReadOnly.ForeColor = SystemColors.GrayText;
             }
 
-            unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Properties.Settings.Default.AccentColour;
+            unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
             if (Properties.Settings.Default.HighContrastText) unifytb_ModCreator.SelectedTextColor = SystemColors.ControlText;
 
             if (edit) {

@@ -58,7 +58,7 @@ namespace Ookii.Dialogs
                 throw new ArgumentNullException("item");
 
             if (item.Owner != null)
-                throw new ArgumentException(Properties.Resources.TaskDialogItemHasOwnerError);
+                throw new ArgumentException("The task dialog item already belongs to another task dialog.");
 
             item.Owner = _owner;
             try
@@ -123,7 +123,7 @@ namespace Ookii.Dialogs
             if (base[index] != item)
             {
                 if (item.Owner != null)
-                    throw new ArgumentException(Properties.Resources.TaskDialogItemHasOwnerError);
+                    throw new ArgumentException("The task dialog item already belongs to another task dialog.");
                 item.Owner = _owner;
                 try
                 {

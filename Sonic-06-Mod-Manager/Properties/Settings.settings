@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Unify.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AccentColour" Type="System.Drawing.Color" Scope="User">
+    <Setting Name="AccentColour" Type="System.String" Scope="User">
       <Value Profile="(Default)">186, 0, 0</Value>
     </Setting>
     <Setting Name="AutoColour" Type="System.Boolean" Scope="User">
@@ -56,17 +56,17 @@
     <Setting Name="CheckUpdatesOnLaunch" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="LastSoftwareUpdate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="LastSoftwareUpdate" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="LaunchEmulator" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="LastModUpdate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="LastModUpdate" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="LastPatchUpdate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="LastPatchUpdate" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="FirstLaunch" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

@@ -173,7 +173,7 @@ namespace Ookii.Dialogs
                 if (base.Id != value)
                 {
                     if (_type != ButtonType.Custom)
-                        throw new InvalidOperationException(Properties.Resources.NonCustomTaskDialogButtonIdError);
+                        throw new InvalidOperationException("Cannot change the id for a standard button.");
                     base.Id = value;
                 }
             }
@@ -239,7 +239,7 @@ namespace Ookii.Dialogs
                 foreach (TaskDialogButton button in Owner.Buttons)
                 {
                     if (button != this && button != itemToExclude && button.ButtonType == type)
-                        throw new InvalidOperationException(Properties.Resources.DuplicateButtonTypeError);
+                        throw new InvalidOperationException("The task dialog already has a non-custom button with the same type.");
                 }
             }
         }

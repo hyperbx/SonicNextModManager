@@ -9,6 +9,31 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using Unify.Networking.GameBanana;
 
+// Sonic '06 Mod Manager is licensed under the MIT License:
+/*
+ * MIT License
+
+ * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
+
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 namespace Unify.Environment3
 {
     public partial class ModOneClickInstall : Form
@@ -26,14 +51,6 @@ namespace Unify.Environment3
         public ModOneClickInstall(GBAPIItemDataBasic item, string url, int downloadID, int modID) {
             InitializeComponent();
 
-            lbl_Title.ForeColor = SystemColors.Control;
-            lbl_Query.ForeColor = SystemColors.Control;
-            pnl_Backdrop.BackColor = Color.FromArgb(59, 59, 63);
-            pic_Thumbnail.BackColor = Color.FromArgb(45, 45, 48);
-            BackColor = Color.FromArgb(28, 28, 28);
-            tb_Information.BackColor = Color.FromArgb(45, 45, 48); tb_Information.ForeColor = SystemColors.Control;
-            styleSheet = Properties.Resources.GBStyleSheetDark;
-
             this.url = url;
             this.item = item;
             this.modID = modID;
@@ -47,9 +64,9 @@ namespace Unify.Environment3
             tb_Information.Text = $"Published by {item.OwnerName}\n\n{GBAPI.ProcessCredits(item.Credits)}";
 
             if (item.Subtitle != string.Empty)
-                web_Description.DocumentText = $"<html><head><meta charset=\"UTF-8\"><style>{styleSheet}</style></head><body><h1><center>{item.Subtitle}</center></h1><br>{item.Body}</body></html>";
+                web_Description.DocumentText = $"<html><head><meta charset=\"UTF-8\"><style>{Properties.Resources.GBStyleSheetDark}</style></head><body><h1><center>{item.Subtitle}</center></h1><br>{item.Body}</body></html>";
             else
-                web_Description.DocumentText = $"<html><head><meta charset=\"UTF-8\"><style>{styleSheet}</style></head><body>{item.Body}</body></html>";
+                web_Description.DocumentText = $"<html><head><meta charset=\"UTF-8\"><style>{Properties.Resources.GBStyleSheetDark}</style></head><body>{item.Body}</body></html>";
 
             if (modID == 6666) return;
 

@@ -62,7 +62,7 @@ namespace Ookii.Dialogs
             {
                 int error = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
                 if (error == NativeMethods.ErrorFileNotFound)
-                    throw new FileNotFoundException(string.Format(System.Globalization.CultureInfo.CurrentCulture, Properties.Resources.FileNotFoundFormat, ResourceFile));
+                    throw new FileNotFoundException(string.Format(System.Globalization.CultureInfo.CurrentCulture, "The file {0} could not be found.", ResourceFile));
                 else
                     throw new System.ComponentModel.Win32Exception(error);
             }

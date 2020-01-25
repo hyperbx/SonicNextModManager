@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Media;
 using System.Drawing;
-using Unify.Messenger;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 
-// Project Unify is licensed under the MIT License:
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 

@@ -85,7 +85,7 @@ namespace Ookii.Dialogs
         public static void ExtendFrameIntoClientArea(this System.Windows.Forms.IWin32Window window, Padding glassMargin)
         {
             if (!IsDwmCompositionEnabled)
-                throw new NotSupportedException(Properties.Resources.GlassNotSupportedError);
+                throw new NotSupportedException("The current operating system does not support glass, or the Desktop Window Manager is not enabled.");
 
             if (window == null)
                 throw new ArgumentNullException("window");
@@ -115,7 +115,7 @@ namespace Ookii.Dialogs
         public static void DrawCompositedText(IDeviceContext dc, string text, Font font, Rectangle bounds, Padding padding, Color foreColor, int glowSize, TextFormatFlags textFormat)
         {
             if (!IsDwmCompositionEnabled)
-                throw new NotSupportedException(Properties.Resources.GlassNotSupportedError);
+                throw new NotSupportedException("The current operating system does not support glass, or the Desktop Window Manager is not enabled.");
 
             if (dc == null)
                 throw new ArgumentNullException("dc");
@@ -167,7 +167,7 @@ namespace Ookii.Dialogs
         public static Size MeasureCompositedText(IDeviceContext dc, string text, Font font, TextFormatFlags textFormat)
         {
             if (!IsDwmCompositionEnabled)
-                throw new NotSupportedException(Properties.Resources.GlassNotSupportedError);
+                throw new NotSupportedException("The current operating system does not support glass, or the Desktop Window Manager is not enabled.");
 
             if (dc == null)
                 throw new ArgumentNullException("dc");

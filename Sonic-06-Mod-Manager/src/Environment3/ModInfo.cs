@@ -12,7 +12,7 @@ using Unify.Globalisation;
 using System.Windows.Forms;
 using System.IO.Compression;
 
-// Project Unify is licensed under the MIT License:
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
@@ -48,18 +48,12 @@ namespace Unify.Environment3
 
             modDirectory = Path.GetDirectoryName(mod);
 
-            pnl_Backdrop.BackColor = Color.FromArgb(59, 59, 63);
-            pic_Thumbnail.BackColor = Color.FromArgb(45, 45, 48);
-            BackColor = Color.FromArgb(28, 28, 28);
-            tb_Description.BackColor = tb_Information.BackColor = Color.FromArgb(45, 45, 48);
-            lbl_Title.ForeColor = tb_Description.ForeColor = tb_Information.ForeColor = SystemColors.Control;
-
             string[] getThumbnail = Directory.GetFiles(modDirectory, "thumbnail*", SearchOption.TopDirectoryOnly);
             foreach (var img in getThumbnail)
                 pic_Thumbnail.BackgroundImage = Image.FromFile(img);
 
             lbl_Title.Text = Text = INI.DeserialiseKey("Title", mod);
-            tb_Information.Text += $"Version: {INI.DeserialiseKey("Version", mod)}\n";
+            tb_Information.Text += $"Version: {version = INI.DeserialiseKey("Version", mod)}\n";
             tb_Information.Text += $"Date: {INI.DeserialiseKey("Date", mod)}\n";
             tb_Information.Text += $"Author: {INI.DeserialiseKey("Author", mod)}\n";
             tb_Information.Text += $"Platform: {INI.DeserialiseKey("Platform", mod)}\n";

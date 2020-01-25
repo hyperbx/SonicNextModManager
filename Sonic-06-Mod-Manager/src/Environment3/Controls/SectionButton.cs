@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Drawing;
+using Unify.Globalisation;
 using System.Drawing.Text;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 
-// Sonic '06 Toolkit is licensed under the MIT License:
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +38,8 @@ namespace Unify.Environment3
         private Bitmap sectionImage = Properties.Resources.Refresh_grey_16x;
         private string sectionText = "None";
         private bool selectedSection = false;
-        private Color accentColour = Properties.Settings.Default.AccentColour;
+        private Color accentColour = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
+        private Color textColour = SystemColors.Control;
 
         [Category("Images"), Browsable(true), Description("The image used for the section.")]
         public Bitmap SectionImage {
@@ -73,8 +75,16 @@ namespace Unify.Environment3
 
         private void SectionButton_MouseUp(object sender, MouseEventArgs e) {
             BackColor = Color.FromArgb(48, 48, 51);
-            Selected.BackColor = AccentColour = Properties.Settings.Default.AccentColour;
+            Selected.BackColor = AccentColour = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
             Selected.Visible = selectedSection;
+        }
+
+        public Color TextColour {
+            get { return this.textColour; }
+            set {
+                this.textColour = value;
+                Refresh();
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e) {
@@ -82,8 +92,19 @@ namespace Unify.Environment3
             Drawer.SmoothingMode = SmoothingMode.HighQuality;
             Drawer.PixelOffsetMode = PixelOffsetMode.HighQuality;
             Drawer.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            Drawer.DrawString(sectionText, Font, new SolidBrush(SystemColors.Control), 40, 10);
+            Drawer.DrawString(sectionText, Font, new SolidBrush(TextColour), 40, 10);
             Drawer.DrawImage(sectionImage, 10, 10);
+        }
+
+        private void SectionButton_EnabledChanged(object sender, EventArgs e) {
+            if (Enabled) {
+                TextColour = SystemColors.Control;
+                BackColor = Color.FromArgb(42, 42, 45);
+            } else {
+                TextColour = SystemColors.GrayText;
+                BackColor = Color.FromArgb(32, 32, 35);
+            }
+            Refresh();
         }
     }
 }

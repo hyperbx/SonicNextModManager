@@ -8,20 +8,20 @@ using System.Drawing;
 using Microsoft.Win32;
 using Unify.Messenger;
 using Unify.Networking;
-using System.Threading;
 using Unify.Serialisers;
 using System.Diagnostics;
 using Unify.Globalisation;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.IO.Compression;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
-// Sonic '06 Toolkit is licensed under the MIT License:
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,34 +49,35 @@ namespace Unify.Environment3
         public static bool _debug = false;
 
         public RushInterface() {
-            InitializeComponent();
-            LoadSettings(); // Load user settings
-            FirstTimeSetup();
+            InitializeComponent(); // Designer support
 
-            Label_Version.Text = Program.VersionNumber; // Sets the version string in the About section
-            Properties.Settings.Default.SettingsSaving += Settings_SettingsSaving; // Define event for SettingsSaving
-            TabControl_Rush.Height += 23; // Increase height on load to accommodate for lack of tabs in the section controller
-            SplitContainer_ModsControls.SplitterWidth = 1; // Force splitter width to one pixel, because WinForms is dumb
+            // Prevents actions being performed in UnifyEnvironment's design time.
+            if (!DesignMode) {
+                LoadSettings(); // Load user settings
+
+                // Begin first time setup
+                if (Properties.Settings.Default.FirstLaunch &&
+                    Properties.Settings.Default.ModsDirectory == string.Empty) new UnifySetup().ShowDialog();
+
+                Label_Version.Text = Program.VersionNumber; // Sets the version string in the About section
+                Properties.Settings.Default.SettingsSaving += Settings_SettingsSaving; // Define event for SettingsSaving
+                TabControl_Rush.Height += 23; // Increase height on load to accommodate for lack of tabs in the section controller
+                SplitContainer_ModsControls.SplitterWidth = 1; // Force splitter width to one pixel, because WinForms is dumb
+                SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
-            // If the application is a debug build, force debug mode on
-            Properties.Settings.Default.Debug = _debug = true;
-            Properties.Settings.Default.Save();
+                // If the application is a debug build, force debug mode on
+                Properties.Settings.Default.Debug = _debug = true;
+                Properties.Settings.Default.Save();
 #endif
-        }
-
-        private void SaveAndRefreshList() {
-            DeserialiseMods(); // Refresh mods list
-            CheckDeserialisedMods(); // Check saved items
+            }
         }
 
         /// <summary>
         /// Performs actions on launch.
         /// </summary>
         private void RushInterface_Load(object sender, EventArgs e) {
-            if (!DesignMode) { // Prevents actions being performed in UnifyEnvironment's design time.
-                SaveAndRefreshList();
-                UninstallThread(); // Uninstall everything
-            }
+            SaveAndRefreshList(); // Refresh mods list
+            UninstallThread(); // Uninstall everything
         }
 
         /// <summary>
@@ -91,49 +92,26 @@ namespace Unify.Environment3
             if (_debug) {
                 CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = true;
                 Console.SetOut(new ListBoxWriter(ListBox_Debug));
+                ListBox_Debug.Items.Clear();
+                ListBox_Debug.Items.Add($"Sonic '06 Mod Manager - {Program.VersionNumber}");
+                ListBox_Debug.Items.Add("");
             } else Rush_Section_Debug.Visible = false;
 
             #region Restore label strings
-            if (Properties.Settings.Default.LastSoftwareUpdate.ToString("dd/MM/yyyy") == "01/01/0001") Label_LastSoftwareUpdate.Text = $"Last checked: Never";
-            else {
-                if (Properties.Settings.Default.LastSoftwareUpdate.Date == DateTime.Today)
-                    Label_LastSoftwareUpdate.Text = $"Last checked: Today, {Properties.Settings.Default.LastSoftwareUpdate.ToString("hh:mm tt")}";
-                else if (Properties.Settings.Default.LastSoftwareUpdate.Date == DateTime.Today.AddDays(-1))
-                    Label_LastSoftwareUpdate.Text = $"Last checked: Yesterday, {Properties.Settings.Default.LastSoftwareUpdate.ToString("hh:mm tt")}";
-                else
-                    Label_LastSoftwareUpdate.Text = $"Last checked: {Properties.Settings.Default.LastSoftwareUpdate.ToString("dd/MM/yyyy, hh:mm tt")}";
-            }
-
-            if (Properties.Settings.Default.LastModUpdate.ToString("dd/MM/yyyy") == "01/01/0001") Label_LastModUpdate.Text = $"Last checked: Never";
-            else {
-                if (Properties.Settings.Default.LastModUpdate.Date == DateTime.Today)
-                    Label_LastModUpdate.Text = $"Last checked: Today, {Properties.Settings.Default.LastModUpdate.ToString("hh:mm tt")}";
-                else if (Properties.Settings.Default.LastModUpdate.Date == DateTime.Today.AddDays(-1))
-                    Label_LastModUpdate.Text = $"Last checked: Yesterday, {Properties.Settings.Default.LastModUpdate.ToString("hh:mm tt")}";
-                else
-                    Label_LastModUpdate.Text = $"Last checked: {Properties.Settings.Default.LastModUpdate.ToString("dd/MM/yyyy, hh:mm tt")}";
-            }
-
-            if (Properties.Settings.Default.LastPatchUpdate.ToString("dd/MM/yyyy") == "01/01/0001") Label_LastPatchUpdate.Text = $"Last updated: Never";
-            else {
-                if (Properties.Settings.Default.LastPatchUpdate.Date == DateTime.Today)
-                    Label_LastPatchUpdate.Text = $"Last updated: Today, {Properties.Settings.Default.LastPatchUpdate.ToString("hh:mm tt")}";
-                else if (Properties.Settings.Default.LastPatchUpdate.Date == DateTime.Today.AddDays(-1))
-                    Label_LastPatchUpdate.Text = $"Last updated: Yesterday, {Properties.Settings.Default.LastPatchUpdate.ToString("hh:mm tt")}";
-                else
-                    Label_LastPatchUpdate.Text = $"Last updated: {Properties.Settings.Default.LastPatchUpdate.ToString("dd/MM/yyyy, hh:mm tt")}";
-            }
+            Label_LastSoftwareUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.LastSoftwareUpdate);
+            Label_LastModUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.LastModUpdate);
+            Label_LastPatchUpdate.Text = Literal.Date("Last updated", Properties.Settings.Default.LastPatchUpdate);
             #endregion
 
             #region Restore text box strings
+            TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory;
             TextBox_GameDirectory.Text = Properties.Settings.Default.GameDirectory;
             TextBox_EmulatorExecutable.Text = Properties.Settings.Default.EmulatorDirectory;
             TextBox_SaveData.Text = Properties.Settings.Default.SaveData;
-            TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory;
             #endregion
 
             #region Restore combo box states
-            ComboBox_API.SelectedIndex = Properties.Settings.Default.GraphicsAPI;
+            if (!DesignMode) ComboBox_API.SelectedIndex = Properties.Settings.Default.GraphicsAPI;
             #endregion
 
             #region Restore check box states
@@ -154,20 +132,19 @@ namespace Unify.Environment3
                 SectionButton_InstallMods.Refresh();
             }
 
-            if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.CheckUpdatesOnLaunch)
-                try {
-                    CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
-                    Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now;
-                } catch {
+            if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.CheckUpdatesOnLaunch) {
+                Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now.Ticks;
+                try { CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival); }
+                catch {
                     try {
                         CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
-                        Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now;
                     } catch (Exception ex) {
                         Label_UpdaterStatus.Text = "Connection error";
                         PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
                         RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
                     }
                 }
+            }
 
             if (CheckBox_SaveFileRedirection.Checked = Properties.Settings.Default.SaveFileRedirection) {
                 // Set text colour to Control
@@ -219,7 +196,7 @@ namespace Unify.Environment3
             Label_Status.BackColor =
             TabControl_Patches.HorizontalLineColor =
             TabControl_Patches.ActiveColor =
-            Properties.Settings.Default.AccentColour;
+            Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
             #endregion
 
             #region Set controls depending on emulator
@@ -268,6 +245,14 @@ namespace Unify.Environment3
         }
 
         /// <summary>
+        /// Re-deserialises the mods, then checks them - in turn, refreshing the list.
+        /// </summary>
+        private void SaveAndRefreshList() {
+            DeserialiseMods(); // Refresh mods list
+            CheckDeserialisedMods(); // Check saved items
+        }
+
+        /// <summary>
         /// Removes the selected highlight for all SectionButton controls.
         /// </summary>
         private void SectionButton_DeselectAll() {
@@ -279,23 +264,39 @@ namespace Unify.Environment3
         /// Pings the update servers to check for a new version.
         /// </summary>
         private async void CheckForUpdates(string versionURI, string changelogsURI) {
-            string latestVersion = await Client.RequestString(versionURI); // Request version number
-            if (Program.VersionNumber != latestVersion) { // New update available!
-                // Give feedback on update status
-                Label_UpdaterStatus.Text = "Updates available";
-                Label_Status.Text = "A new version of Sonic '06 Mod Manager is available!";
-                PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
+            // Block controls
+            SectionButton_CheckForSoftwareUpdates.Enabled = false;
 
-                // Request changelogs
-                RichTextBox_Changelogs.Text = $"Sonic '06 Mod Manager - {latestVersion}\n\n" +
-                                                $"" +
-                                                $"{await Client.RequestString(changelogsURI)}";
+            string latestVersion = await Client.RequestString(versionURI), // Request version number
+                   changelogs    = await Client.RequestString(changelogsURI);
+            if (Program.VersionNumber != latestVersion) // New update available!
+                if (InvokeRequired)
+                    Invoke(new MethodInvoker(delegate { OnCheckForUpdates(latestVersion, changelogs); }));
+                else
+                    OnCheckForUpdates(latestVersion, changelogs);
 
-                // Defines new appearance for the Check for Updates button
-                SectionButton_CheckForSoftwareUpdates.SectionImage = Properties.Resources.InstallMods;
-                SectionButton_CheckForSoftwareUpdates.SectionText = "Fetch the latest version";
-                SectionButton_CheckForSoftwareUpdates.Refresh(); // Refreshes custom user control to display new properties
-            }
+            // Feedback
+            SectionButton_CheckForSoftwareUpdates.Enabled = true;
+        }
+
+        /// <summary>
+        /// Function called if there's a new version detected - avoids exceptions caused by async calls.
+        /// </summary>
+        private void OnCheckForUpdates(string latestVersion, string changelogs) {
+            // Give feedback on update status
+            Label_UpdaterStatus.Text = "Updates available";
+            Label_Status.Text = "A new version of Sonic '06 Mod Manager is available!";
+            PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
+
+            // Request changelogs
+            RichTextBox_Changelogs.Text = $"Sonic '06 Mod Manager - {latestVersion}\n\n" +
+                                          $"" +
+                                          $"{changelogs}";
+
+            // Defines new appearance for the Check for Updates button
+            SectionButton_CheckForSoftwareUpdates.SectionImage = Properties.Resources.InstallMods;
+            SectionButton_CheckForSoftwareUpdates.SectionText = "Fetch the latest version";
+            SectionButton_CheckForSoftwareUpdates.Refresh(); // Refreshes custom user control to display new properties
         }
 
         /// <summary>
@@ -321,7 +322,7 @@ namespace Unify.Environment3
             if (sender == Button_ModsDirectory) {
                 // Browse for mods directory
                 VistaFolderBrowserDialog browseMods = new VistaFolderBrowserDialog() {
-                    Description = "Please select a folder...",
+                    Description = "Please select your mods directory...",
                     UseDescriptionForTitle = true
                 };
 
@@ -369,7 +370,7 @@ namespace Unify.Environment3
         /// Checks if a button has been clicked on the WindowsColourPicker user control.
         /// </summary>
         private void WindowsColourPicker_AccentColour_ButtonClick(object sender, EventArgs e) {
-            Properties.Settings.Default.AccentColour = ((Button)sender).BackColor;
+            Properties.Settings.Default.AccentColour = Literal.ColorToString(((Button)sender).BackColor);
             Properties.Settings.Default.Save();
         }
 
@@ -384,46 +385,61 @@ namespace Unify.Environment3
         /// <summary>
         /// Deserialises 'mod.ini' for each iterated mod and checks for updates.
         /// </summary>
-        private async void CheckForModUpdates() {
-            Properties.Settings.Default.LastModUpdate = DateTime.Now;
-            SectionButton_CheckForModUpdates.Enabled = false;
-            ListView_ModUpdates.Items.Clear();
-            ListBox_UpdateLogs.Items.Clear();
-            foreach (string mod in Directory.GetFiles(Properties.Settings.Default.ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
-                string title     = INI.DeserialiseKey("Title", mod);
-                string version   = INI.DeserialiseKey("Version", mod);
-                string metadata  = INI.DeserialiseKey("Metadata", mod);
-                string data      = INI.DeserialiseKey("Data", mod);
-                string versionDL = string.Empty;
+        private async Task CheckForModUpdates() {
+            if (Properties.Settings.Default.ModsDirectory != string.Empty &&
+                Directory.Exists(Properties.Settings.Default.ModsDirectory)) {
+                    foreach (string mod in Directory.GetFiles(Properties.Settings.Default.ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
+                        // Block controls to ensure the list isn't added to
+                        SectionButton_CheckForModUpdates.Enabled = false;
 
-                if (metadata.Length != 0) {
-                    string config = await Client.RequestString(metadata);
-                    if (config.Length != 0) {
-                        string[] configLines = config.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                        string title     = INI.DeserialiseKey("Title", mod),
+                               version   = INI.DeserialiseKey("Version", mod),
+                               metadata  = INI.DeserialiseKey("Metadata", mod),
+                               data      = INI.DeserialiseKey("Data", mod),
+                               versionDL = string.Empty;
 
-                        foreach (string metadataLine in configLines) {
-                            string metadataEntry = string.Empty;
-                            if (metadataLine.StartsWith("Version")) {
-                                metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
-                                metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
-                                versionDL = metadataEntry;
-                            }
-                            if (metadataLine.StartsWith("Data")) {
-                                metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
-                                metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
-                                if (data != metadataEntry) data = metadataEntry;
+                        if (metadata.Length != 0) {
+                            string config = await Client.RequestString(metadata);
+                            if (config.Length != 0) {
+                                string[] configLines = config.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+                                foreach (string metadataLine in configLines) {
+                                    string metadataEntry = string.Empty;
+                                    if (metadataLine.StartsWith("Version")) {
+                                        metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
+                                        metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
+                                        versionDL = metadataEntry;
+                                    }
+                                    if (metadataLine.StartsWith("Data")) {
+                                        metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
+                                        metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
+                                        if (data != metadataEntry) data = metadataEntry;
+                                    }
+                                }
+
+                                if (versionDL != version) {
+                                    ListViewItem update = new ListViewItem(new[] { title, string.Empty, mod });
+                                    ListView_ModUpdates.Items.Add(update);
+                                }
                             }
                         }
 
-                        if (versionDL != version) {
-                            ListViewItem update = new ListViewItem(new[] { title, string.Empty, mod });
-                            ListView_ModUpdates.Items.Add(update);
-                        }
+                        // Feedback
+                        SectionButton_CheckForModUpdates.Enabled = true;
                     }
+            } else {
+                // Browse for mods directory
+                VistaFolderBrowserDialog browseMods = new VistaFolderBrowserDialog() {
+                    Description = "Please select your mods directory...",
+                    UseDescriptionForTitle = true
+                };
+
+                if (browseMods.ShowDialog() == DialogResult.OK) {
+                    Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
+                    Properties.Settings.Default.Save();
+                    await CheckForModUpdates(); // Check all mods in the mods list for updates with new path
                 }
             }
-            SectionButton_CheckForModUpdates.Enabled = true;
-            Properties.Settings.Default.Save();
         }
 
         /// <summary>
@@ -433,8 +449,8 @@ namespace Unify.Environment3
             if (sender == CheckBox_AutoColour) {
                 if (CheckBox_AutoColour.Checked) {
                     int RegistryColour = (int)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM", "ColorizationColor", null);
-                    Properties.Settings.Default.AccentColour = Color.FromArgb(RegistryColour);
-                } else Properties.Settings.Default.AccentColour = Color.FromArgb(186, 0, 0);
+                    Properties.Settings.Default.AccentColour = Literal.ColorToString(Color.FromArgb(RegistryColour));
+                } else Properties.Settings.Default.AccentColour = Literal.ColorToString(Color.FromArgb(186, 0, 0));
                 Properties.Settings.Default.AutoColour = ((CheckBox)sender).Checked;
             } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.HighContrastText     = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.Debug                = ((CheckBox)sender).Checked;
@@ -473,11 +489,11 @@ namespace Unify.Environment3
         private void Section_Appearance_ColourPicker_Click(object sender, EventArgs e) {
             ColorDialog accentPicker = new ColorDialog {
                 FullOpen = true,
-                Color = Properties.Settings.Default.AccentColour
+                Color = Literal.StringToColorArray(Properties.Settings.Default.AccentColour)
             };
 
             if (accentPicker.ShowDialog() == DialogResult.OK) {
-                Properties.Settings.Default.AccentColour = accentPicker.Color;
+                Properties.Settings.Default.AccentColour = Literal.ColorToString(accentPicker.Color);
                 Properties.Settings.Default.Save();
             }
         }
@@ -486,14 +502,18 @@ namespace Unify.Environment3
         /// Resets the accent colour to default.
         /// </summary>
         private void Button_ColourPicker_Default_Click(object sender, EventArgs e) {
-            Properties.Settings.Default.AccentColour = Color.FromArgb(186, 0, 0);
+            Properties.Settings.Default.AccentColour = Literal.ColorToString(Color.FromArgb(186, 0, 0));
             Properties.Settings.Default.Save();
         }
 
         /// <summary>
         /// Clears the debug log.
         /// </summary>
-        private void SectionButton_ClearLog_Click(object sender, EventArgs e) { ListBox_Debug.Items.Clear(); }
+        private void SectionButton_ClearLog_Click(object sender, EventArgs e) {
+            ListBox_Debug.Items.Clear();
+            ListBox_Debug.Items.Add($"Sonic '06 Mod Manager - {Program.VersionNumber}");
+            ListBox_Debug.Items.Add("");
+        }
 
         /// <summary>
         /// Create right-click context menu for the mods list at runtime.
@@ -570,13 +590,10 @@ namespace Unify.Environment3
         /// Draws the column header in the presented design language by sender.
         /// </summary>
         private void ListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e) {
-            // Draws the horizontal line in the accent colour
-            e.Graphics.DrawLine(new Pen(Properties.Settings.Default.AccentColour, 1), new Point(0, 21), new Point(Width, 21));
-
             // Draws the column background colour
-            Color theme = Color.FromArgb(45, 45, 48);
+            Color theme = Color.FromArgb(35, 35, 38);
             e.Graphics.FillRectangle(new SolidBrush(theme), e.Bounds);
-            Point point = new Point(0, 3);
+            Point point = new Point(0, 4);
             point.X = e.Bounds.X;
 
             // Draws the column header by sender
@@ -608,21 +625,7 @@ namespace Unify.Environment3
                         ListView_ModsList.Items.Add(config);
                     } catch { }
                 }
-            }/*Not Needed?? else { // Specify the mods directory if it doesn't exist (first thing the application will request)
-                if (UnifyMessenger.UnifyMessage.ShowDialog("No mods directory specified, or the specified directory is invalid - please select your Sonic '06 mods directory...",
-                                                           "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK) {
-                    VistaFolderBrowserDialog browseMods = new VistaFolderBrowserDialog() {
-                        Description = "Please select a folder...",
-                        UseDescriptionForTitle = true
-                    };
-
-                    if (browseMods.ShowDialog() == DialogResult.OK) {
-                        Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
-                        Properties.Settings.Default.Save();
-                        DeserialiseMods(); // Repeat function after directory is set
-                    } //else Application.Exit(); // No directory is set, so just close...
-                }
-            }*/
+            }
         }
 
         /// <summary>
@@ -804,124 +807,10 @@ namespace Unify.Environment3
         /// </summary>
         private void UninstallThread() {
             Label_Status.Text = "Removing modified game data...";
-            UninstallMods(); // Uninstalls all mods.
-            UninstallCustomFilesystem(); // Uninstalls user-made filesystems.
-            UninstallSaves(); // Removes redirected save data.
+            ModEngine.UninstallMods(); // Uninstalls all mods.
+            ModEngine.UninstallCustomFilesystem(ListView_ModsList.Items); // Uninstalls user-made filesystems.
+            ModEngine.UninstallSaves(ListView_ModsList.Items); // Removes redirected save data.
             Label_Status.Text = "Ready.";
-        }
-
-        /// <summary>
-        /// Uninstalls all mods.
-        /// </summary>
-        private void UninstallMods() {
-            if (Properties.Settings.Default.GameDirectory != string.Empty ||
-                File.Exists(Properties.Settings.Default.GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
-                    // Search for all files with specified LINQ filters
-                    List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), "*.*", SearchOption.AllDirectories)
-                                        .Where(s => s.EndsWith(".arc_back") ||
-                                                    s.EndsWith(".arc_orig")).ToList();
-
-                    foreach (string file in files) {
-                        if (File.Exists(file.ToString().Remove(file.Length - 5))) {
-                            if (_debug) Console.WriteLine($"Removing: {file}");
-                            File.Delete(file.ToString().Remove(file.Length - 5)); // Delete file with last five characters set to '_back' or '_orig'
-                        }
-                        File.Move(file, file.ToString().Remove(file.Length - 5)); // Remove last five characters ('_back' or '_orig')
-                }
-            }
-        }
-
-        /// <summary>
-        /// Uninstalls user-made filesystems.
-        /// </summary>
-        private void UninstallCustomFilesystem() {
-            if (Properties.Settings.Default.GameDirectory != string.Empty ||
-                File.Exists(Properties.Settings.Default.GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
-                    foreach (ListViewItem mod in ListView_ModsList.Items) {
-                        string[] custom = INI.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
-
-                        if (custom[0] != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
-                            foreach (string file in custom) {
-                                // Search for all files with filters from custom
-                                List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), file, SearchOption.AllDirectories).ToList();
-                                
-                                foreach (string customfile in files)
-                                    try {
-                                        if (_debug) Console.WriteLine($"Removing: {file}");
-                                        File.Delete(customfile); // If custom archive is found, erase...
-                                    } catch { }
-                            }
-                        }
-                    }
-            }
-        }
-
-        /// <summary>
-        /// Removes redirected save data.
-        /// </summary>
-        private void UninstallSaves() {
-            if (Properties.Settings.Default.SaveData != string.Empty || File.Exists(Properties.Settings.Default.SaveData)) {
-                foreach (ListViewItem mod in ListView_ModsList.Items) {
-                    // Basically just to check 'SonicNextSaveData.bin' as a directory
-                    string saveLocation = Path.GetDirectoryName(Path.GetDirectoryName(Properties.Settings.Default.SaveData));
-
-                    // Deserialise 'Save' key
-                    string savedata = INI.DeserialiseKey("Save", mod.SubItems[6].Text);
-
-                    if (savedata != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
-                        if (Literal.Emulator() == "Xenia") {
-                            string[] saves = Array.Empty<string>();
-
-                            // Get all backup directories
-                            if (Directory.Exists(saveLocation)) saves = Directory.GetDirectories(saveLocation, "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
-
-                            foreach (var dir in saves) {
-                                // Original save data path
-                                string saveFile = Path.Combine(dir.ToString().Remove(dir.Length - 5), Path.GetFileName(dir.ToString().Remove(dir.Length - 5)));
-
-                                // Copy redirected save data back to the mod's directory (keeps user progress)
-                                if (File.Exists(saveFile)) {
-                                    Console.WriteLine($"Removing: {dir}");
-                                    if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.360"), true);
-                                }
-
-                                // Recursively erase redirected save data
-                                if (Directory.Exists(dir.ToString().Remove(dir.Length - 5))) {
-                                    Console.WriteLine($"Removing: {dir}");
-                                    Directory.Delete(dir.ToString().Remove(dir.Length - 5), true);
-                                }
-
-                                // Restore original save data
-                                Directory.Move(dir.ToString(), dir.ToString().Remove(dir.Length - 5));
-                            }
-                        } else if (Literal.Emulator() == "RPCS3") {
-                            string[] saves = Array.Empty<string>();
-
-                            // Original save data path
-                            if (Directory.Exists(saveLocation)) saves = Directory.GetFiles(saveLocation, "SYS-DATA_back", SearchOption.AllDirectories);
-
-                            foreach (var file in saves) {
-                                string saveFile = Path.Combine(file.ToString().Remove(file.Length - 5), Path.GetFileName(file.ToString().Remove(file.Length - 5)));
-
-                                // Copy redirected save data back to the mod's directory (keeps user progress)
-                                if (File.Exists(saveFile)) {
-                                    Console.WriteLine($"Removing: {file}");
-                                    if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.ps3"), true);
-                                }
-
-                                // Erase redirected save data
-                                if (File.Exists(file.ToString().Remove(file.Length - 5))) {
-                                    Console.WriteLine($"Removing: {file}");
-                                    File.Delete(file.ToString().Remove(file.Length - 5));
-                                }
-
-                                // Restore original save data
-                                File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -1024,7 +913,7 @@ namespace Unify.Environment3
         /// Save checked items at their specified locations in the list.
         /// </summary>
         private void SectionButton_SaveChecks_Click(object sender, EventArgs e) {
-            SaveAndRefreshList();
+            SaveAndRefreshList(); // Refresh mods list
             CheckDeserialisedMods(); // Check saved items
         }
 
@@ -1059,16 +948,14 @@ namespace Unify.Environment3
                 List<string> listItem = new List<string>();
                 bool check = false; // Check state bool
 
+                // Rebuild list item
                 foreach (ListViewItem.ListViewSubItem item in ListView_ModsList.Items[selectedIndex].SubItems) listItem.Add(item.Text);
                 ListViewItem shiftItem = new ListViewItem(listItem.ToArray());
 
                 if (ListView_ModsList.Items[selectedIndex].Checked == true) check = true; // Checks if the checkbox was checked
-
                 ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
                 selectedIndex -= 1; // Move index up the list
-
                 ListView_ModsList.Items.Insert(selectedIndex, shiftItem); // Insert checkbox at selectedIndex
-
                 ListView_ModsList.Items[selectedIndex].Selected = true; // Selects the recently moved checkbox
                 shiftItem.Checked = check; // Calls the 'check' bool and sets the checked state
             } else if (sender == Button_DownerPriority) {
@@ -1076,16 +963,14 @@ namespace Unify.Environment3
                 List<string> listItem = new List<string>();
                 bool check = false; // Check state bool
 
+                // Rebuild list item
                 foreach (ListViewItem.ListViewSubItem item in ListView_ModsList.Items[selectedIndex].SubItems) listItem.Add(item.Text);
                 ListViewItem shiftItem = new ListViewItem(listItem.ToArray());
 
                 if (ListView_ModsList.Items[selectedIndex].Checked == true) check = true; // Checks if the checkbox was checked
-
                 ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
                 selectedIndex += 1; // Move index down the list
-
                 ListView_ModsList.Items.Insert(selectedIndex, shiftItem); // Insert checkbox at selectedIndex
-
                 ListView_ModsList.Items[selectedIndex].Selected = true; // Selects the recently moved checkbox
                 shiftItem.Checked = check; // Calls the 'check' bool and sets the checked state
             }
@@ -1175,8 +1060,8 @@ namespace Unify.Environment3
         /// Opens the Mod Creator.
         /// </summary>
         private void SectionButton_CreateNewMod_Click(object sender, EventArgs e) {
-            new ModCreator(string.Empty, false).ShowDialog();
-            SaveAndRefreshList();
+            new ModCreator(string.Empty, false).ShowDialog(); // Launch Mod Creator
+            SaveAndRefreshList(); // Refresh mods list on close
         }
 
         /// <summary>
@@ -1185,6 +1070,9 @@ namespace Unify.Environment3
         /// </summary>
         private void SectionButton_RefreshMods_Click(object sender, EventArgs e) { SaveAndRefreshList(); }
 
+        /// <summary>
+        /// Enables/disables the Update Mods button depending on how many items are checked in the Mod Updates list.
+        /// </summary>
         private void ListView_ModUpdates_ItemChecked(object sender, ItemCheckedEventArgs e) {
             SectionButton_UpdateMods.Enabled = ListView_ModUpdates.CheckedItems.Count > 0;
         }
@@ -1192,18 +1080,19 @@ namespace Unify.Environment3
         /// <summary>
         /// Code for all SectionButton controls in the Updates section.
         /// </summary>
-        private void SectionButton_Updates_Click(object sender, EventArgs e) {
+        private async void SectionButton_Updates_Click(object sender, EventArgs e) {
+            // Check for software updates is clicked
             if (sender == SectionButton_CheckForSoftwareUpdates) {
                 try {
                     // Check for updates via SEGA Carnival
                     CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
-                    Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now;
+                    Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now.Ticks;
                     if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(false); // Update if prompted
                 } catch { // SEGA Carnival timed out...
                     try {
                         // Check for updates via GitHub
                         CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
-                        Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now;
+                        Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now.Ticks;
                         if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(true); // Update if prompted
                     } catch (Exception ex) { // GitHub timed out...
                         Label_UpdaterStatus.Text = "Connection error";
@@ -1219,30 +1108,55 @@ namespace Unify.Environment3
                     }
                 }
                 Properties.Settings.Default.Save();
-            } else if (sender == SectionButton_CheckForModUpdates) CheckForModUpdates(); // Check all mods in the mods list for updates
+
+            // Check for mod updates is clicked
+            } else if (sender == SectionButton_CheckForModUpdates) {
+                ListView_ModUpdates.Items.Clear();
+                ListBox_UpdateLogs.Items.Clear();
+                Properties.Settings.Default.LastModUpdate = DateTime.Now.Ticks;
+                await CheckForModUpdates();
+                Properties.Settings.Default.Save();
+            }
+
+            // Fetch latest patches is clicked
             else if (sender == SectionButton_FetchPatches) {
 
             }
+
+            // Update mods is clicked
             else if (sender == SectionButton_UpdateMods) {
                 ListBox_UpdateLogs.Items.Clear(); // Clear update logs
-                foreach (ListViewItem mod in ListView_ModUpdates.CheckedItems)
-                    // Item is checked in the mod updates list
-                    if (ListView_ModUpdates.Items[ListView_ModUpdates.Items.IndexOf(mod)].Checked) {
-                        ListBox_UpdateLogs.Items.Add($"Updating {mod.Text}..."); // Feedback
-                        try {
-                            // Update the mod using deserialised keys from the 'mod.ini'
-                            UpdateMod(mod.SubItems[2].Text,
-                                      mod.Text,
-                                      INI.DeserialiseKey("Version",  mod.SubItems[2].Text),
-                                      INI.DeserialiseKey("Metadata", mod.SubItems[2].Text),
-                                      INI.DeserialiseKey("Data",     mod.SubItems[2].Text)
-                                      );
-                        } catch (Exception ex) {
-                            // Update failed - prints error to debug console and is subsequently ignored
-                            ListBox_UpdateLogs.Items.Add($"Failed to update {mod.Text}...");
-                            Console.WriteLine(ex);
-                        }
+                ListView_ModUpdates.SelectedItems.Clear(); // Clear selected
+
+                // Item is checked in the mod updates list
+                foreach (ListViewItem mod in ListView_ModUpdates.CheckedItems) {
+                    // Block controls
+                    SectionButton_UpdateMods.Enabled =
+                    SectionButton_CheckForModUpdates.Enabled = false;
+
+                    // Feedback
+                    ListBox_UpdateLogs.Items.Add($"Updating {mod.Text}...");
+
+                    try {
+                        // Update the mod using deserialised keys from the 'mod.ini'
+                        await UpdateMod(mod.SubItems[2].Text,
+                                        mod.Text,
+                                        INI.DeserialiseKey("Version",  mod.SubItems[2].Text),
+                                        INI.DeserialiseKey("Metadata", mod.SubItems[2].Text),
+                                        INI.DeserialiseKey("Data",     mod.SubItems[2].Text),
+                                        mod
+                                        );
+                    } catch (Exception ex) {
+                        // Update failed - prints error to debug console and is subsequently ignored
+                        ListBox_UpdateLogs.Items.Add($"Failed to update {mod.Text}...");
+                        Console.WriteLine(ex);
                     }
+
+                    // Feedback
+                    SectionButton_CheckForModUpdates.Enabled = true;
+                    if (ListView_ModUpdates.CheckedItems.Count == ListView_ModUpdates.Items.Count) SectionButton_UpdateMods.Enabled = false;
+                    else SectionButton_UpdateMods.Enabled = true;
+                }
             }
         }
 
@@ -1254,7 +1168,7 @@ namespace Unify.Environment3
         /// <param name="version">Current version of the mod</param>
         /// <param name="metadata">Network location of 'mod.ini'</param>
         /// <param name="data">Network location of new data</param>
-        private async void UpdateMod(string mod, string title, string version, string metadata, string data) {
+        private async Task UpdateMod(string mod, string title, string version, string metadata, string data, ListViewItem listViewItem) {
             string archive = Path.GetTempFileName(), // Creates a temporary name for the mod update package
                    versionDL = string.Empty; // Defined string to contain the latest version number
 
@@ -1316,7 +1230,7 @@ namespace Unify.Environment3
 
                         // Feedback
                         ListBox_UpdateLogs.Items.Add($"{title} was updated successfully...");
-                        ListView_ModUpdates.Items.Remove(ListView_ModUpdates.FindItemWithText(title));
+                        ListView_ModUpdates.Items.Remove(listViewItem);
                         ProgressBar_ModUpdate.Value = 0;
                     };
                 }
@@ -1333,18 +1247,18 @@ namespace Unify.Environment3
                 lv.Columns[1].Width = (x * 2) - 20;
                 lv.Columns[2].Width = (x * 2) + 20;
                 lv.Columns[3].Width = (x * 2) + 10;
-                lv.Columns[4].Width = (x * 2) - 10;
+                lv.Columns[4].Width = (x * 2) - 9;
                 lv.Columns[5].Width = x * 100;
             } else if (lv == ListView_PatchesList) {
                 int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
                 lv.Columns[0].Width = (x * 5) - 5;
                 lv.Columns[1].Width = (x * 2) + 20;
-                lv.Columns[2].Width = (x * 2) + 15;
-                lv.Columns[3].Width = (x * 5) + 20;
+                lv.Columns[3].Width = (x * 2) + 10;
+                lv.Columns[3].Width = (x * 6) - 5;
                 lv.Columns[4].Width = x * 100;
             } else if (lv == ListView_ModUpdates) {
                 int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
-                lv.Columns[0].Width = (x * 15) + 1;
+                lv.Columns[0].Width = Panel_ModUpdateBackdrop.Width;
                 lv.Columns[1].Width = x * 100;
             }
             lv.Refresh();
@@ -1362,7 +1276,10 @@ namespace Unify.Environment3
         /// <summary>
         /// Refreshes the column size on the Resize event.
         /// </summary>
-        private void RushInterface_Resize(object sender, EventArgs e) { RefreshColumnSize(); }
+        private void RushInterface_Resize(object sender, EventArgs e) {
+            TabControl_Rush.SelectedTab.VerticalScroll.Value = 0;
+            RefreshColumnSize();
+        }
 
         /// <summary>
         /// Launches Protocol Manager for GameBanana registry key installation.
@@ -1382,75 +1299,6 @@ namespace Unify.Environment3
             } else {
                 UnifyMessenger.UnifyMessage.ShowDialog("Protocol Manager is missing, please restart Sonic '06 Mod Manager.",
                                                        "Protocol Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void FirstTimeSetup()
-        {
-            //Check if both are true, as a user of Project Unify will have FirstLaunch but should already have things setup
-            if (Properties.Settings.Default.FirstLaunch && Properties.Settings.Default.ModsDirectory == string.Empty)
-            {
-                //Welcome Message
-                Properties.Settings.Default.FirstLaunch = false;
-                UnifyMessenger.UnifyMessage.ShowDialog("Welcome to the Sonic '06 Mod Manager. As this appears to be your first time launching this application, " +
-                                                       "please take a moment to configure the settings required to properly utilise the features the Mod Manager has to offer.",
-                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                //Mods Folder Setup
-                UnifyMessenger.UnifyMessage.ShowDialog("Please specify a folder that your mods will be saved into and managed from. " +
-                                                       "This should be kept seperate from your game directory.",
-                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                VistaFolderBrowserDialog browseMods = new VistaFolderBrowserDialog()
-                {
-                    Description = "Please select a folder...",
-                    UseDescriptionForTitle = true
-                };
-
-                if (browseMods.ShowDialog() == DialogResult.OK) Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
-
-                //Game Executable Setup
-                UnifyMessenger.UnifyMessage.ShowDialog("Please select the approriate game executable for your version of Sonic '06.\n\n" +
-                                                       "If you are running the Xbox 360 version, then this file should be titled default.xex.\n" +
-                                                       "If you are running the PlayStation 3 version, then it will be titled EBOOT.bin instead.\n\n" +
-                                                       "If you have a Disc Image of the game, then you will need to extract its contents using the Sonic '06 Toolkit first.",
-                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                OpenFileDialog browseGame = new OpenFileDialog()
-                {
-                    Title = "Please select an executable for Sonic '06...",
-                    Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
-                };
-
-                //Setup Emulator Executable if Game Executable was selected
-                if (browseGame.ShowDialog() == DialogResult.OK)
-                {
-                    Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
-
-                    UnifyMessenger.UnifyMessage.ShowDialog("If you are running the game on a PC, then you will need to specify an emulator to run the game through.\n\n" +
-                                                           "If you are running the Xbox 360 version of the game, then select your Xenia executable.\n" +
-                                                           "If you are running the PlayStation 3 version of the game, then select your RPCS3 executable.\n\n" +
-                                                           "If you intend to run the game on real hardware and just wish to use the Mod Manager to handle installing mods to an extracted copy on a USB stick, then you can skip this step.",
-                                                         "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    OpenFileDialog browseEmulator = new OpenFileDialog()
-                    {
-                        Title = $"Please select an executable for {Literal.Emulator()}...",
-                        Filter = "Programs (*.exe)|*.exe"
-                    };
-
-                    if (browseEmulator.ShowDialog() == DialogResult.OK)
-                    {
-                        Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
-                    }
-                    UnifyMessenger.UnifyMessage.ShowDialog("Successfully completed First Time Setup!",
-                                                             "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Properties.Settings.Default.Save();
-                    return;
-                }
-
-                //Mention that a game executable and emulator executable were not specified if Step 2 was skipped
-                UnifyMessenger.UnifyMessage.ShowDialog("First Time Setup has been completed, but the game directory has been skipped, " +
-                                                       "be sure to manually specify it from the Settings tab before attempting to install any mods.",
-                                                     "First Time Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Properties.Settings.Default.Save();
             }
         }
     }

@@ -26,9 +26,9 @@ namespace Unify.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("186, 0, 0")]
-        public global::System.Drawing.Color AccentColour {
+        public string AccentColour {
             get {
-                return ((global::System.Drawing.Color)(this["AccentColour"]));
+                return ((string)(this["AccentColour"]));
             }
             set {
                 this["AccentColour"] = value;
@@ -241,9 +241,10 @@ namespace Unify.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime LastSoftwareUpdate {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long LastSoftwareUpdate {
             get {
-                return ((global::System.DateTime)(this["LastSoftwareUpdate"]));
+                return ((long)(this["LastSoftwareUpdate"]));
             }
             set {
                 this["LastSoftwareUpdate"] = value;
@@ -264,9 +265,10 @@ namespace Unify.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime LastModUpdate {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long LastModUpdate {
             get {
-                return ((global::System.DateTime)(this["LastModUpdate"]));
+                return ((long)(this["LastModUpdate"]));
             }
             set {
                 this["LastModUpdate"] = value;
@@ -275,9 +277,10 @@ namespace Unify.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime LastPatchUpdate {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long LastPatchUpdate {
             get {
-                return ((global::System.DateTime)(this["LastPatchUpdate"]));
+                return ((long)(this["LastPatchUpdate"]));
             }
             set {
                 this["LastPatchUpdate"] = value;

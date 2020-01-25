@@ -33,36 +33,36 @@
             this.pic_Logo = new System.Windows.Forms.PictureBox();
             this.lbl_Title = new System.Windows.Forms.Label();
             this.mainControls_Split = new System.Windows.Forms.SplitContainer();
+            this.pnl_InfoBackdrop = new System.Windows.Forms.Panel();
             this.tb_Information = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pic_Thumbnail = new System.Windows.Forms.PictureBox();
+            this.pnl_DescriptionBackdrop = new System.Windows.Forms.Panel();
             this.web_Description = new System.Windows.Forms.WebBrowser();
             this.btn_Decline = new System.Windows.Forms.Button();
             this.btn_Accept = new System.Windows.Forms.Button();
             this.lbl_Query = new System.Windows.Forms.Label();
             this.dl_Progress = new System.Windows.Forms.ProgressBar();
-            this.pnl_DescriptionBackdrop = new System.Windows.Forms.Panel();
-            this.pnl_InfoBackdrop = new System.Windows.Forms.Panel();
             this.pnl_Backdrop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainControls_Split)).BeginInit();
             this.mainControls_Split.Panel1.SuspendLayout();
             this.mainControls_Split.Panel2.SuspendLayout();
             this.mainControls_Split.SuspendLayout();
+            this.pnl_InfoBackdrop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).BeginInit();
             this.pnl_DescriptionBackdrop.SuspendLayout();
-            this.pnl_InfoBackdrop.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnl_Backdrop
             // 
             this.pnl_Backdrop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnl_Backdrop.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnl_Backdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(63)))));
             this.pnl_Backdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_Backdrop.Controls.Add(this.pic_Logo);
             this.pnl_Backdrop.Controls.Add(this.lbl_Title);
@@ -87,6 +87,7 @@
             // 
             this.lbl_Title.AutoSize = true;
             this.lbl_Title.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Bold);
+            this.lbl_Title.ForeColor = System.Drawing.SystemColors.Control;
             this.lbl_Title.Location = new System.Drawing.Point(16, 10);
             this.lbl_Title.Name = "lbl_Title";
             this.lbl_Title.Size = new System.Drawing.Size(109, 47);
@@ -112,13 +113,26 @@
             this.mainControls_Split.SplitterDistance = 183;
             this.mainControls_Split.TabIndex = 52;
             // 
+            // pnl_InfoBackdrop
+            // 
+            this.pnl_InfoBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_InfoBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_InfoBackdrop.Controls.Add(this.tb_Information);
+            this.pnl_InfoBackdrop.Location = new System.Drawing.Point(0, 0);
+            this.pnl_InfoBackdrop.Name = "pnl_InfoBackdrop";
+            this.pnl_InfoBackdrop.Size = new System.Drawing.Size(181, 461);
+            this.pnl_InfoBackdrop.TabIndex = 20;
+            // 
             // tb_Information
             // 
-            this.tb_Information.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.tb_Information.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.tb_Information.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_Information.Cursor = System.Windows.Forms.Cursors.Default;
             this.tb_Information.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tb_Information.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_Information.ForeColor = System.Drawing.SystemColors.Control;
             this.tb_Information.Location = new System.Drawing.Point(0, 0);
             this.tb_Information.Name = "tb_Information";
             this.tb_Information.ReadOnly = true;
@@ -146,6 +160,7 @@
             // 
             // pic_Thumbnail
             // 
+            this.pic_Thumbnail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.pic_Thumbnail.BackgroundImage = global::Unify.Properties.Resources.Exception_Logo_Full_Colour;
             this.pic_Thumbnail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pic_Thumbnail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -155,6 +170,18 @@
             this.pic_Thumbnail.Size = new System.Drawing.Size(362, 202);
             this.pic_Thumbnail.TabIndex = 1;
             this.pic_Thumbnail.TabStop = false;
+            // 
+            // pnl_DescriptionBackdrop
+            // 
+            this.pnl_DescriptionBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_DescriptionBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_DescriptionBackdrop.Controls.Add(this.web_Description);
+            this.pnl_DescriptionBackdrop.Location = new System.Drawing.Point(0, 2);
+            this.pnl_DescriptionBackdrop.Name = "pnl_DescriptionBackdrop";
+            this.pnl_DescriptionBackdrop.Size = new System.Drawing.Size(362, 253);
+            this.pnl_DescriptionBackdrop.TabIndex = 1;
             // 
             // web_Description
             // 
@@ -203,6 +230,7 @@
             this.lbl_Query.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_Query.AutoSize = true;
             this.lbl_Query.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lbl_Query.ForeColor = System.Drawing.SystemColors.Control;
             this.lbl_Query.Location = new System.Drawing.Point(10, 546);
             this.lbl_Query.Name = "lbl_Query";
             this.lbl_Query.Size = new System.Drawing.Size(251, 20);
@@ -219,34 +247,11 @@
             this.dl_Progress.TabIndex = 56;
             this.dl_Progress.Visible = false;
             // 
-            // pnl_DescriptionBackdrop
-            // 
-            this.pnl_DescriptionBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnl_DescriptionBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnl_DescriptionBackdrop.Controls.Add(this.web_Description);
-            this.pnl_DescriptionBackdrop.Location = new System.Drawing.Point(0, 2);
-            this.pnl_DescriptionBackdrop.Name = "pnl_DescriptionBackdrop";
-            this.pnl_DescriptionBackdrop.Size = new System.Drawing.Size(362, 253);
-            this.pnl_DescriptionBackdrop.TabIndex = 1;
-            // 
-            // pnl_InfoBackdrop
-            // 
-            this.pnl_InfoBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnl_InfoBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnl_InfoBackdrop.Controls.Add(this.tb_Information);
-            this.pnl_InfoBackdrop.Location = new System.Drawing.Point(0, 0);
-            this.pnl_InfoBackdrop.Name = "pnl_InfoBackdrop";
-            this.pnl_InfoBackdrop.Size = new System.Drawing.Size(181, 461);
-            this.pnl_InfoBackdrop.TabIndex = 20;
-            // 
             // ModOneClickInstall
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(564, 577);
             this.Controls.Add(this.btn_Decline);
             this.Controls.Add(this.btn_Accept);
@@ -255,6 +260,7 @@
             this.Controls.Add(this.mainControls_Split);
             this.Controls.Add(this.pnl_Backdrop);
             this.DoubleBuffered = true;
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(580, 616);
             this.Name = "ModOneClickInstall";
@@ -267,13 +273,13 @@
             this.mainControls_Split.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mainControls_Split)).EndInit();
             this.mainControls_Split.ResumeLayout(false);
+            this.pnl_InfoBackdrop.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).EndInit();
             this.pnl_DescriptionBackdrop.ResumeLayout(false);
-            this.pnl_InfoBackdrop.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

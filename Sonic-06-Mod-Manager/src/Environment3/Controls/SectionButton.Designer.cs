@@ -52,6 +52,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "SectionButton";
             this.Size = new System.Drawing.Size(281, 35);
+            this.EnabledChanged += new System.EventHandler(this.SectionButton_EnabledChanged);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SectionButton_MouseDown);
             this.MouseEnter += new System.EventHandler(this.SectionButton_MouseEnter);
             this.MouseLeave += new System.EventHandler(this.SectionButton_MouseLeave);

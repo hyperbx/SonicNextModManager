@@ -60,7 +60,7 @@
             // 
             this.pnl_Backdrop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnl_Backdrop.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnl_Backdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(63)))));
             this.pnl_Backdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_Backdrop.Controls.Add(this.pic_Logo);
             this.pnl_Backdrop.Controls.Add(this.lbl_Title);
@@ -85,6 +85,7 @@
             // 
             this.lbl_Title.AutoSize = true;
             this.lbl_Title.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Bold);
+            this.lbl_Title.ForeColor = System.Drawing.SystemColors.Control;
             this.lbl_Title.Location = new System.Drawing.Point(16, 10);
             this.lbl_Title.Name = "lbl_Title";
             this.lbl_Title.Size = new System.Drawing.Size(109, 47);
@@ -125,11 +126,12 @@
             // 
             // tb_Information
             // 
-            this.tb_Information.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.tb_Information.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.tb_Information.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_Information.Cursor = System.Windows.Forms.Cursors.Default;
             this.tb_Information.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tb_Information.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_Information.ForeColor = System.Drawing.SystemColors.Control;
             this.tb_Information.Location = new System.Drawing.Point(0, 0);
             this.tb_Information.Name = "tb_Information";
             this.tb_Information.ReadOnly = true;
@@ -178,6 +180,7 @@
             this.pic_Thumbnail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pic_Thumbnail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.pic_Thumbnail.BackgroundImage = global::Unify.Properties.Resources.Exception_Logo_Full_Colour;
             this.pic_Thumbnail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pic_Thumbnail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -201,11 +204,12 @@
             // 
             // tb_Description
             // 
-            this.tb_Description.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.tb_Description.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.tb_Description.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_Description.Cursor = System.Windows.Forms.Cursors.Default;
             this.tb_Description.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tb_Description.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_Description.ForeColor = System.Drawing.SystemColors.Control;
             this.tb_Description.Location = new System.Drawing.Point(0, 0);
             this.tb_Description.Name = "tb_Description";
             this.tb_Description.ReadOnly = true;
@@ -227,6 +231,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(564, 545);
             this.Controls.Add(this.mainControls_Split);
             this.Controls.Add(this.pnl_Backdrop);

@@ -1074,7 +1074,7 @@ namespace Ookii.Dialogs
         public void ClickVerification(bool checkState, bool setFocus)
         {
             if (!IsDialogRunning)
-                throw new InvalidOperationException(Properties.Resources.TaskDialogNotRunningError);
+                throw new InvalidOperationException("The task dialog is not current displayed.");
 
             NativeMethods.SendMessage(Handle, (int)NativeMethods.TaskDialogMessages.ClickVerification, new IntPtr(checkState ? 1 : 0), new IntPtr(setFocus ? 1 : 0));
         }
@@ -1196,7 +1196,7 @@ namespace Ookii.Dialogs
         internal void ClickItem(TaskDialogItem item)
         {
             if (!IsDialogRunning)
-                throw new InvalidOperationException(Properties.Resources.TaskDialogNotRunningError);
+                throw new InvalidOperationException("The task dialog is not current displayed.");
 
             NativeMethods.SendMessage(Handle, (int)(item is TaskDialogButton ? NativeMethods.TaskDialogMessages.ClickButton : NativeMethods.TaskDialogMessages.ClickRadioButton), new IntPtr(item.Id), IntPtr.Zero);
         }
@@ -1208,13 +1208,13 @@ namespace Ookii.Dialogs
         private TaskDialogButton ShowDialog(IntPtr owner)
         {
             if (!OSSupportsTaskDialogs)
-                throw new NotSupportedException(Properties.Resources.TaskDialogsNotSupportedError);
+                throw new NotSupportedException("The operating system does not support task dialogs.");
 
             if (IsDialogRunning)
-                throw new InvalidOperationException(Properties.Resources.TaskDialogRunningError);
+                throw new InvalidOperationException("The task dialog is already being displayed.");
 
             if (_buttons.Count == 0)
-                throw new InvalidOperationException(Properties.Resources.TaskDialogNoButtonsError);
+                throw new InvalidOperationException("The task dialog must have buttons.");
 
             _config.hwndParent = owner;
             _config.dwCommonButtons = 0;
@@ -1396,14 +1396,14 @@ namespace Ookii.Dialogs
             foreach (TaskDialogButton button in Buttons)
             {
                 if (button.Id < 1)
-                    throw new InvalidOperationException(Properties.Resources.InvalidTaskDialogItemIdError);
+                    throw new InvalidOperationException("The id of a task dialog item must be higher than 0.");
                 _buttonsById.Add(button.Id, button);
                 if (button.Default)
                     _config.nDefaultButton = button.Id;
                 if (button.ButtonType == ButtonType.Custom)
                 {
                     if (string.IsNullOrEmpty(button.Text))
-                        throw new InvalidOperationException(Properties.Resources.TaskDialogEmptyButtonLabelError);
+                        throw new InvalidOperationException("A custom button or radio button cannot have an empty label.");
                     NativeMethods.TASKDIALOG_BUTTON taskDialogButton = new NativeMethods.TASKDIALOG_BUTTON();
                     taskDialogButton.nButtonID = button.Id;
                     taskDialogButton.pszButtonText = button.Text;
@@ -1427,9 +1427,9 @@ namespace Ookii.Dialogs
             foreach (TaskDialogRadioButton radioButton in RadioButtons)
             {
                 if (string.IsNullOrEmpty(radioButton.Text))
-                    throw new InvalidOperationException(Properties.Resources.TaskDialogEmptyButtonLabelError);
+                    throw new InvalidOperationException("A custom button or radio button cannot have an empty label.");
                 if (radioButton.Id < 1)
-                    throw new InvalidOperationException(Properties.Resources.InvalidTaskDialogItemIdError);
+                    throw new InvalidOperationException("The id of a task dialog item must be higher than 0.");
                 _radioButtonsById.Add(radioButton.Id, radioButton);
                 if (radioButton.Checked)
                     _config.nDefaultRadioButton = radioButton.Id;
@@ -1596,7 +1596,7 @@ namespace Ookii.Dialogs
                 int windowThreadId = NativeMethods.GetWindowThreadProcessId(handle, out processId);
                 int threadId = NativeMethods.GetCurrentThreadId();
                 if (windowThreadId != threadId)
-                    throw new InvalidOperationException(Properties.Resources.TaskDialogIllegalCrossThreadCallError);
+                    throw new InvalidOperationException("Cross-thread operation not valid: Task dialog accessed from a thread other than the thread it was created on while it is visible.");
             }
         }
 

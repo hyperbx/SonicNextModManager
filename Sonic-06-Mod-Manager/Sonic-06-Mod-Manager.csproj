@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -125,24 +126,9 @@
     <Compile Include="third_party\Ookii.Dialogs\DialogHelper.cs" />
     <Compile Include="third_party\Ookii.Dialogs\DownlevelTextMode.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ExpandButtonClickedEventArgs.cs" />
-    <Compile Include="third_party\Ookii.Dialogs\ExtendedForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="third_party\Ookii.Dialogs\Glass.cs" />
     <Compile Include="third_party\Ookii.Dialogs\GlobalSuppressions.cs" />
     <Compile Include="third_party\Ookii.Dialogs\HyperlinkClickedEventArgs.cs" />
-    <Compile Include="third_party\Ookii.Dialogs\InputDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="third_party\Ookii.Dialogs\InputDialog.designer.cs">
-      <DependentUpon>InputDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="third_party\Ookii.Dialogs\InputDialogForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="third_party\Ookii.Dialogs\InputDialogForm.designer.cs">
-      <DependentUpon>InputDialogForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="third_party\Ookii.Dialogs\Interop\ComDlgResources.cs" />
     <Compile Include="third_party\Ookii.Dialogs\Interop\COMGuids.cs" />
     <Compile Include="third_party\Ookii.Dialogs\Interop\HRESULT.cs" />
@@ -155,13 +141,6 @@
     <Compile Include="third_party\Ookii.Dialogs\OkButtonClickedEventArgs.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ProgressBarState.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ProgressBarStyle.cs" />
-    <Compile Include="third_party\Ookii.Dialogs\ProgressDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="third_party\Ookii.Dialogs\ProgressDialog.designer.cs">
-      <DependentUpon>ProgressDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="third_party\Ookii.Dialogs\Properties\Resources.Designer.cs" />
     <Compile Include="third_party\Ookii.Dialogs\SafeHandles.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ShellAnimation.cs" />
     <Compile Include="third_party\Ookii.Dialogs\TaskDialog.cs">
@@ -209,6 +188,12 @@
     <Compile Include="src\UnifyGlobalisation.cs" />
     <Compile Include="src\UnifyPatcher.cs" />
     <Compile Include="src\UnifyNetworking.cs" />
+    <Compile Include="src\Environment3\UnifySetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Environment3\UnifySetup.Designer.cs">
+      <DependentUpon>UnifySetup.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -244,19 +229,9 @@
     <EmbeddedResource Include="src\Environment3\Controls\SectionButton.resx">
       <DependentUpon>SectionButton.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="third_party\Ookii.Dialogs\ExtendedForm.resx">
-      <DependentUpon>ExtendedForm.cs</DependentUpon>
+    <EmbeddedResource Include="src\Environment3\UnifySetup.resx">
+      <DependentUpon>UnifySetup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="third_party\Ookii.Dialogs\InputDialogForm.nl.resx">
-      <DependentUpon>InputDialogForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="third_party\Ookii.Dialogs\InputDialogForm.resx">
-      <DependentUpon>InputDialogForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="third_party\Ookii.Dialogs\ProgressDialog.resx">
-      <DependentUpon>ProgressDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="third_party\Ookii.Dialogs\Properties\Resources.resx" />
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

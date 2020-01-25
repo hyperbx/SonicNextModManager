@@ -162,7 +162,7 @@ namespace Ookii.Dialogs
         public void Click()
         {
             if (Owner == null)
-                throw new InvalidOperationException(Properties.Resources.NoAssociatedTaskDialogError);
+                throw new InvalidOperationException("The item is not associated with a task dialog.");
 
             Owner.ClickItem(this);
         }
@@ -233,7 +233,7 @@ namespace Ookii.Dialogs
                     foreach (TaskDialogItem item in items)
                     {
                         if (item != this && item != itemToExclude && item.Id == id)
-                            throw new InvalidOperationException(Properties.Resources.DuplicateItemIdError);
+                            throw new InvalidOperationException("The task dialog already has an item with the same id.");
                     }
                 }
             }

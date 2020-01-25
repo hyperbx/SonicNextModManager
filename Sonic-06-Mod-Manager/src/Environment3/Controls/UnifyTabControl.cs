@@ -1,14 +1,15 @@
 ﻿using System.Drawing;
+using Unify.Globalisation;
 using System.Drawing.Text;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 
-// Sonic '06 Toolkit is licensed under the MIT License:
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +46,7 @@ namespace Unify.Environment3
         /// <summary>
         ///     The color of the active tab header
         /// </summary>
-        private Color activeColor = Properties.Settings.Default.AccentColour;
+        private Color activeColor = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
 
         /// <summary>
         ///     The color of the background of the Tab
@@ -70,7 +71,7 @@ namespace Unify.Environment3
         /// <summary>
         ///     The color of the horizontal line which is under the headers of the tab pages
         /// </summary>
-        private Color horizLineColor = Properties.Settings.Default.AccentColour;
+        private Color horizLineColor = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
 
         /// <summary>
         ///     A random page will be used to store a tab that will be deplaced in the run-time

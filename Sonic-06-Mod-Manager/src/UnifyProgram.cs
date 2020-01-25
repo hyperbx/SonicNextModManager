@@ -10,7 +10,7 @@ using Unify.Networking.GameBanana;
 /*
  * MIT License
 
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber = "Version 3.0-prototype_rush-230120r1";
+        public static readonly string VersionNumber = "Version 3.0-indev-250120r1";
         public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         [STAThread]
@@ -56,10 +56,38 @@ namespace Unify.Environment3
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
-            // Ensure application can't be run more than once
-            if ((Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1) == false) {
-                if (args.Length > 0) {
+
+#if !DEBUG
+            try {
+#endif
+                // Ensure application can't be run more than once
+                if ((Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location)).Count() > 1) == false) {
+                    if (args.Length > 0) {
+                        if (args[0] == "-banana") {
+                            string[] getIDs = args[1].Remove(0, 40).Split(','); // Split URL
+                            string modType = string.Empty;
+                            int downloadID = 0;
+                            int modID = 0;
+                            int i = 0;
+
+                            //Get IDs from URL
+                            foreach (var item in getIDs)
+                                if      (i == 0) { int.TryParse(item, out downloadID); { i++; } }
+                                else if (i == 1) { modType = item; i++; }
+                                else if (i == 2) { int.TryParse(item, out modID); { i++; } }
+
+                            var mod = new GBAPIItemDataBasic(modType, modID);
+                            if (GBAPI.RequestItemData(mod)) {
+                                new ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog(); // Load 1-Click Installer
+                                Application.Run(new UnifyEnvironment()); // Load everything after
+                            }
+                        }
+                    } else
+                        // Load everything
+                        Application.Run(new UnifyEnvironment());
+
+                // If application is running, just load the 1-Click Installer only
+                } else if (args.Length > 0) {
                     if (args[0] == "-banana") {
                         string[] getIDs = args[1].Remove(0, 40).Split(','); // Split URL
                         string modType = string.Empty;
@@ -74,32 +102,14 @@ namespace Unify.Environment3
                             else if (i == 2) { int.TryParse(item, out modID); { i++; } }
 
                         var mod = new GBAPIItemDataBasic(modType, modID);
-                        if (GBAPI.RequestItemData(mod)) {
-                            new ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog(); // Load 1-Click Installer
-                            Application.Run(new UnifyEnvironment()); // Load everything after
-                        }
+                        if (GBAPI.RequestItemData(mod)) new ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog();
                     }
-                } else
-                    // Load everything
-                    Application.Run(new UnifyEnvironment());
-
-            // If application is running, just load the 1-Click Installer only
-            } else if (args[0] == "-banana") {
-                string[] getIDs = args[1].Remove(0, 40).Split(','); // Split URL
-                string modType = string.Empty;
-                int downloadID = 0;
-                int modID = 0;
-                int i = 0;
-
-                //Get IDs from URL
-                foreach (var item in getIDs)
-                    if      (i == 0) { int.TryParse(item, out downloadID); { i++; } }
-                    else if (i == 1) { modType = item; i++; }
-                    else if (i == 2) { int.TryParse(item, out modID); { i++; } }
-
-                var mod = new GBAPIItemDataBasic(modType, modID);
-                if (GBAPI.RequestItemData(mod)) new ModOneClickInstall(mod, args[1], downloadID, modID).ShowDialog();
+                }
+#if !DEBUG
+            } catch (Exception ex) {
+                MessageBox.Show($"Please report this error immediately...\n\n{ex.ToString()}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#endif
         }
     }
 }

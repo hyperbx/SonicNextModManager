@@ -11,6 +11,31 @@ using System.Windows.Forms;
 using System.IO.Compression;
 using System.Collections.Generic;
 
+// Sonic '06 Mod Manager is licensed under the MIT License:
+/*
+ * MIT License
+
+ * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
+
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 namespace Unify.Patcher
 {
     class ModEngine
@@ -85,6 +110,120 @@ namespace Unify.Patcher
                     else {
                         skipped.Add($"► {name} (failed because the targeted platform was invalid)");
                         return;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Uninstalls all mods.
+        /// </summary>
+        public static void UninstallMods() {
+            if (Properties.Settings.Default.GameDirectory != string.Empty ||
+                File.Exists(Properties.Settings.Default.GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
+                    // Search for all files with specified LINQ filters
+                    List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), "*.*", SearchOption.AllDirectories)
+                                        .Where(s => s.EndsWith(".arc_back") ||
+                                                    s.EndsWith(".arc_orig")).ToList();
+
+                    foreach (string file in files) {
+                        if (File.Exists(file.ToString().Remove(file.Length - 5))) {
+                            if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
+                            File.Delete(file.ToString().Remove(file.Length - 5)); // Delete file with last five characters set to '_back' or '_orig'
+                        }
+                        File.Move(file, file.ToString().Remove(file.Length - 5)); // Remove last five characters ('_back' or '_orig')
+                }
+            }
+        }
+
+        /// <summary>
+        /// Uninstalls user-made filesystems.
+        /// </summary>
+        public static void UninstallCustomFilesystem(ListView.ListViewItemCollection listViewItems) {
+            if (Properties.Settings.Default.GameDirectory != string.Empty ||
+                File.Exists(Properties.Settings.Default.GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
+                    foreach (ListViewItem mod in listViewItems) {
+                        string[] custom = INI.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
+
+                        if (custom[0] != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
+                            foreach (string file in custom) {
+                                // Search for all files with filters from custom
+                                List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), file, SearchOption.AllDirectories).ToList();
+                                
+                                foreach (string customfile in files)
+                                    try {
+                                        if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
+                                        File.Delete(customfile); // If custom archive is found, erase...
+                                    } catch { }
+                            }
+                        }
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Removes redirected save data.
+        /// </summary>
+        public static void UninstallSaves(ListView.ListViewItemCollection listViewItems) {
+            if (Properties.Settings.Default.SaveData != string.Empty || File.Exists(Properties.Settings.Default.SaveData)) {
+                foreach (ListViewItem mod in listViewItems) {
+                    // Basically just to check 'SonicNextSaveData.bin' as a directory
+                    string saveLocation = Path.GetDirectoryName(Path.GetDirectoryName(Properties.Settings.Default.SaveData));
+
+                    // Deserialise 'Save' key
+                    string savedata = INI.DeserialiseKey("Save", mod.SubItems[6].Text);
+
+                    if (savedata != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
+                        if (Literal.Emulator() == "Xenia") {
+                            string[] saves = Array.Empty<string>();
+
+                            // Get all backup directories
+                            if (Directory.Exists(saveLocation)) saves = Directory.GetDirectories(saveLocation, "SonicNextSaveData.bin_back", SearchOption.AllDirectories);
+
+                            foreach (var dir in saves) {
+                                // Original save data path
+                                string saveFile = Path.Combine(dir.ToString().Remove(dir.Length - 5), Path.GetFileName(dir.ToString().Remove(dir.Length - 5)));
+
+                                // Copy redirected save data back to the mod's directory (keeps user progress)
+                                if (File.Exists(saveFile)) {
+                                    Console.WriteLine($"Removing: {dir}");
+                                    if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.360"), true);
+                                }
+
+                                // Recursively erase redirected save data
+                                if (Directory.Exists(dir.ToString().Remove(dir.Length - 5))) {
+                                    Console.WriteLine($"Removing: {dir}");
+                                    Directory.Delete(dir.ToString().Remove(dir.Length - 5), true);
+                                }
+
+                                // Restore original save data
+                                Directory.Move(dir.ToString(), dir.ToString().Remove(dir.Length - 5));
+                            }
+                        } else if (Literal.Emulator() == "RPCS3") {
+                            string[] saves = Array.Empty<string>();
+
+                            // Original save data path
+                            if (Directory.Exists(saveLocation)) saves = Directory.GetFiles(saveLocation, "SYS-DATA_back", SearchOption.AllDirectories);
+
+                            foreach (var file in saves) {
+                                string saveFile = Path.Combine(file.ToString().Remove(file.Length - 5), Path.GetFileName(file.ToString().Remove(file.Length - 5)));
+
+                                // Copy redirected save data back to the mod's directory (keeps user progress)
+                                if (File.Exists(saveFile)) {
+                                    Console.WriteLine($"Removing: {file}");
+                                    if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.ps3"), true);
+                                }
+
+                                // Erase redirected save data
+                                if (File.Exists(file.ToString().Remove(file.Length - 5))) {
+                                    Console.WriteLine($"Removing: {file}");
+                                    File.Delete(file.ToString().Remove(file.Length - 5));
+                                }
+
+                                // Restore original save data
+                                File.Move(file.ToString(), file.ToString().Remove(file.Length - 5));
+                            }
+                        }
                     }
                 }
             }
