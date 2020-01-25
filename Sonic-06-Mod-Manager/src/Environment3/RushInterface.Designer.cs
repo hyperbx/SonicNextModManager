@@ -31,7 +31,7 @@ namespace Unify.Environment3
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Under Construction",
             "Hyper",
             "Windows",
@@ -373,7 +373,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(674, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(734, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_RefreshMods_Click);
@@ -390,7 +390,7 @@ namespace Unify.Environment3
             this.SectionButton_SaveChecks.SectionImage = global::Unify.Properties.Resources.CheckBox_16x_24;
             this.SectionButton_SaveChecks.SectionText = "Save checked mods";
             this.SectionButton_SaveChecks.SelectedSection = false;
-            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(824, 35);
+            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(884, 35);
             this.SectionButton_SaveChecks.TabIndex = 52;
             this.SectionButton_SaveChecks.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_SaveChecks.Click += new System.EventHandler(this.SectionButton_SaveChecks_Click);
@@ -961,9 +961,9 @@ namespace Unify.Environment3
             this.ListView_PatchesList.FullRowSelect = true;
             this.ListView_PatchesList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.ListView_PatchesList.HideSelection = false;
-            listViewItem2.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
             this.ListView_PatchesList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem1});
             this.ListView_PatchesList.Location = new System.Drawing.Point(0, 0);
             this.ListView_PatchesList.MultiSelect = false;
             this.ListView_PatchesList.Name = "ListView_PatchesList";
@@ -1683,10 +1683,10 @@ namespace Unify.Environment3
             this.SplitContainer_ModUpdate.Panel2.Controls.Add(this.ProgressBar_ModUpdate);
             this.SplitContainer_ModUpdate.Panel2.Controls.Add(this.Panel_ModInfoBackdrop);
             this.SplitContainer_ModUpdate.Panel2MinSize = 300;
-            this.SplitContainer_ModUpdate.Size = new System.Drawing.Size(563, 375);
+            this.SplitContainer_ModUpdate.Size = new System.Drawing.Size(561, 375);
             this.SplitContainer_ModUpdate.SplitterDistance = 201;
-            this.SplitContainer_ModUpdate.SplitterWidth = 2;
             this.SplitContainer_ModUpdate.TabIndex = 44;
+            this.SplitContainer_ModUpdate.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer_ModUpdate_SplitterMoved);
             // 
             // Panel_ModUpdateBackdrop
             // 
@@ -1766,7 +1766,7 @@ namespace Unify.Environment3
             this.ProgressBar_ModUpdate.Enabled = false;
             this.ProgressBar_ModUpdate.Location = new System.Drawing.Point(2, 338);
             this.ProgressBar_ModUpdate.Name = "ProgressBar_ModUpdate";
-            this.ProgressBar_ModUpdate.Size = new System.Drawing.Size(375, 35);
+            this.ProgressBar_ModUpdate.Size = new System.Drawing.Size(353, 35);
             this.ProgressBar_ModUpdate.TabIndex = 94;
             // 
             // Panel_ModInfoBackdrop
@@ -1779,7 +1779,7 @@ namespace Unify.Environment3
             this.Panel_ModInfoBackdrop.Controls.Add(this.ListBox_UpdateLogs);
             this.Panel_ModInfoBackdrop.Location = new System.Drawing.Point(2, 0);
             this.Panel_ModInfoBackdrop.Name = "Panel_ModInfoBackdrop";
-            this.Panel_ModInfoBackdrop.Size = new System.Drawing.Size(375, 332);
+            this.Panel_ModInfoBackdrop.Size = new System.Drawing.Size(353, 332);
             this.Panel_ModInfoBackdrop.TabIndex = 21;
             // 
             // ListBox_UpdateLogs
@@ -1792,7 +1792,7 @@ namespace Unify.Environment3
             this.ListBox_UpdateLogs.ItemHeight = 15;
             this.ListBox_UpdateLogs.Location = new System.Drawing.Point(0, 0);
             this.ListBox_UpdateLogs.Name = "ListBox_UpdateLogs";
-            this.ListBox_UpdateLogs.Size = new System.Drawing.Size(373, 330);
+            this.ListBox_UpdateLogs.Size = new System.Drawing.Size(351, 330);
             this.ListBox_UpdateLogs.TabIndex = 1;
             // 
             // Label_Title_ModsAndPatches
@@ -1833,7 +1833,7 @@ namespace Unify.Environment3
             this.Panel_ChangelogsBackdrop.Controls.Add(this.RichTextBox_Changelogs);
             this.Panel_ChangelogsBackdrop.Location = new System.Drawing.Point(14, 194);
             this.Panel_ChangelogsBackdrop.Name = "Panel_ChangelogsBackdrop";
-            this.Panel_ChangelogsBackdrop.Size = new System.Drawing.Size(563, 229);
+            this.Panel_ChangelogsBackdrop.Size = new System.Drawing.Size(560, 229);
             this.Panel_ChangelogsBackdrop.TabIndex = 35;
             // 
             // RichTextBox_Changelogs
@@ -1846,7 +1846,7 @@ namespace Unify.Environment3
             this.RichTextBox_Changelogs.Location = new System.Drawing.Point(0, 0);
             this.RichTextBox_Changelogs.Name = "RichTextBox_Changelogs";
             this.RichTextBox_Changelogs.ReadOnly = true;
-            this.RichTextBox_Changelogs.Size = new System.Drawing.Size(561, 227);
+            this.RichTextBox_Changelogs.Size = new System.Drawing.Size(558, 227);
             this.RichTextBox_Changelogs.TabIndex = 34;
             this.RichTextBox_Changelogs.Text = "";
             // 

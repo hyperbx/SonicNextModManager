@@ -38,7 +38,7 @@ namespace Unify.Environment3
         private Bitmap sectionImage = Properties.Resources.Refresh_grey_16x;
         private string sectionText = "None";
         private bool selectedSection = false;
-        private Color accentColour = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
+        private Color accentColour = Literal.StringToColor(Properties.Settings.Default.AccentColour);
         private Color textColour = SystemColors.Control;
 
         [Category("Images"), Browsable(true), Description("The image used for the section.")]
@@ -75,7 +75,7 @@ namespace Unify.Environment3
 
         private void SectionButton_MouseUp(object sender, MouseEventArgs e) {
             BackColor = Color.FromArgb(48, 48, 51);
-            Selected.BackColor = AccentColour = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
+            Selected.BackColor = AccentColour = Literal.StringToColor(Properties.Settings.Default.AccentColour);
             Selected.Visible = selectedSection;
         }
 

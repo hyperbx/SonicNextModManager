@@ -34,7 +34,7 @@ namespace Unify.Environment3
 
         public event EventHandler ButtonClick;
 
-        private void Button_Colour_Click(object sender, EventArgs e) { if (this.ButtonClick != null) this.ButtonClick(sender, e); }
+        private void Button_Colour_Click(object sender, EventArgs e) { ButtonClick?.Invoke(sender, e); }
 
         private void Button_Colour_MouseEnter(object sender, EventArgs e) { ((Button)sender).FlatAppearance.BorderSize = 1; }
 

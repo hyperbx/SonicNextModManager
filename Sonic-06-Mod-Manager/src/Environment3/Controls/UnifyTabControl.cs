@@ -46,7 +46,7 @@ namespace Unify.Environment3
         /// <summary>
         ///     The color of the active tab header
         /// </summary>
-        private Color activeColor = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
+        private Color activeColor = Literal.StringToColor(Properties.Settings.Default.AccentColour);
 
         /// <summary>
         ///     The color of the background of the Tab
@@ -71,7 +71,7 @@ namespace Unify.Environment3
         /// <summary>
         ///     The color of the horizontal line which is under the headers of the tab pages
         /// </summary>
-        private Color horizLineColor = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
+        private Color horizLineColor = Literal.StringToColor(Properties.Settings.Default.AccentColour);
 
         /// <summary>
         ///     A random page will be used to store a tab that will be deplaced in the run-time

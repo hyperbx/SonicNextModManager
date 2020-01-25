@@ -196,7 +196,7 @@ namespace Unify.Environment3
             Label_Status.BackColor =
             TabControl_Patches.HorizontalLineColor =
             TabControl_Patches.ActiveColor =
-            Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
+            Literal.StringToColor(Properties.Settings.Default.AccentColour);
             #endregion
 
             #region Set controls depending on emulator
@@ -380,18 +380,28 @@ namespace Unify.Environment3
         private void TabControl_Rush_SelectedIndexChanged(object sender, EventArgs e) {
             TabControl_Rush.SelectedTab.VerticalScroll.Value = 0;
             RefreshColumnSize();
+
+            // Clear mod updating UI to delist any mods that may be changed later
+            if (TabControl_Rush.SelectedTab != Tab_Section_Updates) {
+                ListBox_UpdateLogs.Items.Clear();
+                ListView_ModUpdates.Items.Clear();
+            }
         }
 
         /// <summary>
         /// Deserialises 'mod.ini' for each iterated mod and checks for updates.
         /// </summary>
-        private async Task CheckForModUpdates() {
+        /// <param name="searchByMod">File path to another mod's INI to ensure it's searching for the correct mod.</param>
+        private async Task CheckForModUpdates(string searchByMod) {
             if (Properties.Settings.Default.ModsDirectory != string.Empty &&
                 Directory.Exists(Properties.Settings.Default.ModsDirectory)) {
+                    ListView_ModUpdates.Items.Clear();
+                    ListBox_UpdateLogs.Items.Clear();
                     foreach (string mod in Directory.GetFiles(Properties.Settings.Default.ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
                         // Block controls to ensure the list isn't added to
                         SectionButton_CheckForModUpdates.Enabled = false;
 
+                        // Deserialise INI
                         string title     = INI.DeserialiseKey("Title", mod),
                                version   = INI.DeserialiseKey("Version", mod),
                                metadata  = INI.DeserialiseKey("Metadata", mod),
@@ -403,6 +413,7 @@ namespace Unify.Environment3
                             if (config.Length != 0) {
                                 string[] configLines = config.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
+                                // Manually deserialise downloaded string
                                 foreach (string metadataLine in configLines) {
                                     string metadataEntry = string.Empty;
                                     if (metadataLine.StartsWith("Version")) {
@@ -418,8 +429,12 @@ namespace Unify.Environment3
                                 }
 
                                 if (versionDL != version) {
+                                    // Mod needs updating - add to list
                                     ListViewItem update = new ListViewItem(new[] { title, string.Empty, mod });
                                     ListView_ModUpdates.Items.Add(update);
+
+                                    // If the paths are identical, then the mod shall be checked
+                                    update.Checked = mod == searchByMod;
                                 }
                             }
                         }
@@ -437,7 +452,7 @@ namespace Unify.Environment3
                 if (browseMods.ShowDialog() == DialogResult.OK) {
                     Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
                     Properties.Settings.Default.Save();
-                    await CheckForModUpdates(); // Check all mods in the mods list for updates with new path
+                    await CheckForModUpdates(string.Empty); // Check all mods in the mods list for updates with new path
                 }
             }
         }
@@ -489,7 +504,7 @@ namespace Unify.Environment3
         private void Section_Appearance_ColourPicker_Click(object sender, EventArgs e) {
             ColorDialog accentPicker = new ColorDialog {
                 FullOpen = true,
-                Color = Literal.StringToColorArray(Properties.Settings.Default.AccentColour)
+                Color = Literal.StringToColor(Properties.Settings.Default.AccentColour)
             };
 
             if (accentPicker.ShowDialog() == DialogResult.OK) {
@@ -538,7 +553,7 @@ namespace Unify.Environment3
         /// <summary>
         /// Event handler for the right-click menu items by index.
         /// </summary>
-        private void ContextMenu_ModMenu_Items_Click(object sender, EventArgs e) {
+        private async void ContextMenu_ModMenu_Items_Click(object sender, EventArgs e) {
             switch (((ToolStripMenuItem)sender).ToString()) {
                 case "Mod Information":
                     new ModInfo(ListView_ModsList.FocusedItem.SubItems[6].Text).ShowDialog();
@@ -552,7 +567,11 @@ namespace Unify.Environment3
                     }
                     break;
                 case "Check for Updates":
-
+                    SectionButton_DeselectAll();
+                    Rush_Section_Updates.SelectedSection = true;
+                    TabControl_Rush.SelectedTab = Tab_Section_Updates;
+                    TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Updates_UICleanSpace);
+                    await CheckForModUpdates(ListView_ModsList.FocusedItem.SubItems[6].Text);
                     break;
                 case "Edit Mod":
                     new ModCreator(ListView_ModsList.FocusedItem.SubItems[6].Text, true).ShowDialog();
@@ -1014,7 +1033,8 @@ namespace Unify.Environment3
         /// </summary>
         private void UpdateVersion(bool useBackupServer) {
             // Set controls enabled and visibility state
-            CheckBox_CheckUpdatesOnLaunch.Enabled = false;
+            SectionButton_CheckForSoftwareUpdates.Visible = CheckBox_CheckUpdatesOnLaunch.Enabled = false;
+            TabControl_Rush.SelectedTab.VerticalScroll.Value = 0;
             ProgressBar_SoftwareUpdate.Visible = true;
 
             // If SEGA Carnival is offline, use GitHub
@@ -1111,10 +1131,8 @@ namespace Unify.Environment3
 
             // Check for mod updates is clicked
             } else if (sender == SectionButton_CheckForModUpdates) {
-                ListView_ModUpdates.Items.Clear();
-                ListBox_UpdateLogs.Items.Clear();
                 Properties.Settings.Default.LastModUpdate = DateTime.Now.Ticks;
-                await CheckForModUpdates();
+                await CheckForModUpdates(string.Empty);
                 Properties.Settings.Default.Save();
             }
 
@@ -1301,5 +1319,10 @@ namespace Unify.Environment3
                                                        "Protocol Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Resizes Mod Updates container when splitter is moved.
+        /// </summary>
+        private void SplitContainer_ModUpdate_SplitterMoved(object sender, SplitterEventArgs e) { SizeLastColumn(ListView_ModUpdates); }
     }
 }

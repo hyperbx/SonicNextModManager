@@ -78,7 +78,7 @@ namespace Unify.Globalisation
         /// <summary>
         /// Converts an ARGB string to a Color.
         /// </summary>
-        public static Color StringToColorArray(string stringAsColour) {
+        public static Color StringToColor(string stringAsColour) {
             Color colourFromString = Color.FromArgb(0, 0, 0);
             for (int i = 0; i < 3; i++) {
                 // Split the string on the comma
@@ -93,6 +93,9 @@ namespace Unify.Globalisation
             return colourFromString;
         }
 
+        /// <summary>
+        /// Converts a string to an ARGB Color.
+        /// </summary>
         public static string ColorToString(Color color) { return $"{color.R.ToString()},{color.G.ToString()},{color.B.ToString()}"; }
     }
 }

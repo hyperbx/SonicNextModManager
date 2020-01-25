@@ -54,7 +54,7 @@ namespace Unify.Environment3
                 lbl_ReadOnly.ForeColor = SystemColors.GrayText;
             }
 
-            unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Literal.StringToColorArray(Properties.Settings.Default.AccentColour);
+            unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Literal.StringToColor(Properties.Settings.Default.AccentColour);
             if (Properties.Settings.Default.HighContrastText) unifytb_ModCreator.SelectedTextColor = SystemColors.ControlText;
 
             if (edit) {
