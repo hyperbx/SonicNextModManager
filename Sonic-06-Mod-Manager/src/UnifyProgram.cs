@@ -35,7 +35,7 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber = "Version 3.0-indev-250120r1";
+        public static readonly string VersionNumber = "Version 3.0-indev-260120r1";
         public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         public static string Patches = $"{ApplicationData}\\Unify\\Patches\\";
 

@@ -138,7 +138,7 @@ namespace Unify
             } else if (sender == Button_EmulatorExecutable) {
                 // Browse for emulator executables
                 OpenFileDialog browseEmulator = new OpenFileDialog() {
-                    Title = $"Please select an executable for {Literal.Emulator()}...",
+                    Title = $"Please select an executable for {Literal.Emulator(TextBox_GameDirectory.Text)}...",
                     Filter = "Programs (*.exe)|*.exe"
                 };
 

@@ -56,8 +56,8 @@ namespace Unify.Patcher
             string[] read_only = INI.DeserialiseKey("Read-only", mod).Split(','); // Deserialise 'Read-only' key
             
             //Skip the mod if the platform is invalid
-            if ((Literal.System() == "Xbox 360" && platform == "PlayStation 3") ||
-                (Literal.System() == "PlayStation 3" && platform == "Xbox 360")) {
+            if ((Literal.System(Properties.Settings.Default.GameDirectory) == "Xbox 360" && platform == "PlayStation 3") ||
+                (Literal.System(Properties.Settings.Default.GameDirectory) == "PlayStation 3" && platform == "Xbox 360")) {
                     skipped.Add($"► {name} (failed because the mod was not targeted for the {platform})");
                     return;
             }
@@ -174,7 +174,7 @@ namespace Unify.Patcher
                     string savedata = INI.DeserialiseKey("Save", mod.SubItems[6].Text);
 
                     if (savedata != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
-                        if (Literal.Emulator() == "Xenia") {
+                        if (Literal.Emulator(Properties.Settings.Default.GameDirectory) == "Xenia") {
                             string[] saves = Array.Empty<string>();
 
                             // Get all backup directories
@@ -199,7 +199,7 @@ namespace Unify.Patcher
                                 // Restore original save data
                                 Directory.Move(dir.ToString(), dir.ToString().Remove(dir.Length - 5));
                             }
-                        } else if (Literal.Emulator() == "RPCS3") {
+                        } else if (Literal.Emulator(Properties.Settings.Default.GameDirectory) == "RPCS3") {
                             string[] saves = Array.Empty<string>();
 
                             // Original save data path

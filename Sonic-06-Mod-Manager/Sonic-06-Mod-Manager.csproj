@@ -57,6 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="src\Environment3\Controls\UnifyMessenger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,16 +241,10 @@
     <EmbeddedResource Include="src\Environment3\UnifySetup.resx">
       <DependentUpon>UnifySetup.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <None Include="third_party\Ookii.Dialogs\ookii.snk" />
   </ItemGroup>
   <ItemGroup>

@@ -44,18 +44,18 @@ namespace Unify.Globalisation
         /// <summary>
         /// Translates a file extension to 'Xbox 360' or 'PlayStation 3'
         /// </summary>
-        public static string System() {
-            if (Path.GetExtension(Properties.Settings.Default.GameDirectory).ToLower() == ".xex") return "Xbox 360";
-            if (Path.GetExtension(Properties.Settings.Default.GameDirectory).ToLower() == ".bin") return "PlayStation 3";
+        public static string System(string path) {
+            if (Path.GetExtension(path).ToLower() == ".xex") return "Xbox 360";
+            if (Path.GetExtension(path).ToLower() == ".bin") return "PlayStation 3";
             else return "unspecified";
         }
 
         /// <summary>
         /// Translates a file extension to 'Xenia' or 'RPCS3'
         /// </summary>
-        public static string Emulator() {
-            if (Path.GetExtension(Properties.Settings.Default.GameDirectory).ToLower() == ".xex") return "Xenia";
-            if (Path.GetExtension(Properties.Settings.Default.GameDirectory).ToLower() == ".bin") return "RPCS3";
+        public static string Emulator(string path) {
+            if (Path.GetExtension(path).ToLower() == ".xex") return "Xenia";
+            if (Path.GetExtension(path).ToLower() == ".bin") return "RPCS3";
             else return "unspecified";
         }
 

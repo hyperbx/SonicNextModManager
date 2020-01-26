@@ -223,7 +223,7 @@ namespace Unify.Environment3
             #endregion
 
             #region Set controls depending on emulator
-            if (Literal.Emulator() == "Xenia") {
+            if (Literal.Emulator(Properties.Settings.Default.GameDirectory) == "Xenia") {
                 // Set text colour to Control
                 Label_Subtitle_Emulator_Options.ForeColor =
                 Label_GraphicsAPI.ForeColor =
@@ -244,7 +244,7 @@ namespace Unify.Environment3
 
                 // Set visibility state of controls
                 Label_RPCS3Warning.Visible = false;
-            } else if (Literal.Emulator() == "RPCS3") {
+            } else if (Literal.Emulator(Properties.Settings.Default.GameDirectory) == "RPCS3") {
                 // Set text colour to GrayText
                 Label_Subtitle_Emulator_Options.ForeColor =
                 Label_Description_GraphicsAPI.ForeColor =
@@ -367,7 +367,7 @@ namespace Unify.Environment3
             } else if (sender == Button_EmulatorExecutable) {
                 // Browse for emulator executables
                 OpenFileDialog browseEmulator = new OpenFileDialog() {
-                    Title = $"Please select an executable for {Literal.Emulator()}...",
+                    Title = $"Please select an executable for {Literal.Emulator(Properties.Settings.Default.GameDirectory)}...",
                     Filter = "Programs (*.exe)|*.exe"
                 };
 
@@ -805,7 +805,7 @@ namespace Unify.Environment3
                         UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
                                                                "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    if (Properties.Settings.Default.LaunchEmulator) LaunchEmulator(Literal.Emulator());
+                    if (Properties.Settings.Default.LaunchEmulator) LaunchEmulator(Literal.Emulator(Properties.Settings.Default.GameDirectory));
                     Label_Status.Text = $"Ready.";
             } else {
                 OpenFileDialog browseGame = new OpenFileDialog() {
@@ -829,7 +829,7 @@ namespace Unify.Environment3
             // Deserialise 'Save' key
             if (INI.DeserialiseKey("Save", mod).Contains("savedata")) {
                 if (File.Exists(saveLocation)) {
-                        if (Literal.System() == "Xbox 360") {
+                        if (Literal.System(Properties.Settings.Default.GameDirectory) == "Xbox 360") {
                             try {
                                 // If the backup directory doesn't exist, create it
                                 if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) 
@@ -843,7 +843,7 @@ namespace Unify.Environment3
                                     // Copy mod's save to the save data location
                                     File.Copy(Path.Combine(Path.GetDirectoryName(mod), "savedata.360"), saveLocation, true);
                             } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the Xbox 360)"); }
-                        } else if (Literal.System() == "PlayStation 3") {
+                        } else if (Literal.System(Properties.Settings.Default.GameDirectory) == "PlayStation 3") {
                             try {
                                 if (File.Exists(Path.Combine(Path.GetDirectoryName(mod), "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
                                     // If the backup save data doesn't exist, create it
@@ -884,7 +884,7 @@ namespace Unify.Environment3
                     if (browseEmulator.ShowDialog() == DialogResult.OK) {
                         Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
                         Properties.Settings.Default.Save();
-                        LaunchEmulator(Literal.Emulator()); // Perform task again with specified emulator
+                        LaunchEmulator(Literal.Emulator(Properties.Settings.Default.GameDirectory)); // Perform task again with specified emulator
                     }
             } else {
                 if (emulator == "Xenia") {
@@ -900,7 +900,7 @@ namespace Unify.Environment3
                         if (browseGame.ShowDialog() == DialogResult.OK) {
                             Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
                             Properties.Settings.Default.Save();
-                            LaunchEmulator(Literal.Emulator()); // Perform task again with specified emulator
+                            LaunchEmulator(Literal.Emulator(Properties.Settings.Default.GameDirectory)); // Perform task again with specified emulator
                         }
                     }
 
