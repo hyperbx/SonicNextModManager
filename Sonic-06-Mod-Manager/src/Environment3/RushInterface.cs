@@ -54,7 +54,10 @@ namespace Unify.Environment3
 
             // Begin first time setup
             if (Properties.Settings.Default.FirstLaunch &&
-                Properties.Settings.Default.ModsDirectory == string.Empty) new UnifySetup().ShowDialog();
+                Properties.Settings.Default.ModsDirectory == string.Empty) {
+                    new UnifySetup().ShowDialog();
+                    UpdatePatches();
+            }
 
             // Prevents actions being performed in UnifyEnvironment's design time.
             if (!DesignMode) {
@@ -66,6 +69,7 @@ namespace Unify.Environment3
 
                 // Force splitter widths - because WinForms is dumb and ignores it at design time
                 SplitContainer_ModsControls.SplitterWidth = 1;
+                SplitContainer_PatchesControls.SplitterWidth = 2;
                 SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
                 // If the application is a debug build, force debug mode on
@@ -79,7 +83,7 @@ namespace Unify.Environment3
         /// Performs actions on launch.
         /// </summary>
         private void RushInterface_Load(object sender, EventArgs e) {
-            SaveAndRefreshList(); // Refresh mods list
+            RefreshLists(); // Refresh mods list
             UninstallThread(); // Uninstall everything
         }
 
@@ -270,8 +274,9 @@ namespace Unify.Environment3
         /// <summary>
         /// Re-deserialises the mods, then checks them - in turn, refreshing the list.
         /// </summary>
-        private void SaveAndRefreshList() {
+        private void RefreshLists() {
             DeserialiseMods(); // Refresh mods list
+            DeserialisePatches(); // Refresh patches list
             CheckDeserialisedMods(); // Check saved items
         }
 
@@ -387,7 +392,7 @@ namespace Unify.Environment3
                     Properties.Settings.Default.Save();
                 }
             }
-            SaveAndRefreshList();
+            RefreshLists();
         }
 
         /// <summary>
@@ -588,7 +593,7 @@ namespace Unify.Environment3
                     catch {
                         UnifyMessenger.UnifyMessage.ShowDialog("Unable to locate the selected mod. It may have been removed from the mods directory. Removing from list...",
                                                                "Unable to find mod...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        DeserialiseMods();
+                        RefreshLists(); // Refresh mods list
                     }
                     break;
                 case "Check for Updates":
@@ -614,7 +619,7 @@ namespace Unify.Environment3
                                 foreach (FileInfo file in modData.GetFiles()) file.Delete();
                                 foreach (DirectoryInfo directory in modData.GetDirectories()) directory.Delete(true);
                                 Directory.Delete(modPath);
-                                DeserialiseMods();
+                                RefreshLists();
                             }
                         }
                     } catch {
@@ -667,6 +672,37 @@ namespace Unify.Environment3
                                                   mod
                                               });
                         ListView_ModsList.Items.Add(config);
+                    } catch { }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserialises all patches in the patches directory.
+        /// </summary>
+        private void DeserialisePatches() {
+            if (Directory.Exists(Program.Patches)) {
+                ListView_PatchesList.Items.Clear(); // Clears the patches list
+                foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
+                    try {
+                        string blurb = Lua.DeserialiseParameter("Blurb", patch); // Deserialise 'Blurb' parameter
+                        string description = Lua.DeserialiseParameter("Description", patch); // Deserialise 'Description' parameter
+                        string patchInfo = string.Empty;
+
+                        if (description == string.Empty) patchInfo = blurb;
+                        else if  (blurb == string.Empty) patchInfo = description;
+                        else                             patchInfo = "N/A";
+
+                        //Add mod to list, getting information from its mod.ini file
+                        ListViewItem script = new ListViewItem(new[] {
+                                                  Lua.DeserialiseParameter("Title", patch), // Deserialise 'Title' parameter
+                                                  Lua.DeserialiseParameter("Author", patch), // Deserialise 'Author' parameter
+                                                  Lua.DeserialiseParameter("Platform", patch), // Deserialise 'Platform' parameter
+                                                  patchInfo,
+                                                  string.Empty,
+                                                  patch
+                                              });
+                        ListView_PatchesList.Items.Add(script);
                     } catch { }
                 }
             }
@@ -753,7 +789,7 @@ namespace Unify.Environment3
                 File.Exists(Properties.Settings.Default.GameDirectory)) {
                     ModEngine.skipped.Clear(); // Clear the skipped list
                     SaveChecks(); // Save checked items
-                    SaveAndRefreshList();
+                    RefreshLists();
                     UninstallThread(); // Uninstall everything before installing more mods
 
                     if (_isPathInvalid) {
@@ -970,7 +1006,8 @@ namespace Unify.Environment3
         /// Save checked items at their specified locations in the list.
         /// </summary>
         private void SectionButton_SaveChecks_Click(object sender, EventArgs e) {
-            SaveAndRefreshList(); // Refresh mods list
+            SaveChecks(); // Save checked items
+            RefreshLists(); // Refresh mods list
             CheckDeserialisedMods(); // Check saved items
         }
 
@@ -978,10 +1015,18 @@ namespace Unify.Environment3
         /// Sets the item check state depending on the sender.
         /// </summary>
         private void Button_Mods_Selection_Click(object sender, EventArgs e) {
+            // Mods List
             if (sender == Button_Mods_SelectAll) foreach (ListViewItem item in ListView_ModsList.Items) item.Checked = true; // Select All
             else if (sender == Button_Mods_DeselectAll) { // Deselect All
                 foreach (ListViewItem item in ListView_ModsList.Items) item.Checked = false;
                 ListView_ModsList.SelectedItems.Clear();
+            }
+
+            // Patches List
+            else if (sender == Button_Patches_SelectAll) foreach (ListViewItem item in ListView_PatchesList.Items) item.Checked = true; // Select All
+            else if (sender == Button_Patches_DeselectAll) { // Deselect All
+                foreach (ListViewItem item in ListView_PatchesList.Items) item.Checked = false;
+                ListView_PatchesList.SelectedItems.Clear();
             }
         }
 
@@ -1139,8 +1184,10 @@ namespace Unify.Environment3
                         client.DownloadFileAsync(new Uri(repoLinks[i]), Path.Combine(Program.Patches, Path.GetFileName(repoLinks[i])));
 
                 //Feedback
-                UnifyMessenger.UnifyMessage.ShowDialog("All patches have been updated!",
+                UnifyMessenger.UnifyMessage.ShowDialog("The latest patches have been downloaded!",
                                                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                RefreshLists();
             } catch (Exception ex) {
                 if (_debug) Console.WriteLine(ex.ToString()); // Write exception to debug log
                 UnifyMessenger.UnifyMessage.ShowDialog("Failed to update patches...",
@@ -1153,14 +1200,13 @@ namespace Unify.Environment3
         /// </summary>
         private void SectionButton_CreateNewMod_Click(object sender, EventArgs e) {
             new ModCreator(string.Empty, false).ShowDialog(); // Launch Mod Creator
-            SaveAndRefreshList(); // Refresh mods list on close
+            RefreshLists(); // Refresh mods list on close
         }
 
         /// <summary>
-        /// Refreshes the mods list - there were plans initially to use FileSystemWatcher, but it caused too many issues with other parts of the application.
-        ///                           it wasn't designed around it, so it won't work.
+        /// Refreshes the lists.
         /// </summary>
-        private void SectionButton_RefreshMods_Click(object sender, EventArgs e) { SaveAndRefreshList(); }
+        private void SectionButton_Refresh_Click(object sender, EventArgs e) { RefreshLists(); }
 
         /// <summary>
         /// Enables/disables the Update Mods button depending on how many items are checked in the Mod Updates list.
@@ -1355,7 +1401,7 @@ namespace Unify.Environment3
                 lv.Columns[0].Width = (x * 5) - 5;
                 lv.Columns[1].Width = (x * 2) + 20;
                 lv.Columns[3].Width = (x * 2) + 10;
-                lv.Columns[3].Width = (x * 6) - 5;
+                lv.Columns[3].Width = x * 7;
                 lv.Columns[4].Width = x * 100;
             } else if (lv == ListView_ModUpdates) {
                 int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;

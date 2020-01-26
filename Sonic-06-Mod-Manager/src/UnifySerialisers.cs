@@ -30,7 +30,7 @@ namespace Unify.Serialisers
     class INI
     {
         /// <summary>
-        /// If the specified key is found in the specified INI, return its value as a string. If it's not found, return N/A.
+        /// If the specified key is found in the specified INI, return its value as a string.
         /// </summary>
         public static string DeserialiseKey(string key, string ini) {
             string line, entryValue = string.Empty;
@@ -41,6 +41,29 @@ namespace Unify.Serialisers
                         if (line.StartsWith(key)) {
                             entryValue = line.Substring(line.IndexOf("=") + 2);
                             entryValue = entryValue.Remove(entryValue.Length - 1);
+                        }
+                    }
+                } catch { }
+
+            return entryValue;
+        }
+    }
+
+    class Lua
+    {
+        /// <summary>
+        /// If the specified parameter is found in the specified Lua script, return its value as a string.
+        /// </summary>
+        public static string DeserialiseParameter(string parameter, string script) {
+            string line, entryValue = string.Empty;
+
+            using (StreamReader scriptFile = new StreamReader(script))
+                try {
+                    while ((line = scriptFile.ReadLine()) != null) {
+                        if (line.StartsWith(parameter)) {
+                            entryValue = line.Substring(line.IndexOf("(") + 1);
+                            entryValue = entryValue.Remove(entryValue.Length - 2);
+                            entryValue = entryValue.Substring(1);
                         }
                     }
                 } catch { }
