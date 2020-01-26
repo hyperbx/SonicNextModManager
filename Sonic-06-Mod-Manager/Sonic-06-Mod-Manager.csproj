@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,6 +44,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -137,7 +141,7 @@
     <Compile Include="third_party\Ookii.Dialogs\Interop\ShellWrapperDefinitions.cs" />
     <Compile Include="third_party\Ookii.Dialogs\Interop\Win32Resources.cs" />
     <Compile Include="third_party\Ookii.Dialogs\Interop\WindowHandleWrapper.cs" />
-    <Compile Include="third_party\Ookii.Dialogs\NativeMethods.cs" />
+    <Compile Include="third_party\Ookii.Dialogs\Natives.cs" />
     <Compile Include="third_party\Ookii.Dialogs\OkButtonClickedEventArgs.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ProgressBarState.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ProgressBarStyle.cs" />
@@ -282,6 +286,9 @@
     <Content Include="third_party\Ookii.Dialogs\VistaFolderBrowserDialog.bmp" />
     <Content Include="third_party\Ookii.Dialogs\VistaOpenFileDialog.bmp" />
     <Content Include="third_party\Ookii.Dialogs\VistaSaveFileDialog.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

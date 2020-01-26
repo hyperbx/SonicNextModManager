@@ -87,14 +87,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return ((OpenFileDialog)DownlevelDialog).Multiselect;
-                return GetOption(NativeMethods.FOS.FOS_ALLOWMULTISELECT);
+                return GetOption(Natives.FOS.FOS_ALLOWMULTISELECT);
             }
             set
             {
                 if (DownlevelDialog != null)
                     ((OpenFileDialog)DownlevelDialog).Multiselect = value;
 
-                SetOption(NativeMethods.FOS.FOS_ALLOWMULTISELECT, value);
+                SetOption(Natives.FOS.FOS_ALLOWMULTISELECT, value);
             }
         }
 
@@ -221,7 +221,7 @@ namespace Ookii.Dialogs
                     Ookii.Dialogs.Interop.IShellItem item;
                     results.GetItemAt(x, out item);
                     string name;
-                    item.GetDisplayName(NativeMethods.SIGDN.SIGDN_FILESYSPATH, out name);
+                    item.GetDisplayName(Natives.SIGDN.SIGDN_FILESYSPATH, out name);
                     fileNames[x] = name;
                 }
                 FileNamesInternal = fileNames;

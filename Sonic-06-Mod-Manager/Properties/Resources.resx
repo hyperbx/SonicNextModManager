@@ -202,6 +202,9 @@
   <data name="PatchPackage_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\patchpackage_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PatchURI_GitHub" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/Knuxfan24/Sonic-06-Mod-Manager-Patches/master/.git-repo</value>
+  </data>
   <data name="pkgtool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\applications\pkgtool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

@@ -30,12 +30,12 @@ namespace Unify.Environment3
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Under Construction",
             "Hyper",
             "Windows",
             "This section is in development."}, -1);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
             this.StatusStrip_Main = new System.Windows.Forms.StatusStrip();
             this.Label_Status = new System.Windows.Forms.Label();
             this.Rush_Section_Updates = new Unify.Environment3.SectionButton();
@@ -141,9 +141,9 @@ namespace Unify.Environment3
             this.SectionButton_ClearLog = new Unify.Environment3.SectionButton();
             this.ListBox_Debug = new System.Windows.Forms.ListBox();
             this.Tab_Section_Updates = new System.Windows.Forms.TabPage();
+            this.SectionButton_FetchPatches = new Unify.Environment3.SectionButton();
             this.Label_LastPatchUpdate = new System.Windows.Forms.Label();
             this.Label_LastModUpdate = new System.Windows.Forms.Label();
-            this.SectionButton_FetchPatches = new Unify.Environment3.SectionButton();
             this.SectionButton_CheckForModUpdates = new Unify.Environment3.SectionButton();
             this.Label_LastSoftwareUpdate = new System.Windows.Forms.Label();
             this.SplitContainer_ModUpdate = new System.Windows.Forms.SplitContainer();
@@ -163,10 +163,16 @@ namespace Unify.Environment3
             this.Label_Title_Software = new System.Windows.Forms.Label();
             this.CheckBox_CheckUpdatesOnLaunch = new System.Windows.Forms.CheckBox();
             this.PictureBox_UpdaterIcon = new System.Windows.Forms.PictureBox();
-            this.SectionButton_CheckForSoftwareUpdates = new Unify.Environment3.SectionButton();
             this.Panel_Updates_UICleanSpace = new System.Windows.Forms.Panel();
+            this.SectionButton_CheckForSoftwareUpdates = new Unify.Environment3.SectionButton();
             this.ProgressBar_SoftwareUpdate = new System.Windows.Forms.ProgressBar();
             this.Tab_Section_About = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.Label_Version = new System.Windows.Forms.Label();
             this.Rush_Section_Settings = new Unify.Environment3.SectionButton();
             this.Rush_Section_Patches = new Unify.Environment3.SectionButton();
@@ -174,12 +180,6 @@ namespace Unify.Environment3
             this.Rush_Section_Emulator = new Unify.Environment3.SectionButton();
             this.Rush_Section_Mods = new Unify.Environment3.SectionButton();
             this.Container_Rush = new Unify.Environment3.UserContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.TabControl_Rush.SuspendLayout();
             this.Tab_Section_Mods.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_ModsControls)).BeginInit();
@@ -380,7 +380,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(779, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(842, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_RefreshMods_Click);
@@ -397,7 +397,7 @@ namespace Unify.Environment3
             this.SectionButton_SaveChecks.SectionImage = global::Unify.Properties.Resources.CheckBox_16x_24;
             this.SectionButton_SaveChecks.SectionText = "Save checked mods";
             this.SectionButton_SaveChecks.SelectedSection = false;
-            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(929, 35);
+            this.SectionButton_SaveChecks.Size = new System.Drawing.Size(992, 35);
             this.SectionButton_SaveChecks.TabIndex = 52;
             this.SectionButton_SaveChecks.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_SaveChecks.Click += new System.EventHandler(this.SectionButton_SaveChecks_Click);
@@ -968,9 +968,9 @@ namespace Unify.Environment3
             this.ListView_PatchesList.FullRowSelect = true;
             this.ListView_PatchesList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.ListView_PatchesList.HideSelection = false;
-            listViewItem9.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
             this.ListView_PatchesList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem9});
+            listViewItem1});
             this.ListView_PatchesList.Location = new System.Drawing.Point(0, 0);
             this.ListView_PatchesList.MultiSelect = false;
             this.ListView_PatchesList.Name = "ListView_PatchesList";
@@ -1595,9 +1595,9 @@ namespace Unify.Environment3
             // 
             this.Tab_Section_Updates.AutoScroll = true;
             this.Tab_Section_Updates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_Updates.Controls.Add(this.SectionButton_FetchPatches);
             this.Tab_Section_Updates.Controls.Add(this.Label_LastPatchUpdate);
             this.Tab_Section_Updates.Controls.Add(this.Label_LastModUpdate);
-            this.Tab_Section_Updates.Controls.Add(this.SectionButton_FetchPatches);
             this.Tab_Section_Updates.Controls.Add(this.SectionButton_CheckForModUpdates);
             this.Tab_Section_Updates.Controls.Add(this.Label_LastSoftwareUpdate);
             this.Tab_Section_Updates.Controls.Add(this.SplitContainer_ModUpdate);
@@ -1608,14 +1608,31 @@ namespace Unify.Environment3
             this.Tab_Section_Updates.Controls.Add(this.Label_Title_Software);
             this.Tab_Section_Updates.Controls.Add(this.CheckBox_CheckUpdatesOnLaunch);
             this.Tab_Section_Updates.Controls.Add(this.PictureBox_UpdaterIcon);
-            this.Tab_Section_Updates.Controls.Add(this.SectionButton_CheckForSoftwareUpdates);
             this.Tab_Section_Updates.Controls.Add(this.Panel_Updates_UICleanSpace);
+            this.Tab_Section_Updates.Controls.Add(this.SectionButton_CheckForSoftwareUpdates);
             this.Tab_Section_Updates.Controls.Add(this.ProgressBar_SoftwareUpdate);
             this.Tab_Section_Updates.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Updates.Name = "Tab_Section_Updates";
             this.Tab_Section_Updates.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Updates.TabIndex = 6;
             this.Tab_Section_Updates.Text = "Updates";
+            // 
+            // SectionButton_FetchPatches
+            // 
+            this.SectionButton_FetchPatches.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SectionButton_FetchPatches.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SectionButton_FetchPatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.SectionButton_FetchPatches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SectionButton_FetchPatches.Location = new System.Drawing.Point(14, 545);
+            this.SectionButton_FetchPatches.Name = "SectionButton_FetchPatches";
+            this.SectionButton_FetchPatches.SectionImage = global::Unify.Properties.Resources.InstallMods;
+            this.SectionButton_FetchPatches.SectionText = "Fetch latest patches";
+            this.SectionButton_FetchPatches.SelectedSection = false;
+            this.SectionButton_FetchPatches.Size = new System.Drawing.Size(233, 35);
+            this.SectionButton_FetchPatches.TabIndex = 149;
+            this.SectionButton_FetchPatches.TextColour = System.Drawing.SystemColors.Control;
+            this.SectionButton_FetchPatches.Click += new System.EventHandler(this.SectionButton_Updates_Click);
             // 
             // Label_LastPatchUpdate
             // 
@@ -1638,23 +1655,6 @@ namespace Unify.Environment3
             this.Label_LastModUpdate.Size = new System.Drawing.Size(216, 17);
             this.Label_LastModUpdate.TabIndex = 150;
             this.Label_LastModUpdate.Text = "Last checked: 21/01/2020, 08:59 PM";
-            // 
-            // SectionButton_FetchPatches
-            // 
-            this.SectionButton_FetchPatches.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SectionButton_FetchPatches.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SectionButton_FetchPatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.SectionButton_FetchPatches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_FetchPatches.Location = new System.Drawing.Point(14, 545);
-            this.SectionButton_FetchPatches.Name = "SectionButton_FetchPatches";
-            this.SectionButton_FetchPatches.SectionImage = global::Unify.Properties.Resources.InstallMods;
-            this.SectionButton_FetchPatches.SectionText = "Fetch latest patches";
-            this.SectionButton_FetchPatches.SelectedSection = false;
-            this.SectionButton_FetchPatches.Size = new System.Drawing.Size(233, 35);
-            this.SectionButton_FetchPatches.TabIndex = 149;
-            this.SectionButton_FetchPatches.TextColour = System.Drawing.SystemColors.Control;
-            this.SectionButton_FetchPatches.Click += new System.EventHandler(this.SectionButton_Updates_Click);
             // 
             // SectionButton_CheckForModUpdates
             // 
@@ -1704,7 +1704,7 @@ namespace Unify.Environment3
             this.SplitContainer_ModUpdate.Panel2.Controls.Add(this.Panel_ModInfoBackdrop);
             this.SplitContainer_ModUpdate.Panel2MinSize = 300;
             this.SplitContainer_ModUpdate.Size = new System.Drawing.Size(561, 375);
-            this.SplitContainer_ModUpdate.SplitterDistance = 201;
+            this.SplitContainer_ModUpdate.SplitterDistance = 225;
             this.SplitContainer_ModUpdate.TabIndex = 44;
             this.SplitContainer_ModUpdate.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer_ModUpdate_SplitterMoved);
             // 
@@ -1718,7 +1718,7 @@ namespace Unify.Environment3
             this.Panel_ModUpdateBackdrop.Controls.Add(this.ListView_ModUpdates);
             this.Panel_ModUpdateBackdrop.Location = new System.Drawing.Point(0, 0);
             this.Panel_ModUpdateBackdrop.Name = "Panel_ModUpdateBackdrop";
-            this.Panel_ModUpdateBackdrop.Size = new System.Drawing.Size(199, 332);
+            this.Panel_ModUpdateBackdrop.Size = new System.Drawing.Size(223, 332);
             this.Panel_ModUpdateBackdrop.TabIndex = 1;
             // 
             // ListView_ModUpdates
@@ -1743,7 +1743,7 @@ namespace Unify.Environment3
             this.ListView_ModUpdates.MultiSelect = false;
             this.ListView_ModUpdates.Name = "ListView_ModUpdates";
             this.ListView_ModUpdates.OwnerDraw = true;
-            this.ListView_ModUpdates.Size = new System.Drawing.Size(197, 347);
+            this.ListView_ModUpdates.Size = new System.Drawing.Size(221, 347);
             this.ListView_ModUpdates.TabIndex = 2;
             this.ListView_ModUpdates.UseCompatibleStateImageBehavior = false;
             this.ListView_ModUpdates.View = System.Windows.Forms.View.Details;
@@ -1774,7 +1774,7 @@ namespace Unify.Environment3
             this.SectionButton_UpdateMods.SectionImage = global::Unify.Properties.Resources.InstallMods;
             this.SectionButton_UpdateMods.SectionText = "Update selected mods";
             this.SectionButton_UpdateMods.SelectedSection = false;
-            this.SectionButton_UpdateMods.Size = new System.Drawing.Size(199, 35);
+            this.SectionButton_UpdateMods.Size = new System.Drawing.Size(223, 35);
             this.SectionButton_UpdateMods.TabIndex = 45;
             this.SectionButton_UpdateMods.TextColour = System.Drawing.SystemColors.GrayText;
             this.SectionButton_UpdateMods.Click += new System.EventHandler(this.SectionButton_Updates_Click);
@@ -1786,7 +1786,7 @@ namespace Unify.Environment3
             this.ProgressBar_ModUpdate.Enabled = false;
             this.ProgressBar_ModUpdate.Location = new System.Drawing.Point(2, 338);
             this.ProgressBar_ModUpdate.Name = "ProgressBar_ModUpdate";
-            this.ProgressBar_ModUpdate.Size = new System.Drawing.Size(353, 35);
+            this.ProgressBar_ModUpdate.Size = new System.Drawing.Size(329, 35);
             this.ProgressBar_ModUpdate.TabIndex = 94;
             // 
             // Panel_ModInfoBackdrop
@@ -1799,7 +1799,7 @@ namespace Unify.Environment3
             this.Panel_ModInfoBackdrop.Controls.Add(this.ListBox_UpdateLogs);
             this.Panel_ModInfoBackdrop.Location = new System.Drawing.Point(2, 0);
             this.Panel_ModInfoBackdrop.Name = "Panel_ModInfoBackdrop";
-            this.Panel_ModInfoBackdrop.Size = new System.Drawing.Size(353, 332);
+            this.Panel_ModInfoBackdrop.Size = new System.Drawing.Size(329, 332);
             this.Panel_ModInfoBackdrop.TabIndex = 21;
             // 
             // ListBox_UpdateLogs
@@ -1812,7 +1812,7 @@ namespace Unify.Environment3
             this.ListBox_UpdateLogs.ItemHeight = 15;
             this.ListBox_UpdateLogs.Location = new System.Drawing.Point(0, 0);
             this.ListBox_UpdateLogs.Name = "ListBox_UpdateLogs";
-            this.ListBox_UpdateLogs.Size = new System.Drawing.Size(351, 330);
+            this.ListBox_UpdateLogs.Size = new System.Drawing.Size(327, 330);
             this.ListBox_UpdateLogs.TabIndex = 1;
             // 
             // Label_Title_ModsAndPatches
@@ -1903,6 +1903,13 @@ namespace Unify.Environment3
             this.PictureBox_UpdaterIcon.TabIndex = 38;
             this.PictureBox_UpdaterIcon.TabStop = false;
             // 
+            // Panel_Updates_UICleanSpace
+            // 
+            this.Panel_Updates_UICleanSpace.Location = new System.Drawing.Point(14, 973);
+            this.Panel_Updates_UICleanSpace.Name = "Panel_Updates_UICleanSpace";
+            this.Panel_Updates_UICleanSpace.Size = new System.Drawing.Size(214, 17);
+            this.Panel_Updates_UICleanSpace.TabIndex = 146;
+            // 
             // SectionButton_CheckForSoftwareUpdates
             // 
             this.SectionButton_CheckForSoftwareUpdates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1919,13 +1926,6 @@ namespace Unify.Environment3
             this.SectionButton_CheckForSoftwareUpdates.TabIndex = 36;
             this.SectionButton_CheckForSoftwareUpdates.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_CheckForSoftwareUpdates.Click += new System.EventHandler(this.SectionButton_Updates_Click);
-            // 
-            // Panel_Updates_UICleanSpace
-            // 
-            this.Panel_Updates_UICleanSpace.Location = new System.Drawing.Point(14, 973);
-            this.Panel_Updates_UICleanSpace.Name = "Panel_Updates_UICleanSpace";
-            this.Panel_Updates_UICleanSpace.Size = new System.Drawing.Size(214, 17);
-            this.Panel_Updates_UICleanSpace.TabIndex = 146;
             // 
             // ProgressBar_SoftwareUpdate
             // 
@@ -1953,6 +1953,66 @@ namespace Unify.Environment3
             this.Tab_Section_About.TabIndex = 4;
             this.Tab_Section_About.Text = "About";
             this.Tab_Section_About.Visible = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.label6.Location = new System.Drawing.Point(9, 407);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(150, 125);
+            this.label6.TabIndex = 39;
+            this.label6.Text = "► sharu6262\r\n► Melpontro\r\n► ChrisHighwind\r\n► Velcomia\r\n► Radfordhound";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.label5.Location = new System.Drawing.Point(6, 353);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(118, 45);
+            this.label5.TabIndex = 38;
+            this.label5.Text = "Testers";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.label4.Location = new System.Drawing.Point(9, 283);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(294, 50);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.label3.Location = new System.Drawing.Point(6, 229);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(228, 45);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "Special Thanks";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.label2.Location = new System.Drawing.Point(9, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(442, 150);
+            this.label2.TabIndex = 35;
+            this.label2.Text = resources.GetString("label2.Text");
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.label1.Location = new System.Drawing.Point(6, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(199, 45);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "Contributors";
             // 
             // Label_Version
             // 
@@ -2058,66 +2118,6 @@ namespace Unify.Environment3
             this.Container_Rush.SplitterDistance = 250;
             this.Container_Rush.TabIndex = 17;
             this.Container_Rush.Title = "Mods";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label1.Location = new System.Drawing.Point(6, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(199, 45);
-            this.label1.TabIndex = 34;
-            this.label1.Text = "Contributors";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label2.Location = new System.Drawing.Point(9, 60);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(442, 150);
-            this.label2.TabIndex = 35;
-            this.label2.Text = resources.GetString("label2.Text");
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label3.Location = new System.Drawing.Point(6, 229);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(228, 45);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "Special Thanks";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label4.Location = new System.Drawing.Point(9, 283);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(294, 50);
-            this.label4.TabIndex = 37;
-            this.label4.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label5.Location = new System.Drawing.Point(6, 353);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(118, 45);
-            this.label5.TabIndex = 38;
-            this.label5.Text = "Testers";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label6.Location = new System.Drawing.Point(9, 407);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(150, 125);
-            this.label6.TabIndex = 39;
-            this.label6.Text = "► sharu6262\r\n► Melpontro\r\n► ChrisHighwind\r\n► Velcomia\r\n► Radfordhound";
             // 
             // RushInterface
             // 

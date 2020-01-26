@@ -67,7 +67,7 @@ namespace Ookii.Dialogs
         {
             get
             {
-                return NativeMethods.IsWindowsVistaOrLater;
+                return Natives.IsWindowsVistaOrLater;
             }
         }
 
@@ -277,7 +277,7 @@ namespace Ookii.Dialogs
                 }
             }
 
-            dialog.SetOptions(NativeMethods.FOS.FOS_PICKFOLDERS | NativeMethods.FOS.FOS_FORCEFILESYSTEM | NativeMethods.FOS.FOS_FILEMUSTEXIST);
+            dialog.SetOptions(Natives.FOS.FOS_PICKFOLDERS | Natives.FOS.FOS_FORCEFILESYSTEM | Natives.FOS.FOS_FILEMUSTEXIST);
 
             if (!string.IsNullOrEmpty(_selectedPath))
             {
@@ -289,7 +289,7 @@ namespace Ookii.Dialogs
                 else
                 {
                     string folder = Path.GetFileName(_selectedPath);
-                    dialog.SetFolder(NativeMethods.CreateItemFromParsingName(parent));
+                    dialog.SetFolder(Natives.CreateItemFromParsingName(parent));
                     dialog.SetFileName(folder);
                 }
             }
@@ -299,7 +299,7 @@ namespace Ookii.Dialogs
         {
             Ookii.Dialogs.Interop.IShellItem item;
             dialog.GetResult(out item);
-            item.GetDisplayName(NativeMethods.SIGDN.SIGDN_FILESYSPATH, out _selectedPath);
+            item.GetDisplayName(Natives.SIGDN.SIGDN_FILESYSPATH, out _selectedPath);
         }
 
         #endregion

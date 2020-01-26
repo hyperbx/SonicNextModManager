@@ -191,24 +191,24 @@ namespace Ookii.Dialogs
             base.CheckDuplicate(itemToExclude);
         }
 
-        internal NativeMethods.TaskDialogCommonButtonFlags ButtonFlag
+        internal Natives.TaskDialogCommonButtonFlags ButtonFlag
         {
             get
             {
                 switch (_type)
                 {
                     case ButtonType.Ok:
-                        return NativeMethods.TaskDialogCommonButtonFlags.OkButton;
+                        return Natives.TaskDialogCommonButtonFlags.OkButton;
                     case ButtonType.Yes:
-                        return NativeMethods.TaskDialogCommonButtonFlags.YesButton;
+                        return Natives.TaskDialogCommonButtonFlags.YesButton;
                     case ButtonType.No:
-                        return NativeMethods.TaskDialogCommonButtonFlags.NoButton;
+                        return Natives.TaskDialogCommonButtonFlags.NoButton;
                     case ButtonType.Cancel:
-                        return NativeMethods.TaskDialogCommonButtonFlags.CancelButton;
+                        return Natives.TaskDialogCommonButtonFlags.CancelButton;
                     case ButtonType.Retry:
-                        return NativeMethods.TaskDialogCommonButtonFlags.RetryButton;
+                        return Natives.TaskDialogCommonButtonFlags.RetryButton;
                     case ButtonType.Close:
-                        return NativeMethods.TaskDialogCommonButtonFlags.CloseButton;
+                        return Natives.TaskDialogCommonButtonFlags.CloseButton;
                     default:
                         return 0;
                 }

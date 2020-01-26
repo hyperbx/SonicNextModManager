@@ -41,7 +41,7 @@ namespace Ookii.Dialogs
         {
             get
             {
-                return NativeMethods.IsWindowsVistaOrLater;
+                return Natives.IsWindowsVistaOrLater;
             }
         }
 
@@ -55,7 +55,7 @@ namespace Ookii.Dialogs
         {
             get
             {
-                return OSSupportsDwmComposition && NativeMethods.DwmIsCompositionEnabled();
+                return OSSupportsDwmComposition && Natives.DwmIsCompositionEnabled();
             }
         }
 
@@ -90,8 +90,8 @@ namespace Ookii.Dialogs
             if (window == null)
                 throw new ArgumentNullException("window");
 
-            NativeMethods.MARGINS margins = new NativeMethods.MARGINS(glassMargin);
-            NativeMethods.DwmExtendFrameIntoClientArea(window.Handle, ref margins);
+            Natives.MARGINS margins = new Natives.MARGINS(glassMargin);
+            Natives.DwmExtendFrameIntoClientArea(window.Handle, ref margins);
         }
 
         /// <summary>
@@ -127,25 +127,25 @@ namespace Ookii.Dialogs
             IntPtr primaryHdc = dc.GetHdc();
             try
             {
-                using (SafeDeviceHandle memoryHdc = NativeMethods.CreateCompatibleDC(primaryHdc))
+                using (SafeDeviceHandle memoryHdc = Natives.CreateCompatibleDC(primaryHdc))
                 using (SafeGDIHandle fontHandle = new SafeGDIHandle(font.ToHfont(), true))
-                using (SafeGDIHandle dib = NativeMethods.CreateDib(bounds, primaryHdc, memoryHdc))
+                using (SafeGDIHandle dib = Natives.CreateDib(bounds, primaryHdc, memoryHdc))
                 {
-                    NativeMethods.SelectObject(memoryHdc, fontHandle);
+                    Natives.SelectObject(memoryHdc, fontHandle);
 
                     // Draw glowing text
                     System.Windows.Forms.VisualStyles.VisualStyleRenderer renderer = new System.Windows.Forms.VisualStyles.VisualStyleRenderer(System.Windows.Forms.VisualStyles.VisualStyleElement.Window.Caption.Active);
-                    NativeMethods.DTTOPTS dttOpts = new NativeMethods.DTTOPTS();
-                    dttOpts.dwSize = Marshal.SizeOf(typeof(NativeMethods.DTTOPTS));
-                    dttOpts.dwFlags = NativeMethods.DrawThemeTextFlags.Composited | NativeMethods.DrawThemeTextFlags.GlowSize | NativeMethods.DrawThemeTextFlags.TextColor;
+                    Natives.DTTOPTS dttOpts = new Natives.DTTOPTS();
+                    dttOpts.dwSize = Marshal.SizeOf(typeof(Natives.DTTOPTS));
+                    dttOpts.dwFlags = Natives.DrawThemeTextFlags.Composited | Natives.DrawThemeTextFlags.GlowSize | Natives.DrawThemeTextFlags.TextColor;
                     dttOpts.crText = ColorTranslator.ToWin32(foreColor);
                     dttOpts.iGlowSize = glowSize;
-                    NativeMethods.RECT textBounds = new NativeMethods.RECT(padding.Left, padding.Top, bounds.Width - padding.Right, bounds.Height - padding.Bottom);
-                    NativeMethods.DrawThemeTextEx(renderer.Handle, memoryHdc, 0, 0, text, text.Length, (int)textFormat, ref textBounds, ref dttOpts);
+                    Natives.RECT textBounds = new Natives.RECT(padding.Left, padding.Top, bounds.Width - padding.Right, bounds.Height - padding.Bottom);
+                    Natives.DrawThemeTextEx(renderer.Handle, memoryHdc, 0, 0, text, text.Length, (int)textFormat, ref textBounds, ref dttOpts);
 
                     // Copy to foreground
                     const int SRCCOPY = 0x00CC0020;
-                    NativeMethods.BitBlt(primaryHdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, SRCCOPY);
+                    Natives.BitBlt(primaryHdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, SRCCOPY);
                 }
             }
             finally
@@ -181,16 +181,16 @@ namespace Ookii.Dialogs
             {
                 Rectangle bounds = new Rectangle(0, 0, int.MaxValue, int.MaxValue);
 
-                using (SafeDeviceHandle memoryHdc = NativeMethods.CreateCompatibleDC(primaryHdc))
+                using (SafeDeviceHandle memoryHdc = Natives.CreateCompatibleDC(primaryHdc))
                 using (SafeGDIHandle fontHandle = new SafeGDIHandle(font.ToHfont(), true))
-                using (SafeGDIHandle dib = NativeMethods.CreateDib(bounds, primaryHdc, memoryHdc))
+                using (SafeGDIHandle dib = Natives.CreateDib(bounds, primaryHdc, memoryHdc))
                 {
-                    NativeMethods.SelectObject(memoryHdc, fontHandle);
+                    Natives.SelectObject(memoryHdc, fontHandle);
 
                     System.Windows.Forms.VisualStyles.VisualStyleRenderer renderer = new System.Windows.Forms.VisualStyles.VisualStyleRenderer(System.Windows.Forms.VisualStyles.VisualStyleElement.Window.Caption.Active);
-                    NativeMethods.RECT bounds2 = new NativeMethods.RECT(bounds);
-                    NativeMethods.RECT rect;
-                    NativeMethods.GetThemeTextExtent(renderer.Handle, memoryHdc, 0, 0, text, text.Length, (int)textFormat, ref bounds2, out rect);
+                    Natives.RECT bounds2 = new Natives.RECT(bounds);
+                    Natives.RECT rect;
+                    Natives.GetThemeTextExtent(renderer.Handle, memoryHdc, 0, 0, text, text.Length, (int)textFormat, ref bounds2, out rect);
                     return new Size(rect.Right - rect.Left, rect.Bottom - rect.Top);
                 }
             }

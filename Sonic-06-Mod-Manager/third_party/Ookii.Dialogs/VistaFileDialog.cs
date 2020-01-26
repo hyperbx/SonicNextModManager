@@ -31,7 +31,7 @@ namespace Ookii.Dialogs
         internal const int HelpButtonId = 0x4001;
 
         private FileDialog _downlevelDialog;
-        private NativeMethods.FOS _options;
+        private Natives.FOS _options;
         private string _filter;
         private int _filterIndex;
         private string[] _fileNames;
@@ -123,14 +123,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return DownlevelDialog.CheckFileExists;
-                return GetOption(NativeMethods.FOS.FOS_FILEMUSTEXIST);
+                return GetOption(Natives.FOS.FOS_FILEMUSTEXIST);
             }
             set
             {
                 if (DownlevelDialog != null)
                     DownlevelDialog.CheckFileExists = value;
                 else
-                    SetOption(NativeMethods.FOS.FOS_FILEMUSTEXIST, value);
+                    SetOption(Natives.FOS.FOS_FILEMUSTEXIST, value);
             }
         }
 
@@ -148,14 +148,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return DownlevelDialog.CheckPathExists;
-                return GetOption(NativeMethods.FOS.FOS_PATHMUSTEXIST);
+                return GetOption(Natives.FOS.FOS_PATHMUSTEXIST);
             }
             set
             {
                 if (DownlevelDialog != null)
                     DownlevelDialog.CheckPathExists = value;
                 else
-                    SetOption(NativeMethods.FOS.FOS_PATHMUSTEXIST, value);
+                    SetOption(Natives.FOS.FOS_PATHMUSTEXIST, value);
             }
         }
 
@@ -210,14 +210,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return DownlevelDialog.DereferenceLinks;
-                return !GetOption(NativeMethods.FOS.FOS_NODEREFERENCELINKS);
+                return !GetOption(Natives.FOS.FOS_NODEREFERENCELINKS);
             }
             set
             {
                 if (DownlevelDialog != null)
                     DownlevelDialog.DereferenceLinks = value;
                 else
-                    SetOption(NativeMethods.FOS.FOS_NODEREFERENCELINKS, !value);
+                    SetOption(Natives.FOS.FOS_NODEREFERENCELINKS, !value);
             }
         }
 
@@ -374,14 +374,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return DownlevelDialog.RestoreDirectory;
-                return GetOption(NativeMethods.FOS.FOS_NOCHANGEDIR);
+                return GetOption(Natives.FOS.FOS_NOCHANGEDIR);
             }
             set
             {
                 if (DownlevelDialog != null)
                     DownlevelDialog.RestoreDirectory = value;
                 else
-                    SetOption(NativeMethods.FOS.FOS_NOCHANGEDIR, value);
+                    SetOption(Natives.FOS.FOS_NOCHANGEDIR, value);
             }
         }
 
@@ -474,14 +474,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return DownlevelDialog.ValidateNames;
-                return !GetOption(NativeMethods.FOS.FOS_NOVALIDATE);
+                return !GetOption(Natives.FOS.FOS_NOVALIDATE);
             }
             set
             {
                 if (DownlevelDialog != null)
                     DownlevelDialog.ValidateNames = value;
                 else
-                    SetOption(NativeMethods.FOS.FOS_NOVALIDATE, !value);
+                    SetOption(Natives.FOS.FOS_NOVALIDATE, !value);
             }
         }
 
@@ -579,7 +579,7 @@ namespace Ookii.Dialogs
                 return RunFileDialog(hwndOwner);
         }
 
-        internal void SetOption(NativeMethods.FOS option, bool value)
+        internal void SetOption(Natives.FOS option, bool value)
         {
             if (value)
                 _options |= option;
@@ -587,19 +587,19 @@ namespace Ookii.Dialogs
                 _options &= ~option;
         }
 
-        internal bool GetOption(NativeMethods.FOS option)
+        internal bool GetOption(Natives.FOS option)
         {
             return (_options & option) != 0;
         }
 
         internal virtual void GetResult(Ookii.Dialogs.Interop.IFileDialog dialog)
         {
-            if (!GetOption(NativeMethods.FOS.FOS_ALLOWMULTISELECT))
+            if (!GetOption(Natives.FOS.FOS_ALLOWMULTISELECT))
             {
                 _fileNames = new string[1];
                 Ookii.Dialogs.Interop.IShellItem result;
                 dialog.GetResult(out result);
-                result.GetDisplayName(NativeMethods.SIGDN.SIGDN_FILESYSPATH, out _fileNames[0]);
+                result.GetDisplayName(Natives.SIGDN.SIGDN_FILESYSPATH, out _fileNames[0]);
             }
         }
 
@@ -663,7 +663,7 @@ namespace Ookii.Dialogs
                 else
                 {
                     string folder = Path.GetFileName(_fileNames[0]);
-                    dialog.SetFolder(NativeMethods.CreateItemFromParsingName(parent));
+                    dialog.SetFolder(Natives.CreateItemFromParsingName(parent));
                     dialog.SetFileName(folder);
                 }
             }
@@ -672,7 +672,7 @@ namespace Ookii.Dialogs
             if (!string.IsNullOrEmpty(_filter))
             {
                 string[] filterElements = _filter.Split(new char[] { '|' });
-                NativeMethods.COMDLG_FILTERSPEC[] filter = new NativeMethods.COMDLG_FILTERSPEC[filterElements.Length / 2];
+                Natives.COMDLG_FILTERSPEC[] filter = new Natives.COMDLG_FILTERSPEC[filterElements.Length / 2];
                 for (int x = 0; x < filterElements.Length; x += 2)
                 {
                     filter[x / 2].pszName = filterElements[x];
@@ -693,7 +693,7 @@ namespace Ookii.Dialogs
             // Initial directory
             if (!string.IsNullOrEmpty(_initialDirectory))
             {
-                Interop.IShellItem item = NativeMethods.CreateItemFromParsingName(_initialDirectory);
+                Interop.IShellItem item = Natives.CreateItemFromParsingName(_initialDirectory);
                 dialog.SetDefaultFolder(item);
             }
 
@@ -709,7 +709,7 @@ namespace Ookii.Dialogs
                 dialog.SetTitle(_title);
             }
 
-            dialog.SetOptions((_options | NativeMethods.FOS.FOS_FORCEFILESYSTEM));
+            dialog.SetOptions((_options | Natives.FOS.FOS_FORCEFILESYSTEM));
         }
 
         internal abstract Ookii.Dialogs.Interop.IFileDialog CreateFileDialog();

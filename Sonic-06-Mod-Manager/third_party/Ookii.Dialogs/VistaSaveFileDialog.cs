@@ -64,14 +64,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return ((SaveFileDialog)DownlevelDialog).CreatePrompt;
-                return GetOption(NativeMethods.FOS.FOS_CREATEPROMPT);
+                return GetOption(Natives.FOS.FOS_CREATEPROMPT);
             }
             set
             {
                 if (DownlevelDialog != null)
                     ((SaveFileDialog)DownlevelDialog).CreatePrompt = value;
                 else
-                    SetOption(NativeMethods.FOS.FOS_CREATEPROMPT, value);
+                    SetOption(Natives.FOS.FOS_CREATEPROMPT, value);
             }
         }
 
@@ -91,14 +91,14 @@ namespace Ookii.Dialogs
             {
                 if (DownlevelDialog != null)
                     return ((SaveFileDialog)DownlevelDialog).OverwritePrompt;
-                return GetOption(NativeMethods.FOS.FOS_OVERWRITEPROMPT);
+                return GetOption(Natives.FOS.FOS_OVERWRITEPROMPT);
             }
             set
             {
                 if (DownlevelDialog != null)
                     ((SaveFileDialog)DownlevelDialog).OverwritePrompt = value;
                 else
-                    SetOption(NativeMethods.FOS.FOS_OVERWRITEPROMPT, value);
+                    SetOption(Natives.FOS.FOS_OVERWRITEPROMPT, value);
             }
         }
 

@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Unify.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AccentColour" Type="System.String" Scope="User">
+    <Setting Name="AccentColour" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">186, 0, 0</Value>
     </Setting>
     <Setting Name="AutoColour" Type="System.Boolean" Scope="User">

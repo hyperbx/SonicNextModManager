@@ -57,11 +57,11 @@ namespace Ookii.Dialogs
 
         internal SafeModuleHandle LoadLibrary()
         {
-            SafeModuleHandle handle = NativeMethods.LoadLibraryEx(ResourceFile, IntPtr.Zero, NativeMethods.LoadLibraryExFlags.LoadLibraryAsDatafile);
+            SafeModuleHandle handle = Natives.LoadLibraryEx(ResourceFile, IntPtr.Zero, Natives.LoadLibraryExFlags.LoadLibraryAsDatafile);
             if (handle.IsInvalid)
             {
                 int error = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
-                if (error == NativeMethods.ErrorFileNotFound)
+                if (error == Natives.ErrorFileNotFound)
                     throw new FileNotFoundException(string.Format(System.Globalization.CultureInfo.CurrentCulture, "The file {0} could not be found.", ResourceFile));
                 else
                     throw new System.ComponentModel.Win32Exception(error);

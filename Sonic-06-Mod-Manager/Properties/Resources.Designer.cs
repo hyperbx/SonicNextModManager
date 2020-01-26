@@ -365,6 +365,15 @@ namespace Unify.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/Knuxfan24/Sonic-06-Mod-Manager-Patches/master/.git-repo.
+        /// </summary>
+        internal static string PatchURI_GitHub {
+            get {
+                return ResourceManager.GetString("PatchURI_GitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] pkgtool {

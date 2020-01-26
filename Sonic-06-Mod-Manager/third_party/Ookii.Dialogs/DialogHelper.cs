@@ -14,7 +14,7 @@ namespace Ookii.Dialogs
         {
             get
             {
-                return NativeMethods.IsWindowsVistaOrLater &&
+                return Natives.IsWindowsVistaOrLater &&
                     VisualStyleRenderer.IsSupported &&
                     Application.RenderWithVisualStyles;
             }
@@ -68,7 +68,7 @@ namespace Ookii.Dialogs
         {
             // For Windows 2000, using Int32.MaxValue for the height doesn't seem to work, so we'll just pick another arbitrary large value
             // that does work.
-            Rectangle textRect = new Rectangle(location.X, location.Y, width, NativeMethods.IsWindowsXPOrLater ? Int32.MaxValue : 100000);
+            Rectangle textRect = new Rectangle(location.X, location.Y, width, Natives.IsWindowsXPOrLater ? Int32.MaxValue : 100000);
             TextFormatFlags flags = TextFormatFlags.WordBreak;
             if (IsTaskDialogThemeSupported)
             {

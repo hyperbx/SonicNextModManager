@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Ookii.Dialogs
 {
-    static class NativeMethods
+    static class Natives
     {
         public static bool IsWindowsVistaOrLater
         {
@@ -329,7 +329,7 @@ namespace Ookii.Dialogs
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
         internal struct KNOWNFOLDER_DEFINITION
         {
-            internal NativeMethods.KF_CATEGORY category;
+            internal Natives.KF_CATEGORY category;
             [MarshalAs(UnmanagedType.LPWStr)]
             internal string pszName;
             [MarshalAs(UnmanagedType.LPWStr)]
@@ -350,7 +350,7 @@ namespace Ookii.Dialogs
             [MarshalAs(UnmanagedType.LPWStr)]
             internal string pszSecurity;
             internal uint dwAttributes;
-            internal NativeMethods.KF_DEFINITION_FLAGS kfdFlags;
+            internal Natives.KF_DEFINITION_FLAGS kfdFlags;
             internal Guid ftidType;
         }
 
@@ -390,7 +390,7 @@ namespace Ookii.Dialogs
         {
             object item;
             Guid guid = new Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe"); // IID_IShellItem
-            int hr = NativeMethods.SHCreateItemFromParsingName(path, IntPtr.Zero, ref guid, out item);
+            int hr = Natives.SHCreateItemFromParsingName(path, IntPtr.Zero, ref guid, out item);
             if (hr != 0)
                 throw new System.ComponentModel.Win32Exception(hr);
             return (Interop.IShellItem)item;

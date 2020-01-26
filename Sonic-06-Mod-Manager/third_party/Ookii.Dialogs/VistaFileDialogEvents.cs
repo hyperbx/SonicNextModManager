@@ -43,18 +43,18 @@ namespace Ookii.Dialogs
         {
         }
 
-        public void OnShareViolation(Ookii.Dialogs.Interop.IFileDialog pfd, Ookii.Dialogs.Interop.IShellItem psi, out NativeMethods.FDE_SHAREVIOLATION_RESPONSE pResponse)
+        public void OnShareViolation(Ookii.Dialogs.Interop.IFileDialog pfd, Ookii.Dialogs.Interop.IShellItem psi, out Natives.FDE_SHAREVIOLATION_RESPONSE pResponse)
         {
-            pResponse = NativeMethods.FDE_SHAREVIOLATION_RESPONSE.FDESVR_DEFAULT;
+            pResponse = Natives.FDE_SHAREVIOLATION_RESPONSE.FDESVR_DEFAULT;
         }
 
         public void OnTypeChange(Ookii.Dialogs.Interop.IFileDialog pfd)
         {
         }
 
-        public void OnOverwrite(Ookii.Dialogs.Interop.IFileDialog pfd, Ookii.Dialogs.Interop.IShellItem psi, out NativeMethods.FDE_OVERWRITE_RESPONSE pResponse)
+        public void OnOverwrite(Ookii.Dialogs.Interop.IFileDialog pfd, Ookii.Dialogs.Interop.IShellItem psi, out Natives.FDE_OVERWRITE_RESPONSE pResponse)
         {
-            pResponse = NativeMethods.FDE_OVERWRITE_RESPONSE.FDEOR_DEFAULT;
+            pResponse = Natives.FDE_OVERWRITE_RESPONSE.FDEOR_DEFAULT;
         }
 
         #endregion

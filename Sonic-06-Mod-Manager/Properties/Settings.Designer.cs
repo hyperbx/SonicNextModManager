@@ -26,9 +26,9 @@ namespace Unify.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("186, 0, 0")]
-        public string AccentColour {
+        public global::System.Drawing.Color AccentColour {
             get {
-                return ((string)(this["AccentColour"]));
+                return ((global::System.Drawing.Color)(this["AccentColour"]));
             }
             set {
                 this["AccentColour"] = value;

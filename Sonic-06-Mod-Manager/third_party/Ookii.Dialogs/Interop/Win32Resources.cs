@@ -13,7 +13,7 @@ namespace Ookii.Dialogs.Interop
 
         public Win32Resources(string module)
         {
-            _moduleHandle = NativeMethods.LoadLibraryEx(module, IntPtr.Zero, NativeMethods.LoadLibraryExFlags.LoadLibraryAsDatafile);
+            _moduleHandle = Natives.LoadLibraryEx(module, IntPtr.Zero, Natives.LoadLibraryExFlags.LoadLibraryAsDatafile);
             if( _moduleHandle.IsInvalid )
                 throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
         }
@@ -23,7 +23,7 @@ namespace Ookii.Dialogs.Interop
             CheckDisposed();
 
             StringBuilder buffer = new StringBuilder(_bufferSize);
-            if( NativeMethods.LoadString(_moduleHandle, id, buffer, buffer.Capacity + 1) == 0 )
+            if( Natives.LoadString(_moduleHandle, id, buffer, buffer.Capacity + 1) == 0 )
                 throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             return buffer.ToString();
         }
@@ -36,12 +36,12 @@ namespace Ookii.Dialogs.Interop
             string source = LoadString(id);
 
             // For some reason FORMAT_MESSAGE_FROM_HMODULE doesn't work so we use this way.
-            NativeMethods.FormatMessageFlags flags = NativeMethods.FormatMessageFlags.FORMAT_MESSAGE_ALLOCATE_BUFFER | NativeMethods.FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY | NativeMethods.FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING;
+            Natives.FormatMessageFlags flags = Natives.FormatMessageFlags.FORMAT_MESSAGE_ALLOCATE_BUFFER | Natives.FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY | Natives.FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING;
 
             IntPtr sourcePtr = System.Runtime.InteropServices.Marshal.StringToHGlobalAuto(source);
             try
             {
-                if( NativeMethods.FormatMessage(flags, sourcePtr, id, 0, ref buffer, 0, args) == 0 )
+                if( Natives.FormatMessage(flags, sourcePtr, id, 0, ref buffer, 0, args) == 0 )
                     throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             }
             finally

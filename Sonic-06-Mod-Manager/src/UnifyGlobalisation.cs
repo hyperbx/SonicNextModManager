@@ -76,29 +76,6 @@ namespace Unify.Globalisation
         }
 
         /// <summary>
-        /// Converts an ARGB string to a Color.
-        /// </summary>
-        public static Color StringToColor(string stringAsColour) {
-            Color colourFromString = Color.FromArgb(0, 0, 0);
-            for (int i = 0; i < 3; i++) {
-                // Split the string on the comma
-                string[] splitString = stringAsColour.Split(','); 
-
-                // Converts the strings to integers
-                var splitInts = splitString.Select(item => int.Parse(item)).ToArray();
-
-                // Combines integers to colours
-                colourFromString = Color.FromArgb(splitInts[0], splitInts[1], splitInts[2]); 
-            }
-            return colourFromString;
-        }
-
-        /// <summary>
-        /// Converts a string to an ARGB Color.
-        /// </summary>
-        public static string ColorToString(Color color) { return $"{color.R.ToString()},{color.G.ToString()},{color.B.ToString()}"; }
-
-        /// <summary>
         /// Compares two strings to check if one is a subdirectory of the other.
         /// </summary>
         public static bool IsPathSubdirectory(string candidate, string other) {

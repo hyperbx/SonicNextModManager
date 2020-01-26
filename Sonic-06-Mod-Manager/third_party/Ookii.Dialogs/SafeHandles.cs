@@ -20,7 +20,7 @@ namespace Ookii.Dialogs
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {
-            NativeMethods.ReleaseActCtx(handle);
+            Natives.ReleaseActCtx(handle);
             return true;
         }
     }
@@ -41,7 +41,7 @@ namespace Ookii.Dialogs
 
         protected override bool ReleaseHandle()
         {
-            return NativeMethods.DeleteObject(handle);
+            return Natives.DeleteObject(handle);
         }
     }
 
@@ -62,7 +62,7 @@ namespace Ookii.Dialogs
 
         protected override bool ReleaseHandle()
         {
-            return NativeMethods.DeleteDC(handle);
+            return Natives.DeleteDC(handle);
         }
     }
 
@@ -81,7 +81,7 @@ namespace Ookii.Dialogs
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {
-            return NativeMethods.FreeLibrary(handle);
+            return Natives.FreeLibrary(handle);
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Unify.Environment3
     {
         public static readonly string VersionNumber = "Version 3.0-indev-250120r1";
         public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        public static string Patches = $"{ApplicationData}\\Unify\\Patches\\";
 
         [STAThread]
 
@@ -44,6 +45,9 @@ namespace Unify.Environment3
             // Write required pre-requisites to the Tools directory
             if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\"))
                 Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\");
+
+            if (!Directory.Exists(Patches))
+                Directory.CreateDirectory(Patches);
 
             if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\arctool.exe"))
                 File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\arctool.exe", Properties.Resources.arctool);

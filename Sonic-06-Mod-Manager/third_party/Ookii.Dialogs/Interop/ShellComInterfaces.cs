@@ -32,7 +32,7 @@ namespace Ookii.Dialogs.Interop
         // IFileDialog-Specific interface members
         // --------------------------------------------------------------------------------
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetFileTypes([In] uint cFileTypes, [In, MarshalAs(UnmanagedType.LPArray)] NativeMethods.COMDLG_FILTERSPEC[] rgFilterSpec);
+        void SetFileTypes([In] uint cFileTypes, [In, MarshalAs(UnmanagedType.LPArray)] Natives.COMDLG_FILTERSPEC[] rgFilterSpec);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetFileTypeIndex([In] uint iFileType);
@@ -47,10 +47,10 @@ namespace Ookii.Dialogs.Interop
         void Unadvise([In] uint dwCookie);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetOptions([In] NativeMethods.FOS fos);
+        void SetOptions([In] Natives.FOS fos);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetOptions(out NativeMethods.FOS pfos);
+        void GetOptions(out Natives.FOS pfos);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetDefaultFolder([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi);
@@ -83,7 +83,7 @@ namespace Ookii.Dialogs.Interop
         void GetResult([MarshalAs(UnmanagedType.Interface)] out IShellItem ppsi);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddPlace([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, NativeMethods.FDAP fdap);
+        void AddPlace([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, Natives.FDAP fdap);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetDefaultExtension([In, MarshalAs(UnmanagedType.LPWStr)] string pszDefaultExtension);
@@ -115,7 +115,7 @@ namespace Ookii.Dialogs.Interop
 
         // Defined on IFileDialog - repeated here due to requirements of COM interop layer
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetFileTypes([In] uint cFileTypes, [In] ref NativeMethods.COMDLG_FILTERSPEC rgFilterSpec);
+        void SetFileTypes([In] uint cFileTypes, [In] ref Natives.COMDLG_FILTERSPEC rgFilterSpec);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetFileTypeIndex([In] uint iFileType);
@@ -130,10 +130,10 @@ namespace Ookii.Dialogs.Interop
         void Unadvise([In] uint dwCookie);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetOptions([In] NativeMethods.FOS fos);
+        void SetOptions([In] Natives.FOS fos);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetOptions(out NativeMethods.FOS pfos);
+        void GetOptions(out Natives.FOS pfos);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetDefaultFolder([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi);
@@ -166,7 +166,7 @@ namespace Ookii.Dialogs.Interop
         void GetResult([MarshalAs(UnmanagedType.Interface)] out IShellItem ppsi);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddPlace([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, NativeMethods.FDAP fdap);
+        void AddPlace([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, Natives.FDAP fdap);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetDefaultExtension([In, MarshalAs(UnmanagedType.LPWStr)] string pszDefaultExtension);
@@ -206,7 +206,7 @@ namespace Ookii.Dialogs.Interop
 
         // Defined on IFileDialog - repeated here due to requirements of COM interop layer
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetFileTypes([In] uint cFileTypes, [In] ref NativeMethods.COMDLG_FILTERSPEC rgFilterSpec);
+        void SetFileTypes([In] uint cFileTypes, [In] ref Natives.COMDLG_FILTERSPEC rgFilterSpec);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetFileTypeIndex([In] uint iFileType);
@@ -221,10 +221,10 @@ namespace Ookii.Dialogs.Interop
         void Unadvise([In] uint dwCookie);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetOptions([In] NativeMethods.FOS fos);
+        void SetOptions([In] Natives.FOS fos);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetOptions(out NativeMethods.FOS pfos);
+        void GetOptions(out Natives.FOS pfos);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetDefaultFolder([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi);
@@ -257,7 +257,7 @@ namespace Ookii.Dialogs.Interop
         void GetResult([MarshalAs(UnmanagedType.Interface)] out IShellItem ppsi);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddPlace([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, NativeMethods.FDAP fdap);
+        void AddPlace([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, Natives.FDAP fdap);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetDefaultExtension([In, MarshalAs(UnmanagedType.LPWStr)] string pszDefaultExtension);
@@ -322,13 +322,13 @@ namespace Ookii.Dialogs.Interop
         void OnSelectionChange([In, MarshalAs(UnmanagedType.Interface)] IFileDialog pfd);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void OnShareViolation([In, MarshalAs(UnmanagedType.Interface)] IFileDialog pfd, [In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, out NativeMethods.FDE_SHAREVIOLATION_RESPONSE pResponse);
+        void OnShareViolation([In, MarshalAs(UnmanagedType.Interface)] IFileDialog pfd, [In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, out Natives.FDE_SHAREVIOLATION_RESPONSE pResponse);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void OnTypeChange([In, MarshalAs(UnmanagedType.Interface)] IFileDialog pfd);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void OnOverwrite([In, MarshalAs(UnmanagedType.Interface)] IFileDialog pfd, [In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, out NativeMethods.FDE_OVERWRITE_RESPONSE pResponse);
+        void OnOverwrite([In, MarshalAs(UnmanagedType.Interface)] IFileDialog pfd, [In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, out Natives.FDE_OVERWRITE_RESPONSE pResponse);
     }
 
     [ComImport,
@@ -344,7 +344,7 @@ namespace Ookii.Dialogs.Interop
         void GetParent([MarshalAs(UnmanagedType.Interface)] out IShellItem ppsi);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetDisplayName([In] NativeMethods.SIGDN sigdnName, [MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
+        void GetDisplayName([In] Natives.SIGDN sigdnName, [MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void GetAttributes([In] uint sfgaoMask, out uint psfgaoAttribs);
@@ -366,10 +366,10 @@ namespace Ookii.Dialogs.Interop
         void GetPropertyStore([In] int Flags, [In] ref Guid riid, out IntPtr ppv);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetPropertyDescriptionList([In] ref NativeMethods.PROPERTYKEY keyType, [In] ref Guid riid, out IntPtr ppv);
+        void GetPropertyDescriptionList([In] ref Natives.PROPERTYKEY keyType, [In] ref Guid riid, out IntPtr ppv);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetAttributes([In] NativeMethods.SIATTRIBFLAGS dwAttribFlags, [In] uint sfgaoMask, out uint psfgaoAttribs);
+        void GetAttributes([In] Natives.SIATTRIBFLAGS dwAttribFlags, [In] uint sfgaoMask, out uint psfgaoAttribs);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void GetCount(out uint pdwNumItems);
@@ -431,11 +431,11 @@ namespace Ookii.Dialogs.Interop
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void GetFolderByName([In, MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, [MarshalAs(UnmanagedType.Interface)] out IKnownFolder ppkf);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void RegisterFolder([In] ref Guid rfid, [In] ref NativeMethods.KNOWNFOLDER_DEFINITION pKFD);
+        void RegisterFolder([In] ref Guid rfid, [In] ref Natives.KNOWNFOLDER_DEFINITION pKFD);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void UnregisterFolder([In] ref Guid rfid);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void FindFolderFromPath([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath, [In] NativeMethods.FFFP_MODE mode, [MarshalAs(UnmanagedType.Interface)] out IKnownFolder ppkf);
+        void FindFolderFromPath([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath, [In] Natives.FFFP_MODE mode, [MarshalAs(UnmanagedType.Interface)] out IKnownFolder ppkf);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void FindFolderFromIDList([In] IntPtr pidl, [MarshalAs(UnmanagedType.Interface)] out IKnownFolder ppkf);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -469,9 +469,9 @@ namespace Ookii.Dialogs.Interop
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetControlLabel([In] int dwIDCtl, [In, MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetControlState([In] int dwIDCtl, [Out] out NativeMethods.CDCONTROLSTATE pdwState);
+        void GetControlState([In] int dwIDCtl, [Out] out Natives.CDCONTROLSTATE pdwState);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetControlState([In] int dwIDCtl, [In] NativeMethods.CDCONTROLSTATE dwState);
+        void SetControlState([In] int dwIDCtl, [In] Natives.CDCONTROLSTATE dwState);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void GetEditBoxText([In] int dwIDCtl, [Out] IntPtr ppszText);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -487,9 +487,9 @@ namespace Ookii.Dialogs.Interop
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void RemoveAllControlItems([In] int dwIDCtl);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetControlItemState([In] int dwIDCtl, [In] int dwIDItem, [Out] out NativeMethods.CDCONTROLSTATE pdwState);
+        void GetControlItemState([In] int dwIDCtl, [In] int dwIDItem, [Out] out Natives.CDCONTROLSTATE pdwState);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetControlItemState([In] int dwIDCtl, [In] int dwIDItem, [In] NativeMethods.CDCONTROLSTATE dwState);
+        void SetControlItemState([In] int dwIDCtl, [In] int dwIDItem, [In] Natives.CDCONTROLSTATE dwState);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void GetSelectedControlItem([In] int dwIDCtl, [Out] out int pdwIDItem);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -526,11 +526,11 @@ namespace Ookii.Dialogs.Interop
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void GetCount([Out] out uint cProps);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetAt([In] uint iProp, out NativeMethods.PROPERTYKEY pkey);
+        void GetAt([In] uint iProp, out Natives.PROPERTYKEY pkey);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetValue([In] ref NativeMethods.PROPERTYKEY key, out object pv);
+        void GetValue([In] ref Natives.PROPERTYKEY key, out object pv);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetValue([In] ref NativeMethods.PROPERTYKEY key, [In] ref object pv);
+        void SetValue([In] ref Natives.PROPERTYKEY key, [In] ref object pv);
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void Commit();
     }
