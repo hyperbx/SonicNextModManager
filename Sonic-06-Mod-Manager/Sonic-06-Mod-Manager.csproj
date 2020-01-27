@@ -62,6 +62,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="src\UnifyArchives.cs" />
     <Compile Include="src\Environment3\Controls\UnifyMessenger.cs">
       <SubType>Form</SubType>
     </Compile>

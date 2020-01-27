@@ -56,7 +56,10 @@ namespace Unify.Environment3
             if (Properties.Settings.Default.FirstLaunch &&
                 Properties.Settings.Default.ModsDirectory == string.Empty) {
                     new UnifySetup().ShowDialog();
-                    UpdatePatches();
+
+                    // Update patches synchronously - downloads too fast to be able to deserialise them all without awaiting.
+                    Task.Run(() => UpdatePatches()).GetAwaiter().GetResult();
+                    RefreshLists();
             }
 
             // Prevents actions being performed in UnifyEnvironment's design time.
@@ -1186,8 +1189,6 @@ namespace Unify.Environment3
                 //Feedback
                 UnifyMessenger.UnifyMessage.ShowDialog("The latest patches have been downloaded!",
                                                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                RefreshLists();
             } catch (Exception ex) {
                 if (_debug) Console.WriteLine(ex.ToString()); // Write exception to debug log
                 UnifyMessenger.UnifyMessage.ShowDialog("Failed to update patches...",
@@ -1267,6 +1268,7 @@ namespace Unify.Environment3
                     // Reset update button for future checking
                     SectionButton_FetchPatches.Enabled = true;
                     SectionButton_FetchPatches.Refresh();
+                    RefreshLists();
                 }
             }
 

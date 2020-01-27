@@ -123,8 +123,8 @@ namespace Unify.Patcher
                 File.Exists(Properties.Settings.Default.GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
                     // Search for all files with specified LINQ filters
                     List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), "*.*", SearchOption.AllDirectories)
-                                        .Where(s => s.EndsWith(".arc_back") ||
-                                                    s.EndsWith(".arc_orig")).ToList();
+                                        .Where(s => s.EndsWith("_back") ||
+                                                    s.EndsWith("_orig")).ToList();
 
                     foreach (string file in files) {
                         if (File.Exists(file.ToString().Remove(file.Length - 5))) {
@@ -303,31 +303,9 @@ namespace Unify.Patcher
         /// <summary>
         /// Repacks an archive from a temporary location.
         /// </summary>
-        public static string RepackARC(string arc, string output) {
-            string tempPath = arc; // Location of directory to repack
-            var tempData = new DirectoryInfo(tempPath);
-
-            // Repacks the archive from the temporary location
-            ProcessStartInfo repack = new ProcessStartInfo() {
-                FileName = $"{Program.ApplicationData}\\Unify\\Tools\\arctool.exe",
-                Arguments = $"-f -i \"{Path.Combine(tempPath, Path.GetFileNameWithoutExtension(output))}\" -c \"{output}\"",
-                WorkingDirectory = $"{Program.ApplicationData}\\Unify\\Tools\\",
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            var Repack = Process.Start(repack);
-            Repack.WaitForExit();
-            Repack.Close();
-            
-            // Erases temporary repack data
-            try {
-                if (Directory.Exists(tempPath)) {
-                    foreach (FileInfo file in tempData.GetFiles()) file.Delete();
-                    foreach (DirectoryInfo directory in tempData.GetDirectories()) directory.Delete(true);
-                }
-            } catch { return tempPath; }
-
-            return tempPath;
+        public static void RepackARC(string arc, string output) {
+            ArcPacker repack = new ArcPacker();
+            repack.WriteArc(output, Path.Combine(arc, Path.GetFileNameWithoutExtension(output)));
         }
 
         /// <summary>
