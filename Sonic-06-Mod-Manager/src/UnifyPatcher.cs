@@ -55,13 +55,12 @@ namespace Unify.Patcher
             bool merge = bool.Parse(INI.DeserialiseKey("Merge", mod)); // Deserialise 'Merge' key and parse as a Boolean value
             string[] custom = INI.DeserialiseKey("Custom", mod).Split(','); // Deserialise 'Custom' key
             string[] read_only = INI.DeserialiseKey("Read-only", mod).Split(','); // Deserialise 'Read-only' key
-            
+
             //Skip the mod if the platform is invalid
             string system = Literal.System(Properties.Settings.Default.GameDirectory);
-            if ((system == "Xbox 360" && platform == "PlayStation 3") ||
-                (system == "PlayStation 3" && platform == "Xbox 360")) {
-                    skipped.Add($"► {name} (failed because the mod was not targeted for the {system})");
-                    return;
+            if (system != platform && platform != "All Systems") {
+                skipped.Add($"► {name} (failed because the mod was not targeted for the {system})");
+                return;
             }
 
             // Search for all files with specified LINQ filters
@@ -354,8 +353,7 @@ namespace Unify.Patcher
 
             //Skip the patch if the platform is invalid
             string system = Literal.System(Properties.Settings.Default.GameDirectory);
-            if ((system == "Xbox 360" && platform == "PlayStation 3") ||
-                (system == "PlayStation 3" && platform == "Xbox 360")) {
+            if (system != platform && platform != "All Systems") {
                 ModEngine.skipped.Add($"► {name} (failed because the patch was not targeted for the {system})");
                 return;
             }
@@ -549,7 +547,7 @@ namespace Unify.Patcher
             else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), location);
 
             foreach (string file in Directory.GetFiles(location, extension, SearchOption.TopDirectoryOnly))
-                File.Move(file, Path.ChangeExtension(file, _new));
+                if (!File.Exists(Path.ChangeExtension(file, _new))) File.Move(file, Path.ChangeExtension(file, _new));
         }
 
         private static void ParameterAdd(string location, string parameter, string value) {

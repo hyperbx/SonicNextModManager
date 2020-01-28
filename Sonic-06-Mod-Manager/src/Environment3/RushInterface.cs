@@ -840,6 +840,7 @@ namespace Unify.Environment3
                                 catch (Exception ex) {
                                     UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
                                                                            "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
                                 }
 
                                 if (Properties.Settings.Default.SaveFileRedirection) {
@@ -870,6 +871,7 @@ namespace Unify.Environment3
                     catch (Exception ex) {
                         UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your patches...\n\n{ex}",
                                                                 "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
 
                     if (ModEngine.skipped.Count != 0)

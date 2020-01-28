@@ -398,7 +398,7 @@ namespace Unify.Environment3
             this.SectionButton_CreateNewMod.SectionImage = global::Unify.Properties.Resources.NewFileCollection_16x;
             this.SectionButton_CreateNewMod.SectionText = "Create a new mod";
             this.SectionButton_CreateNewMod.SelectedSection = false;
-            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(432, 35);
+            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(435, 35);
             this.SectionButton_CreateNewMod.TabIndex = 51;
             this.SectionButton_CreateNewMod.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_CreateNewMod.Click += new System.EventHandler(this.SectionButton_CreateNewMod_Click);
@@ -415,7 +415,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(992, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(995, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -967,7 +967,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(389, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(392, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1087,7 +1087,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(290, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(293, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
