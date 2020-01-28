@@ -4,6 +4,7 @@ using System.Linq;
 using System.Drawing;
 using Unify.Messenger;
 using Unify.Serialisers;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
@@ -96,7 +97,7 @@ namespace Unify.Environment3
                                                   .Replace("|", "")
                                                   .Replace(" ", "");
 
-                if (File.Exists(Path.Combine(Program.Patches, safeTitle)) && !edit)
+                if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua") && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A patch called {safeTitle} already exists. Please rename your patch.",
                                                            "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else {
@@ -123,6 +124,14 @@ namespace Unify.Environment3
                         configInfo.WriteLine("\n--[Functions]--");
                         configInfo.Close();
                     }
+
+                    if (!edit)
+                        try { Process.Start(newPath); }
+                        catch {
+                            UnifyMessenger.UnifyMessage.ShowDialog($"Please associate the MLUA format with your text editor of choice.",
+                                                                   "Unable to load patch...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Process.Start(Program.Patches);
+                        }
 
                     Close();
                 }

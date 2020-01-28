@@ -658,10 +658,13 @@ namespace Unify.Environment3
                     }
                     break;
                 case "Check for Updates":
+                    // Navigate to Updates section
                     SectionButton_DeselectAll();
                     Rush_Section_Updates.SelectedSection = true;
                     TabControl_Rush.SelectedTab = Tab_Section_Updates;
                     TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Updates_UICleanSpace);
+
+                    // Check for updates...
                     await CheckForModUpdates(ListView_ModsList.FocusedItem.SubItems[6].Text);
                     break;
                 case "Edit Mod":
@@ -1117,14 +1120,14 @@ namespace Unify.Environment3
                     // Xenia parameter setup
                     if (ComboBox_API.SelectedIndex == 0) {
                         parameters.Add("--gpu=d3d12"); // Use DirectX 12
-                        if (CheckBox_Xenia_ForceRTV.Checked) parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
+                        if (CheckBox_Xenia_ForceRTV.Checked)     parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
                         if (CheckBox_Xenia_2xResolution.Checked) parameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
                     } else parameters.Add("--gpu=vulkan"); // Use Vulkan
 
                     if (!CheckBox_Xenia_VerticalSync.Checked) parameters.Add("--vsync=false"); // V-Sync
-                    if (CheckBox_Xenia_Gamma.Checked) parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
-                    if (CheckBox_Xenia_Fullscreen.Checked) parameters.Add("--fullscreen"); // Launch in Fullscreen
-                    if (!CheckBox_Xenia_DiscordRPC.Checked) parameters.Add("--discord=false"); // Discord Rich Presence
+                    if (CheckBox_Xenia_Gamma.Checked)         parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
+                    if (CheckBox_Xenia_Fullscreen.Checked)    parameters.Add("--fullscreen"); // Launch in Fullscreen
+                    if (!CheckBox_Xenia_DiscordRPC.Checked)   parameters.Add("--discord=false"); // Discord Rich Presence
 
                     ProcessStartInfo xeniaProc = new ProcessStartInfo() {
                         FileName = Properties.Settings.Default.Path_EmulatorDirectory,
@@ -1165,10 +1168,10 @@ namespace Unify.Environment3
         private void Button_Open_Click(object sender, EventArgs e) {
             try {
                 string location = string.Empty;
-                if (sender == Button_Open_ModsDirectory) location = Properties.Settings.Default.Path_ModsDirectory; // Mods Directory
-                else if (sender == Button_Open_GameDirectory) location = Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory); // Game Directory
+                if (sender == Button_Open_ModsDirectory)           location = Properties.Settings.Default.Path_ModsDirectory; // Mods Directory
+                else if (sender == Button_Open_GameDirectory)      location = Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory); // Game Directory
                 else if (sender == Button_Open_EmulatorExecutable) location = Properties.Settings.Default.Path_EmulatorDirectory; // Xenia
-                else if (sender == Button_Open_SaveData) location = Path.GetDirectoryName(Properties.Settings.Default.Path_SaveData); // Save Data Directory
+                else if (sender == Button_Open_SaveData)           location = Path.GetDirectoryName(Properties.Settings.Default.Path_SaveData); // Save Data Directory
                 Process.Start(location); // Launch requested location
             } catch {
                 UnifyMessenger.UnifyMessage.ShowDialog("The requested location was invalid or unspecified. Ensure the box is populated.",
@@ -1847,8 +1850,8 @@ namespace Unify.Environment3
             }
 
             // Reset Amy's Hammer Range
-            else if
-                (sender == Button_AmyHammerRange_Default) Properties.Settings.Default.Tweak_AmyHammerRange = 50;
+            else if (sender == Button_AmyHammerRange_Default)
+                Properties.Settings.Default.Tweak_AmyHammerRange = 50;
 
             Properties.Settings.Default.Save();
         }
