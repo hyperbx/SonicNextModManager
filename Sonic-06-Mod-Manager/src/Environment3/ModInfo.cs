@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Linq;
 using Unify.Patcher;
 using System.Drawing;
@@ -16,7 +15,8 @@ using System.IO.Compression;
 /*
  * MIT License
 
- * Copyright (c) 2020 Knuxfan24 & HyperPolygon64
+ * Copyright (c) 2020 Knuxfan24
+ * Copyright (c) 2020 Gabriel (HyperPolygon64)
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

@@ -4,9 +4,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
+// Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
+ * Copyright (c) 2020 Knuxfan24
  * Copyright (c) 2020 Gabriel (HyperPolygon64)
  * Copyright (c) 2020 David Korth <gerbilsoft@gerbilsoft.com>
 

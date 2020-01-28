@@ -1,6 +1,7 @@
 <h1 align="center">Sonic '06 Mod Manager is licensed under the MIT License</h1>
 
-Copyright (c) 2020 Knuxfan24 & HyperPolygon64
+Copyright (c) 2020 Knuxfan24
+Copyright (c) 2020 Gabriel (HyperPolygon64)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
