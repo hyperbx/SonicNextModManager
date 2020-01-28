@@ -1873,5 +1873,23 @@ namespace Unify.Environment3
             new PatchCreator(string.Empty, false).ShowDialog(); // Launch Patch Creator
             RefreshLists(); // Refresh all lists
         }
+
+        /// <summary>
+        /// Redirects the user to a webpage about the selected contributor.
+        /// </summary>
+        private void Link_About_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            if    (sender == LinkLabel_HyperPolygon64) Process.Start("https://github.com/HyperPolygon64");
+            else if    (sender == LinkLabel_Knuxfan24) Process.Start("https://github.com/Knuxfan24");
+            else if   (sender == LinkLabel_GerbilSoft) Process.Start("https://github.com/GerbilSoft");
+            else if (sender == LinkLabel_SuperSonic16) Process.Start("https://github.com/thesupersonic16");
+            else if (sender == LinkLabel_Contributors_Radfordhound || sender == LinkLabel_Testers_Radfordhound)
+                Process.Start("https://github.com/Radfordhound");
+            else if    (sender == LinkLabel_Microsoft) Process.Start("https://github.com/Microsoft");
+            else if   (sender == LinkLabel_AssemblyPP) Process.Start("https://gamebanana.com/tools/6738");
+            else if (sender == LinkLabel_SEGACarnival) Process.Start("https://www.segacarnival.com/forum/index.php");
+            else if    (sender == LinkLabel_sharu6262) Process.Start("https://twitter.com/sharu6262");
+            else if    (sender == LinkLabel_Melpontro) Process.Start("https://www.youtube.com/user/Melpontro");
+            else if     (sender == LinkLabel_Velcomia) Process.Start("https://twitter.com/Velcomia");
+        }
     }
 }

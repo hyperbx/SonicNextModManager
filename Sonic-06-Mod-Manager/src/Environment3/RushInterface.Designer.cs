@@ -204,6 +204,18 @@ namespace Unify.Environment3
             this.SectionButton_CheckForSoftwareUpdates = new Unify.Environment3.SectionButton();
             this.ProgressBar_SoftwareUpdate = new System.Windows.Forms.ProgressBar();
             this.Tab_Section_About = new System.Windows.Forms.TabPage();
+            this.LinkLabel_SEGACarnival = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_Testers_Radfordhound = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_Velcomia = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_Melpontro = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_sharu6262 = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_AssemblyPP = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_Microsoft = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_Contributors_Radfordhound = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_SuperSonic16 = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_GerbilSoft = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_Knuxfan24 = new System.Windows.Forms.LinkLabel();
+            this.LinkLabel_HyperPolygon64 = new System.Windows.Forms.LinkLabel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -211,6 +223,7 @@ namespace Unify.Environment3
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.Label_Version = new System.Windows.Forms.Label();
+            this.Panel_About_UICleanSpace = new System.Windows.Forms.Panel();
             this.Rush_Section_Settings = new Unify.Environment3.SectionButton();
             this.Rush_Section_Patches = new Unify.Environment3.SectionButton();
             this.Rush_Section_About = new Unify.Environment3.SectionButton();
@@ -443,7 +456,7 @@ namespace Unify.Environment3
             this.SectionButton_CreateNewMod.SectionImage = global::Unify.Properties.Resources.NewFileCollection_16x;
             this.SectionButton_CreateNewMod.SectionText = "Create a new mod";
             this.SectionButton_CreateNewMod.SelectedSection = false;
-            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(540, 35);
+            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(549, 35);
             this.SectionButton_CreateNewMod.TabIndex = 51;
             this.SectionButton_CreateNewMod.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_CreateNewMod.Click += new System.EventHandler(this.SectionButton_CreateNewMod_Click);
@@ -460,7 +473,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1100, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1109, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1016,7 +1029,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(497, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(506, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1140,7 +1153,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(335, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(291, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -2592,7 +2605,20 @@ namespace Unify.Environment3
             // 
             // Tab_Section_About
             // 
+            this.Tab_Section_About.AutoScroll = true;
             this.Tab_Section_About.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_SEGACarnival);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_Testers_Radfordhound);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_Velcomia);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_Melpontro);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_sharu6262);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_AssemblyPP);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_Microsoft);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_Contributors_Radfordhound);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_SuperSonic16);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_GerbilSoft);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_Knuxfan24);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_HyperPolygon64);
             this.Tab_Section_About.Controls.Add(this.label6);
             this.Tab_Section_About.Controls.Add(this.label5);
             this.Tab_Section_About.Controls.Add(this.label4);
@@ -2600,6 +2626,7 @@ namespace Unify.Environment3
             this.Tab_Section_About.Controls.Add(this.label2);
             this.Tab_Section_About.Controls.Add(this.label1);
             this.Tab_Section_About.Controls.Add(this.Label_Version);
+            this.Tab_Section_About.Controls.Add(this.Panel_About_UICleanSpace);
             this.Tab_Section_About.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_About.Name = "Tab_Section_About";
             this.Tab_Section_About.Size = new System.Drawing.Size(591, 990);
@@ -2607,11 +2634,191 @@ namespace Unify.Environment3
             this.Tab_Section_About.Text = "About";
             this.Tab_Section_About.Visible = false;
             // 
+            // LinkLabel_SEGACarnival
+            // 
+            this.LinkLabel_SEGACarnival.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_SEGACarnival.AutoSize = true;
+            this.LinkLabel_SEGACarnival.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_SEGACarnival.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_SEGACarnival.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_SEGACarnival.Location = new System.Drawing.Point(30, 358);
+            this.LinkLabel_SEGACarnival.Name = "LinkLabel_SEGACarnival";
+            this.LinkLabel_SEGACarnival.Size = new System.Drawing.Size(122, 25);
+            this.LinkLabel_SEGACarnival.TabIndex = 187;
+            this.LinkLabel_SEGACarnival.TabStop = true;
+            this.LinkLabel_SEGACarnival.Text = "SEGA Carnival";
+            this.LinkLabel_SEGACarnival.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Testers_Radfordhound
+            // 
+            this.LinkLabel_Testers_Radfordhound.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Testers_Radfordhound.AutoSize = true;
+            this.LinkLabel_Testers_Radfordhound.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Testers_Radfordhound.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Testers_Radfordhound.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Testers_Radfordhound.Location = new System.Drawing.Point(30, 556);
+            this.LinkLabel_Testers_Radfordhound.Name = "LinkLabel_Testers_Radfordhound";
+            this.LinkLabel_Testers_Radfordhound.Size = new System.Drawing.Size(129, 25);
+            this.LinkLabel_Testers_Radfordhound.TabIndex = 186;
+            this.LinkLabel_Testers_Radfordhound.TabStop = true;
+            this.LinkLabel_Testers_Radfordhound.Text = "Radfordhound";
+            this.LinkLabel_Testers_Radfordhound.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Velcomia
+            // 
+            this.LinkLabel_Velcomia.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Velcomia.AutoSize = true;
+            this.LinkLabel_Velcomia.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Velcomia.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Velcomia.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Velcomia.Location = new System.Drawing.Point(30, 531);
+            this.LinkLabel_Velcomia.Name = "LinkLabel_Velcomia";
+            this.LinkLabel_Velcomia.Size = new System.Drawing.Size(83, 25);
+            this.LinkLabel_Velcomia.TabIndex = 185;
+            this.LinkLabel_Velcomia.TabStop = true;
+            this.LinkLabel_Velcomia.Text = "Velcomia";
+            this.LinkLabel_Velcomia.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Melpontro
+            // 
+            this.LinkLabel_Melpontro.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Melpontro.AutoSize = true;
+            this.LinkLabel_Melpontro.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Melpontro.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Melpontro.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Melpontro.Location = new System.Drawing.Point(30, 482);
+            this.LinkLabel_Melpontro.Name = "LinkLabel_Melpontro";
+            this.LinkLabel_Melpontro.Size = new System.Drawing.Size(96, 25);
+            this.LinkLabel_Melpontro.TabIndex = 184;
+            this.LinkLabel_Melpontro.TabStop = true;
+            this.LinkLabel_Melpontro.Text = "Melpontro";
+            this.LinkLabel_Melpontro.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_sharu6262
+            // 
+            this.LinkLabel_sharu6262.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_sharu6262.AutoSize = true;
+            this.LinkLabel_sharu6262.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_sharu6262.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_sharu6262.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_sharu6262.Location = new System.Drawing.Point(30, 457);
+            this.LinkLabel_sharu6262.Name = "LinkLabel_sharu6262";
+            this.LinkLabel_sharu6262.Size = new System.Drawing.Size(95, 25);
+            this.LinkLabel_sharu6262.TabIndex = 183;
+            this.LinkLabel_sharu6262.TabStop = true;
+            this.LinkLabel_sharu6262.Text = "sharu6262";
+            this.LinkLabel_sharu6262.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_AssemblyPP
+            // 
+            this.LinkLabel_AssemblyPP.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_AssemblyPP.AutoSize = true;
+            this.LinkLabel_AssemblyPP.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_AssemblyPP.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_AssemblyPP.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_AssemblyPP.Location = new System.Drawing.Point(30, 333);
+            this.LinkLabel_AssemblyPP.Name = "LinkLabel_AssemblyPP";
+            this.LinkLabel_AssemblyPP.Size = new System.Drawing.Size(113, 25);
+            this.LinkLabel_AssemblyPP.TabIndex = 182;
+            this.LinkLabel_AssemblyPP.TabStop = true;
+            this.LinkLabel_AssemblyPP.Text = "Assembly++";
+            this.LinkLabel_AssemblyPP.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Microsoft
+            // 
+            this.LinkLabel_Microsoft.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Microsoft.AutoSize = true;
+            this.LinkLabel_Microsoft.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Microsoft.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Microsoft.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Microsoft.Location = new System.Drawing.Point(30, 308);
+            this.LinkLabel_Microsoft.Name = "LinkLabel_Microsoft";
+            this.LinkLabel_Microsoft.Size = new System.Drawing.Size(88, 25);
+            this.LinkLabel_Microsoft.TabIndex = 181;
+            this.LinkLabel_Microsoft.TabStop = true;
+            this.LinkLabel_Microsoft.Text = "Microsoft";
+            this.LinkLabel_Microsoft.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Contributors_Radfordhound
+            // 
+            this.LinkLabel_Contributors_Radfordhound.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Contributors_Radfordhound.AutoSize = true;
+            this.LinkLabel_Contributors_Radfordhound.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Contributors_Radfordhound.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Contributors_Radfordhound.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Contributors_Radfordhound.Location = new System.Drawing.Point(30, 185);
+            this.LinkLabel_Contributors_Radfordhound.Name = "LinkLabel_Contributors_Radfordhound";
+            this.LinkLabel_Contributors_Radfordhound.Size = new System.Drawing.Size(129, 25);
+            this.LinkLabel_Contributors_Radfordhound.TabIndex = 180;
+            this.LinkLabel_Contributors_Radfordhound.TabStop = true;
+            this.LinkLabel_Contributors_Radfordhound.Text = "Radfordhound";
+            this.LinkLabel_Contributors_Radfordhound.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_SuperSonic16
+            // 
+            this.LinkLabel_SuperSonic16.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_SuperSonic16.AutoSize = true;
+            this.LinkLabel_SuperSonic16.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_SuperSonic16.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_SuperSonic16.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_SuperSonic16.Location = new System.Drawing.Point(30, 160);
+            this.LinkLabel_SuperSonic16.Name = "LinkLabel_SuperSonic16";
+            this.LinkLabel_SuperSonic16.Size = new System.Drawing.Size(121, 25);
+            this.LinkLabel_SuperSonic16.TabIndex = 179;
+            this.LinkLabel_SuperSonic16.TabStop = true;
+            this.LinkLabel_SuperSonic16.Text = "SuperSonic16";
+            this.LinkLabel_SuperSonic16.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_GerbilSoft
+            // 
+            this.LinkLabel_GerbilSoft.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_GerbilSoft.AutoSize = true;
+            this.LinkLabel_GerbilSoft.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_GerbilSoft.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_GerbilSoft.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_GerbilSoft.Location = new System.Drawing.Point(30, 135);
+            this.LinkLabel_GerbilSoft.Name = "LinkLabel_GerbilSoft";
+            this.LinkLabel_GerbilSoft.Size = new System.Drawing.Size(91, 25);
+            this.LinkLabel_GerbilSoft.TabIndex = 178;
+            this.LinkLabel_GerbilSoft.TabStop = true;
+            this.LinkLabel_GerbilSoft.Text = "GerbilSoft";
+            this.LinkLabel_GerbilSoft.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Knuxfan24
+            // 
+            this.LinkLabel_Knuxfan24.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Knuxfan24.AutoSize = true;
+            this.LinkLabel_Knuxfan24.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Knuxfan24.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Knuxfan24.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Knuxfan24.Location = new System.Drawing.Point(30, 85);
+            this.LinkLabel_Knuxfan24.Name = "LinkLabel_Knuxfan24";
+            this.LinkLabel_Knuxfan24.Size = new System.Drawing.Size(95, 25);
+            this.LinkLabel_Knuxfan24.TabIndex = 177;
+            this.LinkLabel_Knuxfan24.TabStop = true;
+            this.LinkLabel_Knuxfan24.Text = "Knuxfan24";
+            this.LinkLabel_Knuxfan24.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_HyperPolygon64
+            // 
+            this.LinkLabel_HyperPolygon64.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_HyperPolygon64.AutoSize = true;
+            this.LinkLabel_HyperPolygon64.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_HyperPolygon64.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_HyperPolygon64.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_HyperPolygon64.Location = new System.Drawing.Point(30, 60);
+            this.LinkLabel_HyperPolygon64.Name = "LinkLabel_HyperPolygon64";
+            this.LinkLabel_HyperPolygon64.Size = new System.Drawing.Size(145, 25);
+            this.LinkLabel_HyperPolygon64.TabIndex = 176;
+            this.LinkLabel_HyperPolygon64.TabStop = true;
+            this.LinkLabel_HyperPolygon64.Text = "HyperPolygon64";
+            this.LinkLabel_HyperPolygon64.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label6.Location = new System.Drawing.Point(9, 407);
+            this.label6.Location = new System.Drawing.Point(9, 457);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(150, 125);
             this.label6.TabIndex = 39;
@@ -2621,7 +2828,7 @@ namespace Unify.Environment3
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label5.Location = new System.Drawing.Point(6, 353);
+            this.label5.Location = new System.Drawing.Point(6, 403);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(118, 45);
             this.label5.TabIndex = 38;
@@ -2631,17 +2838,18 @@ namespace Unify.Environment3
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label4.Location = new System.Drawing.Point(9, 283);
+            this.label4.Location = new System.Drawing.Point(9, 308);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(294, 50);
+            this.label4.Size = new System.Drawing.Size(294, 75);
             this.label4.TabIndex = 37;
-            this.label4.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration";
+            this.label4.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration\r\n► SEGA Carni" +
+    "val - Update Servers";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label3.Location = new System.Drawing.Point(6, 229);
+            this.label3.Location = new System.Drawing.Point(6, 254);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(228, 45);
             this.label3.TabIndex = 36;
@@ -2653,7 +2861,7 @@ namespace Unify.Environment3
             this.label2.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.label2.Location = new System.Drawing.Point(9, 60);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(442, 150);
+            this.label2.Size = new System.Drawing.Size(442, 175);
             this.label2.TabIndex = 35;
             this.label2.Text = resources.GetString("label2.Text");
             // 
@@ -2673,12 +2881,19 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Version.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Version.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Version.Location = new System.Drawing.Point(2, 959);
+            this.Label_Version.Location = new System.Drawing.Point(2, 957);
             this.Label_Version.Name = "Label_Version";
-            this.Label_Version.Size = new System.Drawing.Size(588, 25);
+            this.Label_Version.Size = new System.Drawing.Size(582, 25);
             this.Label_Version.TabIndex = 0;
             this.Label_Version.Text = "Rush 3.0";
             this.Label_Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // Panel_About_UICleanSpace
+            // 
+            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 581);
+            this.Panel_About_UICleanSpace.Name = "Panel_About_UICleanSpace";
+            this.Panel_About_UICleanSpace.Size = new System.Drawing.Size(214, 17);
+            this.Panel_About_UICleanSpace.TabIndex = 175;
             // 
             // Rush_Section_Settings
             // 
@@ -3029,5 +3244,18 @@ namespace Unify.Environment3
         private System.Windows.Forms.Button Button_Renderer_Default;
         private System.Windows.Forms.Label Label_Description_TailsFlightLimit;
         private System.Windows.Forms.CheckBox CheckBox_TailsFlightLimit;
+        private System.Windows.Forms.Panel Panel_About_UICleanSpace;
+        private System.Windows.Forms.LinkLabel LinkLabel_Testers_Radfordhound;
+        private System.Windows.Forms.LinkLabel LinkLabel_Velcomia;
+        private System.Windows.Forms.LinkLabel LinkLabel_Melpontro;
+        private System.Windows.Forms.LinkLabel LinkLabel_sharu6262;
+        private System.Windows.Forms.LinkLabel LinkLabel_AssemblyPP;
+        private System.Windows.Forms.LinkLabel LinkLabel_Microsoft;
+        private System.Windows.Forms.LinkLabel LinkLabel_Contributors_Radfordhound;
+        private System.Windows.Forms.LinkLabel LinkLabel_SuperSonic16;
+        private System.Windows.Forms.LinkLabel LinkLabel_GerbilSoft;
+        private System.Windows.Forms.LinkLabel LinkLabel_Knuxfan24;
+        private System.Windows.Forms.LinkLabel LinkLabel_HyperPolygon64;
+        private System.Windows.Forms.LinkLabel LinkLabel_SEGACarnival;
     }
 }
