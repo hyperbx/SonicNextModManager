@@ -133,8 +133,8 @@ namespace Unify.Environment3
                 var bytes = File.ReadAllBytes(archive).Take(2).ToArray();
                 var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
 
-                if (hexString == "50 4B") ZIP.InstallFromZip(archive);
-                else ZIP.InstallFrom7zArchive(archive);
+                if (hexString == "50 4B") ZIP.InstallFromZip(archive, Properties.Settings.Default.Path_ModsDirectory);
+                else ZIP.InstallFrom7zArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
 
                 UnifyMessenger.UnifyMessage.ShowDialog($"{item.ModName} has been installed in your mods directory.",
                                                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);

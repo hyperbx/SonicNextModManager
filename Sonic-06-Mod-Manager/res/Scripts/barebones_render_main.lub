@@ -1,0 +1,62 @@
+function RenderMainForSingle(_ARG_0_, _ARG_1_, _ARG_2_)
+  SetFrameBufferObject(_ARG_0_, _ARG_1_, _ARG_2_, "all", 0, 0, 0, 0)
+  SetCurrentCamera(_ARG_0_, "main")
+  SetZMode(_ARG_0_, "lessequalon")
+  LockZMode(_ARG_0_, "true")
+  SetBlendMode(_ARG_0_, "opaque")
+  LockBlendMode(_ARG_0_, "true")
+  RenderWorld(_ARG_0_, "main", "all", "opaque")
+  RenderWorld(_ARG_0_, "main", "all", "punchthrough")
+  LockZMode(_ARG_0_, "false")
+  LockBlendMode(_ARG_0_, "false")
+  SetZMode(_ARG_0_, "lessequaloff")
+  LockZMode(_ARG_0_, "true")
+  SetCurrentCamera(_ARG_0_, "mainsky")
+  RenderWorld(_ARG_0_, "sky")
+  SetCurrentCamera(_ARG_0_, "mainpsi")
+  SetBlendMode(_ARG_0_, "add")
+  LockBlendMode(_ARG_0_, "true")
+  SetConstantShader(_ARG_0_, "psi", "psi_effect", "DefaultTechnique")
+  RenderWorld(_ARG_0_, "psi")
+  SetConstantShader(_ARG_0_, "psi", "null")
+  LockBlendMode(_ARG_0_, "false")
+  LockZMode(_ARG_0_, "false")
+  SetCurrentCamera(_ARG_0_, "mainxp")
+  RenderWorld(_ARG_0_, "transparent", "sectors")
+  SetCurrentCamera(_ARG_0_, "main")
+  RenderWorld(_ARG_0_, "main", "all", "transparent")
+
+  BeginBlock(_ARG_0_, "capture0", "stop")
+    if GetPlatform() == "xbox360" then
+      Resolve(_ARG_0_, "framebuffer_tile")
+    else
+      Capture(_ARG_0_, _ARG_1_, 1)
+    end
+  
+    BeginBlock(_ARG_0_, "oc", "stop")
+      SetCurrentCamera(_ARG_0_, "mainoc")
+      SetZMode(_ARG_0_, "lessequalon")
+      SetBlendMode(_ARG_0_, "opaque")
+      LockBlendMode(_ARG_0_, "true")
+      SetTexture(_ARG_0_, 0, "enemy/common/en_ocnoise.dds", "wrap", "wrap", "linear")
+      SetConstantShader(_ARG_0_, "oc", "OpticalCamouflage", "OpticalCamouflage")
+      RenderWorld(_ARG_0_, "oc", "all", "all", "depth")
+      SetConstantShader(_ARG_0_, "oc", "null")
+	  LockZMode(_ARG_0_, "false")
+      LockBlendMode(_ARG_0_, "false")
+    EndBlock(_ARG_0_)
+  EndBlock(_ARG_0_)
+  
+  RenderSpanverse(_ARG_0_)
+  RenderGE1Particle(_ARG_0_, 1)
+  RenderGE1Particle(_ARG_0_, 2)
+  RenderGE1Particle(_ARG_0_, 3)
+  
+  if GetPlatform() == "xbox360" then
+    RenderGE1Particle(_ARG_0_, 4)
+  end
+end
+
+function RenderMainForMulti(_ARG_0_, _ARG_1_, _ARG_2_)
+  RenderMainForSingle(_ARG_0_, _ARG_1_, _ARG_2_)
+end

@@ -71,6 +71,26 @@ namespace Unify.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] barebones_render_gamemode {
+            get {
+                object obj = ResourceManager.GetObject("barebones_render_gamemode", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] barebones_render_main {
+            get {
+                object obj = ResourceManager.GetObject("barebones_render_main", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Cancel_16x {
@@ -426,6 +446,16 @@ namespace Unify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] render_cheap {
+            get {
+                object obj = ResourceManager.GetObject("render_cheap", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] unlub {
             get {
                 object obj = ResourceManager.GetObject("unlub", resourceCulture);
@@ -458,6 +488,36 @@ namespace Unify.Properties {
         internal static string VersionURI_SEGACarnival {
             get {
                 return ResourceManager.GetString("VersionURI_SEGACarnival", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkan_render_gamemode {
+            get {
+                object obj = ResourceManager.GetObject("vulkan_render_gamemode", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkan_render_main {
+            get {
+                object obj = ResourceManager.GetObject("vulkan_render_main", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vulkan_render_title {
+            get {
+                object obj = ResourceManager.GetObject("vulkan_render_title", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

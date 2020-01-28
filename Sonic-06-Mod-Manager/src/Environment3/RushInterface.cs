@@ -52,18 +52,19 @@ namespace Unify.Environment3
         public RushInterface() {
             InitializeComponent(); // Designer support
 
-            // Begin first time setup
-            if (Properties.Settings.Default.FirstLaunch &&
-                Properties.Settings.Default.ModsDirectory == string.Empty) {
-                    new UnifySetup().ShowDialog();
-
-                    // Update patches synchronously - downloads too fast to be able to deserialise them all without awaiting.
-                    Task.Run(() => UpdatePatches()).GetAwaiter().GetResult();
-                    RefreshLists();
-            }
-
             // Prevents actions being performed in UnifyEnvironment's design time.
             if (!DesignMode) {
+                // Begin first time setup
+                if (Properties.Settings.Default.General_FirstLaunch &&
+                    Properties.Settings.Default.Path_ModsDirectory == string.Empty)
+                        new UnifySetup().ShowDialog();
+
+                if (Paths.IsDirectoryEmpty(Program.Patches)) {
+                    // Update patches synchronously
+                    Task.Run(() => UpdatePatches()).GetAwaiter().GetResult();
+                    RefreshLists();
+                }
+
                 LoadSettings(); // Load user settings
 
                 Label_Version.Text = Program.VersionNumber; // Sets the version string in the About section
@@ -76,7 +77,7 @@ namespace Unify.Environment3
                 SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
                 // If the application is a debug build, force debug mode on
-                Properties.Settings.Default.Debug = _debug = true;
+                Properties.Settings.Default.General_Debug = _debug = true;
                 Properties.Settings.Default.Save();
 #endif
             }
@@ -100,174 +101,214 @@ namespace Unify.Environment3
         /// </summary>
         private void LoadSettings()
         {
-            #region Restore label strings
-            Label_LastSoftwareUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.LastSoftwareUpdate);
-            Label_LastModUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.LastModUpdate);
-            Label_LastPatchUpdate.Text = Literal.Date("Last updated", Properties.Settings.Default.LastPatchUpdate);
-            #endregion
+            if (!DesignMode) {
 
-            #region Restore directories
-            _isPathInvalid = false;
+                #region Restore label strings
+                Label_LastSoftwareUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.General_LastSoftwareUpdate);
+                Label_LastModUpdate.Text      = Literal.Date("Last checked", Properties.Settings.Default.General_LastModUpdate);
+                Label_LastPatchUpdate.Text    = Literal.Date("Last updated", Properties.Settings.Default.General_LastPatchUpdate);
+                #endregion
 
-            TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory;
+                #region Restore directories
+                _isPathInvalid = false;
 
-            if (Properties.Settings.Default.GameDirectory != string.Empty)
-                if (Literal.IsPathSubdirectory(Properties.Settings.Default.ModsDirectory, Path.GetDirectoryName(Properties.Settings.Default.GameDirectory)) ||
-                    Properties.Settings.Default.ModsDirectory == Path.GetDirectoryName(Properties.Settings.Default.GameDirectory)) {
+                TextBox_ModsDirectory.Text = Properties.Settings.Default.Path_ModsDirectory;
 
-                    // If the mods directory is inside the game directory, warn the user
-                    Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
-                    _isPathInvalid = true;
-                } else
-                    Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
+                if (Properties.Settings.Default.Path_GameDirectory != string.Empty)
+                    if (Literal.IsPathSubdirectory(Properties.Settings.Default.Path_ModsDirectory, Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory)) ||
+                        Properties.Settings.Default.Path_ModsDirectory == Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory)) {
+                            // If the mods directory is inside the game directory, warn the user
+                            Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                            _isPathInvalid = true;
+                    }
+                    else
+                        Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
 
-            TextBox_GameDirectory.Text = Properties.Settings.Default.GameDirectory;
+                TextBox_GameDirectory.Text = Properties.Settings.Default.Path_GameDirectory;
 
-            if (Properties.Settings.Default.ModsDirectory != string.Empty)
-                if (Literal.IsPathSubdirectory(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), Properties.Settings.Default.ModsDirectory) ||
-                    Path.GetDirectoryName(Properties.Settings.Default.GameDirectory) == Properties.Settings.Default.ModsDirectory) {
+                if (Properties.Settings.Default.Path_ModsDirectory != string.Empty)
+                    if (Literal.IsPathSubdirectory(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), Properties.Settings.Default.Path_ModsDirectory) ||
+                        Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory) == Properties.Settings.Default.Path_ModsDirectory) {
+                            // If the mods directory is inside the game directory, warn the user
+                            Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                            _isPathInvalid = true;
+                    }
+                    else
+                        Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
 
-                    // If the mods directory is inside the game directory, warn the user
-                    Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
-                    _isPathInvalid = true;
-                } else
-                    Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
+                TextBox_EmulatorExecutable.Text = Properties.Settings.Default.Path_EmulatorDirectory;
+                TextBox_SaveData.Text           = Properties.Settings.Default.Path_SaveData;
+                #endregion
 
-            TextBox_EmulatorExecutable.Text = Properties.Settings.Default.EmulatorDirectory;
-            TextBox_SaveData.Text = Properties.Settings.Default.SaveData;
-            #endregion
+                #region Restore combo box states
+                ComboBox_API.SelectedIndex          = Properties.Settings.Default.Emulator_GraphicsAPI;
+                ComboBox_Reflections.SelectedIndex  = Properties.Settings.Default.Tweak_Reflections;
+                ComboBox_AntiAliasing.SelectedIndex = Properties.Settings.Default.Tweak_AntiAliasing;
+                ComboBox_CameraType.SelectedIndex   = Properties.Settings.Default.Tweak_CameraType;
 
-            #region Restore combo box states
-            if (!DesignMode) ComboBox_API.SelectedIndex = Properties.Settings.Default.GraphicsAPI;
-            #endregion
+                if ((ComboBox_Renderer.SelectedIndex = Properties.Settings.Default.Tweak_Renderer) != 0) {
+                    // Set enabled state for controls
+                    ComboBox_AntiAliasing.Enabled = Button_AntiAliasing_Default.Enabled = CheckBox_ForceMSAA.Enabled = false;
 
-            #region Restore check box states
-            CheckBox_AutoColour.Checked         = Properties.Settings.Default.AutoColour;
-            CheckBox_HighContrastText.Checked   = Properties.Settings.Default.HighContrastText;
-            CheckBox_Xenia_ForceRTV.Checked     = Properties.Settings.Default.ForceRTV;
-            CheckBox_Xenia_2xResolution.Checked = Properties.Settings.Default.DoubleResolution;
-            CheckBox_Xenia_VerticalSync.Checked = Properties.Settings.Default.VerticalSync;
-            CheckBox_Xenia_Gamma.Checked        = Properties.Settings.Default.Gamma;
-            CheckBox_Xenia_Fullscreen.Checked   = Properties.Settings.Default.Fullscreen;
-            CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.DiscordRPC;
+                    // Set controls to GrayText
+                    Label_AntiAliasing.ForeColor =
+                    Label_Description_AntiAliasing.ForeColor =
+                    Label_Description_ForceMSAA.ForeColor =
+                    SystemColors.GrayText;
+                } else {
+                    // Set enabled state for controls
+                    ComboBox_AntiAliasing.Enabled = Button_AntiAliasing_Default.Enabled = CheckBox_ForceMSAA.Enabled = true;
 
-            if (CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = _debug = Properties.Settings.Default.Debug)
-                Console.SetOut(new ListBoxWriter(ListBox_Debug));
+                    // Set controls to Control
+                    Label_AntiAliasing.ForeColor = SystemColors.Control;
 
-            if (CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.LaunchEmulator) {
-                SectionButton_InstallMods.SectionText = "Install mods and launch Sonic '06";
-                SectionButton_InstallMods.Refresh();
-            } else {
-                SectionButton_InstallMods.SectionText = "Install mods";
-                SectionButton_InstallMods.Refresh();
-            }
+                    // Set controls to GrayText
+                    Label_Description_AntiAliasing.ForeColor =
+                    Label_Description_ForceMSAA.ForeColor =
+                    SystemColors.ControlDark;
+                }
+                #endregion
 
-            if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.CheckUpdatesOnLaunch) {
-                Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now.Ticks;
-                try { CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival); }
-                catch {
-                    try {
-                        CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
-                    } catch (Exception ex) {
-                        Label_UpdaterStatus.Text = "Connection error";
-                        PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
-                        RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
+                #region Restore numeric up down decimals
+                NumericUpDown_CameraDistance.Value = Properties.Settings.Default.Tweak_CameraDistance;
+                NumericUpDown_CameraHeight.Value   = Properties.Settings.Default.Tweak_CameraHeight;
+                NumericUpDown_FieldOfView.Value    = Properties.Settings.Default.Tweak_FieldOfView;
+                NumericUpDown_AmyHammerRange.Value = Properties.Settings.Default.Tweak_AmyHammerRange;
+                #endregion
+
+                #region Restore check box states
+                CheckBox_AutoColour.Checked         = Properties.Settings.Default.General_AutoColour;
+                CheckBox_Xenia_ForceRTV.Checked     = Properties.Settings.Default.Emulator_ForceRTV;
+                CheckBox_Xenia_2xResolution.Checked = Properties.Settings.Default.Emulator_DoubleResolution;
+                CheckBox_Xenia_VerticalSync.Checked = Properties.Settings.Default.Emulator_VerticalSync;
+                CheckBox_Xenia_Gamma.Checked        = Properties.Settings.Default.Emulator_Gamma;
+                CheckBox_Xenia_Fullscreen.Checked   = Properties.Settings.Default.Emulator_Fullscreen;
+                CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.Emulator_DiscordRPC;
+                CheckBox_ForceMSAA.Checked          = Properties.Settings.Default.Tweak_ForceMSAA;
+                CheckBox_TailsFlightLimit.Checked   = Properties.Settings.Default.Tweak_TailsFlightLimit;
+
+                if (CheckBox_HighContrastText.Checked = Properties.Settings.Default.General_HighContrastText)
+                    Label_Status.ForeColor = SystemColors.ControlText;
+                else
+                    Label_Status.ForeColor = SystemColors.Control;
+
+                if (CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = _debug = Properties.Settings.Default.General_Debug)
+                    Console.SetOut(new ListBoxWriter(ListBox_Debug));
+
+                if (CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.General_LaunchEmulator) {
+                    SectionButton_InstallMods.SectionText = "Install mods and launch Sonic '06";
+                    SectionButton_InstallMods.Refresh();
+                } else {
+                    SectionButton_InstallMods.SectionText = "Install mods";
+                    SectionButton_InstallMods.Refresh();
+                }
+
+                if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.General_CheckUpdatesOnLaunch) {
+                    Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
+                    try { CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival); }
+                    catch {
+                        try { CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub); }
+                        catch (Exception ex) {
+                            Label_UpdaterStatus.Text = "Connection error";
+                            PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
+                            RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
+                        }
                     }
                 }
+
+                if (CheckBox_SaveFileRedirection.Checked = Properties.Settings.Default.General_SaveFileRedirection) {
+                    // Set text colour to Control
+                    Label_SaveData.ForeColor = SystemColors.Control;
+
+                    // Set text colour to ControlDark
+                    Label_Optional_SaveData.ForeColor =
+                    Label_Description_SaveData.ForeColor =
+                    SystemColors.ControlDark;
+
+                    // Set controls enabled state
+                    TextBox_SaveData.Enabled =
+                    Button_SaveData.Enabled =
+                    Button_Open_SaveData.Enabled =
+                    true;
+                } else {
+                    // Set text colour to GrayText (spelt the wrong way)
+                    Label_SaveData.ForeColor =
+                    Label_Optional_SaveData.ForeColor =
+                    Label_Description_SaveData.ForeColor =
+                    SystemColors.GrayText;
+
+                    // Set controls enabled state
+                    TextBox_SaveData.Enabled =
+                    Button_SaveData.Enabled =
+                    Button_Open_SaveData.Enabled =
+                    false;
+                }
+                #endregion
+
+                #region Set controls to AccentColour setting
+                Button_ColourPicker_Preview.FlatAppearance.MouseOverBackColor =
+                Button_ColourPicker_Preview.FlatAppearance.MouseDownBackColor =
+                Rush_Section_Settings.AccentColour =
+                Button_ColourPicker_Preview.BackColor =
+                StatusStrip_Main.BackColor =
+                Label_Status.BackColor =
+                Properties.Settings.Default.General_AccentColour;
+                #endregion
+
+                #region Set controls depending on emulator
+                if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "Xenia") {
+                    // Set text colour to Control
+                    Label_Subtitle_Emulator_Options.ForeColor =
+                    Label_GraphicsAPI.ForeColor =
+                    Label_FieldOfView.ForeColor =
+                    SystemColors.Control;
+
+                    // Set text colour to ControlDark
+                    Label_Description_GraphicsAPI.ForeColor =
+                    Label_Description_FieldOfView.ForeColor =
+                    SystemColors.ControlDark;
+
+                    // Set enabled state of controls
+                    CheckBox_Xenia_ForceRTV.Enabled =
+                    CheckBox_Xenia_2xResolution.Enabled =
+                    CheckBox_Xenia_VerticalSync.Enabled =
+                    CheckBox_Xenia_Gamma.Enabled =
+                    CheckBox_Xenia_Fullscreen.Enabled =
+                    CheckBox_Xenia_DiscordRPC.Enabled =
+                    ComboBox_API.Enabled =
+                    NumericUpDown_FieldOfView.Enabled =
+                    Button_FieldOfView_Default.Enabled =
+                    true;
+
+                    // Set visibility state of controls
+                    Label_RPCS3Warning.Visible = false;
+                } else if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "RPCS3") {
+                    // Set text colour to GrayText
+                    Label_Subtitle_Emulator_Options.ForeColor =
+                    Label_Description_GraphicsAPI.ForeColor =
+                    Label_Description_FieldOfView.ForeColor =
+                    Label_GraphicsAPI.ForeColor =
+                    Label_FieldOfView.ForeColor =
+                    SystemColors.GrayText;
+
+                    // Set enabled state of controls
+                    CheckBox_Xenia_ForceRTV.Enabled =
+                    CheckBox_Xenia_2xResolution.Enabled =
+                    CheckBox_Xenia_VerticalSync.Enabled =
+                    CheckBox_Xenia_Gamma.Enabled =
+                    CheckBox_Xenia_Fullscreen.Enabled =
+                    CheckBox_Xenia_DiscordRPC.Enabled =
+                    ComboBox_API.Enabled =
+                    NumericUpDown_FieldOfView.Enabled =
+                    Button_FieldOfView_Default.Enabled =
+                    false;
+
+                    // Set visibility state of controls
+                    Label_RPCS3Warning.Visible = true;
+                }
+                #endregion
+
             }
-
-            if (CheckBox_SaveFileRedirection.Checked = Properties.Settings.Default.SaveFileRedirection) {
-                // Set text colour to Control
-                Label_SaveData.ForeColor = SystemColors.Control;
-
-                // Set text colour to ControlDark
-                Label_Optional_SaveData.ForeColor =
-                Label_Description_SaveData.ForeColor =
-                SystemColors.ControlDark;
-
-                // Set controls enabled state
-                TextBox_SaveData.Enabled =
-                Button_SaveData.Enabled =
-                Button_Open_SaveData.Enabled =
-                true;
-            } else {
-                // Set text colour to GrayText (spelt the wrong way)
-                Label_SaveData.ForeColor =
-                Label_Optional_SaveData.ForeColor =
-                Label_Description_SaveData.ForeColor =
-                SystemColors.GrayText;
-
-                // Set controls enabled state
-                TextBox_SaveData.Enabled =
-                Button_SaveData.Enabled =
-                Button_Open_SaveData.Enabled =
-                false;
-            }
-            #endregion
-
-            #region Set controls to HighContrastText setting
-            if (Properties.Settings.Default.HighContrastText) {
-                Label_Status.ForeColor =
-                SystemColors.ControlText;
-            } else {
-                Label_Status.ForeColor =
-                SystemColors.Control;
-            }
-            #endregion
-
-            #region Set controls to AccentColour setting
-            Button_ColourPicker_Preview.FlatAppearance.MouseOverBackColor =
-            Button_ColourPicker_Preview.FlatAppearance.MouseDownBackColor =
-            Rush_Section_Settings.AccentColour =
-            Button_ColourPicker_Preview.BackColor =
-            StatusStrip_Main.BackColor =
-            Label_Status.BackColor =
-            Properties.Settings.Default.AccentColour;
-            #endregion
-
-            #region Set controls depending on emulator
-            if (Literal.Emulator(Properties.Settings.Default.GameDirectory) == "Xenia") {
-                // Set text colour to Control
-                Label_Subtitle_Emulator_Options.ForeColor =
-                Label_GraphicsAPI.ForeColor =
-                SystemColors.Control;
-
-                // Set text colour to ControlDark
-                Label_Description_GraphicsAPI.ForeColor = SystemColors.ControlDark;
-
-                // Set enabled state of controls
-                CheckBox_Xenia_ForceRTV.Enabled =
-                CheckBox_Xenia_2xResolution.Enabled =
-                CheckBox_Xenia_VerticalSync.Enabled =
-                CheckBox_Xenia_Gamma.Enabled =
-                CheckBox_Xenia_Fullscreen.Enabled =
-                CheckBox_Xenia_DiscordRPC.Enabled =
-                ComboBox_API.Enabled =
-                true;
-
-                // Set visibility state of controls
-                Label_RPCS3Warning.Visible = false;
-            } else if (Literal.Emulator(Properties.Settings.Default.GameDirectory) == "RPCS3") {
-                // Set text colour to GrayText
-                Label_Subtitle_Emulator_Options.ForeColor =
-                Label_Description_GraphicsAPI.ForeColor =
-                Label_GraphicsAPI.ForeColor =
-                SystemColors.GrayText;
-
-                // Set enabled state of controls
-                CheckBox_Xenia_ForceRTV.Enabled =
-                CheckBox_Xenia_2xResolution.Enabled =
-                CheckBox_Xenia_VerticalSync.Enabled =
-                CheckBox_Xenia_Gamma.Enabled =
-                CheckBox_Xenia_Fullscreen.Enabled =
-                CheckBox_Xenia_DiscordRPC.Enabled =
-                ComboBox_API.Enabled =
-                false;
-
-                // Set visibility state of controls
-                Label_RPCS3Warning.Visible = true;
-            }
-            #endregion
         }
 
         /// <summary>
@@ -356,7 +397,7 @@ namespace Unify.Environment3
                 };
 
                 if (browseMods.ShowDialog() == DialogResult.OK) {
-                    Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
+                    Properties.Settings.Default.Path_ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
                     Properties.Settings.Default.Save();
                 }
             } else if (sender == Button_GameDirectory) {
@@ -367,18 +408,18 @@ namespace Unify.Environment3
                 };
 
                 if (browseGame.ShowDialog() == DialogResult.OK) {
-                    Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
+                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
                     Properties.Settings.Default.Save();
                 }
             } else if (sender == Button_EmulatorExecutable) {
                 // Browse for emulator executables
                 OpenFileDialog browseEmulator = new OpenFileDialog() {
-                    Title = $"Please select an executable for {Literal.Emulator(Properties.Settings.Default.GameDirectory)}...",
+                    Title = $"Please select an executable for {Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)}...",
                     Filter = "Programs (*.exe)|*.exe"
                 };
 
                 if (browseEmulator.ShowDialog() == DialogResult.OK) {
-                    Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
+                    Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
                     Properties.Settings.Default.Save();
                 }
             } else if (sender == Button_SaveData) {
@@ -389,7 +430,7 @@ namespace Unify.Environment3
                 };
 
                 if (browseSave.ShowDialog() == DialogResult.OK) {
-                    Properties.Settings.Default.SaveData = TextBox_SaveData.Text = browseSave.FileName;
+                    Properties.Settings.Default.Path_SaveData = TextBox_SaveData.Text = browseSave.FileName;
                     Properties.Settings.Default.Save();
                 }
             }
@@ -400,7 +441,7 @@ namespace Unify.Environment3
         /// Checks if a button has been clicked on the WindowsColourPicker user control.
         /// </summary>
         private void WindowsColourPicker_AccentColour_ButtonClick(object sender, EventArgs e) {
-            Properties.Settings.Default.AccentColour = ((Button)sender).BackColor;
+            Properties.Settings.Default.General_AccentColour = ((Button)sender).BackColor;
             Properties.Settings.Default.Save();
         }
 
@@ -423,11 +464,11 @@ namespace Unify.Environment3
         /// </summary>
         /// <param name="searchByMod">File path to another mod's INI to ensure it's searching for the correct mod.</param>
         private async Task CheckForModUpdates(string searchByMod) {
-            if (Properties.Settings.Default.ModsDirectory != string.Empty &&
-                Directory.Exists(Properties.Settings.Default.ModsDirectory)) {
+            if (Properties.Settings.Default.Path_ModsDirectory != string.Empty &&
+                Directory.Exists(Properties.Settings.Default.Path_ModsDirectory)) {
                     ListView_ModUpdates.Items.Clear();
                     ListBox_UpdateLogs.Items.Clear();
-                    foreach (string mod in Directory.GetFiles(Properties.Settings.Default.ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
+                    foreach (string mod in Directory.GetFiles(Properties.Settings.Default.Path_ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
                         // Block controls to ensure the list isn't added to
                         SectionButton_CheckForModUpdates.Enabled = false;
 
@@ -485,7 +526,7 @@ namespace Unify.Environment3
                 };
 
                 if (browseMods.ShowDialog() == DialogResult.OK) {
-                    Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
+                    Properties.Settings.Default.Path_ModsDirectory = TextBox_ModsDirectory.Text = browseMods.SelectedPath;
                     Properties.Settings.Default.Save();
                     await CheckForModUpdates(string.Empty); // Check all mods in the mods list for updates with new path
                 }
@@ -499,14 +540,14 @@ namespace Unify.Environment3
             if (sender == CheckBox_AutoColour) {
                 if (CheckBox_AutoColour.Checked) {
                     int RegistryColour = (int)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM", "ColorizationColor", null);
-                    Properties.Settings.Default.AccentColour = Color.FromArgb(RegistryColour);
-                } else Properties.Settings.Default.AccentColour = Color.FromArgb(186, 0, 0);
-                Properties.Settings.Default.AutoColour = ((CheckBox)sender).Checked;
-            } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.HighContrastText     = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.Debug                = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_SaveFileRedirection)  Properties.Settings.Default.SaveFileRedirection  = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_CheckUpdatesOnLaunch) Properties.Settings.Default.CheckUpdatesOnLaunch = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_LaunchEmulator)       Properties.Settings.Default.LaunchEmulator       = ((CheckBox)sender).Checked;
+                    Properties.Settings.Default.General_AccentColour = Color.FromArgb(RegistryColour);
+                } else Properties.Settings.Default.General_AccentColour = Color.FromArgb(186, 0, 0);
+                Properties.Settings.Default.General_AutoColour = ((CheckBox)sender).Checked;
+            } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.General_HighContrastText     = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.General_Debug                = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_SaveFileRedirection)  Properties.Settings.Default.General_SaveFileRedirection  = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_CheckUpdatesOnLaunch) Properties.Settings.Default.General_CheckUpdatesOnLaunch = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_LaunchEmulator)       Properties.Settings.Default.General_LaunchEmulator       = ((CheckBox)sender).Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -539,11 +580,11 @@ namespace Unify.Environment3
         private void Section_Appearance_ColourPicker_Click(object sender, EventArgs e) {
             ColorDialog accentPicker = new ColorDialog {
                 FullOpen = true,
-                Color = Properties.Settings.Default.AccentColour
+                Color = Properties.Settings.Default.General_AccentColour
             };
 
             if (accentPicker.ShowDialog() == DialogResult.OK) {
-                Properties.Settings.Default.AccentColour = accentPicker.Color;
+                Properties.Settings.Default.General_AccentColour = accentPicker.Color;
                 Properties.Settings.Default.Save();
             }
         }
@@ -552,7 +593,7 @@ namespace Unify.Environment3
         /// Resets the accent colour to default.
         /// </summary>
         private void Button_ColourPicker_Default_Click(object sender, EventArgs e) {
-            Properties.Settings.Default.AccentColour = Color.FromArgb(186, 0, 0);
+            Properties.Settings.Default.General_AccentColour = Color.FromArgb(186, 0, 0);
             Properties.Settings.Default.Save();
         }
 
@@ -564,21 +605,40 @@ namespace Unify.Environment3
         /// <summary>
         /// Create right-click context menu for the mods list at runtime.
         /// </summary>
-        private void ListView_ModsList_MouseClick(object sender, MouseEventArgs e) {
+        private void ListView_MouseClick(object sender, MouseEventArgs e) {
             // Perform if the function was called with the right mouse button
-            if (e.Button == MouseButtons.Right)
-                if (ListView_ModsList.FocusedItem.Bounds.Contains(e.Location)) { // Get item by mouse focus
-                    ContextMenuDark menuDark = new ContextMenuDark();
-                    ToolStripMenuItem[] items = new ToolStripMenuItem[] {
-                        new ToolStripMenuItem("Mod Information",   Properties.Resources.InformationSymbol_16x, ContextMenu_ModMenu_Items_Click),
-                        new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_ModMenu_Items_Click),
-                        new ToolStripMenuItem("Check for Updates", Properties.Resources.Update_4,              ContextMenu_ModMenu_Items_Click),
-                        new ToolStripMenuItem("Edit Mod",          Properties.Resources.EditPage_16x,          ContextMenu_ModMenu_Items_Click),
-                        new ToolStripMenuItem("Delete Mod",        Properties.Resources.Cancel_16x,            ContextMenu_ModMenu_Items_Click)
-                    };
-                    menuDark.Items.AddRange(items);
-                    menuDark.Show(Cursor.Position);
+            if (e.Button == MouseButtons.Right) {
+                // Create the dark context menu
+                ContextMenuDark menuDark = new ContextMenuDark();
+
+                // Get item by mouse focus
+                if (sender == ListView_ModsList) {
+                    if (ListView_ModsList.FocusedItem.Bounds.Contains(e.Location)) {
+                        menuDark.Items.Clear();
+                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
+                            new ToolStripMenuItem("Mod Information",   Properties.Resources.InformationSymbol_16x, ContextMenu_ModMenu_Items_Click),
+                            new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_ModMenu_Items_Click),
+                            new ToolStripMenuItem("Check for Updates", Properties.Resources.Update_4,              ContextMenu_ModMenu_Items_Click),
+                            new ToolStripMenuItem("Edit Mod",          Properties.Resources.EditPage_16x,          ContextMenu_ModMenu_Items_Click),
+                            new ToolStripMenuItem("Delete Mod",        Properties.Resources.Cancel_16x,            ContextMenu_ModMenu_Items_Click)
+                        };
+                        menuDark.Items.AddRange(items);
+                        menuDark.Show(Cursor.Position);
+                    }
+                } else if (sender == ListView_PatchesList) {
+                    if (ListView_PatchesList.FocusedItem.Bounds.Contains(e.Location)) {
+                        menuDark.Items.Clear();
+                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
+                            new ToolStripMenuItem("Patch Information", Properties.Resources.InformationSymbol_16x, ContextMenu_PatchMenu_Items_Click),
+                            new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_PatchMenu_Items_Click),
+                            new ToolStripMenuItem("Edit Patch",        Properties.Resources.EditPage_16x,          ContextMenu_PatchMenu_Items_Click),
+                            new ToolStripMenuItem("Delete Patch",      Properties.Resources.Cancel_16x,            ContextMenu_PatchMenu_Items_Click)
+                        };
+                        menuDark.Items.AddRange(items);
+                        menuDark.Show(Cursor.Position);
+                    }
                 }
+            }
         }
 
         /// <summary>
@@ -605,7 +665,9 @@ namespace Unify.Environment3
                     await CheckForModUpdates(ListView_ModsList.FocusedItem.SubItems[6].Text);
                     break;
                 case "Edit Mod":
+                    // Launch Mod Creator
                     new ModCreator(ListView_ModsList.FocusedItem.SubItems[6].Text, true).ShowDialog();
+                    RefreshLists(); // Refresh on Mod Editor exit
                     break;
                 case "Delete Mod":
                     try {
@@ -625,6 +687,57 @@ namespace Unify.Environment3
                         }
                     } catch {
                         UnifyMessenger.UnifyMessage.ShowDialog("Failed to delete the data for the requested mod.",
+                                                               "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the right-click menu items by index.
+        /// </summary>
+        private void ContextMenu_PatchMenu_Items_Click(object sender, EventArgs e) {
+            switch (((ToolStripMenuItem)sender).ToString()) {
+                case "Patch Information":
+                    string patch = ListView_PatchesList.FocusedItem.SubItems[5].Text,
+                           blurb = Lua.DeserialiseParameter("Blurb", patch, true), // Deserialise 'Blurb' parameter
+                           description = Lua.DeserialiseParameter("Description", patch, true), // Deserialise 'Description' parameter
+                           patchInfo = string.Empty;
+
+                    if (description == string.Empty) patchInfo = blurb.Replace(@"\n", " ");
+                    else if  (blurb == string.Empty) patchInfo = description.Replace(@"\n", Environment.NewLine);
+                    else                             patchInfo = description.Replace(@"\n", Environment.NewLine);
+
+                    UnifyMessenger.UnifyMessage.ShowDialog(patchInfo, ListView_PatchesList.FocusedItem.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+                case "Open Folder":
+                    try { Process.Start(Program.Patches); }
+                    catch {
+                        UnifyMessenger.UnifyMessage.ShowDialog("The patches directory is missing... Please restart Sonic '06 Mod Manager.",
+                                                               "Unable to locate patches...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        RefreshLists(); // Refresh patches list
+                    }
+                    break;
+                case "Edit Patch":
+                    // Launch Patch Editor
+                    new PatchCreator(ListView_PatchesList.FocusedItem.SubItems[5].Text, true).ShowDialog();
+                    RefreshLists(); // Refresh on Patch Editor exit
+                    break;
+                case "Delete Patch":
+                    try {
+                        DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Are you sure you want to delete {ListView_PatchesList.FocusedItem.Text}?",
+                                                                                           $"Deleting {ListView_PatchesList.FocusedItem.Text}...", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (confirmation == DialogResult.Yes) {
+                            string patchPath = ListView_PatchesList.FocusedItem.SubItems[5].Text;
+
+                            if (File.Exists(patchPath)) {
+                                File.Delete(patchPath);
+                                RefreshLists();
+                            }
+                        }
+                    } catch {
+                        UnifyMessenger.UnifyMessage.ShowDialog("Failed to delete the data for the requested patch.",
                                                                "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     break;
@@ -657,10 +770,10 @@ namespace Unify.Environment3
         /// Deserialises 'mod.ini' for each mod in the mods directory.
         /// </summary>
         private void DeserialiseMods() {
-            if (Directory.Exists(Properties.Settings.Default.ModsDirectory)) {
+            if (Directory.Exists(Properties.Settings.Default.Path_ModsDirectory)) {
                 ListView_ModsList.Items.Clear(); // Clears the mods list
                 Button_UpperPriority.Enabled = Button_DownerPriority.Enabled = false; // Disable priority buttons to prevent index errors
-                foreach (string mod in Directory.GetFiles(Properties.Settings.Default.ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
+                foreach (string mod in Directory.GetFiles(Properties.Settings.Default.Path_ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
                     try {
                         //Add mod to list, getting information from its mod.ini file
                         ListViewItem config = new ListViewItem(new[] {
@@ -690,9 +803,9 @@ namespace Unify.Environment3
                         string description = Lua.DeserialiseParameter("Description", patch, true); // Deserialise 'Description' parameter
                         string patchInfo = string.Empty;
 
-                        if (description == string.Empty) patchInfo = blurb;
-                        else if  (blurb == string.Empty) patchInfo = description;
-                        else                             patchInfo = "N/A";
+                        if (description == string.Empty) patchInfo = blurb.Replace(@"\n", " ");
+                        else if  (blurb == string.Empty) patchInfo = description.Replace(@"\n", Environment.NewLine);
+                        else                             patchInfo = blurb.Replace(@"\n", " ");
 
                         //Add mod to list, getting information from its mod.ini file
                         ListViewItem script = new ListViewItem(new[] {
@@ -714,7 +827,7 @@ namespace Unify.Environment3
         /// </summary>
         private void CheckDeserialisedMods() {
             string line = string.Empty; // Declare empty string for StreamReader
-            string modConfig = Path.Combine(Properties.Settings.Default.ModsDirectory, "mods.ini");
+            string modConfig = Path.Combine(Properties.Settings.Default.Path_ModsDirectory, "mods.ini");
 
             if (File.Exists(modConfig)) {
                 // Read 'mods.ini'
@@ -722,7 +835,7 @@ namespace Unify.Environment3
                     mods.ReadLine(); // Skip [Main] line
                     while ((line = mods.ReadLine()) != null) { // Read all lines until null
                         try {
-                            if (Directory.Exists(Path.Combine(Properties.Settings.Default.ModsDirectory, line))) {
+                            if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, line))) {
                                 // If the item exists, shift it to the top of the list and check it
                                 for (int i = 0; i <= ListView_ModsList.Items.Count - 1; i++)
                                     if (Paths.GetContainingFolder(ListView_ModsList.Items[i].SubItems[6].Text) == line) {
@@ -748,7 +861,7 @@ namespace Unify.Environment3
         /// </summary>
         private void CheckDeserialisedPatches() {
             string line = string.Empty; // Declare empty string for StreamReader
-            string patchConfig = Path.Combine(Properties.Settings.Default.ModsDirectory, "patches.ini");
+            string patchConfig = Path.Combine(Properties.Settings.Default.Path_ModsDirectory, "patches.ini");
 
             if (File.Exists(patchConfig)) {
                 // Read 'patches.ini'
@@ -776,8 +889,8 @@ namespace Unify.Environment3
         /// </summary>
         private void SaveChecks() {
             //Save the names of the selected mods and the indexes of the selected patches to their appropriate INI files
-            string modCheckList = Path.Combine(Properties.Settings.Default.ModsDirectory, "mods.ini");
-            string patchCheckList = Path.Combine(Properties.Settings.Default.ModsDirectory, "patches.ini");
+            string modCheckList = Path.Combine(Properties.Settings.Default.Path_ModsDirectory, "mods.ini");
+            string patchCheckList = Path.Combine(Properties.Settings.Default.Path_ModsDirectory, "patches.ini");
 
             // Create 'mods.ini'
             using (StreamWriter sw = File.CreateText(modCheckList))
@@ -810,8 +923,8 @@ namespace Unify.Environment3
         /// Begins the mod installation process by calling the required methods.
         /// </summary>
         private void SectionButton_InstallMods_Click(object sender, EventArgs e) {
-            if (Properties.Settings.Default.GameDirectory != string.Empty ||
-                File.Exists(Properties.Settings.Default.GameDirectory)) {
+            if (Properties.Settings.Default.Path_GameDirectory != string.Empty ||
+                File.Exists(Properties.Settings.Default.Path_GameDirectory)) {
                     ModEngine.skipped.Clear(); // Clear the skipped list
                     SaveChecks(); // Save checked items
                     RefreshLists();
@@ -830,7 +943,7 @@ namespace Unify.Environment3
                         }
                     }
 
-                    if (Properties.Settings.Default.Priority) { //Top to Bottom Priority
+                    if (Properties.Settings.Default.General_Priority) { //Top to Bottom Priority
                         for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
                             if (ListView_ModsList.Items[i].Checked) {
                                 Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
@@ -843,7 +956,7 @@ namespace Unify.Environment3
                                     return;
                                 }
 
-                                if (Properties.Settings.Default.SaveFileRedirection) {
+                                if (Properties.Settings.Default.General_SaveFileRedirection) {
                                     Label_Status.Text = $"Redirecting save file for {ListView_ModsList.Items[i].Text}...";
 
                                     // Redirect save data from the specified mod
@@ -858,7 +971,7 @@ namespace Unify.Environment3
                                 // Install the specified mod
                                 ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
 
-                                if (Properties.Settings.Default.SaveFileRedirection) {
+                                if (Properties.Settings.Default.General_SaveFileRedirection) {
                                     Label_Status.Text = $"Redirecting save file for {mod.Text}...";
 
                                     // Redirect save data from the specified mod
@@ -867,32 +980,46 @@ namespace Unify.Environment3
                             }
                     }
 
-                    try { InstallPatches(); }
+                    // Begin tweak application
+                    try { TweakEngine.ApplyTweaks(); }
                     catch (Exception ex) {
-                        UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your patches...\n\n{ex}",
-                                                                "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst applying your tweaks...\n\n{ex}",
+                                                               "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
+                    // Begin patch installation
+                    try { InstallPatches(); }
+                    catch (Exception ex) {
+                        UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your patches...\n\n{ex}",
+                                                               "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Check skipped list to ensure any errors occurred
                     if (ModEngine.skipped.Count != 0)
                         UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
                                                                "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    if (Properties.Settings.Default.LaunchEmulator) LaunchEmulator(Literal.Emulator(Properties.Settings.Default.GameDirectory));
-                    Label_Status.Text = $"Ready.";
-            } else {
+                    // Launch the emulator of choice
+                    if (Properties.Settings.Default.General_LaunchEmulator) LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
+                    Label_Status.Text = $"Ready."; // Reset status label once emulator process has ended
+            } else { // No game directory set - choose a new one...
                 OpenFileDialog browseGame = new OpenFileDialog() {
                     Title = "Please select an executable for Sonic '06...",
                     Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
                 };
 
                 if (browseGame.ShowDialog() == DialogResult.OK) {
-                    Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
+                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
                     Properties.Settings.Default.Save();
                 }
             }
         }
 
+        /// <summary>
+        /// Begins the patch installation process.
+        /// </summary>
         private void InstallPatches() {
             foreach (ListViewItem patch in ListView_PatchesList.CheckedItems)
                 if (ListView_PatchesList.Items[ListView_PatchesList.Items.IndexOf(patch)].Checked) {
@@ -907,12 +1034,12 @@ namespace Unify.Environment3
         /// Redirect save data from a mod to the user-specified save location.
         /// </summary>
         private void RedirectSaves(string mod, string name) {
-            string saveLocation = Properties.Settings.Default.SaveData; // Stores Save Data location in string for ease of use
+            string saveLocation = Properties.Settings.Default.Path_SaveData; // Stores Save Data location in string for ease of use
 
             // Deserialise 'Save' key
             if (INI.DeserialiseKey("Save", mod).Contains("savedata")) {
                 if (File.Exists(saveLocation)) {
-                        if (Literal.System(Properties.Settings.Default.GameDirectory) == "Xbox 360") {
+                        if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
                             try {
                                 // If the backup directory doesn't exist, create it
                                 if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) 
@@ -926,7 +1053,7 @@ namespace Unify.Environment3
                                     // Copy mod's save to the save data location
                                     File.Copy(Path.Combine(Path.GetDirectoryName(mod), "savedata.360"), saveLocation, true);
                             } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the Xbox 360)"); }
-                        } else if (Literal.System(Properties.Settings.Default.GameDirectory) == "PlayStation 3") {
+                        } else if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
                             try {
                                 if (File.Exists(Path.Combine(Path.GetDirectoryName(mod), "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
                                     // If the backup save data doesn't exist, create it
@@ -957,23 +1084,23 @@ namespace Unify.Environment3
         /// Launches Xenia or RPCS3 depending on the selected game executable.
         /// </summary>
         private void LaunchEmulator(string emulator) {
-            if (Properties.Settings.Default.EmulatorDirectory == string.Empty ||
-                !File.Exists(Properties.Settings.Default.EmulatorDirectory)) { // If the emulator is empty/doesn't exist, prompt the user to select one
+            if (Properties.Settings.Default.Path_EmulatorDirectory == string.Empty ||
+                !File.Exists(Properties.Settings.Default.Path_EmulatorDirectory)) { // If the emulator is empty/doesn't exist, prompt the user to select one
                     OpenFileDialog browseEmulator = new OpenFileDialog() {
                         Title = $"Please select an executable for {emulator}...",
                         Filter = "Programs (*.exe)|*.exe"
                     };
 
                     if (browseEmulator.ShowDialog() == DialogResult.OK) {
-                        Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
+                        Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
                         Properties.Settings.Default.Save();
-                        LaunchEmulator(Literal.Emulator(Properties.Settings.Default.GameDirectory)); // Perform task again with specified emulator
+                        LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)); // Perform task again with specified emulator
                     }
             } else {
                 if (emulator == "Xenia") {
                     List<string> parameters = new List<string>();
 
-                    if (File.Exists(Properties.Settings.Default.GameDirectory)) parameters.Add($"\"{Properties.Settings.Default.GameDirectory}\"");
+                    if (File.Exists(Properties.Settings.Default.Path_GameDirectory)) parameters.Add($"\"{Properties.Settings.Default.Path_GameDirectory}\"");
                     else { // If the game directory is invalid, prompt the user to select a new one
                         OpenFileDialog browseGame = new OpenFileDialog() {
                             Title = "Please select an executable for Sonic '06...",
@@ -981,9 +1108,9 @@ namespace Unify.Environment3
                         };
 
                         if (browseGame.ShowDialog() == DialogResult.OK) {
-                            Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
+                            Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
                             Properties.Settings.Default.Save();
-                            LaunchEmulator(Literal.Emulator(Properties.Settings.Default.GameDirectory)); // Perform task again with specified emulator
+                            LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)); // Perform task again with specified emulator
                         }
                     }
 
@@ -1000,10 +1127,10 @@ namespace Unify.Environment3
                     if (!CheckBox_Xenia_DiscordRPC.Checked) parameters.Add("--discord=false"); // Discord Rich Presence
 
                     ProcessStartInfo xeniaProc = new ProcessStartInfo() {
-                        FileName = Properties.Settings.Default.EmulatorDirectory,
+                        FileName = Properties.Settings.Default.Path_EmulatorDirectory,
 
                         // Ensure emulator directory is the working dir - prevents 'xenia.log' and save data being in the wrong locations
-                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.EmulatorDirectory),
+                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.Path_EmulatorDirectory),
 
                         Arguments = string.Join(" ", parameters.ToArray()) // Join all parameters for args
                     };
@@ -1014,10 +1141,10 @@ namespace Unify.Environment3
                     UninstallThread(); // Uninstall mods after emulator quits
                 } else if (emulator == "RPCS3") {
                     ProcessStartInfo rpcs3Proc = new ProcessStartInfo() {
-                        FileName = Properties.Settings.Default.EmulatorDirectory,
+                        FileName = Properties.Settings.Default.Path_EmulatorDirectory,
 
                         // Same reason for Xenia, except this is just as a precaution in case RPCS3 changes anything
-                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.EmulatorDirectory),
+                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.Path_EmulatorDirectory),
                     };
 
                     Process rpcs3 = Process.Start(rpcs3Proc); // Launch RPCS3
@@ -1038,10 +1165,10 @@ namespace Unify.Environment3
         private void Button_Open_Click(object sender, EventArgs e) {
             try {
                 string location = string.Empty;
-                if (sender == Button_Open_ModsDirectory) location = Properties.Settings.Default.ModsDirectory; // Mods Directory
-                else if (sender == Button_Open_GameDirectory) location = Path.GetDirectoryName(Properties.Settings.Default.GameDirectory); // Game Directory
-                else if (sender == Button_Open_EmulatorExecutable) location = Properties.Settings.Default.EmulatorDirectory; // Xenia
-                else if (sender == Button_Open_SaveData) location = Path.GetDirectoryName(Properties.Settings.Default.SaveData); // Save Data Directory
+                if (sender == Button_Open_ModsDirectory) location = Properties.Settings.Default.Path_ModsDirectory; // Mods Directory
+                else if (sender == Button_Open_GameDirectory) location = Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory); // Game Directory
+                else if (sender == Button_Open_EmulatorExecutable) location = Properties.Settings.Default.Path_EmulatorDirectory; // Xenia
+                else if (sender == Button_Open_SaveData) location = Path.GetDirectoryName(Properties.Settings.Default.Path_SaveData); // Save Data Directory
                 Process.Start(location); // Launch requested location
             } catch {
                 UnifyMessenger.UnifyMessage.ShowDialog("The requested location was invalid or unspecified. Ensure the box is populated.",
@@ -1080,12 +1207,12 @@ namespace Unify.Environment3
         /// Switches between Top to Bottom or Bottom to Top priority.
         /// </summary>
         private void Button_Priority_Click(object sender, EventArgs e) {
-            if (Properties.Settings.Default.Priority) {
+            if (Properties.Settings.Default.General_Priority) {
                 Button_Priority.Text = "Priority: Bottom to Top";
-                Properties.Settings.Default.Priority = false;
+                Properties.Settings.Default.General_Priority = false;
             } else {
                 Button_Priority.Text = "Priority: Top to Bottom";
-                Properties.Settings.Default.Priority = true;
+                Properties.Settings.Default.General_Priority = true;
             }
             Properties.Settings.Default.Save();
         }
@@ -1129,19 +1256,7 @@ namespace Unify.Environment3
             DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("This will clear all of the settings for Sonic '06 Mod Manager. Are you sure you want to continue?",
                                                                                "Sonic '06 Mod Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-            if (confirmation == DialogResult.Yes) {
-                try {
-                    string modManagerDataPath = Path.Combine(Program.ApplicationData, "Unify");
-
-                    // Erases the Unify directory, containing Tools and user settings
-                    DirectoryInfo modManagerData = new DirectoryInfo(modManagerDataPath);
-                    if (Directory.Exists(modManagerDataPath)) {
-                        foreach (FileInfo file in modManagerData.GetFiles()) file.Delete();
-                        foreach (DirectoryInfo directory in modManagerData.GetDirectories()) directory.Delete(true);
-                    }
-                    Application.Restart();
-                } catch { }
-            }
+            if (confirmation == DialogResult.Yes) Program.Reset();
         }
 
         /// <summary>
@@ -1252,13 +1367,13 @@ namespace Unify.Environment3
                 try {
                     // Check for updates via SEGA Carnival
                     CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
-                    Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now.Ticks;
+                    Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
                     if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(false); // Update if prompted
                 } catch { // SEGA Carnival timed out...
                     try {
                         // Check for updates via GitHub
                         CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
-                        Properties.Settings.Default.LastSoftwareUpdate = DateTime.Now.Ticks;
+                        Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
                         if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(true); // Update if prompted
                     } catch (Exception ex) { // GitHub timed out...
                         Label_UpdaterStatus.Text = "Connection error";
@@ -1277,26 +1392,21 @@ namespace Unify.Environment3
 
             // Check for mod updates is clicked
             } else if (sender == SectionButton_CheckForModUpdates) {
-                Properties.Settings.Default.LastModUpdate = DateTime.Now.Ticks;
+                Properties.Settings.Default.General_LastModUpdate = DateTime.Now.Ticks;
                 await CheckForModUpdates(string.Empty);
                 Properties.Settings.Default.Save();
             }
 
             // Fetch latest patches is clicked
             else if (sender == SectionButton_FetchPatches) {
-                DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("This will erase all patches locally and fetch the latest ones...",
-                                                                                   "Confirm?", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                Properties.Settings.Default.General_LastPatchUpdate = DateTime.Now.Ticks;
+                await UpdatePatches();
+                Properties.Settings.Default.Save();
 
-                if (confirmation == DialogResult.OK) {
-                    Properties.Settings.Default.LastPatchUpdate = DateTime.Now.Ticks;
-                    await UpdatePatches();
-                    Properties.Settings.Default.Save();
-
-                    // Reset update button for future checking
-                    SectionButton_FetchPatches.Enabled = true;
-                    SectionButton_FetchPatches.Refresh();
-                    RefreshLists();
-                }
+                // Reset update button for future checking
+                SectionButton_FetchPatches.Enabled = true;
+                SectionButton_FetchPatches.Refresh();
+                RefreshLists();
             }
 
             // Update mods is clicked
@@ -1396,10 +1506,10 @@ namespace Unify.Environment3
                         // Determine what should be used to extract the downloaded archive
                         if (hexString == "50 4B") // ZIP header
                             using (ZipArchive zip = new ZipArchive(new MemoryStream(File.ReadAllBytes(archive))))
-                                ZIP.ExtractToDirectory(zip, Properties.Settings.Default.ModsDirectory, true);
+                                ZIP.ExtractToDirectory(zip, Properties.Settings.Default.Path_ModsDirectory, true);
                         else
                             // Try 7-Zip - if it doesn't work, try WinRAR before throwing exception
-                            ZIP.InstallFrom7zArchive(archive);
+                            ZIP.InstallFrom7zArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
 
                         // Delete archive regardless of extracted state
                         File.Delete(archive);
@@ -1481,5 +1591,283 @@ namespace Unify.Environment3
         /// Resizes Mod Updates container when splitter is moved.
         /// </summary>
         private void SplitContainer_ModUpdate_SplitterMoved(object sender, SplitterEventArgs e) { SizeLastColumn(ListView_ModUpdates); }
+
+        /// <summary>
+        /// Tells the list view how it should handle the DragDrop event.
+        /// </summary>
+        private void ListView_DragEnter(object sender, DragEventArgs e) { e.Effect = DragDropEffects.Copy; }
+
+        /// <summary>
+        /// Tells the list view what to do with the dropped item.
+        /// </summary>
+        private void ListView_DragDrop(object sender, DragEventArgs e) {
+            string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            // Mods DragDrop event
+            if (sender == ListView_ModsList) {
+                if (droppedFiles.Length == 1) {
+                    // File is an archive
+                    if (Path.GetExtension(droppedFiles[0]) == ".zip" || Path.GetExtension(droppedFiles[0]) == ".7z" || Path.GetExtension(droppedFiles[0]) == ".rar") { 
+                        DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Do you want to add '{Path.GetFileName(droppedFiles[0])}' as a mod?",
+                                                                                            "Add mod?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (confirmation == DialogResult.Yes) {
+                            byte[] bytes = File.ReadAllBytes(droppedFiles[0]).Take(2).ToArray();
+                            string hexString = BitConverter.ToString(bytes);
+
+                            if (hexString == "50-4B") ZIP.InstallFromZip(droppedFiles[0], Properties.Settings.Default.Path_ModsDirectory);
+                            else ZIP.InstallFrom7zArchive(droppedFiles[0], Properties.Settings.Default.Path_ModsDirectory);
+
+                            RefreshLists();
+                        }
+                    }
+                } else {
+                    DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Do you want to add all {droppedFiles.Length} items as mods?",
+                                                                                       "Add mods?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (confirmation == DialogResult.Yes) {
+                        Label_Status.Text = $"Extracting {droppedFiles.Length} mods...";
+
+                        // Install
+                        foreach (string item in droppedFiles) {
+                            byte[] bytes = File.ReadAllBytes(item).Take(2).ToArray();
+                            string hexString = BitConverter.ToString(bytes);
+
+                            // File is an archive
+                            if (Path.GetExtension(item) == ".zip" || Path.GetExtension(item) == ".7z" || Path.GetExtension(item) == ".rar")
+                                if (hexString == "50-4B") ZIP.InstallFromZip(item, Properties.Settings.Default.Path_ModsDirectory);
+                                else ZIP.InstallFrom7zArchive(item, Properties.Settings.Default.Path_ModsDirectory);
+
+                            RefreshLists(); // Refresh on completion
+                        }
+
+                        Label_Status.Text = "Ready.";
+                    }
+                }
+
+            // Patches DragDrop event
+            } else if (sender == ListView_PatchesList) {
+                if (droppedFiles.Length == 1) {
+                    // File is an archive
+                    if (Path.GetExtension(droppedFiles[0]) == ".zip" || Path.GetExtension(droppedFiles[0]) == ".7z" || Path.GetExtension(droppedFiles[0]) == ".rar") {
+                        DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Do you want to add '{Path.GetFileName(droppedFiles[0])}' as a patch?",
+                                                                                           "Add patch?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (confirmation == DialogResult.Yes) {
+                            byte[] bytes = File.ReadAllBytes(droppedFiles[0]).Take(2).ToArray();
+                            string hexString = BitConverter.ToString(bytes);
+
+                            if (hexString == "50-4B") ZIP.InstallFromZip(droppedFiles[0], Program.Patches);
+                            else ZIP.InstallFrom7zArchive(droppedFiles[0], Program.Patches);
+
+                            RefreshLists();
+                        }
+
+                        // File is a MLUA
+                    } else if (Path.GetExtension(droppedFiles[0]) == ".mlua") {
+                        DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Do you want to add '{Path.GetFileName(droppedFiles[0])}' as a patch?",
+                                                                                           "Add patch?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (confirmation == DialogResult.Yes) {
+                            File.Copy(droppedFiles[0], Path.Combine(Program.Patches, Path.GetFileName(droppedFiles[0])));
+                            RefreshLists();
+                        }
+                    }
+                } else {
+                    DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Do you want to add all {droppedFiles.Length} items as patches?",
+                                                                                       "Add patches?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (confirmation == DialogResult.Yes) {
+                        Label_Status.Text = $"Adding {droppedFiles.Length} patches...";
+
+                        // Install
+                        foreach (string item in droppedFiles) {
+                            byte[] bytes = File.ReadAllBytes(item).Take(2).ToArray();
+                            string hexString = BitConverter.ToString(bytes);
+
+                            // File is an archive
+                            if (Path.GetExtension(item) == ".zip" || Path.GetExtension(item) == ".7z" || Path.GetExtension(item) == ".rar")
+                                if (hexString == "50-4B") ZIP.InstallFromZip(item, Program.Patches);
+                                else ZIP.InstallFrom7zArchive(item, Program.Patches);
+
+                            // File is a MLUA
+                            else if (Path.GetExtension(item) == ".mlua")
+                                File.Copy(item, Path.Combine(Program.Patches, Path.GetFileName(item)));
+
+                            RefreshLists(); // Refresh on completion
+                        }
+
+                        Label_Status.Text = "Ready.";
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Event on index change for tweaks.
+        /// </summary>
+        private void ComboBox_Tweaks_SelectedIndexChanged(object sender, EventArgs e) {
+            if (sender == ComboBox_Renderer) {
+                if ((Properties.Settings.Default.Tweak_Renderer = ((ComboBox)sender).SelectedIndex) != 0) {
+                    // Set enabled state for controls
+                    ComboBox_AntiAliasing.Enabled = Button_AntiAliasing_Default.Enabled = CheckBox_ForceMSAA.Enabled = false;
+
+                    // Set controls to GrayText
+                    Label_AntiAliasing.ForeColor =
+                    Label_Description_AntiAliasing.ForeColor =
+                    Label_Description_ForceMSAA.ForeColor =
+                    SystemColors.GrayText;
+                } else {
+                    // Set enabled state for controls
+                    ComboBox_AntiAliasing.Enabled = Button_AntiAliasing_Default.Enabled = CheckBox_ForceMSAA.Enabled = true;
+
+                    // Set controls to Control
+                    Label_AntiAliasing.ForeColor = SystemColors.Control;
+
+                    // Set controls to GrayText
+                    Label_Description_AntiAliasing.ForeColor =
+                    Label_Description_ForceMSAA.ForeColor =
+                    SystemColors.ControlDark;
+                }
+            }
+            else if  (sender == ComboBox_Reflections) Properties.Settings.Default.Tweak_Reflections  = ((ComboBox)sender).SelectedIndex;
+            else if (sender == ComboBox_AntiAliasing) {
+                if ((Properties.Settings.Default.Tweak_AntiAliasing = ((ComboBox)sender).SelectedIndex) != 1) {
+                    CheckBox_ForceMSAA.Enabled = false; // Set enabled state for Force MSAA
+                    Label_Description_ForceMSAA.ForeColor = SystemColors.GrayText; // Set description to GrayText
+                } else {
+                    CheckBox_ForceMSAA.Enabled = true; // Set enabled state for Force MSAA
+                    Label_Description_ForceMSAA.ForeColor = SystemColors.ControlDark; // Set description to ControlDark
+                }
+            }
+            else if   (sender == ComboBox_CameraType) {
+                // Save Camera Type ahead of tweaking other values
+                Properties.Settings.Default.Tweak_CameraType = ((ComboBox)sender).SelectedIndex;
+
+                // Anything but Retail
+                if (ComboBox_CameraType.SelectedIndex != 0) {
+
+                    // Tokyo Game Show
+                    if (ComboBox_CameraType.SelectedIndex == 1) {
+
+                        // Xbox 360 supports FOV changes
+                        if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
+                            NumericUpDown_CameraDistance.Value = 350;
+                            NumericUpDown_CameraHeight.Value = 32.5m;
+                            NumericUpDown_FieldOfView.Value = 110;
+
+                        // PlayStation 3 does not support FOV changes
+                        } else {
+                            NumericUpDown_CameraDistance.Value = 450;
+                            NumericUpDown_CameraHeight.Value = 32.5m;
+                            NumericUpDown_FieldOfView.Value = 90;
+                        }
+
+                    // Electronic Entertainment Expo
+                    } else if (ComboBox_CameraType.SelectedIndex == 2) {
+                        NumericUpDown_CameraDistance.Value = 550;
+                        NumericUpDown_CameraHeight.Value = 70;
+                        NumericUpDown_FieldOfView.Value = 90;
+                    }
+
+                // Retail
+                } else {
+                    NumericUpDown_CameraDistance.Value = 650;
+                    NumericUpDown_CameraHeight.Value = 70;
+                    NumericUpDown_FieldOfView.Value = 90;
+                }
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Event on value change for tweaks.
+        /// </summary>
+        private void NumericUpDown_Tweaks_ValueChanged(object sender, EventArgs e) {
+            if      (sender == NumericUpDown_CameraDistance) Properties.Settings.Default.Tweak_CameraDistance = ((NumericUpDown)sender).Value;
+            else if   (sender == NumericUpDown_CameraHeight) Properties.Settings.Default.Tweak_CameraHeight   = ((NumericUpDown)sender).Value;
+            else if    (sender == NumericUpDown_FieldOfView) Properties.Settings.Default.Tweak_FieldOfView    = ((NumericUpDown)sender).Value;
+            else if (sender == NumericUpDown_AmyHammerRange) Properties.Settings.Default.Tweak_AmyHammerRange = ((NumericUpDown)sender).Value;
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Event on default button press for tweaks.
+        /// </summary>
+        private void Button_Tweaks_Default(object sender, EventArgs e) {
+            // Check if the system is Xbox 360
+            bool isXbox360 = Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360";
+
+            // Reset Renderer
+            if (sender == Button_Renderer_Default)
+                Properties.Settings.Default.Tweak_Renderer = 0;
+
+            // Reset Reflections
+            else if (sender == Button_Reflections_Default)
+                Properties.Settings.Default.Tweak_Reflections = 1;
+
+            // Reset Anti-Aliasing
+            else if (sender == Button_AntiAliasing_Default)
+                Properties.Settings.Default.Tweak_AntiAliasing = 1;
+
+            // Reset Camera Type
+            else if (sender == Button_CameraType_Default)
+                Properties.Settings.Default.Tweak_CameraType = 0;
+
+            // Reset Camera Distance
+            else if (sender == Button_CameraDistance_Default) {
+                if (ComboBox_CameraType.SelectedIndex == 0) // Retail
+                    Properties.Settings.Default.Tweak_CameraDistance = 650;
+                else if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
+                    if (isXbox360) // Xbox 360 supports FOV changes
+                        Properties.Settings.Default.Tweak_CameraDistance = 350;
+                    else // PlayStation 3 does not support FOV changes
+                        Properties.Settings.Default.Tweak_CameraDistance = 450;
+                else if (ComboBox_CameraType.SelectedIndex == 2) // Electronic Entertainment Expo
+                    Properties.Settings.Default.Tweak_CameraDistance = 550;
+            }
+
+            // Reset Camera Height
+            else if (sender == Button_CameraHeight_Default) {
+                if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
+                    Properties.Settings.Default.Tweak_CameraHeight = 32.5m;
+                else // Retail
+                    Properties.Settings.Default.Tweak_CameraHeight = 70;
+            }
+
+            // Reset Field of View
+            else if (sender == Button_FieldOfView_Default) {
+                if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
+                    if (isXbox360) // Xbox 360 supports FOV changes
+                        Properties.Settings.Default.Tweak_FieldOfView = 110;
+                    else // PlayStation 3 does not support FOV changes
+                        Properties.Settings.Default.Tweak_FieldOfView = 90;
+                else // Retail
+                    Properties.Settings.Default.Tweak_FieldOfView = 90;
+            }
+
+            // Reset Amy's Hammer Range
+            else if
+                (sender == Button_AmyHammerRange_Default) Properties.Settings.Default.Tweak_AmyHammerRange = 50;
+
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Event on checkbox tick for tweaks.
+        /// </summary>
+        private void CheckBox_Tweaks_CheckedChanged(object sender, EventArgs e) {
+            if             (sender == CheckBox_ForceMSAA) Properties.Settings.Default.Tweak_ForceMSAA        = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_TailsFlightLimit) Properties.Settings.Default.Tweak_TailsFlightLimit = ((CheckBox)sender).Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Opens the Patch Creator.
+        /// </summary>
+        private void SectionButton_CreateNewPatch_Click(object sender, EventArgs e)  {
+            new PatchCreator(string.Empty, false).ShowDialog(); // Launch Patch Creator
+            RefreshLists(); // Refresh all lists
+        }
     }
 }

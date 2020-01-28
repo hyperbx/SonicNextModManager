@@ -96,6 +96,46 @@ namespace Unify.Environment3
             this.Button_Patches_SelectAll = new System.Windows.Forms.Button();
             this.Button_Patches_DeselectAll = new System.Windows.Forms.Button();
             this.Tab_Section_Tweaks = new System.Windows.Forms.TabPage();
+            this.Label_Description_TailsFlightLimit = new System.Windows.Forms.Label();
+            this.CheckBox_TailsFlightLimit = new System.Windows.Forms.CheckBox();
+            this.Button_AmyHammerRange_Default = new System.Windows.Forms.Button();
+            this.Button_FieldOfView_Default = new System.Windows.Forms.Button();
+            this.Button_CameraHeight_Default = new System.Windows.Forms.Button();
+            this.Button_CameraDistance_Default = new System.Windows.Forms.Button();
+            this.Button_CameraType_Default = new System.Windows.Forms.Button();
+            this.Button_AntiAliasing_Default = new System.Windows.Forms.Button();
+            this.Button_Reflections_Default = new System.Windows.Forms.Button();
+            this.Button_Renderer_Default = new System.Windows.Forms.Button();
+            this.Label_Description_AmyHammerRange = new System.Windows.Forms.Label();
+            this.Label_AmyHammerRange = new System.Windows.Forms.Label();
+            this.Label_Subtitle_CharacterTweaks = new System.Windows.Forms.Label();
+            this.Label_Description_FieldOfView = new System.Windows.Forms.Label();
+            this.Label_FieldOfView = new System.Windows.Forms.Label();
+            this.NumericUpDown_FieldOfView = new System.Windows.Forms.NumericUpDown();
+            this.Label_Description_CameraHeight = new System.Windows.Forms.Label();
+            this.Label_CameraHeight = new System.Windows.Forms.Label();
+            this.NumericUpDown_CameraHeight = new System.Windows.Forms.NumericUpDown();
+            this.Label_Description_CameraDistance = new System.Windows.Forms.Label();
+            this.Label_CameraDistance = new System.Windows.Forms.Label();
+            this.NumericUpDown_CameraDistance = new System.Windows.Forms.NumericUpDown();
+            this.Label_Description_CameraType = new System.Windows.Forms.Label();
+            this.Label_CameraType = new System.Windows.Forms.Label();
+            this.ComboBox_CameraType = new System.Windows.Forms.ComboBox();
+            this.Label_Subtitle_CameraTweaks = new System.Windows.Forms.Label();
+            this.Label_Description_ForceMSAA = new System.Windows.Forms.Label();
+            this.CheckBox_ForceMSAA = new System.Windows.Forms.CheckBox();
+            this.Label_Description_AntiAliasing = new System.Windows.Forms.Label();
+            this.Label_AntiAliasing = new System.Windows.Forms.Label();
+            this.ComboBox_AntiAliasing = new System.Windows.Forms.ComboBox();
+            this.Label_Description_Reflections = new System.Windows.Forms.Label();
+            this.Label_Reflections = new System.Windows.Forms.Label();
+            this.ComboBox_Reflections = new System.Windows.Forms.ComboBox();
+            this.Label_Description_Renderer = new System.Windows.Forms.Label();
+            this.Label_Renderer = new System.Windows.Forms.Label();
+            this.ComboBox_Renderer = new System.Windows.Forms.ComboBox();
+            this.Label_Subtitle_GraphicsTweaks = new System.Windows.Forms.Label();
+            this.NumericUpDown_AmyHammerRange = new System.Windows.Forms.NumericUpDown();
+            this.Panel_Tweaks_UICleanSpace = new System.Windows.Forms.Panel();
             this.Tab_Section_Settings = new System.Windows.Forms.TabPage();
             this.Label_Description_Reset = new System.Windows.Forms.Label();
             this.LinkLabel_Reset = new System.Windows.Forms.LinkLabel();
@@ -195,6 +235,11 @@ namespace Unify.Environment3
             this.SplitContainer_PatchSelectionControls.Panel1.SuspendLayout();
             this.SplitContainer_PatchSelectionControls.Panel2.SuspendLayout();
             this.SplitContainer_PatchSelectionControls.SuspendLayout();
+            this.Tab_Section_Tweaks.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_FieldOfView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraDistance)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_AmyHammerRange)).BeginInit();
             this.Tab_Section_Settings.SuspendLayout();
             this.Tab_Section_Debug.SuspendLayout();
             this.Panel_DebugControls.SuspendLayout();
@@ -398,7 +443,7 @@ namespace Unify.Environment3
             this.SectionButton_CreateNewMod.SectionImage = global::Unify.Properties.Resources.NewFileCollection_16x;
             this.SectionButton_CreateNewMod.SectionText = "Create a new mod";
             this.SectionButton_CreateNewMod.SelectedSection = false;
-            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(435, 35);
+            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(537, 35);
             this.SectionButton_CreateNewMod.TabIndex = 51;
             this.SectionButton_CreateNewMod.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_CreateNewMod.Click += new System.EventHandler(this.SectionButton_CreateNewMod_Click);
@@ -415,7 +460,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(995, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1097, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -515,6 +560,7 @@ namespace Unify.Environment3
             // ListView_ModsList
             // 
             this.ListView_ModsList.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.ListView_ModsList.AllowDrop = true;
             this.ListView_ModsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -544,7 +590,9 @@ namespace Unify.Environment3
             this.ListView_ModsList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView_DrawColumnHeader);
             this.ListView_ModsList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView_DrawItem);
             this.ListView_ModsList.SelectedIndexChanged += new System.EventHandler(this.ListView_ModsList_SelectedIndexChanged);
-            this.ListView_ModsList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView_ModsList_MouseClick);
+            this.ListView_ModsList.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView_DragDrop);
+            this.ListView_ModsList.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView_DragEnter);
+            this.ListView_ModsList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView_MouseClick);
             // 
             // Column_ModsList_Title
             // 
@@ -917,6 +965,7 @@ namespace Unify.Environment3
             this.SectionButton_CreateNewPatch.Size = new System.Drawing.Size(584, 35);
             this.SectionButton_CreateNewPatch.TabIndex = 51;
             this.SectionButton_CreateNewPatch.TextColour = System.Drawing.SystemColors.Control;
+            this.SectionButton_CreateNewPatch.Click += new System.EventHandler(this.SectionButton_CreateNewPatch_Click);
             // 
             // SplitContainer_PatchesControls
             // 
@@ -967,7 +1016,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(392, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(494, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -988,6 +1037,7 @@ namespace Unify.Environment3
             // ListView_PatchesList
             // 
             this.ListView_PatchesList.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.ListView_PatchesList.AllowDrop = true;
             this.ListView_PatchesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -1014,6 +1064,9 @@ namespace Unify.Environment3
             this.ListView_PatchesList.View = System.Windows.Forms.View.Details;
             this.ListView_PatchesList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView_DrawColumnHeader);
             this.ListView_PatchesList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView_DrawItem);
+            this.ListView_PatchesList.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView_DragDrop);
+            this.ListView_PatchesList.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView_DragEnter);
+            this.ListView_PatchesList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView_MouseClick);
             // 
             // Column_PatchesList_Title
             // 
@@ -1087,7 +1140,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(293, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(332, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -1095,12 +1148,565 @@ namespace Unify.Environment3
             // 
             // Tab_Section_Tweaks
             // 
+            this.Tab_Section_Tweaks.AutoScroll = true;
             this.Tab_Section_Tweaks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_TailsFlightLimit);
+            this.Tab_Section_Tweaks.Controls.Add(this.CheckBox_TailsFlightLimit);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_AmyHammerRange_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_FieldOfView_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_CameraHeight_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_CameraDistance_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_CameraType_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_AntiAliasing_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_Reflections_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_Renderer_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_AmyHammerRange);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_AmyHammerRange);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Subtitle_CharacterTweaks);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_FieldOfView);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_FieldOfView);
+            this.Tab_Section_Tweaks.Controls.Add(this.NumericUpDown_FieldOfView);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_CameraHeight);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_CameraHeight);
+            this.Tab_Section_Tweaks.Controls.Add(this.NumericUpDown_CameraHeight);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_CameraDistance);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_CameraDistance);
+            this.Tab_Section_Tweaks.Controls.Add(this.NumericUpDown_CameraDistance);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_CameraType);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_CameraType);
+            this.Tab_Section_Tweaks.Controls.Add(this.ComboBox_CameraType);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Subtitle_CameraTweaks);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_ForceMSAA);
+            this.Tab_Section_Tweaks.Controls.Add(this.CheckBox_ForceMSAA);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_AntiAliasing);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_AntiAliasing);
+            this.Tab_Section_Tweaks.Controls.Add(this.ComboBox_AntiAliasing);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_Reflections);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Reflections);
+            this.Tab_Section_Tweaks.Controls.Add(this.ComboBox_Reflections);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_Renderer);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Renderer);
+            this.Tab_Section_Tweaks.Controls.Add(this.ComboBox_Renderer);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Subtitle_GraphicsTweaks);
+            this.Tab_Section_Tweaks.Controls.Add(this.NumericUpDown_AmyHammerRange);
+            this.Tab_Section_Tweaks.Controls.Add(this.Panel_Tweaks_UICleanSpace);
             this.Tab_Section_Tweaks.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Tweaks.Name = "Tab_Section_Tweaks";
             this.Tab_Section_Tweaks.Size = new System.Drawing.Size(591, 990);
             this.Tab_Section_Tweaks.TabIndex = 7;
             this.Tab_Section_Tweaks.Text = "Tweaks";
+            // 
+            // Label_Description_TailsFlightLimit
+            // 
+            this.Label_Description_TailsFlightLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_TailsFlightLimit.AutoSize = true;
+            this.Label_Description_TailsFlightLimit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_TailsFlightLimit.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_TailsFlightLimit.Location = new System.Drawing.Point(402, 615);
+            this.Label_Description_TailsFlightLimit.Name = "Label_Description_TailsFlightLimit";
+            this.Label_Description_TailsFlightLimit.Size = new System.Drawing.Size(173, 15);
+            this.Label_Description_TailsFlightLimit.TabIndex = 184;
+            this.Label_Description_TailsFlightLimit.Text = "Removes the flight cap for Tails.";
+            // 
+            // CheckBox_TailsFlightLimit
+            // 
+            this.CheckBox_TailsFlightLimit.AutoSize = true;
+            this.CheckBox_TailsFlightLimit.BackColor = System.Drawing.Color.Transparent;
+            this.CheckBox_TailsFlightLimit.Location = new System.Drawing.Point(14, 614);
+            this.CheckBox_TailsFlightLimit.Name = "CheckBox_TailsFlightLimit";
+            this.CheckBox_TailsFlightLimit.Size = new System.Drawing.Size(154, 19);
+            this.CheckBox_TailsFlightLimit.TabIndex = 183;
+            this.CheckBox_TailsFlightLimit.Text = "Unlock Tails\' Flight Limit";
+            this.CheckBox_TailsFlightLimit.UseVisualStyleBackColor = false;
+            this.CheckBox_TailsFlightLimit.CheckedChanged += new System.EventHandler(this.CheckBox_Tweaks_CheckedChanged);
+            // 
+            // Button_AmyHammerRange_Default
+            // 
+            this.Button_AmyHammerRange_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_AmyHammerRange_Default.FlatAppearance.BorderSize = 0;
+            this.Button_AmyHammerRange_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_AmyHammerRange_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_AmyHammerRange_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_AmyHammerRange_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_AmyHammerRange_Default.Image")));
+            this.Button_AmyHammerRange_Default.Location = new System.Drawing.Point(554, 577);
+            this.Button_AmyHammerRange_Default.Name = "Button_AmyHammerRange_Default";
+            this.Button_AmyHammerRange_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_AmyHammerRange_Default.TabIndex = 182;
+            this.Button_AmyHammerRange_Default.UseVisualStyleBackColor = true;
+            this.Button_AmyHammerRange_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Button_FieldOfView_Default
+            // 
+            this.Button_FieldOfView_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_FieldOfView_Default.FlatAppearance.BorderSize = 0;
+            this.Button_FieldOfView_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_FieldOfView_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_FieldOfView_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_FieldOfView_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_FieldOfView_Default.Image")));
+            this.Button_FieldOfView_Default.Location = new System.Drawing.Point(554, 470);
+            this.Button_FieldOfView_Default.Name = "Button_FieldOfView_Default";
+            this.Button_FieldOfView_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_FieldOfView_Default.TabIndex = 181;
+            this.Button_FieldOfView_Default.UseVisualStyleBackColor = true;
+            this.Button_FieldOfView_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Button_CameraHeight_Default
+            // 
+            this.Button_CameraHeight_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_CameraHeight_Default.FlatAppearance.BorderSize = 0;
+            this.Button_CameraHeight_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_CameraHeight_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_CameraHeight_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_CameraHeight_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_CameraHeight_Default.Image")));
+            this.Button_CameraHeight_Default.Location = new System.Drawing.Point(554, 418);
+            this.Button_CameraHeight_Default.Name = "Button_CameraHeight_Default";
+            this.Button_CameraHeight_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_CameraHeight_Default.TabIndex = 180;
+            this.Button_CameraHeight_Default.UseVisualStyleBackColor = true;
+            this.Button_CameraHeight_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Button_CameraDistance_Default
+            // 
+            this.Button_CameraDistance_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_CameraDistance_Default.FlatAppearance.BorderSize = 0;
+            this.Button_CameraDistance_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_CameraDistance_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_CameraDistance_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_CameraDistance_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_CameraDistance_Default.Image")));
+            this.Button_CameraDistance_Default.Location = new System.Drawing.Point(554, 366);
+            this.Button_CameraDistance_Default.Name = "Button_CameraDistance_Default";
+            this.Button_CameraDistance_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_CameraDistance_Default.TabIndex = 179;
+            this.Button_CameraDistance_Default.UseVisualStyleBackColor = true;
+            this.Button_CameraDistance_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Button_CameraType_Default
+            // 
+            this.Button_CameraType_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_CameraType_Default.FlatAppearance.BorderSize = 0;
+            this.Button_CameraType_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_CameraType_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_CameraType_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_CameraType_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_CameraType_Default.Image")));
+            this.Button_CameraType_Default.Location = new System.Drawing.Point(554, 315);
+            this.Button_CameraType_Default.Name = "Button_CameraType_Default";
+            this.Button_CameraType_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_CameraType_Default.TabIndex = 178;
+            this.Button_CameraType_Default.UseVisualStyleBackColor = true;
+            this.Button_CameraType_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Button_AntiAliasing_Default
+            // 
+            this.Button_AntiAliasing_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_AntiAliasing_Default.FlatAppearance.BorderSize = 0;
+            this.Button_AntiAliasing_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_AntiAliasing_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_AntiAliasing_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_AntiAliasing_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_AntiAliasing_Default.Image")));
+            this.Button_AntiAliasing_Default.Location = new System.Drawing.Point(554, 176);
+            this.Button_AntiAliasing_Default.Name = "Button_AntiAliasing_Default";
+            this.Button_AntiAliasing_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_AntiAliasing_Default.TabIndex = 177;
+            this.Button_AntiAliasing_Default.UseVisualStyleBackColor = true;
+            this.Button_AntiAliasing_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Button_Reflections_Default
+            // 
+            this.Button_Reflections_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Reflections_Default.FlatAppearance.BorderSize = 0;
+            this.Button_Reflections_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_Reflections_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_Reflections_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Reflections_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_Reflections_Default.Image")));
+            this.Button_Reflections_Default.Location = new System.Drawing.Point(554, 124);
+            this.Button_Reflections_Default.Name = "Button_Reflections_Default";
+            this.Button_Reflections_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_Reflections_Default.TabIndex = 176;
+            this.Button_Reflections_Default.UseVisualStyleBackColor = true;
+            this.Button_Reflections_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Button_Renderer_Default
+            // 
+            this.Button_Renderer_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Renderer_Default.FlatAppearance.BorderSize = 0;
+            this.Button_Renderer_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_Renderer_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_Renderer_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Renderer_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_Renderer_Default.Image")));
+            this.Button_Renderer_Default.Location = new System.Drawing.Point(554, 72);
+            this.Button_Renderer_Default.Name = "Button_Renderer_Default";
+            this.Button_Renderer_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_Renderer_Default.TabIndex = 175;
+            this.Button_Renderer_Default.UseVisualStyleBackColor = true;
+            this.Button_Renderer_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Label_Description_AmyHammerRange
+            // 
+            this.Label_Description_AmyHammerRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_AmyHammerRange.AutoSize = true;
+            this.Label_Description_AmyHammerRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_AmyHammerRange.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_AmyHammerRange.Location = new System.Drawing.Point(179, 555);
+            this.Label_Description_AmyHammerRange.Name = "Label_Description_AmyHammerRange";
+            this.Label_Description_AmyHammerRange.Size = new System.Drawing.Size(369, 15);
+            this.Label_Description_AmyHammerRange.TabIndex = 172;
+            this.Label_Description_AmyHammerRange.Text = "The range objects are destroyed at in the boundaries of Amy\'s attack.";
+            // 
+            // Label_AmyHammerRange
+            // 
+            this.Label_AmyHammerRange.AutoSize = true;
+            this.Label_AmyHammerRange.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_AmyHammerRange.Location = new System.Drawing.Point(11, 553);
+            this.Label_AmyHammerRange.Name = "Label_AmyHammerRange";
+            this.Label_AmyHammerRange.Size = new System.Drawing.Size(137, 17);
+            this.Label_AmyHammerRange.TabIndex = 171;
+            this.Label_AmyHammerRange.Text = "Amy\'s Hammer Range";
+            // 
+            // Label_Subtitle_CharacterTweaks
+            // 
+            this.Label_Subtitle_CharacterTweaks.AutoSize = true;
+            this.Label_Subtitle_CharacterTweaks.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Label_Subtitle_CharacterTweaks.Location = new System.Drawing.Point(9, 518);
+            this.Label_Subtitle_CharacterTweaks.Name = "Label_Subtitle_CharacterTweaks";
+            this.Label_Subtitle_CharacterTweaks.Size = new System.Drawing.Size(147, 25);
+            this.Label_Subtitle_CharacterTweaks.TabIndex = 169;
+            this.Label_Subtitle_CharacterTweaks.Text = "Character Tweaks";
+            // 
+            // Label_Description_FieldOfView
+            // 
+            this.Label_Description_FieldOfView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_FieldOfView.AutoSize = true;
+            this.Label_Description_FieldOfView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_FieldOfView.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_FieldOfView.Location = new System.Drawing.Point(378, 449);
+            this.Label_Description_FieldOfView.Name = "Label_Description_FieldOfView";
+            this.Label_Description_FieldOfView.Size = new System.Drawing.Size(170, 15);
+            this.Label_Description_FieldOfView.TabIndex = 168;
+            this.Label_Description_FieldOfView.Text = "How much the camera can see.";
+            // 
+            // Label_FieldOfView
+            // 
+            this.Label_FieldOfView.AutoSize = true;
+            this.Label_FieldOfView.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_FieldOfView.Location = new System.Drawing.Point(11, 447);
+            this.Label_FieldOfView.Name = "Label_FieldOfView";
+            this.Label_FieldOfView.Size = new System.Drawing.Size(82, 17);
+            this.Label_FieldOfView.TabIndex = 167;
+            this.Label_FieldOfView.Text = "Field of View";
+            // 
+            // NumericUpDown_FieldOfView
+            // 
+            this.NumericUpDown_FieldOfView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NumericUpDown_FieldOfView.Location = new System.Drawing.Point(14, 469);
+            this.NumericUpDown_FieldOfView.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NumericUpDown_FieldOfView.Name = "NumericUpDown_FieldOfView";
+            this.NumericUpDown_FieldOfView.Size = new System.Drawing.Size(534, 23);
+            this.NumericUpDown_FieldOfView.TabIndex = 166;
+            this.NumericUpDown_FieldOfView.ValueChanged += new System.EventHandler(this.NumericUpDown_Tweaks_ValueChanged);
+            // 
+            // Label_Description_CameraHeight
+            // 
+            this.Label_Description_CameraHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_CameraHeight.AutoSize = true;
+            this.Label_Description_CameraHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_CameraHeight.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_CameraHeight.Location = new System.Drawing.Point(246, 397);
+            this.Label_Description_CameraHeight.Name = "Label_Description_CameraHeight";
+            this.Label_Description_CameraHeight.Size = new System.Drawing.Size(302, 15);
+            this.Label_Description_CameraHeight.TabIndex = 165;
+            this.Label_Description_CameraHeight.Text = "How high the camera should be in relation to the player.";
+            // 
+            // Label_CameraHeight
+            // 
+            this.Label_CameraHeight.AutoSize = true;
+            this.Label_CameraHeight.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_CameraHeight.Location = new System.Drawing.Point(11, 395);
+            this.Label_CameraHeight.Name = "Label_CameraHeight";
+            this.Label_CameraHeight.Size = new System.Drawing.Size(95, 17);
+            this.Label_CameraHeight.TabIndex = 164;
+            this.Label_CameraHeight.Text = "Camera Height";
+            // 
+            // NumericUpDown_CameraHeight
+            // 
+            this.NumericUpDown_CameraHeight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NumericUpDown_CameraHeight.Location = new System.Drawing.Point(14, 417);
+            this.NumericUpDown_CameraHeight.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.NumericUpDown_CameraHeight.Name = "NumericUpDown_CameraHeight";
+            this.NumericUpDown_CameraHeight.Size = new System.Drawing.Size(534, 23);
+            this.NumericUpDown_CameraHeight.TabIndex = 163;
+            this.NumericUpDown_CameraHeight.ValueChanged += new System.EventHandler(this.NumericUpDown_Tweaks_ValueChanged);
+            // 
+            // Label_Description_CameraDistance
+            // 
+            this.Label_Description_CameraDistance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_CameraDistance.AutoSize = true;
+            this.Label_Description_CameraDistance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_CameraDistance.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_CameraDistance.Location = new System.Drawing.Point(227, 345);
+            this.Label_Description_CameraDistance.Name = "Label_Description_CameraDistance";
+            this.Label_Description_CameraDistance.Size = new System.Drawing.Size(321, 15);
+            this.Label_Description_CameraDistance.TabIndex = 162;
+            this.Label_Description_CameraDistance.Text = "How far back the camera should be in relation to the player.";
+            // 
+            // Label_CameraDistance
+            // 
+            this.Label_CameraDistance.AutoSize = true;
+            this.Label_CameraDistance.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_CameraDistance.Location = new System.Drawing.Point(11, 343);
+            this.Label_CameraDistance.Name = "Label_CameraDistance";
+            this.Label_CameraDistance.Size = new System.Drawing.Size(106, 17);
+            this.Label_CameraDistance.TabIndex = 161;
+            this.Label_CameraDistance.Text = "Camera Distance";
+            // 
+            // NumericUpDown_CameraDistance
+            // 
+            this.NumericUpDown_CameraDistance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NumericUpDown_CameraDistance.Location = new System.Drawing.Point(14, 365);
+            this.NumericUpDown_CameraDistance.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.NumericUpDown_CameraDistance.Name = "NumericUpDown_CameraDistance";
+            this.NumericUpDown_CameraDistance.Size = new System.Drawing.Size(534, 23);
+            this.NumericUpDown_CameraDistance.TabIndex = 160;
+            this.NumericUpDown_CameraDistance.ValueChanged += new System.EventHandler(this.NumericUpDown_Tweaks_ValueChanged);
+            // 
+            // Label_Description_CameraType
+            // 
+            this.Label_Description_CameraType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_CameraType.AutoSize = true;
+            this.Label_Description_CameraType.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_CameraType.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_CameraType.Location = new System.Drawing.Point(271, 293);
+            this.Label_Description_CameraType.Name = "Label_Description_CameraType";
+            this.Label_Description_CameraType.Size = new System.Drawing.Size(277, 15);
+            this.Label_Description_CameraType.TabIndex = 159;
+            this.Label_Description_CameraType.Text = "How the camera should act with the below settings.";
+            // 
+            // Label_CameraType
+            // 
+            this.Label_CameraType.AutoSize = true;
+            this.Label_CameraType.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_CameraType.Location = new System.Drawing.Point(11, 291);
+            this.Label_CameraType.Name = "Label_CameraType";
+            this.Label_CameraType.Size = new System.Drawing.Size(84, 17);
+            this.Label_CameraType.TabIndex = 158;
+            this.Label_CameraType.Text = "Camera Type";
+            // 
+            // ComboBox_CameraType
+            // 
+            this.ComboBox_CameraType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboBox_CameraType.BackColor = System.Drawing.SystemColors.Window;
+            this.ComboBox_CameraType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_CameraType.FormattingEnabled = true;
+            this.ComboBox_CameraType.Items.AddRange(new object[] {
+            "Retail",
+            "Tokyo Game Show",
+            "Electronic Entertainment Expo"});
+            this.ComboBox_CameraType.Location = new System.Drawing.Point(14, 313);
+            this.ComboBox_CameraType.Name = "ComboBox_CameraType";
+            this.ComboBox_CameraType.Size = new System.Drawing.Size(534, 23);
+            this.ComboBox_CameraType.TabIndex = 157;
+            this.ComboBox_CameraType.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Tweaks_SelectedIndexChanged);
+            // 
+            // Label_Subtitle_CameraTweaks
+            // 
+            this.Label_Subtitle_CameraTweaks.AutoSize = true;
+            this.Label_Subtitle_CameraTweaks.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Label_Subtitle_CameraTweaks.Location = new System.Drawing.Point(9, 256);
+            this.Label_Subtitle_CameraTweaks.Name = "Label_Subtitle_CameraTweaks";
+            this.Label_Subtitle_CameraTweaks.Size = new System.Drawing.Size(133, 25);
+            this.Label_Subtitle_CameraTweaks.TabIndex = 156;
+            this.Label_Subtitle_CameraTweaks.Text = "Camera Tweaks";
+            // 
+            // Label_Description_ForceMSAA
+            // 
+            this.Label_Description_ForceMSAA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_ForceMSAA.AutoSize = true;
+            this.Label_Description_ForceMSAA.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_ForceMSAA.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_ForceMSAA.Location = new System.Drawing.Point(161, 214);
+            this.Label_Description_ForceMSAA.Name = "Label_Description_ForceMSAA";
+            this.Label_Description_ForceMSAA.Size = new System.Drawing.Size(414, 15);
+            this.Label_Description_ForceMSAA.TabIndex = 155;
+            this.Label_Description_ForceMSAA.Text = "Forces 2x MSAA on for sections that disable it (not necessary for other options)." +
+    "";
+            // 
+            // CheckBox_ForceMSAA
+            // 
+            this.CheckBox_ForceMSAA.AutoSize = true;
+            this.CheckBox_ForceMSAA.BackColor = System.Drawing.Color.Transparent;
+            this.CheckBox_ForceMSAA.Location = new System.Drawing.Point(14, 213);
+            this.CheckBox_ForceMSAA.Name = "CheckBox_ForceMSAA";
+            this.CheckBox_ForceMSAA.Size = new System.Drawing.Size(91, 19);
+            this.CheckBox_ForceMSAA.TabIndex = 154;
+            this.CheckBox_ForceMSAA.Text = "Force MSAA";
+            this.CheckBox_ForceMSAA.UseVisualStyleBackColor = false;
+            this.CheckBox_ForceMSAA.CheckedChanged += new System.EventHandler(this.CheckBox_Tweaks_CheckedChanged);
+            // 
+            // Label_Description_AntiAliasing
+            // 
+            this.Label_Description_AntiAliasing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_AntiAliasing.AutoSize = true;
+            this.Label_Description_AntiAliasing.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_AntiAliasing.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_AntiAliasing.Location = new System.Drawing.Point(311, 154);
+            this.Label_Description_AntiAliasing.Name = "Label_Description_AntiAliasing";
+            this.Label_Description_AntiAliasing.Size = new System.Drawing.Size(237, 15);
+            this.Label_Description_AntiAliasing.TabIndex = 153;
+            this.Label_Description_AntiAliasing.Text = "The scale jagged edges will be smoothed at.";
+            // 
+            // Label_AntiAliasing
+            // 
+            this.Label_AntiAliasing.AutoSize = true;
+            this.Label_AntiAliasing.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_AntiAliasing.Location = new System.Drawing.Point(11, 152);
+            this.Label_AntiAliasing.Name = "Label_AntiAliasing";
+            this.Label_AntiAliasing.Size = new System.Drawing.Size(80, 17);
+            this.Label_AntiAliasing.TabIndex = 152;
+            this.Label_AntiAliasing.Text = "Anti-Aliasing";
+            // 
+            // ComboBox_AntiAliasing
+            // 
+            this.ComboBox_AntiAliasing.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboBox_AntiAliasing.BackColor = System.Drawing.SystemColors.Window;
+            this.ComboBox_AntiAliasing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_AntiAliasing.FormattingEnabled = true;
+            this.ComboBox_AntiAliasing.Items.AddRange(new object[] {
+            "Disabled",
+            "2x MSAA",
+            "4x MSAA"});
+            this.ComboBox_AntiAliasing.Location = new System.Drawing.Point(14, 174);
+            this.ComboBox_AntiAliasing.Name = "ComboBox_AntiAliasing";
+            this.ComboBox_AntiAliasing.Size = new System.Drawing.Size(534, 23);
+            this.ComboBox_AntiAliasing.TabIndex = 151;
+            this.ComboBox_AntiAliasing.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Tweaks_SelectedIndexChanged);
+            // 
+            // Label_Description_Reflections
+            // 
+            this.Label_Description_Reflections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_Reflections.AutoSize = true;
+            this.Label_Description_Reflections.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_Reflections.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_Reflections.Location = new System.Drawing.Point(289, 102);
+            this.Label_Description_Reflections.Name = "Label_Description_Reflections";
+            this.Label_Description_Reflections.Size = new System.Drawing.Size(259, 15);
+            this.Label_Description_Reflections.TabIndex = 150;
+            this.Label_Description_Reflections.Text = "The resolution Sonic \'06 will render reflections at.";
+            // 
+            // Label_Reflections
+            // 
+            this.Label_Reflections.AutoSize = true;
+            this.Label_Reflections.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_Reflections.Location = new System.Drawing.Point(11, 100);
+            this.Label_Reflections.Name = "Label_Reflections";
+            this.Label_Reflections.Size = new System.Drawing.Size(71, 17);
+            this.Label_Reflections.TabIndex = 149;
+            this.Label_Reflections.Text = "Reflections";
+            // 
+            // ComboBox_Reflections
+            // 
+            this.ComboBox_Reflections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboBox_Reflections.BackColor = System.Drawing.SystemColors.Window;
+            this.ComboBox_Reflections.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_Reflections.FormattingEnabled = true;
+            this.ComboBox_Reflections.Items.AddRange(new object[] {
+            "Disabled",
+            "Quarter (320x180)",
+            "Half (640x360)",
+            "Full (1280x720)"});
+            this.ComboBox_Reflections.Location = new System.Drawing.Point(14, 122);
+            this.ComboBox_Reflections.Name = "ComboBox_Reflections";
+            this.ComboBox_Reflections.Size = new System.Drawing.Size(534, 23);
+            this.ComboBox_Reflections.TabIndex = 148;
+            this.ComboBox_Reflections.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Tweaks_SelectedIndexChanged);
+            // 
+            // Label_Description_Renderer
+            // 
+            this.Label_Description_Renderer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_Renderer.AutoSize = true;
+            this.Label_Description_Renderer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_Renderer.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_Renderer.Location = new System.Drawing.Point(289, 50);
+            this.Label_Description_Renderer.Name = "Label_Description_Renderer";
+            this.Label_Description_Renderer.Size = new System.Drawing.Size(259, 15);
+            this.Label_Description_Renderer.TabIndex = 147;
+            this.Label_Description_Renderer.Text = "The renderer Sonic \'06 will use to process visuals.";
+            // 
+            // Label_Renderer
+            // 
+            this.Label_Renderer.AutoSize = true;
+            this.Label_Renderer.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_Renderer.Location = new System.Drawing.Point(11, 48);
+            this.Label_Renderer.Name = "Label_Renderer";
+            this.Label_Renderer.Size = new System.Drawing.Size(62, 17);
+            this.Label_Renderer.TabIndex = 146;
+            this.Label_Renderer.Text = "Renderer";
+            // 
+            // ComboBox_Renderer
+            // 
+            this.ComboBox_Renderer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboBox_Renderer.BackColor = System.Drawing.SystemColors.Window;
+            this.ComboBox_Renderer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_Renderer.FormattingEnabled = true;
+            this.ComboBox_Renderer.Items.AddRange(new object[] {
+            "Default",
+            "Optimised",
+            "Destructive (Vulkan)",
+            "Cheap (Not Recommended)"});
+            this.ComboBox_Renderer.Location = new System.Drawing.Point(14, 70);
+            this.ComboBox_Renderer.Name = "ComboBox_Renderer";
+            this.ComboBox_Renderer.Size = new System.Drawing.Size(534, 23);
+            this.ComboBox_Renderer.TabIndex = 145;
+            this.ComboBox_Renderer.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Tweaks_SelectedIndexChanged);
+            // 
+            // Label_Subtitle_GraphicsTweaks
+            // 
+            this.Label_Subtitle_GraphicsTweaks.AutoSize = true;
+            this.Label_Subtitle_GraphicsTweaks.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Label_Subtitle_GraphicsTweaks.Location = new System.Drawing.Point(9, 13);
+            this.Label_Subtitle_GraphicsTweaks.Name = "Label_Subtitle_GraphicsTweaks";
+            this.Label_Subtitle_GraphicsTweaks.Size = new System.Drawing.Size(141, 25);
+            this.Label_Subtitle_GraphicsTweaks.TabIndex = 49;
+            this.Label_Subtitle_GraphicsTweaks.Text = "Graphics Tweaks";
+            // 
+            // NumericUpDown_AmyHammerRange
+            // 
+            this.NumericUpDown_AmyHammerRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NumericUpDown_AmyHammerRange.Location = new System.Drawing.Point(14, 576);
+            this.NumericUpDown_AmyHammerRange.Maximum = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
+            this.NumericUpDown_AmyHammerRange.Name = "NumericUpDown_AmyHammerRange";
+            this.NumericUpDown_AmyHammerRange.Size = new System.Drawing.Size(534, 23);
+            this.NumericUpDown_AmyHammerRange.TabIndex = 173;
+            this.NumericUpDown_AmyHammerRange.ValueChanged += new System.EventHandler(this.NumericUpDown_Tweaks_ValueChanged);
+            // 
+            // Panel_Tweaks_UICleanSpace
+            // 
+            this.Panel_Tweaks_UICleanSpace.Location = new System.Drawing.Point(14, 632);
+            this.Panel_Tweaks_UICleanSpace.Name = "Panel_Tweaks_UICleanSpace";
+            this.Panel_Tweaks_UICleanSpace.Size = new System.Drawing.Size(214, 17);
+            this.Panel_Tweaks_UICleanSpace.TabIndex = 174;
             // 
             // Tab_Section_Settings
             // 
@@ -2209,6 +2815,12 @@ namespace Unify.Environment3
             this.SplitContainer_PatchSelectionControls.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_PatchSelectionControls)).EndInit();
             this.SplitContainer_PatchSelectionControls.ResumeLayout(false);
+            this.Tab_Section_Tweaks.ResumeLayout(false);
+            this.Tab_Section_Tweaks.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_FieldOfView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraDistance)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_AmyHammerRange)).EndInit();
             this.Tab_Section_Settings.ResumeLayout(false);
             this.Tab_Section_Settings.PerformLayout();
             this.Tab_Section_Debug.ResumeLayout(false);
@@ -2377,5 +2989,45 @@ namespace Unify.Environment3
         private SectionButton SectionButton_SaveCheckedPatches;
         private SectionButton Rush_Section_Tweaks;
         private System.Windows.Forms.TabPage Tab_Section_Tweaks;
+        private System.Windows.Forms.Label Label_Description_AmyHammerRange;
+        private System.Windows.Forms.Label Label_AmyHammerRange;
+        private System.Windows.Forms.Label Label_Subtitle_CharacterTweaks;
+        private System.Windows.Forms.Label Label_Description_FieldOfView;
+        private System.Windows.Forms.Label Label_FieldOfView;
+        private System.Windows.Forms.NumericUpDown NumericUpDown_FieldOfView;
+        private System.Windows.Forms.Label Label_Description_CameraHeight;
+        private System.Windows.Forms.Label Label_CameraHeight;
+        private System.Windows.Forms.NumericUpDown NumericUpDown_CameraHeight;
+        private System.Windows.Forms.Label Label_Description_CameraDistance;
+        private System.Windows.Forms.Label Label_CameraDistance;
+        private System.Windows.Forms.NumericUpDown NumericUpDown_CameraDistance;
+        private System.Windows.Forms.Label Label_Description_CameraType;
+        private System.Windows.Forms.Label Label_CameraType;
+        private System.Windows.Forms.ComboBox ComboBox_CameraType;
+        private System.Windows.Forms.Label Label_Subtitle_CameraTweaks;
+        private System.Windows.Forms.Label Label_Description_ForceMSAA;
+        private System.Windows.Forms.CheckBox CheckBox_ForceMSAA;
+        private System.Windows.Forms.Label Label_Description_AntiAliasing;
+        private System.Windows.Forms.Label Label_AntiAliasing;
+        private System.Windows.Forms.ComboBox ComboBox_AntiAliasing;
+        private System.Windows.Forms.Label Label_Description_Reflections;
+        private System.Windows.Forms.Label Label_Reflections;
+        private System.Windows.Forms.ComboBox ComboBox_Reflections;
+        private System.Windows.Forms.Label Label_Description_Renderer;
+        private System.Windows.Forms.Label Label_Renderer;
+        private System.Windows.Forms.ComboBox ComboBox_Renderer;
+        private System.Windows.Forms.Label Label_Subtitle_GraphicsTweaks;
+        private System.Windows.Forms.NumericUpDown NumericUpDown_AmyHammerRange;
+        private System.Windows.Forms.Panel Panel_Tweaks_UICleanSpace;
+        private System.Windows.Forms.Button Button_AmyHammerRange_Default;
+        private System.Windows.Forms.Button Button_FieldOfView_Default;
+        private System.Windows.Forms.Button Button_CameraHeight_Default;
+        private System.Windows.Forms.Button Button_CameraDistance_Default;
+        private System.Windows.Forms.Button Button_CameraType_Default;
+        private System.Windows.Forms.Button Button_AntiAliasing_Default;
+        private System.Windows.Forms.Button Button_Reflections_Default;
+        private System.Windows.Forms.Button Button_Renderer_Default;
+        private System.Windows.Forms.Label Label_Description_TailsFlightLimit;
+        private System.Windows.Forms.CheckBox CheckBox_TailsFlightLimit;
     }
 }

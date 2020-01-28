@@ -118,9 +118,9 @@ namespace Unify.Environment3
 
                         if (hexString == "50 4B")
                             using (ZipArchive zip = new ZipArchive(new MemoryStream(File.ReadAllBytes(archive))))
-                                ZIP.ExtractToDirectory(zip, Properties.Settings.Default.ModsDirectory, true);
+                                ZIP.ExtractToDirectory(zip, Properties.Settings.Default.Path_ModsDirectory, true);
                         else
-                            ZIP.InstallFrom7zArchive(archive);
+                            ZIP.InstallFrom7zArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
 
                         UnifyMessenger.UnifyMessage.ShowDialog($"{lbl_Title.Text} has been updated successfully...",
                                                                lbl_Title.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);

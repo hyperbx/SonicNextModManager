@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Unify.Messenger;
 using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -122,9 +123,31 @@ namespace Unify.Environment3
                 }
 #if !DEBUG
             } catch (Exception ex) {
-                MessageBox.Show($"Please report this error immediately...\n\n{ex.ToString()}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Failed to load your settings... Please report this error immediately!\n\n{ex.ToString()}\n\n" +
+                                                                                   "Click OK to reset Sonic '06 Mod Manager.",
+                                                                                   "Settings failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+
+                if (confirmation == DialogResult.OK) Program.Reset(); // Reset settings
+                else Process.GetCurrentProcess().Kill(); // Quit immediately
             }
 #endif
+        }
+
+        /// <summary>
+        /// Erases all user settings for Sonic '06 Mod Manager.
+        /// </summary>
+        public static void Reset() {
+            try {
+                string modManagerDataPath = Path.Combine(ApplicationData, "Unify");
+
+                // Erases the Unify directory, containing Tools and user settings
+                DirectoryInfo modManagerData = new DirectoryInfo(modManagerDataPath);
+                if (Directory.Exists(modManagerDataPath)) {
+                    foreach (FileInfo file in modManagerData.GetFiles()) file.Delete();
+                    foreach (DirectoryInfo directory in modManagerData.GetDirectories()) directory.Delete(true);
+                }
+                Application.Restart();
+            } catch { }
         }
     }
 }

@@ -26,276 +26,396 @@ namespace Unify.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("186, 0, 0")]
-        public global::System.Drawing.Color AccentColour {
+        public global::System.Drawing.Color General_AccentColour {
             get {
-                return ((global::System.Drawing.Color)(this["AccentColour"]));
+                return ((global::System.Drawing.Color)(this["General_AccentColour"]));
             }
             set {
-                this["AccentColour"] = value;
+                this["General_AccentColour"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoColour {
+        public bool General_AutoColour {
             get {
-                return ((bool)(this["AutoColour"]));
+                return ((bool)(this["General_AutoColour"]));
             }
             set {
-                this["AutoColour"] = value;
+                this["General_AutoColour"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool HighContrastText {
+        public bool General_HighContrastText {
             get {
-                return ((bool)(this["HighContrastText"]));
+                return ((bool)(this["General_HighContrastText"]));
             }
             set {
-                this["HighContrastText"] = value;
+                this["General_HighContrastText"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ModsDirectory {
+        public string Path_ModsDirectory {
             get {
-                return ((string)(this["ModsDirectory"]));
+                return ((string)(this["Path_ModsDirectory"]));
             }
             set {
-                this["ModsDirectory"] = value;
+                this["Path_ModsDirectory"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool Priority {
+        public bool General_Priority {
             get {
-                return ((bool)(this["Priority"]));
+                return ((bool)(this["General_Priority"]));
             }
             set {
-                this["Priority"] = value;
+                this["General_Priority"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string GameDirectory {
+        public string Path_GameDirectory {
             get {
-                return ((string)(this["GameDirectory"]));
+                return ((string)(this["Path_GameDirectory"]));
             }
             set {
-                this["GameDirectory"] = value;
+                this["Path_GameDirectory"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Debug {
+        public bool General_Debug {
             get {
-                return ((bool)(this["Debug"]));
+                return ((bool)(this["General_Debug"]));
             }
             set {
-                this["Debug"] = value;
+                this["General_Debug"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EmulatorDirectory {
+        public string Path_EmulatorDirectory {
             get {
-                return ((string)(this["EmulatorDirectory"]));
+                return ((string)(this["Path_EmulatorDirectory"]));
             }
             set {
-                this["EmulatorDirectory"] = value;
+                this["Path_EmulatorDirectory"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SaveData {
+        public string Path_SaveData {
             get {
-                return ((string)(this["SaveData"]));
+                return ((string)(this["Path_SaveData"]));
             }
             set {
-                this["SaveData"] = value;
+                this["Path_SaveData"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int GraphicsAPI {
+        public int Emulator_GraphicsAPI {
             get {
-                return ((int)(this["GraphicsAPI"]));
+                return ((int)(this["Emulator_GraphicsAPI"]));
             }
             set {
-                this["GraphicsAPI"] = value;
+                this["Emulator_GraphicsAPI"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ForceRTV {
+        public bool Emulator_ForceRTV {
             get {
-                return ((bool)(this["ForceRTV"]));
+                return ((bool)(this["Emulator_ForceRTV"]));
             }
             set {
-                this["ForceRTV"] = value;
+                this["Emulator_ForceRTV"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DoubleResolution {
+        public bool Emulator_DoubleResolution {
             get {
-                return ((bool)(this["DoubleResolution"]));
+                return ((bool)(this["Emulator_DoubleResolution"]));
             }
             set {
-                this["DoubleResolution"] = value;
+                this["Emulator_DoubleResolution"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool VerticalSync {
+        public bool Emulator_VerticalSync {
             get {
-                return ((bool)(this["VerticalSync"]));
+                return ((bool)(this["Emulator_VerticalSync"]));
             }
             set {
-                this["VerticalSync"] = value;
+                this["Emulator_VerticalSync"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool Gamma {
+        public bool Emulator_Gamma {
             get {
-                return ((bool)(this["Gamma"]));
+                return ((bool)(this["Emulator_Gamma"]));
             }
             set {
-                this["Gamma"] = value;
+                this["Emulator_Gamma"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool Fullscreen {
+        public bool Emulator_Fullscreen {
             get {
-                return ((bool)(this["Fullscreen"]));
+                return ((bool)(this["Emulator_Fullscreen"]));
             }
             set {
-                this["Fullscreen"] = value;
+                this["Emulator_Fullscreen"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DiscordRPC {
+        public bool Emulator_DiscordRPC {
             get {
-                return ((bool)(this["DiscordRPC"]));
+                return ((bool)(this["Emulator_DiscordRPC"]));
             }
             set {
-                this["DiscordRPC"] = value;
+                this["Emulator_DiscordRPC"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SaveFileRedirection {
+        public bool General_SaveFileRedirection {
             get {
-                return ((bool)(this["SaveFileRedirection"]));
+                return ((bool)(this["General_SaveFileRedirection"]));
             }
             set {
-                this["SaveFileRedirection"] = value;
+                this["General_SaveFileRedirection"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CheckUpdatesOnLaunch {
+        public bool General_CheckUpdatesOnLaunch {
             get {
-                return ((bool)(this["CheckUpdatesOnLaunch"]));
+                return ((bool)(this["General_CheckUpdatesOnLaunch"]));
             }
             set {
-                this["CheckUpdatesOnLaunch"] = value;
+                this["General_CheckUpdatesOnLaunch"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public long LastSoftwareUpdate {
+        public long General_LastSoftwareUpdate {
             get {
-                return ((long)(this["LastSoftwareUpdate"]));
+                return ((long)(this["General_LastSoftwareUpdate"]));
             }
             set {
-                this["LastSoftwareUpdate"] = value;
+                this["General_LastSoftwareUpdate"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool LaunchEmulator {
+        public bool General_LaunchEmulator {
             get {
-                return ((bool)(this["LaunchEmulator"]));
+                return ((bool)(this["General_LaunchEmulator"]));
             }
             set {
-                this["LaunchEmulator"] = value;
+                this["General_LaunchEmulator"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public long LastModUpdate {
+        public long General_LastModUpdate {
             get {
-                return ((long)(this["LastModUpdate"]));
+                return ((long)(this["General_LastModUpdate"]));
             }
             set {
-                this["LastModUpdate"] = value;
+                this["General_LastModUpdate"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public long LastPatchUpdate {
+        public long General_LastPatchUpdate {
             get {
-                return ((long)(this["LastPatchUpdate"]));
+                return ((long)(this["General_LastPatchUpdate"]));
             }
             set {
-                this["LastPatchUpdate"] = value;
+                this["General_LastPatchUpdate"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FirstLaunch {
+        public bool General_FirstLaunch {
             get {
-                return ((bool)(this["FirstLaunch"]));
+                return ((bool)(this["General_FirstLaunch"]));
             }
             set {
-                this["FirstLaunch"] = value;
+                this["General_FirstLaunch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Tweak_Renderer {
+            get {
+                return ((int)(this["Tweak_Renderer"]));
+            }
+            set {
+                this["Tweak_Renderer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Tweak_Reflections {
+            get {
+                return ((int)(this["Tweak_Reflections"]));
+            }
+            set {
+                this["Tweak_Reflections"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Tweak_AntiAliasing {
+            get {
+                return ((int)(this["Tweak_AntiAliasing"]));
+            }
+            set {
+                this["Tweak_AntiAliasing"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Tweak_ForceMSAA {
+            get {
+                return ((bool)(this["Tweak_ForceMSAA"]));
+            }
+            set {
+                this["Tweak_ForceMSAA"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Tweak_CameraType {
+            get {
+                return ((int)(this["Tweak_CameraType"]));
+            }
+            set {
+                this["Tweak_CameraType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("650")]
+        public decimal Tweak_CameraDistance {
+            get {
+                return ((decimal)(this["Tweak_CameraDistance"]));
+            }
+            set {
+                this["Tweak_CameraDistance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("70.0")]
+        public decimal Tweak_CameraHeight {
+            get {
+                return ((decimal)(this["Tweak_CameraHeight"]));
+            }
+            set {
+                this["Tweak_CameraHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("90")]
+        public decimal Tweak_FieldOfView {
+            get {
+                return ((decimal)(this["Tweak_FieldOfView"]));
+            }
+            set {
+                this["Tweak_FieldOfView"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50.0")]
+        public decimal Tweak_AmyHammerRange {
+            get {
+                return ((decimal)(this["Tweak_AmyHammerRange"]));
+            }
+            set {
+                this["Tweak_AmyHammerRange"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Tweak_TailsFlightLimit {
+            get {
+                return ((bool)(this["Tweak_TailsFlightLimit"]));
+            }
+            set {
+                this["Tweak_TailsFlightLimit"] = value;
             }
         }
     }

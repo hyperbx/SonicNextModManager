@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -153,6 +154,13 @@ namespace Unify.Serialisers
         /// </summary>
         public static string GetContainingFolder(string path) {
             return Path.GetFileName(Path.GetDirectoryName(path));
+        }
+
+        /// <summary>
+        /// Returns if the directory is empty.
+        /// </summary>
+        public static bool IsDirectoryEmpty(string path) {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
         }
     }
 }

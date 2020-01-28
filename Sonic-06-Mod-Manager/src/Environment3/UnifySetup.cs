@@ -48,11 +48,11 @@ namespace Unify
         /// Loads all user settings.
         /// </summary>
         private void LoadSettings() {
-            TextBox_ModsDirectory.Text = Properties.Settings.Default.ModsDirectory;
-            TextBox_GameDirectory.Text = Properties.Settings.Default.GameDirectory;
-            TextBox_EmulatorExecutable.Text = Properties.Settings.Default.EmulatorDirectory;
-            TextBox_SaveData.Text = Properties.Settings.Default.SaveData;
-            CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.LaunchEmulator;
+            TextBox_ModsDirectory.Text = Properties.Settings.Default.Path_ModsDirectory;
+            TextBox_GameDirectory.Text = Properties.Settings.Default.Path_GameDirectory;
+            TextBox_EmulatorExecutable.Text = Properties.Settings.Default.Path_EmulatorDirectory;
+            TextBox_SaveData.Text = Properties.Settings.Default.Path_SaveData;
+            CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.General_LaunchEmulator;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Unify
                 // Cancel event if user doesn't want to skip
                 if (confirmation == DialogResult.No) e.Cancel = true;
                 else {
-                    Properties.Settings.Default.FirstLaunch = false;
+                    Properties.Settings.Default.General_FirstLaunch = false;
                     Properties.Settings.Default.Save();
                 }
             }
@@ -75,11 +75,11 @@ namespace Unify
         /// Saves the settings, unsubscribes from the FormClosing event and closes the form.
         /// </summary>
         private void Button_Continue_Click(object sender, EventArgs e) {
-            Properties.Settings.Default.ModsDirectory = TextBox_ModsDirectory.Text;
-            Properties.Settings.Default.GameDirectory = TextBox_GameDirectory.Text;
-            Properties.Settings.Default.EmulatorDirectory = TextBox_EmulatorExecutable.Text;
-            Properties.Settings.Default.SaveData = TextBox_SaveData.Text;
-            Properties.Settings.Default.LaunchEmulator = CheckBox_LaunchEmulator.Checked;
+            Properties.Settings.Default.Path_ModsDirectory = TextBox_ModsDirectory.Text;
+            Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text;
+            Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text;
+            Properties.Settings.Default.Path_SaveData = TextBox_SaveData.Text;
+            Properties.Settings.Default.General_LaunchEmulator = CheckBox_LaunchEmulator.Checked;
 
             // If something was changed, unsubscribe from event.
             if (TextBox_ModsDirectory.Text      != string.Empty ||
@@ -87,7 +87,7 @@ namespace Unify
                 TextBox_EmulatorExecutable.Text != string.Empty ||
                 TextBox_SaveData.Text           != string.Empty ||
                 CheckBox_LaunchEmulator.Checked != true) {
-                    Properties.Settings.Default.FirstLaunch = false;
+                    Properties.Settings.Default.General_FirstLaunch = false;
                     Properties.Settings.Default.Save();
                     FormClosing -= UnifySetup_FormClosing;
             }      

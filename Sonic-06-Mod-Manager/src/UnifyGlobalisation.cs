@@ -59,18 +59,27 @@ namespace Unify.Globalisation
         }
 
         /// <summary>
-        /// Renames the 'core' folder to the appropriate system root.
+        /// Translates a file extension to 'xenon' or 'ps3'
         /// </summary>
         public static string Core(string path) {
+            if (Path.GetExtension(path).ToLower() == ".xex") return "xenon";
+            if (Path.GetExtension(path).ToLower() == ".bin") return "ps3";
+            else return "core";
+        }
+
+        /// <summary>
+        /// Renames the 'core' folder to the appropriate system root.
+        /// </summary>
+        public static string CoreReplace(string path) {
             if (Paths.GetRootFolder(path) == "core") {
                 string[] splitPath = path.Split('\\');
 
                 for (int i = 0; i < splitPath.Length; i++) {
-                    if (splitPath[i] == "core" && System(Properties.Settings.Default.GameDirectory) == "Xbox 360") {
+                    if (splitPath[i] == "core" && System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
                         splitPath[i] = "xenon";
                         return string.Join("\\", splitPath);
                     }
-                    else if (splitPath[i] == "core" && System(Properties.Settings.Default.GameDirectory) == "PlayStation 3") {
+                    else if (splitPath[i] == "core" && System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
                         splitPath[i] = "ps3";
                         return string.Join("\\", splitPath);
                     }

@@ -650,6 +650,7 @@
             this.Controls.Add(this.btn_Create);
             this.Controls.Add(this.btn_Delete);
             this.DoubleBuffered = true;
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(397, 500);
             this.Name = "ModCreator";

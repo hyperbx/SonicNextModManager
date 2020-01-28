@@ -5,7 +5,6 @@ using System.Drawing;
 using Unify.Messenger;
 using Unify.Networking;
 using Unify.Serialisers;
-using Unify.Globalisation;
 using System.Windows.Forms;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
@@ -54,18 +53,18 @@ namespace Unify.Environment3
                 lbl_ReadOnly.ForeColor = SystemColors.GrayText;
             }
 
-            unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Properties.Settings.Default.AccentColour;
-            if (Properties.Settings.Default.HighContrastText) unifytb_ModCreator.SelectedTextColor = SystemColors.ControlText;
+            unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Properties.Settings.Default.General_AccentColour;
+            if (Properties.Settings.Default.General_HighContrastText) unifytb_ModCreator.SelectedTextColor = SystemColors.ControlText;
 
             if (edit) {
+                Text = "Mod Editor";
                 if (File.Exists(mod)) {
                     text_Title.Text = INI.DeserialiseKey("Title", mod);
                     text_Version.Text = INI.DeserialiseKey("Version", mod);
                     text_Date.Text = INI.DeserialiseKey("Date", mod);
                     text_Author.Text = INI.DeserialiseKey("Author", mod);
 
-                    switch (INI.DeserialiseKey("Platform", mod))
-                    {
+                    switch (INI.DeserialiseKey("Platform", mod)) {
                         case "Xbox 360":
                             combo_System.SelectedIndex = 0;
                             break;
@@ -99,7 +98,6 @@ namespace Unify.Environment3
 
                 btn_Create.Text = "Edit Mod";
                 btn_Create.BackColor = Color.SkyBlue;
-                btn_Delete.Visible = true;
 
                 if (Directory.Exists(mod)) {
                     string[] getThumbnail = Directory.GetFiles(mod, "thumbnail*", SearchOption.TopDirectoryOnly);
@@ -128,14 +126,14 @@ namespace Unify.Environment3
                                                   .Replace(">", "")
                                                   .Replace("|", "");
 
-                if (Directory.Exists(Path.Combine(Properties.Settings.Default.ModsDirectory, safeTitle)) && !edit)
+                if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, safeTitle)) && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A mod called {safeTitle} already exists. Please rename your mod.",
                                                            "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else {
                     pic_Thumbnail.BackgroundImage.Dispose();
                     pic_Thumbnail.BackgroundImage = Properties.Resources.Exception_Logo_Full_Colour;
 
-                    string newPath = Path.Combine(Properties.Settings.Default.ModsDirectory, safeTitle);
+                    string newPath = Path.Combine(Properties.Settings.Default.Path_ModsDirectory, safeTitle);
 
                     if (!edit)
                         Directory.CreateDirectory(newPath);
@@ -203,11 +201,11 @@ namespace Unify.Environment3
                         }
                     }
 
-                    if (check_GenerateFilesystem.Checked && Path.GetDirectoryName(Properties.Settings.Default.GameDirectory) != string.Empty) {
-                        string[] directories = Directory.GetDirectories(Path.GetDirectoryName(Properties.Settings.Default.GameDirectory), "*.*", SearchOption.AllDirectories);
+                    if (check_GenerateFilesystem.Checked && Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory) != string.Empty) {
+                        string[] directories = Directory.GetDirectories(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), "*.*", SearchOption.AllDirectories);
 
                         foreach (string path in directories) {
-                            string pathTrim = path.Remove(0, Path.GetDirectoryName(Properties.Settings.Default.GameDirectory).Length).Substring(1);
+                            string pathTrim = path.Remove(0, Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory).Length).Substring(1);
                             if (combo_System.SelectedIndex == 2) {
                                 if (!pathTrim.Contains("xenon") && !pathTrim.Contains("ps3"))
                                     Directory.CreateDirectory(Path.Combine(newPath, pathTrim));
