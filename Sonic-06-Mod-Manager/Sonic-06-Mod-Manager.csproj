@@ -253,10 +253,13 @@
     <Content Include="res\Applications\arctool.exe" />
     <Content Include="res\Applications\pkgtool.exe" />
     <Content Include="res\Applications\Protocol Manager.exe" />
+    <Content Include="res\Applications\unlub.jar" />
+    <Content Include="res\Applications\xextool.exe" />
     <Content Include="res\Icons\error.ico" />
     <Content Include="res\Icons\logo_main_icon.ico" />
     <Content Include="res\Images\Cancel_16x.png" />
     <Content Include="res\Images\CheckBox_16x_24.bmp" />
+    <Content Include="res\Images\ConfigurationEditor_16x.png" />
     <Content Include="res\Images\ConfigurationFile_16x.png" />
     <Content Include="res\Images\Corner_Logo.png" />
     <Content Include="res\Images\Corner_Logo_Colour.png" />
@@ -272,6 +275,7 @@
     <Content Include="res\Images\Menu_Logo.png" />
     <Content Include="res\Images\Monaco_Settings_16x.png" />
     <Content Include="res\Images\NewFileCollection_16x.png" />
+    <Content Include="res\Images\NewPatchPackage_16x.png" />
     <Content Include="res\Images\Open_grey_16x.png" />
     <Content Include="res\Images\PaintBrush_16x.png" />
     <Content Include="res\Images\PatchPackage_16x.png" />

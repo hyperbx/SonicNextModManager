@@ -141,14 +141,13 @@ namespace Unify.Patcher
         }
 
         /// <summary>
-        /// Align a FileStream to 16 bytes.
+        /// Align a FileStream to 32 bytes.
         /// </summary>
         /// <param name="fs">FileStream</param>
-        private void alignFileStreamTo16Bytes(FileStream fs)
+        private void alignFileStreamTo32Bytes(FileStream fs)
         {
             byte[] zero = new byte[] { 0 };
-            //for (int pos = _stringTable.Count; pos % 16 != 0; pos++)
-            for (long pos = fs.Position; pos % 16 != 0; pos++)
+            for (long pos = fs.Position; pos % 32 != 0; pos++)
             {
                 fs.Write(zero, 0, zero.Length);
             }
@@ -210,7 +209,7 @@ namespace Unify.Patcher
             // and data offset.
             int tableLength = (_nodes.Count * 16) + _stringTable.Count;
             int dataOffset = U8Header.Length + tableLength;
-            dataOffset = ((dataOffset + 0x0F) & ~0x0F);
+            dataOffset = ((dataOffset + 0x1F) & ~0x1F);
 
             byte[] b_tableLength = BitConverter.GetBytes((uint)tableLength);
             byte[] b_dataOffset = BitConverter.GetBytes((uint)dataOffset);
@@ -226,11 +225,10 @@ namespace Unify.Patcher
             using (FileStream fs = File.Create(arcFile))
             {
                 // Write files, uncompressed, starting at the data offset.
-                // NOTE: Files are aligned on 16-byte offsets.
+                // NOTE: Files are aligned on 32-byte offsets.
                 fs.Seek(dataOffset, SeekOrigin.Begin);
 
-                foreach (U8Node node in _nodes)
-                {
+                foreach (U8Node node in _nodes) {
                     if ((node.type_name & 0xFF000000) != 0)
                     {
                         // Directory node.
@@ -283,9 +281,23 @@ namespace Unify.Patcher
                             // Write the zlib header.
                             fs.Write(zlibHeader, 0, zlibHeader.Length);
 
-                            // Write the compressed data.
-                            memStream.Seek(0, SeekOrigin.Begin);
-                            memStream.CopyTo(fs);
+                            // Compressed size, plus 6 for zlib header and Adler-32 checksum.
+                            node.compressed_size = (uint)memStream.Length + 6;
+
+                            if (memStream.Length > 0)
+                            {
+                                // Write the compressed data.
+                                memStream.Seek(0, SeekOrigin.Begin);
+                                memStream.CopyTo(fs);
+                            }
+                            else
+                            {
+                                // Special case: Zero-length file needs "\x03\x00" in order to
+                                // not be misdetected as uncompressed.
+                                byte[] b_extra03 = new byte[] { 0x03, 0x00 };
+                                fs.Write(b_extra03, 0, b_extra03.Length);
+                                node.compressed_size += (uint)b_extra03.Length;
+                            }
 
                             // Write the Adler-32 checksum.
                             byte[] b_adler32 = BitConverter.GetBytes(adler32);
@@ -294,14 +306,11 @@ namespace Unify.Patcher
                                 Array.Reverse(b_adler32);
                             }
                             fs.Write(b_adler32, 0, b_adler32.Length);
-
-                            // Compressed size, plus 6 for zlib header and Adler-32 checksum.
-                            node.compressed_size = (uint)memStream.Length + 6;
                         }
                         fs_src.Close();
 
-                        // Make sure we're aligned to 16 bytes.
-                        alignFileStreamTo16Bytes(fs);
+                        // Make sure we're aligned to 32 bytes.
+                        alignFileStreamTo32Bytes(fs);
                     }
                 }
 
@@ -310,8 +319,7 @@ namespace Unify.Patcher
                 fs.Write(U8Header, 0, U8Header.Length);
 
                 // Write the nodes.
-                foreach (U8Node node in _nodes)
-                {
+                foreach (U8Node node in _nodes) {
                     byte[] b_type_name = BitConverter.GetBytes(node.type_name);
                     byte[] b_data_offset = BitConverter.GetBytes(node.data_offset);
                     byte[] b_compressed_size = BitConverter.GetBytes(node.compressed_size);

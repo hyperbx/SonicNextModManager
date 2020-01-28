@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Drawing;
+using Unify.Serialisers;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -57,6 +56,29 @@ namespace Unify.Globalisation
             if (Path.GetExtension(path).ToLower() == ".xex") return "Xenia";
             if (Path.GetExtension(path).ToLower() == ".bin") return "RPCS3";
             else return "unspecified";
+        }
+
+        /// <summary>
+        /// Renames the 'core' folder to the appropriate system root.
+        /// </summary>
+        public static string Core(string path) {
+            if (Paths.GetRootFolder(path) == "core") {
+                string[] splitPath = path.Split('\\');
+
+                for (int i = 0; i < splitPath.Length; i++) {
+                    if (splitPath[i] == "core" && System(Properties.Settings.Default.GameDirectory) == "Xbox 360") {
+                        splitPath[i] = "xenon";
+                        return string.Join("\\", splitPath);
+                    }
+                    else if (splitPath[i] == "core" && System(Properties.Settings.Default.GameDirectory) == "PlayStation 3") {
+                        splitPath[i] = "ps3";
+                        return string.Join("\\", splitPath);
+                    }
+                }
+
+                return string.Join("\\", splitPath);
+            }
+            else return path;
         }
 
         /// <summary>

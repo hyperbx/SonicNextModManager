@@ -71,8 +71,8 @@ namespace Unify.Environment3
                 TabControl_Rush.Height += 23; // Increase height on load to accommodate for lack of tabs in the section controller
 
                 // Force splitter widths - because WinForms is dumb and ignores it at design time
-                SplitContainer_ModsControls.SplitterWidth = 1;
-                SplitContainer_PatchesControls.SplitterWidth = 2;
+                SplitContainer_PatchesControls.SplitterWidth = SplitContainer_ModsControls.SplitterWidth = 1;
+                SplitContainer_PatchSelectionControls.SplitterWidth = 2;
                 SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
                 // If the application is a debug build, force debug mode on
@@ -208,11 +208,9 @@ namespace Unify.Environment3
             #region Set controls to HighContrastText setting
             if (Properties.Settings.Default.HighContrastText) {
                 Label_Status.ForeColor =
-                TabControl_Patches.SelectedTextColor =
                 SystemColors.ControlText;
             } else {
                 Label_Status.ForeColor =
-                TabControl_Patches.SelectedTextColor =
                 SystemColors.Control;
             }
             #endregion
@@ -224,8 +222,6 @@ namespace Unify.Environment3
             Button_ColourPicker_Preview.BackColor =
             StatusStrip_Main.BackColor =
             Label_Status.BackColor =
-            TabControl_Patches.HorizontalLineColor =
-            TabControl_Patches.ActiveColor =
             Properties.Settings.Default.AccentColour;
             #endregion
 
@@ -280,7 +276,8 @@ namespace Unify.Environment3
         private void RefreshLists() {
             DeserialiseMods(); // Refresh mods list
             DeserialisePatches(); // Refresh patches list
-            CheckDeserialisedMods(); // Check saved items
+            CheckDeserialisedMods(); // Check saved mods
+            CheckDeserialisedPatches(); // Check saved patches
         }
 
         /// <summary>
@@ -338,6 +335,7 @@ namespace Unify.Environment3
             if          (sender == Rush_Section_Mods) TabControl_Rush.SelectedTab = Tab_Section_Mods;     // Set tab to Mods
             else if (sender == Rush_Section_Emulator) TabControl_Rush.SelectedTab = Tab_Section_Emulator; // Set tab to Emulator
             else if  (sender == Rush_Section_Patches) TabControl_Rush.SelectedTab = Tab_Section_Patches;  // Set tab to Patches
+            else if   (sender == Rush_Section_Tweaks) TabControl_Rush.SelectedTab = Tab_Section_Tweaks;   // Set tab to Patches
             else if (sender == Rush_Section_Settings) TabControl_Rush.SelectedTab = Tab_Section_Settings; // Set tab to Settings
             else if    (sender == Rush_Section_Debug) TabControl_Rush.SelectedTab = Tab_Section_Debug;    // Set tab to Debug
             else if  (sender == Rush_Section_Updates) TabControl_Rush.SelectedTab = Tab_Section_Updates;  // Set tab to Updates
@@ -688,8 +686,8 @@ namespace Unify.Environment3
                 ListView_PatchesList.Items.Clear(); // Clears the patches list
                 foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
                     try {
-                        string blurb = Lua.DeserialiseParameter("Blurb", patch); // Deserialise 'Blurb' parameter
-                        string description = Lua.DeserialiseParameter("Description", patch); // Deserialise 'Description' parameter
+                        string blurb = Lua.DeserialiseParameter("Blurb", patch, true); // Deserialise 'Blurb' parameter
+                        string description = Lua.DeserialiseParameter("Description", patch, true); // Deserialise 'Description' parameter
                         string patchInfo = string.Empty;
 
                         if (description == string.Empty) patchInfo = blurb;
@@ -698,9 +696,9 @@ namespace Unify.Environment3
 
                         //Add mod to list, getting information from its mod.ini file
                         ListViewItem script = new ListViewItem(new[] {
-                                                  Lua.DeserialiseParameter("Title", patch), // Deserialise 'Title' parameter
-                                                  Lua.DeserialiseParameter("Author", patch), // Deserialise 'Author' parameter
-                                                  Lua.DeserialiseParameter("Platform", patch), // Deserialise 'Platform' parameter
+                                                  Lua.DeserialiseParameter("Title", patch, true), // Deserialise 'Title' parameter
+                                                  Lua.DeserialiseParameter("Author", patch, true), // Deserialise 'Author' parameter
+                                                  Lua.DeserialiseParameter("Platform", patch, true), // Deserialise 'Platform' parameter
                                                   patchInfo,
                                                   string.Empty,
                                                   patch
@@ -725,25 +723,47 @@ namespace Unify.Environment3
                     while ((line = mods.ReadLine()) != null) { // Read all lines until null
                         try {
                             if (Directory.Exists(Path.Combine(Properties.Settings.Default.ModsDirectory, line))) {
-                                // Deserialise 'Title' key.
-                                string title = INI.DeserialiseKey("Title", Path.Combine(Properties.Settings.Default.ModsDirectory, line, "mod.ini"));
+                                // If the item exists, shift it to the top of the list and check it
+                                for (int i = 0; i <= ListView_ModsList.Items.Count - 1; i++)
+                                    if (Paths.GetContainingFolder(ListView_ModsList.Items[i].SubItems[6].Text) == line) {
+                                        // Store original list item before shifting it in the list
+                                        ListViewItem shiftItem = ListView_ModsList.Items[i];
 
-                                // If the mods list contains what's on the current line...
-                                if (ListView_ModsList.Items.Contains(ListView_ModsList.FindItemWithText(title))) {
-                                    List<string> listItem = new List<string>();
+                                        // Remove the mod already in the mods list
+                                        ListView_ModsList.Items.RemoveAt(i);
 
-                                    // Locate item by Title key in the mods list
-                                    int index = ListView_ModsList.Items.IndexOf(ListView_ModsList.FindItemWithText(title));
+                                        // Insert the mod stored previously
+                                        ListView_ModsList.Items.Insert(0, shiftItem).Checked = true;
+                                        break;
+                                    }
+                            }
+                        } catch { }
+                    }
+                }
+            }
+        }
 
-                                    // Reproduce original list item before shifting it in the list
-                                    foreach (ListViewItem.ListViewSubItem item in ListView_ModsList.Items[index].SubItems) listItem.Add(item.Text);
-                                    ListViewItem shiftItem = new ListViewItem(listItem.ToArray());
+        /// <summary>
+        /// Restore checked items from 'patches.ini'
+        /// </summary>
+        private void CheckDeserialisedPatches() {
+            string line = string.Empty; // Declare empty string for StreamReader
+            string patchConfig = Path.Combine(Properties.Settings.Default.ModsDirectory, "patches.ini");
 
-                                    ListView_ModsList.Items.RemoveAt(index); // Remove the mod already in the mods list
-
-                                    // Insert the mod by the name provided in 'mods.ini', given it's at least present in the list
-                                    ListView_ModsList.Items.Insert(0, shiftItem).Checked = true;
-                                }
+            if (File.Exists(patchConfig)) {
+                // Read 'patches.ini'
+                using (StreamReader patches = new StreamReader(patchConfig)) {
+                    patches.ReadLine(); // Skip [Main] line
+                    while ((line = patches.ReadLine()) != null) { // Read all lines until null
+                        try {
+                            if (File.Exists(Path.Combine(Program.Patches, line))) {
+                                // If the item exists, check it
+                                for (int i = 0; i <= ListView_PatchesList.Items.Count - 1; i++)
+                                    foreach (ListViewItem.ListViewSubItem subitem in ListView_PatchesList.Items[i].SubItems)
+                                        if (Path.GetFileName(subitem.Text) == line) {
+                                            ListView_PatchesList.Items[i].Checked = true;
+                                            break;
+                                        }
                             }
                         } catch { }
                     }
@@ -771,17 +791,19 @@ namespace Unify.Environment3
                         sw.WriteLine(Path.GetFileName(Path.GetDirectoryName(ListView_ModsList.Items[i].SubItems[6].Text)));
             }
 
-            // Soon(tm)
-            //try {
-            //    using (StreamWriter sw = File.CreateText(patchCheckList))
-            //        sw.WriteLine("[Main]"); //Header
+            // Create 'patches.ini'
+            try {
+                using (StreamWriter sw = File.CreateText(patchCheckList))
+                    sw.WriteLine("[Main]"); // [Main] specification
 
-            //    for (int i = view_PatchesList.Items.Count - 1; i >= 0; i--) { // Writes in reverse so the mods list writes it in it's preferred order
-            //        if (view_PatchesList.Items[i].Checked)
-            //            using (StreamWriter sw = File.AppendText(patchCheckList))
-            //                sw.WriteLine(view_PatchesList.Items[i].Text); //Mod Name
-            //    }
-            //} catch { }
+                // Writes in reverse so the patches list writes it in it's preferred order
+                for (int i = ListView_PatchesList.Items.Count - 1; i >= 0; i--) {
+                    if (ListView_PatchesList.Items[i].Checked) // Get checked state
+                        using (StreamWriter sw = File.AppendText(patchCheckList))
+                            // Write patch name by file name to prevent duplicate patch names conflicting
+                            sw.WriteLine(Path.GetFileName(ListView_PatchesList.Items[i].SubItems[5].Text));
+                }
+            } catch { }
         }
 
         /// <summary>
@@ -814,7 +836,11 @@ namespace Unify.Environment3
                                 Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
 
                                 // Install the specified mod
-                                ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                                try { ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text); }
+                                catch (Exception ex) {
+                                    UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
+                                                                           "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
 
                                 if (Properties.Settings.Default.SaveFileRedirection) {
                                     Label_Status.Text = $"Redirecting save file for {ListView_ModsList.Items[i].Text}...";
@@ -840,6 +866,12 @@ namespace Unify.Environment3
                             }
                     }
 
+                    try { InstallPatches(); }
+                    catch (Exception ex) {
+                        UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your patches...\n\n{ex}",
+                                                                "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
                     if (ModEngine.skipped.Count != 0)
                         UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
                                                                "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -857,6 +889,16 @@ namespace Unify.Environment3
                     Properties.Settings.Default.Save();
                 }
             }
+        }
+
+        private void InstallPatches() {
+            foreach (ListViewItem patch in ListView_PatchesList.CheckedItems)
+                if (ListView_PatchesList.Items[ListView_PatchesList.Items.IndexOf(patch)].Checked) {
+                    Label_Status.Text = $"Patching {patch.Text}...";
+
+                    // Install the specified patch
+                    PatchEngine.InstallPatches(patch.SubItems[5].Text, patch.Text);
+                }
         }
 
         /// <summary>
@@ -1011,7 +1053,6 @@ namespace Unify.Environment3
         private void SectionButton_SaveChecks_Click(object sender, EventArgs e) {
             SaveChecks(); // Save checked items
             RefreshLists(); // Refresh mods list
-            CheckDeserialisedMods(); // Check saved items
         }
 
         /// <summary>
@@ -1019,14 +1060,14 @@ namespace Unify.Environment3
         /// </summary>
         private void Button_Mods_Selection_Click(object sender, EventArgs e) {
             // Mods List
-            if (sender == Button_Mods_SelectAll) foreach (ListViewItem item in ListView_ModsList.Items) item.Checked = true; // Select All
+            if      (sender == Button_Mods_SelectAll) ListView_ModsList.Items.Cast<ListViewItem>().All(i => i.Checked = true); // Select All
             else if (sender == Button_Mods_DeselectAll) { // Deselect All
                 foreach (ListViewItem item in ListView_ModsList.Items) item.Checked = false;
                 ListView_ModsList.SelectedItems.Clear();
             }
 
             // Patches List
-            else if (sender == Button_Patches_SelectAll) foreach (ListViewItem item in ListView_PatchesList.Items) item.Checked = true; // Select All
+            else if (sender == Button_Patches_SelectAll) ListView_PatchesList.Items.Cast<ListViewItem>().All(i => i.Checked = true); // Select All
             else if (sender == Button_Patches_DeselectAll) { // Deselect All
                 foreach (ListViewItem item in ListView_PatchesList.Items) item.Checked = false;
                 ListView_PatchesList.SelectedItems.Clear();
@@ -1052,35 +1093,19 @@ namespace Unify.Environment3
         /// </summary>
         private void Button_Priority_Iteration_Click(object sender, EventArgs e) {
             if (sender == Button_UpperPriority) {
-                int selectedIndex = ListView_ModsList.SelectedItems[0].Index; // Declares the selected index
-                List<string> listItem = new List<string>();
-                bool check = false; // Check state bool
-
-                // Rebuild list item
-                foreach (ListViewItem.ListViewSubItem item in ListView_ModsList.Items[selectedIndex].SubItems) listItem.Add(item.Text);
-                ListViewItem shiftItem = new ListViewItem(listItem.ToArray());
-
-                if (ListView_ModsList.Items[selectedIndex].Checked == true) check = true; // Checks if the checkbox was checked
-                ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
-                selectedIndex -= 1; // Move index up the list
-                ListView_ModsList.Items.Insert(selectedIndex, shiftItem); // Insert checkbox at selectedIndex
-                ListView_ModsList.Items[selectedIndex].Selected = true; // Selects the recently moved checkbox
-                shiftItem.Checked = check; // Calls the 'check' bool and sets the checked state
+                int selectedIndex = ListView_ModsList.SelectedItems[0].Index; // Store the selected index
+                bool check = ListView_ModsList.SelectedItems[0].Checked; // Check state bool
+                ListViewItem shiftItem = ListView_ModsList.SelectedItems[0]; // Store the item
+                ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected item
+                ListView_ModsList.Items.Insert(selectedIndex - 1, shiftItem).Checked = check; // Insert checkbox at selectedIndex
+                ListView_ModsList.Items[selectedIndex - 1].Selected = true; // Selects the recently moved checkbox
             } else if (sender == Button_DownerPriority) {
-                int selectedIndex = ListView_ModsList.SelectedItems[0].Index; // Declares the selected index
-                List<string> listItem = new List<string>();
-                bool check = false; // Check state bool
-
-                // Rebuild list item
-                foreach (ListViewItem.ListViewSubItem item in ListView_ModsList.Items[selectedIndex].SubItems) listItem.Add(item.Text);
-                ListViewItem shiftItem = new ListViewItem(listItem.ToArray());
-
-                if (ListView_ModsList.Items[selectedIndex].Checked == true) check = true; // Checks if the checkbox was checked
-                ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected checkbox
-                selectedIndex += 1; // Move index down the list
-                ListView_ModsList.Items.Insert(selectedIndex, shiftItem); // Insert checkbox at selectedIndex
-                ListView_ModsList.Items[selectedIndex].Selected = true; // Selects the recently moved checkbox
-                shiftItem.Checked = check; // Calls the 'check' bool and sets the checked state
+                int selectedIndex = ListView_ModsList.SelectedItems[0].Index; // Store the selected index
+                bool check = ListView_ModsList.SelectedItems[0].Checked; // Check state bool
+                ListViewItem shiftItem = ListView_ModsList.SelectedItems[0]; // Store the item
+                ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected item
+                ListView_ModsList.Items.Insert(selectedIndex + 1, shiftItem).Checked = check; // Insert checkbox at selectedIndex
+                ListView_ModsList.Items[selectedIndex + 1].Selected = true; // Selects the recently moved checkbox
             }
         }
 
@@ -1403,7 +1428,7 @@ namespace Unify.Environment3
                 lv.Columns[0].Width = (x * 5) - 5;
                 lv.Columns[1].Width = (x * 2) + 20;
                 lv.Columns[3].Width = (x * 2) + 10;
-                lv.Columns[3].Width = x * 7;
+                lv.Columns[3].Width = (x * 6) - 30;
                 lv.Columns[4].Width = x * 100;
             } else if (lv == ListView_ModUpdates) {
                 int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;

@@ -35,9 +35,14 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber = "Version 3.0-indev-260120r1";
-        public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        public static string Patches = $"{ApplicationData}\\Unify\\Patches\\";
+        public static readonly string VersionNumber = "Version 3.0-indev-280120r1";
+        public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                             Arctool         = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
+                             XexTool         = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
+                             pkgtool         = $"{ApplicationData}\\Unify\\Tools\\pkgtool.exe",
+                             unlub           = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
+                             Patches         = $"{ApplicationData}\\Unify\\Patches\\",
+                             ProtocolManager = $"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe";
 
         [STAThread]
 
@@ -49,14 +54,20 @@ namespace Unify.Environment3
             if (!Directory.Exists(Patches))
                 Directory.CreateDirectory(Patches);
 
-            if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\arctool.exe"))
-                File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\arctool.exe", Properties.Resources.arctool);
+            if (!File.Exists(Arctool))
+                File.WriteAllBytes(Arctool, Properties.Resources.arctool);
 
-            if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\pkgtool.exe"))
-                File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\pkgtool.exe", Properties.Resources.pkgtool);
+            if (!File.Exists(XexTool))
+                File.WriteAllBytes(XexTool, Properties.Resources.xextool);
 
-            if (!File.Exists($"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe"))
-                File.WriteAllBytes($"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe", Properties.Resources.Protocol_Manager);
+            if (!File.Exists(pkgtool))
+                File.WriteAllBytes(pkgtool, Properties.Resources.pkgtool);
+
+            if (!File.Exists(unlub))
+                File.WriteAllBytes(unlub, Properties.Resources.unlub);
+
+            if (!File.Exists(ProtocolManager))
+                File.WriteAllBytes(ProtocolManager, Properties.Resources.Protocol_Manager);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

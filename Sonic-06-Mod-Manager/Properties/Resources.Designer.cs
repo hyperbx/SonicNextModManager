@@ -111,6 +111,16 @@ namespace Unify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ConfigurationEditor_16x {
+            get {
+                object obj = ResourceManager.GetObject("ConfigurationEditor_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ConfigurationFile_16x {
             get {
                 object obj = ResourceManager.GetObject("ConfigurationFile_16x", resourceCulture);
@@ -337,6 +347,16 @@ namespace Unify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap NewPatchPackage_16x {
+            get {
+                object obj = ResourceManager.GetObject("NewPatchPackage_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Open_grey_16x {
             get {
                 object obj = ResourceManager.GetObject("Open_grey_16x", resourceCulture);
@@ -404,6 +424,16 @@ namespace Unify.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] unlub {
+            get {
+                object obj = ResourceManager.GetObject("unlub", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Update_4 {
@@ -428,6 +458,16 @@ namespace Unify.Properties {
         internal static string VersionURI_SEGACarnival {
             get {
                 return ResourceManager.GetString("VersionURI_SEGACarnival", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xextool {
+            get {
+                object obj = ResourceManager.GetObject("xextool", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

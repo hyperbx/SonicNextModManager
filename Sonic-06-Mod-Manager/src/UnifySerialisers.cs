@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -54,21 +55,104 @@ namespace Unify.Serialisers
         /// <summary>
         /// If the specified parameter is found in the specified Lua script, return its value as a string.
         /// </summary>
-        public static string DeserialiseParameter(string parameter, string script) {
-            string line, entryValue = string.Empty;
+        public static string DeserialiseParameter(string parameter, string script, bool fromScript) {
+            string entryValue = string.Empty;
 
-            using (StreamReader scriptFile = new StreamReader(script))
-                try {
-                    while ((line = scriptFile.ReadLine()) != null) {
-                        if (line.StartsWith(parameter)) {
-                            entryValue = line.Substring(line.IndexOf("(") + 1);
-                            entryValue = entryValue.Remove(entryValue.Length - 2);
-                            entryValue = entryValue.Substring(1);
+            if (fromScript) {
+                string line = string.Empty;
+
+                using (StreamReader scriptFile = new StreamReader(script))
+                    try {
+                        while ((line = scriptFile.ReadLine()) != null) {
+                            if (line.StartsWith(parameter)) {
+                                entryValue = line.Substring(line.IndexOf("(") + 1);
+                                entryValue = entryValue.Remove(entryValue.Length - 2);
+                                entryValue = entryValue.Substring(1);
+                            }
                         }
-                    }
-                } catch { }
+                    } catch { }
+            } else {
+                if (script.StartsWith(parameter)) {
+                    entryValue = script.Substring(script.IndexOf("(") + 1);
+                    entryValue = entryValue.Remove(entryValue.Length - 2);
+                    entryValue = entryValue.Substring(1);
+                }
+            }
 
             return entryValue;
+        }
+
+        /// <summary>
+        /// If the specified parameter is found in the specified Lua script, return its value as a string array.
+        /// </summary>
+        public static string[] DeserialiseParameterList(string parameter, string script, bool fromScript) {
+            string entryValue = string.Empty;
+            string[] function = Array.Empty<string>();
+
+            if (fromScript) {
+                string line = string.Empty;
+
+                using (StreamReader scriptFile = new StreamReader(script))
+                    try {
+                        while ((line = scriptFile.ReadLine()) != null) {
+                            if (line.StartsWith(parameter)) {
+                                entryValue = line.Substring(line.IndexOf("(") + 1);
+                                entryValue = entryValue.Remove(entryValue.Length - 1);
+
+                                function = entryValue.Split('|');
+                                int valueCount = 0;
+                                foreach (string value in function) {
+                                    if (value.StartsWith("\"")) function[valueCount] = value.Remove(value.Length - 1).Substring(1);
+                                    valueCount++;
+                                }
+                            }
+                        }
+                    } catch { }
+            } else {
+                if (script.StartsWith(parameter)) {
+                    entryValue = script.Substring(script.IndexOf("(") + 1);
+                    entryValue = entryValue.Remove(entryValue.Length - 1);
+
+                    function = entryValue.Split('|');
+                    int valueCount = 0;
+                    foreach (string value in function) {
+                        if (value.StartsWith("\"")) function[valueCount] = value.Remove(value.Length - 1).Substring(1);
+                        valueCount++;
+                    }
+                }
+            }
+
+            return function;
+        }
+    }
+
+    class Paths
+    {
+        /// <summary>
+        /// Returns the first directory of a path.
+        /// </summary>
+        public static string GetRootFolder(string path) {
+            while (true) {
+                string temp = Path.GetDirectoryName(path);
+                if (string.IsNullOrEmpty(temp))
+                    break;
+                path = temp;
+            }
+            return path;
+        }
+
+        /// <summary>
+        /// Returns the full path without an extension.
+        /// </summary>
+        public static string GetPathWithoutExtension(string path) {
+            return Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
+        }
+
+        /// <summary>
+        /// Returns the folder containing the file.
+        /// </summary>
+        public static string GetContainingFolder(string path) {
+            return Path.GetFileName(Path.GetDirectoryName(path));
         }
     }
 }

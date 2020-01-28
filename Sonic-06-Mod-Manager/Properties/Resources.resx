@@ -133,6 +133,9 @@
   <data name="CheckBox_16x_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\checkbox_16x_24.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ConfigurationEditor_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\images\configurationeditor_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ConfigurationFile_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\configurationfile_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -193,6 +196,9 @@
   <data name="NewFileCollection_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\newfilecollection_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NewPatchPackage_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\images\newpatchpackage_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Open_grey_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\open_grey_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -214,6 +220,9 @@
   <data name="Refresh_grey_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\refresh_grey_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="unlub" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\unlub.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Update_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\update 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -222,5 +231,8 @@
   </data>
   <data name="VersionURI_SEGACarnival" xml:space="preserve">
     <value>https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt</value>
+  </data>
+  <data name="xextool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\xextool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
