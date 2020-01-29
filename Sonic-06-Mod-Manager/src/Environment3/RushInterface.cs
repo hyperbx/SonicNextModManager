@@ -627,28 +627,32 @@ namespace Unify.Environment3
                 if (sender == ListView_ModsList) {
                     if (ListView_ModsList.FocusedItem.Bounds.Contains(e.Location)) {
                         menuDark.Items.Clear();
-                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
+                        menuDark.Items.AddRange(new ToolStripMenuItem[] {
                             new ToolStripMenuItem("Mod Information",   Properties.Resources.InformationSymbol_16x, ContextMenu_ModMenu_Items_Click),
                             new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_ModMenu_Items_Click),
-                            new ToolStripMenuItem("Check for Updates", Properties.Resources.Update_4,              ContextMenu_ModMenu_Items_Click),
+                            new ToolStripMenuItem("Check for Updates", Properties.Resources.Update_4,              ContextMenu_ModMenu_Items_Click)
+                        });
+                        menuDark.Items.Add(new ToolStripSeparator());
+                        menuDark.Items.AddRange(new ToolStripMenuItem[] {
                             new ToolStripMenuItem("Create Mod",        Properties.Resources.NewFileCollection_16x, ContextMenu_ModMenu_Items_Click),
                             new ToolStripMenuItem("Edit Mod",          Properties.Resources.EditPage_16x,          ContextMenu_ModMenu_Items_Click),
                             new ToolStripMenuItem("Delete Mod",        Properties.Resources.Cancel_16x,            ContextMenu_ModMenu_Items_Click)
-                        };
-                        menuDark.Items.AddRange(items);
+                        });
                         menuDark.Show(Cursor.Position);
                     }
                 } else if (sender == ListView_PatchesList) {
                     if (ListView_PatchesList.FocusedItem.Bounds.Contains(e.Location)) {
                         menuDark.Items.Clear();
-                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
+                        menuDark.Items.AddRange(new ToolStripMenuItem[] {
                             new ToolStripMenuItem("Patch Information", Properties.Resources.InformationSymbol_16x, ContextMenu_PatchMenu_Items_Click),
-                            new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_PatchMenu_Items_Click),
+                            new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_PatchMenu_Items_Click)
+                        });
+                        menuDark.Items.Add(new ToolStripSeparator());
+                        menuDark.Items.AddRange(new ToolStripMenuItem[] {
                             new ToolStripMenuItem("Create Patch",      Properties.Resources.NewPatchPackage_16x,   ContextMenu_PatchMenu_Items_Click),
                             new ToolStripMenuItem("Edit Patch",        Properties.Resources.EditPage_16x,          ContextMenu_PatchMenu_Items_Click),
                             new ToolStripMenuItem("Delete Patch",      Properties.Resources.Cancel_16x,            ContextMenu_PatchMenu_Items_Click)
-                        };
-                        menuDark.Items.AddRange(items);
+                        });
                         menuDark.Show(Cursor.Position);
                     }
                 }
@@ -1936,19 +1940,13 @@ namespace Unify.Environment3
                 if (sender == ListView_ModsList) {
                     if (ListView_ModsList.SelectedItems.Count == 0) {
                         menuDark.Items.Clear();
-                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
-                            new ToolStripMenuItem("Create Mod", Properties.Resources.NewFileCollection_16x, ContextMenu_ModMenu_Items_Click)
-                        };
-                        menuDark.Items.AddRange(items);
+                        menuDark.Items.Add(new ToolStripMenuItem("Create Mod", Properties.Resources.NewFileCollection_16x, ContextMenu_ModMenu_Items_Click));
                         menuDark.Show(Cursor.Position);
                     }
                 } else if (sender == ListView_PatchesList) {
                     if (ListView_PatchesList.SelectedItems.Count == 0) {
                         menuDark.Items.Clear();
-                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
-                            new ToolStripMenuItem("Create Patch", Properties.Resources.NewPatchPackage_16x, ContextMenu_PatchMenu_Items_Click)
-                        };
-                        menuDark.Items.AddRange(items);
+                        menuDark.Items.Add(new ToolStripMenuItem("Create Patch", Properties.Resources.NewPatchPackage_16x, ContextMenu_PatchMenu_Items_Click));
                         menuDark.Show(Cursor.Position);
                     }
                 }
