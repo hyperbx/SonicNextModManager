@@ -307,8 +307,19 @@ namespace Unify.Patcher
         /// Repacks an archive from a temporary location.
         /// </summary>
         public static void RepackARC(string arc, string output) {
+            string tempPath = Path.GetFileNameWithoutExtension(output);
+
             ArcPacker repack = new ArcPacker();
-            repack.WriteArc(output, Path.Combine(arc, Path.GetFileNameWithoutExtension(output)));
+            repack.WriteArc(output, Path.Combine(arc, tempPath));
+
+            // Erases temporary repack data
+            try {
+                DirectoryInfo tempData = new DirectoryInfo(tempPath);
+                if (Directory.Exists(tempPath)) {
+                    foreach (FileInfo file in tempData.GetFiles()) file.Delete();
+                    foreach (DirectoryInfo directory in tempData.GetDirectories()) directory.Delete(true);
+                }
+            } catch { }
         }
 
         /// <summary>
