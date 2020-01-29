@@ -1916,7 +1916,7 @@ namespace Unify.Environment3
         /// </summary>
         private void SectionButton_LaunchGame_Click(object sender, EventArgs e) {
             // Launch the emulator of choice
-            if (Properties.Settings.Default.General_LaunchEmulator) LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
+            LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
 
             // Reset status label once emulator process has ended
             Label_Status.Text = $"Ready.";
