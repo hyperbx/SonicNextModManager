@@ -33,9 +33,9 @@ namespace Unify.Environment3
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
             this.StatusStrip_Main = new System.Windows.Forms.StatusStrip();
             this.Label_Status = new System.Windows.Forms.Label();
-            this.Rush_Section_Tweaks = new Unify.Environment3.SectionButton();
-            this.Rush_Section_Updates = new Unify.Environment3.SectionButton();
             this.Rush_Section_Debug = new Unify.Environment3.SectionButton();
+            this.Rush_Section_Updates = new Unify.Environment3.SectionButton();
+            this.Rush_Section_Tweaks = new Unify.Environment3.SectionButton();
             this.TabControl_Rush = new Unify.Environment3.UnifyTabControl();
             this.Tab_Section_Mods = new System.Windows.Forms.TabPage();
             this.SplitContainer_ModsControls = new System.Windows.Forms.SplitContainer();
@@ -288,20 +288,22 @@ namespace Unify.Environment3
             this.Label_Status.TabIndex = 27;
             this.Label_Status.Text = "Ready.";
             // 
-            // Rush_Section_Tweaks
+            // Rush_Section_Debug
             // 
-            this.Rush_Section_Tweaks.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Rush_Section_Tweaks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.Rush_Section_Tweaks.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rush_Section_Tweaks.Location = new System.Drawing.Point(0, 171);
-            this.Rush_Section_Tweaks.Name = "Rush_Section_Tweaks";
-            this.Rush_Section_Tweaks.SectionImage = global::Unify.Properties.Resources.ConfigurationEditor_16x;
-            this.Rush_Section_Tweaks.SectionText = "Tweaks";
-            this.Rush_Section_Tweaks.SelectedSection = false;
-            this.Rush_Section_Tweaks.Size = new System.Drawing.Size(250, 35);
-            this.Rush_Section_Tweaks.TabIndex = 29;
-            this.Rush_Section_Tweaks.TextColour = System.Drawing.SystemColors.Control;
-            this.Rush_Section_Tweaks.Click += new System.EventHandler(this.Rush_Section_Click);
+            this.Rush_Section_Debug.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Rush_Section_Debug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Rush_Section_Debug.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.Rush_Section_Debug.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Rush_Section_Debug.Location = new System.Drawing.Point(0, 869);
+            this.Rush_Section_Debug.Name = "Rush_Section_Debug";
+            this.Rush_Section_Debug.SectionImage = global::Unify.Properties.Resources.debug_6;
+            this.Rush_Section_Debug.SectionText = "Debug";
+            this.Rush_Section_Debug.SelectedSection = false;
+            this.Rush_Section_Debug.Size = new System.Drawing.Size(250, 35);
+            this.Rush_Section_Debug.TabIndex = 25;
+            this.Rush_Section_Debug.TextColour = System.Drawing.SystemColors.Control;
+            this.Rush_Section_Debug.Visible = false;
+            this.Rush_Section_Debug.Click += new System.EventHandler(this.Rush_Section_Click);
             // 
             // Rush_Section_Updates
             // 
@@ -319,22 +321,20 @@ namespace Unify.Environment3
             this.Rush_Section_Updates.TextColour = System.Drawing.SystemColors.Control;
             this.Rush_Section_Updates.Click += new System.EventHandler(this.Rush_Section_Click);
             // 
-            // Rush_Section_Debug
+            // Rush_Section_Tweaks
             // 
-            this.Rush_Section_Debug.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Rush_Section_Debug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Rush_Section_Debug.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
-            this.Rush_Section_Debug.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rush_Section_Debug.Location = new System.Drawing.Point(0, 869);
-            this.Rush_Section_Debug.Name = "Rush_Section_Debug";
-            this.Rush_Section_Debug.SectionImage = global::Unify.Properties.Resources.debug_6;
-            this.Rush_Section_Debug.SectionText = "Debug";
-            this.Rush_Section_Debug.SelectedSection = false;
-            this.Rush_Section_Debug.Size = new System.Drawing.Size(250, 35);
-            this.Rush_Section_Debug.TabIndex = 25;
-            this.Rush_Section_Debug.TextColour = System.Drawing.SystemColors.Control;
-            this.Rush_Section_Debug.Visible = false;
-            this.Rush_Section_Debug.Click += new System.EventHandler(this.Rush_Section_Click);
+            this.Rush_Section_Tweaks.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Rush_Section_Tweaks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.Rush_Section_Tweaks.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Rush_Section_Tweaks.Location = new System.Drawing.Point(0, 171);
+            this.Rush_Section_Tweaks.Name = "Rush_Section_Tweaks";
+            this.Rush_Section_Tweaks.SectionImage = global::Unify.Properties.Resources.ConfigurationEditor_16x;
+            this.Rush_Section_Tweaks.SectionText = "Tweaks";
+            this.Rush_Section_Tweaks.SelectedSection = false;
+            this.Rush_Section_Tweaks.Size = new System.Drawing.Size(250, 35);
+            this.Rush_Section_Tweaks.TabIndex = 29;
+            this.Rush_Section_Tweaks.TextColour = System.Drawing.SystemColors.Control;
+            this.Rush_Section_Tweaks.Click += new System.EventHandler(this.Rush_Section_Click);
             // 
             // TabControl_Rush
             // 
@@ -456,7 +456,7 @@ namespace Unify.Environment3
             this.SectionButton_CreateNewMod.SectionImage = global::Unify.Properties.Resources.NewFileCollection_16x;
             this.SectionButton_CreateNewMod.SectionText = "Create a new mod";
             this.SectionButton_CreateNewMod.SelectedSection = false;
-            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(558, 35);
+            this.SectionButton_CreateNewMod.Size = new System.Drawing.Size(570, 35);
             this.SectionButton_CreateNewMod.TabIndex = 51;
             this.SectionButton_CreateNewMod.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_CreateNewMod.Click += new System.EventHandler(this.SectionButton_CreateNewMod_Click);
@@ -473,7 +473,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1118, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1130, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1029,7 +1029,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(515, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(527, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1153,7 +1153,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(300, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(312, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;

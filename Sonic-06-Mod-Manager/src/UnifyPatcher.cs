@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Linq;
+using ArcPackerLib;
 using Unify.Messenger;
 using Microsoft.Win32;
 using Unify.Serialisers;
@@ -851,7 +852,11 @@ namespace Unify.Patcher
 
     class TweakEngine
     {
-        public static void ApplyTweaks() {
+        /// <summary>
+        /// Apply the specified tweaks.
+        /// </summary>
+        /// <param name="rush">Required for status change</param>
+        public static void ApplyTweaks(RushInterface rush) {
             string gameDirectory = Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory);
             string[] files = Directory.GetFiles(gameDirectory, "*.arc", SearchOption.AllDirectories);
             string system = Literal.Core(Properties.Settings.Default.Path_GameDirectory);
@@ -899,32 +904,42 @@ namespace Unify.Patcher
                         // Default
                         if (renderer == 0) {
                             // Force MSAA
-                            if (antiAliasing != 1 || forceMSAA)
+                            if (antiAliasing != 1 || forceMSAA) {
+                                rush.Status = $"Tweaking Anti-Aliasing...";
                                 MSAA(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly);
+                            }
                         }
 
                         // Optimised
                         else if (renderer == 1) {
+                            rush.Status = $"Tweaking Renderer...";
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"),   Properties.Resources.barebones_render_gamemode);
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.barebones_render_main);
                         }
 
                         // Destructive
                         else if (renderer == 2) {
+                            rush.Status = $"Tweaking Renderer...";
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"),   Properties.Resources.vulkan_render_gamemode);
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_title.lub"),      Properties.Resources.vulkan_render_title);
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
                         }
 
                         // Cheap
-                        else if (renderer == 3)
+                        else if (renderer == 3) {
+                            rush.Status = $"Tweaking Renderer...";
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_cheap);
+                        }
 
                         // Reflections
-                        if (reflections != 1)
+                        if (reflections != 1) {
+                            rush.Status = $"Tweaking Reflections...";
                             Reflections(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_reflection.lub"), reflections);
+                        }
 
                         if (system == "ps3") {
+                            rush.Status = $"Tweaking Camera...";
+
                             // Camera Type
                             if (cameraType != 0)
                                 CameraType(Path.Combine(tweak, $"cache\\{system}\\cameraparam.lub"), cameraType, fieldOfView);
@@ -953,8 +968,10 @@ namespace Unify.Patcher
                         // Default
                         if (Properties.Settings.Default.Tweak_Renderer == 0)
                             // Force MSAA
-                            if (antiAliasing != 1 || forceMSAA)
+                            if (antiAliasing != 1 || forceMSAA) {
+                                rush.Status = $"Tweaking Anti-Aliasing...";
                                 MSAA(Path.Combine(tweak, $"scripts\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.AllDirectories);
+                            }
 
                         // Repack archive as tweak
                         ModEngine.RepackARC(tweak, archive);
@@ -973,6 +990,8 @@ namespace Unify.Patcher
                         tweak = ModEngine.UnpackARC(archive, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
                         if (system == "xenon") {
+                            rush.Status = $"Tweaking Camera...";
+
                             // Camera Type
                             if (cameraType != 0)
                                 CameraType(Path.Combine(tweak, $"game\\{system}\\cameraparam.lub"), cameraType, fieldOfView);
@@ -1000,20 +1019,28 @@ namespace Unify.Patcher
                         tweak = ModEngine.UnpackARC(archive, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
                         // Tokyo Game Show
-                        if (cameraType == 1)
+                        if (cameraType == 1) {
+                            rush.Status = $"Tweaking Camera...";
                             CameraType(Path.Combine(tweak, $"player\\{system}\\player\\common.lub"), cameraType, fieldOfView);
+                        }
 
                         // Camera Height
-                        if (cameraHeight != 70)
+                        if (cameraHeight != 70) {
+                            rush.Status = $"Tweaking Camera...";
                             CameraHeight(Path.Combine(tweak, $"player\\{system}\\player\\common.lub"), cameraHeight);
+                        }
 
                         // Amy's Hammer Range
-                        if (hammerRange != 50)
+                        if (hammerRange != 50) {
+                            rush.Status = $"Tweaking Characters...";
                             HammerRange(Path.Combine(tweak, $"player\\{system}\\player\\amy.lub"), hammerRange);
+                        }
 
                         // Unlock Tails' Flight Limit
-                        if (tailsFlightLimit)
+                        if (tailsFlightLimit) {
+                            rush.Status = $"Tweaking Characters...";
                             UnlockTailsFlightLimit(Path.Combine(tweak, $"player\\{system}\\player\\tails.lub"));
+                        }
 
                         // Repack archive as tweak
                         ModEngine.RepackARC(tweak, archive);

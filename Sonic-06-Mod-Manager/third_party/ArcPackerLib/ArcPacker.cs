@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
-
-// Sonic '06 Mod Manager is licensed under the MIT License:
-/*
- * MIT License
-
- * Copyright (c) 2020 Knuxfan24
+﻿/**
+ * Sonic'06 ARC packer class
+ *
  * Copyright (c) 2020 Gabriel (HyperPolygon64)
  * Copyright (c) 2020 David Korth <gerbilsoft@gerbilsoft.com>
-
+ *
+ * MIT License
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
-
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
-
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,12 +25,16 @@ using System.Text;
  * SOFTWARE.
  */
 
-namespace Unify.Patcher
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
+
+namespace ArcPackerLib
 {
     class ArcPacker
     {
-        protected byte[] zlibHeader = new byte[] { 0x78, 0x01 };
-
         // Nodes: Count is total number of files and subdirectories,
         // plus 1 for the root node.
         // NOTE: class, not struct, for pass-by-reference behavior.
@@ -243,73 +241,22 @@ namespace Unify.Patcher
                         node.data_offset = (uint)fs.Position;
                         node.file_size = (uint)fs_src.Length;
 
-                        // Compress the source data using Deflate.
-                        // TODO: Write a ZlibStream class that handles the zlib headers.
-                        uint adler32 = 0;
+                        // Compress the source data using zlib.
                         using (MemoryStream memStream = new MemoryStream())
                         {
-                            using (DeflateStream zStream = new DeflateStream(memStream, CompressionLevel.Fastest, true))
+                            using (ZlibStream zStream = new ZlibStream(memStream, CompressionLevel.Fastest, true))
                             {
-                                // DeflateStream doesn't provide an Adler-32 checksum,
-                                // which is required by zlib.
-                                // Reference: http://nickberardi.com/zlib-compression-in-net/
-                                // NOTE: The checksum is on the *uncompressed* data.
-                                const uint A32Mod = 65521;
-                                uint s1 = 1, s2 = 0;
-
-                                byte[] buf = new byte[16384];
-                                int bytesRead = 0;
-                                do
-                                {
-                                    bytesRead = fs_src.Read(buf, 0, buf.Length);
-                                    if (bytesRead <= 0)
-                                        break;
-                                    zStream.Write(buf, 0, bytesRead);
-
-                                    // Calculate the Adler-32 checksum on this chunk.
-                                    for (int i = 0; i < bytesRead; i++)
-                                    {
-                                        s1 = (s1 + buf[i]) % A32Mod;
-                                        s2 = (s2 + s1) % A32Mod;
-                                    }
-                                } while (bytesRead != 0);
-
-                                // Finalize the Adler-32 checksum.
-                                adler32 = unchecked((uint)((s2 << 16) | s1));
-
-                                zStream.Flush();
+                                fs_src.CopyTo(zStream);
                             }
 
-                            // Write the zlib header.
-                            fs.Write(zlibHeader, 0, zlibHeader.Length);
-
-                            // Compressed size, plus 6 for zlib header and Adler-32 checksum.
-                            node.compressed_size = (uint)memStream.Length + 6;
-
+                            node.compressed_size = (uint)memStream.Length;
                             if (memStream.Length > 0)
                             {
                                 // Write the compressed data.
                                 memStream.Seek(0, SeekOrigin.Begin);
                                 memStream.CopyTo(fs);
                             }
-                            else
-                            {
-                                // Special case: Zero-length file needs "\x03\x00" in order to
-                                // not be misdetected as uncompressed.
-                                byte[] b_extra03 = new byte[] { 0x03, 0x00 };
-                                fs.Write(b_extra03, 0, b_extra03.Length);
-                                node.compressed_size += (uint)b_extra03.Length;
-                            }
-
-                            // Write the Adler-32 checksum.
-                            byte[] b_adler32 = BitConverter.GetBytes(adler32);
-                            if (BitConverter.IsLittleEndian)
-                            {
-                                Array.Reverse(b_adler32);
-                            }
-                            fs.Write(b_adler32, 0, b_adler32.Length);
                         }
-                        fs_src.Close();
 
                         // Make sure we're aligned to 32 bytes.
                         alignFileStreamTo32Bytes(fs);

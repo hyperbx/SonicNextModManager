@@ -61,8 +61,13 @@ namespace Unify.Environment3
                         new UnifySetup().ShowDialog();
 
                 if (Paths.IsDirectoryEmpty(Program.Patches)) {
+                    Properties.Settings.Default.General_LastPatchUpdate = DateTime.Now.Ticks;
                     // Update patches synchronously
                     Task.Run(() => UpdatePatches()).GetAwaiter().GetResult();
+
+                    // Reset update button for future checking
+                    SectionButton_FetchPatches.Enabled = true;
+                    SectionButton_FetchPatches.Refresh();
                     RefreshLists();
                 }
 
@@ -82,6 +87,11 @@ namespace Unify.Environment3
                 Properties.Settings.Default.Save();
 #endif
             }
+        }
+
+        public string Status {
+            get { return Label_Status.Text; }
+            set { Label_Status.Text = value; }
         }
 
         /// <summary>
@@ -779,17 +789,21 @@ namespace Unify.Environment3
                 Button_UpperPriority.Enabled = Button_DownerPriority.Enabled = false; // Disable priority buttons to prevent index errors
                 foreach (string mod in Directory.GetFiles(Properties.Settings.Default.Path_ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
                     try {
-                        //Add mod to list, getting information from its mod.ini file
-                        ListViewItem config = new ListViewItem(new[] {
-                                                  INI.DeserialiseKey("Title", mod), // Deserialise 'Title' key
-                                                  INI.DeserialiseKey("Version", mod), // Deserialise 'Version' key
-                                                  INI.DeserialiseKey("Author", mod), // Deserialise 'Author' key
-                                                  INI.DeserialiseKey("Platform", mod), // Deserialise 'Platform' key
-                                                  Literal.Bool(INI.DeserialiseKey("Merge", mod)), // Translates 'True' to 'Yes' and 'False' to 'No'
-                                                  string.Empty,
-                                                  mod
-                                              });
-                        ListView_ModsList.Items.Add(config);
+                        string title = INI.DeserialiseKey("Title", mod); // Deserialise 'Title' key
+
+                        if (title != string.Empty) {
+                            //Add mod to list, getting information from its mod.ini file
+                            ListViewItem config = new ListViewItem(new[] {
+                                                      title,
+                                                      INI.DeserialiseKey("Version", mod), // Deserialise 'Version' key
+                                                      INI.DeserialiseKey("Author", mod), // Deserialise 'Author' key
+                                                      INI.DeserialiseKey("Platform", mod), // Deserialise 'Platform' key
+                                                      Literal.Bool(INI.DeserialiseKey("Merge", mod)), // Translates 'True' to 'Yes' and 'False' to 'No'
+                                                      string.Empty,
+                                                      mod
+                                                  });
+                            ListView_ModsList.Items.Add(config);
+                        }
                     } catch { }
                 }
             }
@@ -803,24 +817,27 @@ namespace Unify.Environment3
                 ListView_PatchesList.Items.Clear(); // Clears the patches list
                 foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
                     try {
-                        string blurb = Lua.DeserialiseParameter("Blurb", patch, true); // Deserialise 'Blurb' parameter
-                        string description = Lua.DeserialiseParameter("Description", patch, true); // Deserialise 'Description' parameter
-                        string patchInfo = string.Empty;
+                        string title       = Lua.DeserialiseParameter("Title", patch, true), // Deserialise 'Title' parameter
+                               blurb       = Lua.DeserialiseParameter("Blurb", patch, true), // Deserialise 'Blurb' parameter
+                               description = Lua.DeserialiseParameter("Description", patch, true), // Deserialise 'Description' parameter
+                               patchInfo   = string.Empty;
 
                         if (description == string.Empty) patchInfo = blurb.Replace(@"\n", " ");
                         else if  (blurb == string.Empty) patchInfo = description.Replace(@"\n", Environment.NewLine);
                         else                             patchInfo = blurb.Replace(@"\n", " ");
 
-                        //Add mod to list, getting information from its mod.ini file
-                        ListViewItem script = new ListViewItem(new[] {
-                                                  Lua.DeserialiseParameter("Title", patch, true), // Deserialise 'Title' parameter
-                                                  Lua.DeserialiseParameter("Author", patch, true), // Deserialise 'Author' parameter
-                                                  Lua.DeserialiseParameter("Platform", patch, true), // Deserialise 'Platform' parameter
-                                                  patchInfo,
-                                                  string.Empty,
-                                                  patch
-                                              });
-                        ListView_PatchesList.Items.Add(script);
+                        if (title != string.Empty) {
+                            //Add mod to list, getting information from its mod.ini file
+                            ListViewItem script = new ListViewItem(new[] {
+                                                      title,
+                                                      Lua.DeserialiseParameter("Author", patch, true), // Deserialise 'Author' parameter
+                                                      Lua.DeserialiseParameter("Platform", patch, true), // Deserialise 'Platform' parameter
+                                                      patchInfo,
+                                                      string.Empty,
+                                                      patch
+                                                  });
+                            ListView_PatchesList.Items.Add(script);
+                        }
                     } catch { }
                 }
             }
@@ -947,7 +964,8 @@ namespace Unify.Environment3
                         }
                     }
 
-                    if (Properties.Settings.Default.General_Priority) { //Top to Bottom Priority
+                    //Top to Bottom Priority
+                    if (Properties.Settings.Default.General_Priority) {
                         for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
                             if (ListView_ModsList.Items[i].Checked) {
                                 Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
@@ -960,14 +978,13 @@ namespace Unify.Environment3
                                     return;
                                 }
 
-                                if (Properties.Settings.Default.General_SaveFileRedirection) {
-                                    Label_Status.Text = $"Redirecting save file for {ListView_ModsList.Items[i].Text}...";
-
+                                if (Properties.Settings.Default.General_SaveFileRedirection)
                                     // Redirect save data from the specified mod
                                     RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
-                                }
                             }
-                    } else { //Bottom to Top Priority
+
+                    //Bottom to Top Priority
+                    } else {
                         foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
                             if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
                                 Label_Status.Text = $"Installing {mod.Text}...";
@@ -975,17 +992,14 @@ namespace Unify.Environment3
                                 // Install the specified mod
                                 ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
 
-                                if (Properties.Settings.Default.General_SaveFileRedirection) {
-                                    Label_Status.Text = $"Redirecting save file for {mod.Text}...";
-
+                                if (Properties.Settings.Default.General_SaveFileRedirection)
                                     // Redirect save data from the specified mod
                                     RedirectSaves(mod.SubItems[6].Text, mod.Text);
-                                }
                             }
                     }
 
                     // Begin tweak application
-                    try { TweakEngine.ApplyTweaks(); }
+                    try { TweakEngine.ApplyTweaks(this); }
                     catch (Exception ex) {
                         UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst applying your tweaks...\n\n{ex}",
                                                                "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1007,8 +1021,12 @@ namespace Unify.Environment3
 
                     // Launch the emulator of choice
                     if (Properties.Settings.Default.General_LaunchEmulator) LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
-                    Label_Status.Text = $"Ready."; // Reset status label once emulator process has ended
-            } else { // No game directory set - choose a new one...
+
+                    // Reset status label once emulator process has ended
+                    Label_Status.Text = $"Ready.";
+
+            // No game directory set - choose a new one...
+            } else {
                 OpenFileDialog browseGame = new OpenFileDialog() {
                     Title = "Please select an executable for Sonic '06...",
                     Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
@@ -1043,6 +1061,9 @@ namespace Unify.Environment3
             // Deserialise 'Save' key
             if (INI.DeserialiseKey("Save", mod).Contains("savedata")) {
                 if (File.Exists(saveLocation)) {
+                        // Feedback
+                        Label_Status.Text = $"Redirecting save file for {name}...";
+
                         if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
                             try {
                                 // If the backup directory doesn't exist, create it

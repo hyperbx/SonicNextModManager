@@ -55,6 +55,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Environment3\PatchCreator.cs">
@@ -68,7 +69,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="src\UnifyArchives.cs" />
+    <Compile Include="third_party\ArcPackerLib\ArcPacker.cs" />
     <Compile Include="src\Environment3\Controls\UnifyMessenger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +136,7 @@
     <Compile Include="src\Environment3\Controls\SectionButton.Designer.cs">
       <DependentUpon>SectionButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="third_party\ArcPackerLib\ZlibStream.cs" />
     <Compile Include="third_party\Ookii.Dialogs\AdditionalVisualStyleElements.cs" />
     <Compile Include="third_party\Ookii.Dialogs\AnimationResource.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ButtonType.cs" />
