@@ -614,7 +614,8 @@ namespace Unify.Environment3
         private void SectionButton_ClearLog_Click(object sender, EventArgs e) { ListBox_Debug.Items.Clear(); }
 
         /// <summary>
-        /// Create right-click context menu for the mods list at runtime.
+        /// Create right-click context menu for the lists at runtime.
+        /// Only called when an item is selected.
         /// </summary>
         private void ListView_MouseClick(object sender, MouseEventArgs e) {
             // Perform if the function was called with the right mouse button
@@ -630,6 +631,7 @@ namespace Unify.Environment3
                             new ToolStripMenuItem("Mod Information",   Properties.Resources.InformationSymbol_16x, ContextMenu_ModMenu_Items_Click),
                             new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_ModMenu_Items_Click),
                             new ToolStripMenuItem("Check for Updates", Properties.Resources.Update_4,              ContextMenu_ModMenu_Items_Click),
+                            new ToolStripMenuItem("Create Mod",        Properties.Resources.NewFileCollection_16x, ContextMenu_ModMenu_Items_Click),
                             new ToolStripMenuItem("Edit Mod",          Properties.Resources.EditPage_16x,          ContextMenu_ModMenu_Items_Click),
                             new ToolStripMenuItem("Delete Mod",        Properties.Resources.Cancel_16x,            ContextMenu_ModMenu_Items_Click)
                         };
@@ -642,6 +644,7 @@ namespace Unify.Environment3
                         ToolStripMenuItem[] items = new ToolStripMenuItem[] {
                             new ToolStripMenuItem("Patch Information", Properties.Resources.InformationSymbol_16x, ContextMenu_PatchMenu_Items_Click),
                             new ToolStripMenuItem("Open Folder",       Properties.Resources.Open_grey_16x,         ContextMenu_PatchMenu_Items_Click),
+                            new ToolStripMenuItem("Create Patch",      Properties.Resources.NewPatchPackage_16x,   ContextMenu_PatchMenu_Items_Click),
                             new ToolStripMenuItem("Edit Patch",        Properties.Resources.EditPage_16x,          ContextMenu_PatchMenu_Items_Click),
                             new ToolStripMenuItem("Delete Patch",      Properties.Resources.Cancel_16x,            ContextMenu_PatchMenu_Items_Click)
                         };
@@ -678,8 +681,13 @@ namespace Unify.Environment3
                     // Check for updates...
                     await CheckForModUpdates(ListView_ModsList.FocusedItem.SubItems[6].Text);
                     break;
-                case "Edit Mod":
+                case "Create Mod":
                     // Launch Mod Creator
+                    new ModCreator(string.Empty, false).ShowDialog();
+                    RefreshLists(); // Refresh on Mod Creator exit
+                    break;
+                case "Edit Mod":
+                    // Launch Mod Editor
                     new ModCreator(ListView_ModsList.FocusedItem.SubItems[6].Text, true).ShowDialog();
                     RefreshLists(); // Refresh on Mod Editor exit
                     break;
@@ -731,6 +739,11 @@ namespace Unify.Environment3
                                                                "Unable to locate patches...", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         RefreshLists(); // Refresh patches list
                     }
+                    break;
+                case "Create Patch":
+                    // Launch Patch Creator
+                    new PatchCreator(string.Empty, false).ShowDialog();
+                    RefreshLists(); // Refresh on Patch Creator exit
                     break;
                 case "Edit Patch":
                     // Launch Patch Editor
@@ -1364,14 +1377,6 @@ namespace Unify.Environment3
         }
 
         /// <summary>
-        /// Opens the Mod Creator.
-        /// </summary>
-        private void SectionButton_CreateNewMod_Click(object sender, EventArgs e) {
-            new ModCreator(string.Empty, false).ShowDialog(); // Launch Mod Creator
-            RefreshLists(); // Refresh mods list on close
-        }
-
-        /// <summary>
         /// Refreshes the lists.
         /// </summary>
         private void SectionButton_Refresh_Click(object sender, EventArgs e) { RefreshLists(); }
@@ -1888,14 +1893,6 @@ namespace Unify.Environment3
         }
 
         /// <summary>
-        /// Opens the Patch Creator.
-        /// </summary>
-        private void SectionButton_CreateNewPatch_Click(object sender, EventArgs e)  {
-            new PatchCreator(string.Empty, false).ShowDialog(); // Launch Patch Creator
-            RefreshLists(); // Refresh all lists
-        }
-
-        /// <summary>
         /// Redirects the user to a webpage about the selected contributor.
         /// </summary>
         private void Link_About_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
@@ -1911,6 +1908,51 @@ namespace Unify.Environment3
             else if    (sender == LinkLabel_sharu6262) Process.Start("https://twitter.com/sharu6262");
             else if    (sender == LinkLabel_Melpontro) Process.Start("https://www.youtube.com/user/Melpontro");
             else if     (sender == LinkLabel_Velcomia) Process.Start("https://twitter.com/Velcomia");
+        }
+
+        /// <summary>
+        /// Launches Sonic '06 without installing any mods, patches or tweaks.
+        /// Keeps the game intact, whether it have mods installed or not.
+        /// </summary>
+        private void SectionButton_LaunchGame_Click(object sender, EventArgs e) {
+            // Launch the emulator of choice
+            if (Properties.Settings.Default.General_LaunchEmulator) LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
+
+            // Reset status label once emulator process has ended
+            Label_Status.Text = $"Ready.";
+        }
+
+        /// <summary>
+        /// Create right-click context menu for the lists at runtime.
+        /// Called when mouse clicked in the ListView whitespace.
+        /// </summary>
+        private void ListView_MouseUp(object sender, MouseEventArgs e) {
+            // Perform if the function was called with the right mouse button
+            if (e.Button == MouseButtons.Right) {
+                // Create the dark context menu
+                ContextMenuDark menuDark = new ContextMenuDark();
+
+                // Get item by mouse focus
+                if (sender == ListView_ModsList) {
+                    if (ListView_ModsList.SelectedItems.Count == 0) {
+                        menuDark.Items.Clear();
+                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
+                            new ToolStripMenuItem("Create Mod", Properties.Resources.NewFileCollection_16x, ContextMenu_ModMenu_Items_Click)
+                        };
+                        menuDark.Items.AddRange(items);
+                        menuDark.Show(Cursor.Position);
+                    }
+                } else if (sender == ListView_PatchesList) {
+                    if (ListView_PatchesList.SelectedItems.Count == 0) {
+                        menuDark.Items.Clear();
+                        ToolStripMenuItem[] items = new ToolStripMenuItem[] {
+                            new ToolStripMenuItem("Create Patch", Properties.Resources.NewPatchPackage_16x, ContextMenu_PatchMenu_Items_Click)
+                        };
+                        menuDark.Items.AddRange(items);
+                        menuDark.Show(Cursor.Position);
+                    }
+                }
+            }
         }
     }
 }

@@ -300,6 +300,7 @@
     <Content Include="res\Images\PaintBrush_16x.png" />
     <Content Include="res\Images\PatchPackage_16x.png" />
     <Content Include="res\Images\Refresh_grey_16x.png" />
+    <Content Include="res\Images\Run_16x.png" />
     <Content Include="res\Images\Update 4.png" />
     <None Include="src\Environment3\GBStyleSheetDark.css" />
     <Content Include="third_party\Ookii.Dialogs\CustomDictionary.xml" />
