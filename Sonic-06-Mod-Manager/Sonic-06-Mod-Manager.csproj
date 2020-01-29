@@ -241,6 +241,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\RushInterface.resx">
       <DependentUpon>RushInterface.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Environment3\UnifyEnvironment.resx">
       <DependentUpon>UnifyEnvironment.cs</DependentUpon>
@@ -270,6 +271,7 @@
     <Content Include="res\Applications\pkgtool.exe" />
     <Content Include="res\Applications\Protocol Manager.exe" />
     <Content Include="res\Applications\unlub.jar" />
+    <Content Include="res\Applications\vcruntime140_1.dll" />
     <Content Include="res\Applications\xextool.exe" />
     <Content Include="res\Icons\error.ico" />
     <Content Include="res\Icons\logo_main_icon.ico" />

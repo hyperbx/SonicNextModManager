@@ -42,6 +42,7 @@ namespace Unify.Environment3
                              Arctool         = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
                              XexTool         = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
                              pkgtool         = $"{ApplicationData}\\Unify\\Tools\\pkgtool.exe",
+                             vcruntime       = $"{ApplicationData}\\Unify\\Tools\\vcruntime140_1.dll",
                              unlub           = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
                              Patches         = $"{ApplicationData}\\Unify\\Patches\\",
                              ProtocolManager = $"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe";
@@ -64,6 +65,9 @@ namespace Unify.Environment3
 
             if (!File.Exists(pkgtool))
                 File.WriteAllBytes(pkgtool, Properties.Resources.pkgtool);
+
+            if (!File.Exists(vcruntime))
+                File.WriteAllBytes(vcruntime, Properties.Resources.vcruntime140_1);
 
             if (!File.Exists(unlub))
                 File.WriteAllBytes(unlub, Properties.Resources.unlub);

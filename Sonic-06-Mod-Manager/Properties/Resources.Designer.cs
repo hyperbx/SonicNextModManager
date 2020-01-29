@@ -474,6 +474,16 @@ namespace Unify.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vcruntime140_1 {
+            get {
+                object obj = ResourceManager.GetObject("vcruntime140_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest_master.txt.
         /// </summary>
         internal static string VersionURI_GitHub {

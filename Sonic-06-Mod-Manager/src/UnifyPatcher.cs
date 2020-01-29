@@ -1261,6 +1261,7 @@ namespace Unify.Patcher
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo {
                 FileName = Program.pkgtool,
+                WorkingDirectory = Path.GetDirectoryName(Program.pkgtool),
                 WindowStyle = ProcessWindowStyle.Hidden,
                 Arguments = filepath
             };
