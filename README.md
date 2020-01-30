@@ -1,12 +1,11 @@
 <p align="center">
-    <a href="https://github.com/Knuxfan24/Sonic-06-Mod-Manager/blob/master/">
-        <img src="https://github.com/Knuxfan24/Sonic-06-Mod-Manager/blob/master/logo_small.png" />
-    </a>
+    <img src="https://github.com/Knuxfan24/Sonic-06-Mod-Manager/blob/Project-Rush/Sonic-06-Mod-Manager/res/Images/Logo.png"
+         width="256"/>
 </p>
 
 <h1 align="center">Sonic '06 Mod Manager</h1>
 
-<p align="center">A tool designed to make it easier to use and manage mods for SONIC THE HEDGEHOG (2006) on the Xbox 360 and PlayStation 3.</p>
+<p align="center">A tool designed to make it easier to use and manage mods for Sonic '06 on the Xbox 360 and PlayStation 3.</p>
 
 # Building
 To manually build the Mod Manager, simply clone this repository to a location on your computer and open `Sonic '06 Mod Manager.sln` in Visual Studio (only [Visual Studio 2019](https://visualstudio.microsoft.com/vs/) has been tested for this, but any recent version should be able to compile it). Right-click on the project in the Solution Explorer and choose Rebuild Solution to build an executable in `..\Sonic '06 Mod Manager\bin\Debug`.
