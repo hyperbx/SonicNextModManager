@@ -596,6 +596,7 @@ namespace Unify.Environment3
             };
 
             if (accentPicker.ShowDialog() == DialogResult.OK) {
+                Properties.Settings.Default.General_AutoColour = false;
                 Properties.Settings.Default.General_AccentColour = accentPicker.Color;
                 Properties.Settings.Default.Save();
             }
@@ -605,6 +606,7 @@ namespace Unify.Environment3
         /// Resets the accent colour to default.
         /// </summary>
         private void Button_ColourPicker_Default_Click(object sender, EventArgs e) {
+            Properties.Settings.Default.General_AutoColour = false;
             Properties.Settings.Default.General_AccentColour = Color.FromArgb(186, 0, 0);
             Properties.Settings.Default.Save();
         }
