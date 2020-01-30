@@ -101,7 +101,7 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/changelogs.txt.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/rush/changelogs.txt.
         /// </summary>
         internal static string ChangelogsURI_GitHub {
             get {
@@ -110,7 +110,7 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/changelogs.txt.
+        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/changelogs.txt.
         /// </summary>
         internal static string ChangelogsURI_SEGACarnival {
             get {
@@ -169,7 +169,7 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest_master.zip.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/rush/latest.zip.
         /// </summary>
         internal static string DataURI_GitHub {
             get {
@@ -178,7 +178,7 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.zip.
+        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/latest.zip.
         /// </summary>
         internal static string DataURI_SEGACarnival {
             get {
@@ -494,7 +494,7 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/latest_master.txt.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperPolygon64/Unify-Networking/master/Sonic_06_Mod_Manager/rush/latest.txt.
         /// </summary>
         internal static string VersionURI_GitHub {
             get {
@@ -503,7 +503,7 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/latest_master.txt.
+        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/latest.txt.
         /// </summary>
         internal static string VersionURI_SEGACarnival {
             get {

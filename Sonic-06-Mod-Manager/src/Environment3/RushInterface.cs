@@ -347,13 +347,26 @@ namespace Unify.Environment3
             // Block controls
             SectionButton_CheckForSoftwareUpdates.Enabled = false;
 
-            string latestVersion = await Client.RequestString(versionURI), // Request version number
-                   changelogs    = await Client.RequestString(changelogsURI);
-            if (Program.VersionNumber != latestVersion) // New update available!
-                if (InvokeRequired)
-                    Invoke(new MethodInvoker(delegate { OnCheckForUpdates(latestVersion, changelogs); }));
-                else
-                    OnCheckForUpdates(latestVersion, changelogs);
+            try {
+                string latestVersion = await Client.RequestString(versionURI), // Request version number
+                       changelogs = await Client.RequestString(changelogsURI);
+                if (Program.VersionNumber != latestVersion) // New update available!
+                    if (InvokeRequired)
+                        Invoke(new MethodInvoker(delegate { OnCheckForUpdates(latestVersion, changelogs); }));
+                    else
+                        OnCheckForUpdates(latestVersion, changelogs);
+            } catch (Exception ex) {
+                Label_UpdaterStatus.Text = "Connection error";
+                PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
+
+                // Reset update button for future checking
+                SectionButton_CheckForSoftwareUpdates.SectionText = "Check for software updates";
+                SectionButton_CheckForSoftwareUpdates.Refresh();
+
+                // Write exception to logs
+                RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
+                if (_debug) Console.WriteLine(ex.ToString());
+            }
 
             // Feedback
             SectionButton_CheckForSoftwareUpdates.Enabled = true;
@@ -1331,9 +1344,12 @@ namespace Unify.Environment3
 
                             UnifyMessenger.UnifyMessage.ShowDialog("Update complete! Restarting Sonic '06 Mod Manager...",
                                                                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Erase ZIP file
+                            File.Delete($"{Application.ExecutablePath}.pak");
+
                             Application.Restart();
                         }
-                        File.Delete($"{Application.ExecutablePath}.pak"); // Erase ZIP file
                     };
                 }
             } catch (Exception ex) {
@@ -1407,23 +1423,10 @@ namespace Unify.Environment3
                     Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
                     if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(false); // Update if prompted
                 } catch { // SEGA Carnival timed out...
-                    try {
-                        // Check for updates via GitHub
-                        CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
-                        Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                        if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(true); // Update if prompted
-                    } catch (Exception ex) { // GitHub timed out...
-                        Label_UpdaterStatus.Text = "Connection error";
-                        PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
-
-                        // Reset update button for future checking
-                        SectionButton_CheckForSoftwareUpdates.SectionText = "Check for updates";
-                        SectionButton_CheckForSoftwareUpdates.Refresh();
-
-                        // Write exception to logs
-                        RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
-                        if (_debug) Console.WriteLine(ex.ToString());
-                    }
+                    // Check for updates via GitHub
+                    CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
+                    Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
+                    if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(true); // Update if prompted
                 }
                 Properties.Settings.Default.Save();
 
