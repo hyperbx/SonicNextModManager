@@ -452,6 +452,7 @@ namespace Unify.Environment3
         /// Checks if a button has been clicked on the WindowsColourPicker user control.
         /// </summary>
         private void WindowsColourPicker_AccentColour_ButtonClick(object sender, EventArgs e) {
+            Properties.Settings.Default.General_AutoColour = false;
             Properties.Settings.Default.General_AccentColour = ((Button)sender).BackColor;
             Properties.Settings.Default.Save();
         }
