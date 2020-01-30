@@ -604,6 +604,7 @@ namespace Unify.Patcher
 
             string newName = Path.Combine(Path.GetDirectoryName(location), Path.GetFileName(_new));
             if (!File.Exists(newName)) File.Move(location, newName);
+            else File.Delete(newName);
         }
 
         private static void RenameByExtension(string location, string extension, string _new) {
@@ -612,6 +613,7 @@ namespace Unify.Patcher
 
             foreach (string file in Directory.GetFiles(location, extension, SearchOption.TopDirectoryOnly))
                 if (!File.Exists(Path.ChangeExtension(file, _new))) File.Move(file, Path.ChangeExtension(file, _new));
+                else File.Delete(file);
         }
 
         private static void ParameterAdd(string location, string parameter, string value) {
