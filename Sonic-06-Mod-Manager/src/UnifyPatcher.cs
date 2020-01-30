@@ -415,6 +415,13 @@ namespace Unify.Patcher
                             Rename(Literal.CoreReplace(_Rename[0]), _Rename[1]);
                     }
 
+                    if (line.StartsWith("Copy")) {
+                        string[] _Copy = Lua.DeserialiseParameterList("Copy", line, false); // Deserialise 'Copy' parameter
+
+                        if (_Copy.Length != 0)
+                            Copy(Literal.CoreReplace(_Copy[0]), Literal.CoreReplace(_Copy[1]), bool.Parse(_Copy[2]));
+                    }
+
                     if (line.StartsWith("Delete")) {
                         string _Delete = Lua.DeserialiseParameter("Delete", line, false); // Deserialise 'Delete' parameter
 
@@ -477,6 +484,13 @@ namespace Unify.Patcher
 
             _archiveLocation = location;
             return _archive = ModEngine.UnpackARC(location, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
+        }
+
+        private static void Copy(string location, string newFile, bool overwrite) {
+            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+            if (File.Exists(newFile)) File.Copy(location, newFile, overwrite);
         }
 
         private static void Delete(string location) {
@@ -552,7 +566,8 @@ namespace Unify.Patcher
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
             else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-            File.Move(location, Path.Combine(Path.GetDirectoryName(location), Path.GetFileName(_new)));
+            string newName = Path.Combine(Path.GetDirectoryName(location), Path.GetFileName(_new));
+            if (!File.Exists(newName)) File.Move(location, newName);
         }
 
         private static void RenameByExtension(string location, string extension, string _new) {
