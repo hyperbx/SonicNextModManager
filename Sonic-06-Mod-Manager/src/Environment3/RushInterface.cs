@@ -99,7 +99,7 @@ namespace Unify.Environment3
         /// </summary>
         private void RushInterface_Load(object sender, EventArgs e) {
             RefreshLists(); // Refresh mods list
-            UninstallThread(); // Uninstall everything
+            if (Properties.Settings.Default.General_UninstallOnLaunch) UninstallThread(); // Uninstall everything
         }
 
         /// <summary>
@@ -197,6 +197,7 @@ namespace Unify.Environment3
                 CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.Emulator_DiscordRPC;
                 CheckBox_ForceMSAA.Checked          = Properties.Settings.Default.Tweak_ForceMSAA;
                 CheckBox_TailsFlightLimit.Checked   = Properties.Settings.Default.Tweak_TailsFlightLimit;
+                CheckBox_UninstallOnLaunch.Checked  = Properties.Settings.Default.General_UninstallOnLaunch;
 
                 if (CheckBox_HighContrastText.Checked = Properties.Settings.Default.General_HighContrastText)
                     Label_Status.ForeColor = SystemColors.ControlText;
@@ -570,6 +571,7 @@ namespace Unify.Environment3
                 }
                 Properties.Settings.Default.General_AutoColour = ((CheckBox)sender).Checked;
             } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.General_HighContrastText     = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_UninstallOnLaunch)    Properties.Settings.Default.General_UninstallOnLaunch    = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.General_Debug                = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_SaveFileRedirection)  Properties.Settings.Default.General_SaveFileRedirection  = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_CheckUpdatesOnLaunch) Properties.Settings.Default.General_CheckUpdatesOnLaunch = ((CheckBox)sender).Checked;

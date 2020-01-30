@@ -130,11 +130,11 @@ namespace Unify.Patcher
                                                     s.EndsWith("_orig")).ToList();
 
                     foreach (string file in files) {
-                        if (File.Exists(file.ToString().Remove(file.Length - 5))) {
+                        if (File.Exists(file.Remove(file.Length - 5))) {
                             if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
-                            File.Delete(file.ToString().Remove(file.Length - 5)); // Delete file with last five characters set to '_back' or '_orig'
+                            File.Delete(file.Remove(file.Length - 5)); // Delete file with last five characters set to '_back' or '_orig'
                         }
-                        File.Move(file, file.ToString().Remove(file.Length - 5)); // Remove last five characters ('_back' or '_orig')
+                        File.Move(file, file.Remove(file.Length - 5)); // Remove last five characters ('_back' or '_orig')
                 }
             }
         }
@@ -602,18 +602,26 @@ namespace Unify.Patcher
                     if (File.Exists(location)) File.Copy(location, $"{location}_orig");
             }
 
-            string newName = Path.Combine(Path.GetDirectoryName(location), Path.GetFileName(_new));
+            string newName = Path.Combine(Path.GetDirectoryName(location), Path.GetFileName(_new)),
+                   backup = $"{location}_back",
+                   original = $"{location}_orig";
+
             if (!File.Exists(newName)) File.Move(location, newName);
-            else File.Delete(newName);
+            else if ((newName == backup || newName == original) && (File.Exists(backup) || File.Exists(original))) File.Delete(location);
         }
 
         private static void RenameByExtension(string location, string extension, string _new) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
             else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-            foreach (string file in Directory.GetFiles(location, extension, SearchOption.TopDirectoryOnly))
-                if (!File.Exists(Path.ChangeExtension(file, _new))) File.Move(file, Path.ChangeExtension(file, _new));
-                else File.Delete(file);
+            foreach (string file in Directory.GetFiles(location, extension, SearchOption.TopDirectoryOnly)) {
+                string newName = Path.ChangeExtension(file, _new),
+                       backup = $"{file}_back",
+                       original = $"{file}_orig";
+
+                if (!File.Exists(Path.ChangeExtension(file, _new))) File.Move(file, newName);
+                else if ((newName == backup || newName == original) && (File.Exists(backup) || File.Exists(original))) File.Delete(file);
+            }
         }
 
         private static void ParameterAdd(string location, string parameter, string value) {
@@ -941,10 +949,10 @@ namespace Unify.Patcher
                  tailsFlightLimit = Properties.Settings.Default.Tweak_TailsFlightLimit;
 
             // Field of View
-            if (Properties.Settings.Default.Tweak_FieldOfView != 90) {
+            if (fieldOfView != 90) {
                 string xex = Path.Combine(gameDirectory, "default.xex"); // Location of the XEX
                 XEX.Decrypt(xex); // Decrypt the XEX to be able to modify it properly
-                XEX.FieldOfView(xex, Properties.Settings.Default.Tweak_FieldOfView); // Set FOV
+                XEX.FieldOfView(xex, fieldOfView); // Set FOV
             }
 
             foreach (string archive in files) {
@@ -954,7 +962,7 @@ namespace Unify.Patcher
                     if (renderer != 0)         proceed++;
                     if (reflections != 1)      proceed++;
                     if (antiAliasing != 1)     proceed++;
-                    if (!forceMSAA)    proceed++;
+                    if (!forceMSAA)            proceed++;
                     if (cameraType != 0)       proceed++;
                     if (cameraDistance != 650) proceed++;
 

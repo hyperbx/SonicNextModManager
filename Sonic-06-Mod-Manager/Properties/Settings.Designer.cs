@@ -418,5 +418,17 @@ namespace Unify.Properties {
                 this["Tweak_TailsFlightLimit"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool General_UninstallOnLaunch {
+            get {
+                return ((bool)(this["General_UninstallOnLaunch"]));
+            }
+            set {
+                this["General_UninstallOnLaunch"] = value;
+            }
+        }
     }
 }

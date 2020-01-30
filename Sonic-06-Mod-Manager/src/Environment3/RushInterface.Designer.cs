@@ -229,6 +229,8 @@ namespace Unify.Environment3
             this.Rush_Section_Emulator = new Unify.Environment3.SectionButton();
             this.Rush_Section_Mods = new Unify.Environment3.SectionButton();
             this.Container_Rush = new Unify.Environment3.UserContainer();
+            this.Label_Description_UninstallOnLaunch = new System.Windows.Forms.Label();
+            this.CheckBox_UninstallOnLaunch = new System.Windows.Forms.CheckBox();
             this.TabControl_Rush.SuspendLayout();
             this.Tab_Section_Mods.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_ModsControls)).BeginInit();
@@ -455,7 +457,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(795, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(798, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -472,7 +474,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1355, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1358, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1012,7 +1014,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(752, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(755, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1138,7 +1140,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(293, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(296, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -2110,6 +2112,8 @@ namespace Unify.Environment3
             // 
             this.Tab_Section_Settings.AutoScroll = true;
             this.Tab_Section_Settings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_Settings.Controls.Add(this.Label_Description_UninstallOnLaunch);
+            this.Tab_Section_Settings.Controls.Add(this.CheckBox_UninstallOnLaunch);
             this.Tab_Section_Settings.Controls.Add(this.Label_Description_Reset);
             this.Tab_Section_Settings.Controls.Add(this.LinkLabel_Reset);
             this.Tab_Section_Settings.Controls.Add(this.Label_Description_DebugMode);
@@ -2158,7 +2162,7 @@ namespace Unify.Environment3
             this.Label_Description_Reset.AutoSize = true;
             this.Label_Description_Reset.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_Reset.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_Reset.Location = new System.Drawing.Point(224, 323);
+            this.Label_Description_Reset.Location = new System.Drawing.Point(224, 348);
             this.Label_Description_Reset.Name = "Label_Description_Reset";
             this.Label_Description_Reset.Size = new System.Drawing.Size(352, 15);
             this.Label_Description_Reset.TabIndex = 158;
@@ -2170,7 +2174,7 @@ namespace Unify.Environment3
             this.LinkLabel_Reset.AutoSize = true;
             this.LinkLabel_Reset.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.LinkLabel_Reset.LinkColor = System.Drawing.Color.Tomato;
-            this.LinkLabel_Reset.Location = new System.Drawing.Point(11, 323);
+            this.LinkLabel_Reset.Location = new System.Drawing.Point(11, 348);
             this.LinkLabel_Reset.Name = "LinkLabel_Reset";
             this.LinkLabel_Reset.Size = new System.Drawing.Size(172, 15);
             this.LinkLabel_Reset.TabIndex = 157;
@@ -2184,7 +2188,7 @@ namespace Unify.Environment3
             this.Label_Description_DebugMode.AutoSize = true;
             this.Label_Description_DebugMode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_DebugMode.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_DebugMode.Location = new System.Drawing.Point(441, 920);
+            this.Label_Description_DebugMode.Location = new System.Drawing.Point(441, 943);
             this.Label_Description_DebugMode.Name = "Label_Description_DebugMode";
             this.Label_Description_DebugMode.Size = new System.Drawing.Size(133, 15);
             this.Label_Description_DebugMode.TabIndex = 156;
@@ -2196,7 +2200,7 @@ namespace Unify.Environment3
             this.Label_Description_HighContrastText.AutoSize = true;
             this.Label_Description_HighContrastText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_HighContrastText.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_HighContrastText.Location = new System.Drawing.Point(324, 895);
+            this.Label_Description_HighContrastText.Location = new System.Drawing.Point(324, 918);
             this.Label_Description_HighContrastText.Name = "Label_Description_HighContrastText";
             this.Label_Description_HighContrastText.Size = new System.Drawing.Size(250, 15);
             this.Label_Description_HighContrastText.TabIndex = 155;
@@ -2208,7 +2212,7 @@ namespace Unify.Environment3
             this.Label_Description_SaveFileRedirect.AutoSize = true;
             this.Label_Description_SaveFileRedirect.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_SaveFileRedirect.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_SaveFileRedirect.Location = new System.Drawing.Point(343, 273);
+            this.Label_Description_SaveFileRedirect.Location = new System.Drawing.Point(343, 298);
             this.Label_Description_SaveFileRedirect.Name = "Label_Description_SaveFileRedirect";
             this.Label_Description_SaveFileRedirect.Size = new System.Drawing.Size(233, 15);
             this.Label_Description_SaveFileRedirect.TabIndex = 154;
@@ -2218,7 +2222,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_SaveFileRedirection.AutoSize = true;
             this.CheckBox_SaveFileRedirection.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_SaveFileRedirection.Location = new System.Drawing.Point(14, 272);
+            this.CheckBox_SaveFileRedirection.Location = new System.Drawing.Point(14, 297);
             this.CheckBox_SaveFileRedirection.Name = "CheckBox_SaveFileRedirection";
             this.CheckBox_SaveFileRedirection.Size = new System.Drawing.Size(129, 19);
             this.CheckBox_SaveFileRedirection.TabIndex = 153;
@@ -2230,7 +2234,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_DebugMode.AutoSize = true;
             this.CheckBox_DebugMode.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_DebugMode.Location = new System.Drawing.Point(14, 919);
+            this.CheckBox_DebugMode.Location = new System.Drawing.Point(14, 942);
             this.CheckBox_DebugMode.Name = "CheckBox_DebugMode";
             this.CheckBox_DebugMode.Size = new System.Drawing.Size(95, 19);
             this.CheckBox_DebugMode.TabIndex = 150;
@@ -2276,7 +2280,7 @@ namespace Unify.Environment3
             // 
             this.WindowsColourPicker_AccentColour.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.WindowsColourPicker_AccentColour.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WindowsColourPicker_AccentColour.Location = new System.Drawing.Point(11, 513);
+            this.WindowsColourPicker_AccentColour.Location = new System.Drawing.Point(11, 536);
             this.WindowsColourPicker_AccentColour.Name = "WindowsColourPicker_AccentColour";
             this.WindowsColourPicker_AccentColour.Size = new System.Drawing.Size(379, 285);
             this.WindowsColourPicker_AccentColour.TabIndex = 146;
@@ -2298,7 +2302,7 @@ namespace Unify.Environment3
             // 
             this.Label_Title_Appearance.AutoSize = true;
             this.Label_Title_Appearance.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Title_Appearance.Location = new System.Drawing.Point(6, 359);
+            this.Label_Title_Appearance.Location = new System.Drawing.Point(6, 382);
             this.Label_Title_Appearance.Name = "Label_Title_Appearance";
             this.Label_Title_Appearance.Size = new System.Drawing.Size(189, 45);
             this.Label_Title_Appearance.TabIndex = 10;
@@ -2308,7 +2312,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_HighContrastText.AutoSize = true;
             this.CheckBox_HighContrastText.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_HighContrastText.Location = new System.Drawing.Point(14, 894);
+            this.CheckBox_HighContrastText.Location = new System.Drawing.Point(14, 917);
             this.CheckBox_HighContrastText.Name = "CheckBox_HighContrastText";
             this.CheckBox_HighContrastText.Size = new System.Drawing.Size(121, 19);
             this.CheckBox_HighContrastText.TabIndex = 144;
@@ -2330,7 +2334,7 @@ namespace Unify.Environment3
             // 
             this.Label_Subtitle_AccentColour.AutoSize = true;
             this.Label_Subtitle_AccentColour.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_Subtitle_AccentColour.Location = new System.Drawing.Point(9, 414);
+            this.Label_Subtitle_AccentColour.Location = new System.Drawing.Point(9, 437);
             this.Label_Subtitle_AccentColour.Name = "Label_Subtitle_AccentColour";
             this.Label_Subtitle_AccentColour.Size = new System.Drawing.Size(223, 25);
             this.Label_Subtitle_AccentColour.TabIndex = 45;
@@ -2350,7 +2354,7 @@ namespace Unify.Environment3
             // 
             this.Label_WindowsColours.AutoSize = true;
             this.Label_WindowsColours.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.Label_WindowsColours.Location = new System.Drawing.Point(11, 488);
+            this.Label_WindowsColours.Location = new System.Drawing.Point(11, 511);
             this.Label_WindowsColours.Name = "Label_WindowsColours";
             this.Label_WindowsColours.Size = new System.Drawing.Size(108, 17);
             this.Label_WindowsColours.TabIndex = 89;
@@ -2376,7 +2380,7 @@ namespace Unify.Environment3
             // 
             this.Label_Subtitle_Appearance_Options.AutoSize = true;
             this.Label_Subtitle_Appearance_Options.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_Subtitle_Appearance_Options.Location = new System.Drawing.Point(9, 857);
+            this.Label_Subtitle_Appearance_Options.Location = new System.Drawing.Point(9, 880);
             this.Label_Subtitle_Appearance_Options.Name = "Label_Subtitle_Appearance_Options";
             this.Label_Subtitle_Appearance_Options.Size = new System.Drawing.Size(76, 25);
             this.Label_Subtitle_Appearance_Options.TabIndex = 143;
@@ -2386,7 +2390,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_AutoColour.AutoSize = true;
             this.CheckBox_AutoColour.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_AutoColour.Location = new System.Drawing.Point(14, 452);
+            this.CheckBox_AutoColour.Location = new System.Drawing.Point(14, 475);
             this.CheckBox_AutoColour.Name = "CheckBox_AutoColour";
             this.CheckBox_AutoColour.Size = new System.Drawing.Size(354, 19);
             this.CheckBox_AutoColour.TabIndex = 142;
@@ -2414,7 +2418,7 @@ namespace Unify.Environment3
             this.Button_ColourPicker_Preview.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Button_ColourPicker_Preview.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Button_ColourPicker_Preview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_ColourPicker_Preview.Location = new System.Drawing.Point(357, 805);
+            this.Button_ColourPicker_Preview.Location = new System.Drawing.Point(357, 828);
             this.Button_ColourPicker_Preview.Name = "Button_ColourPicker_Preview";
             this.Button_ColourPicker_Preview.Size = new System.Drawing.Size(25, 25);
             this.Button_ColourPicker_Preview.TabIndex = 140;
@@ -2474,7 +2478,7 @@ namespace Unify.Environment3
             // 
             // Panel_Settings_UICleanSpace
             // 
-            this.Panel_Settings_UICleanSpace.Location = new System.Drawing.Point(14, 937);
+            this.Panel_Settings_UICleanSpace.Location = new System.Drawing.Point(14, 960);
             this.Panel_Settings_UICleanSpace.Name = "Panel_Settings_UICleanSpace";
             this.Panel_Settings_UICleanSpace.Size = new System.Drawing.Size(214, 17);
             this.Panel_Settings_UICleanSpace.TabIndex = 145;
@@ -2516,7 +2520,7 @@ namespace Unify.Environment3
             this.Button_ColourPicker_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Button_ColourPicker_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_ColourPicker_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_ColourPicker_Default.Image")));
-            this.Button_ColourPicker_Default.Location = new System.Drawing.Point(393, 807);
+            this.Button_ColourPicker_Default.Location = new System.Drawing.Point(393, 830);
             this.Button_ColourPicker_Default.Name = "Button_ColourPicker_Default";
             this.Button_ColourPicker_Default.Size = new System.Drawing.Size(21, 20);
             this.Button_ColourPicker_Default.TabIndex = 141;
@@ -2528,7 +2532,7 @@ namespace Unify.Environment3
             this.Section_Appearance_ColourPicker.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Section_Appearance_ColourPicker.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.Section_Appearance_ColourPicker.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Section_Appearance_ColourPicker.Location = new System.Drawing.Point(14, 800);
+            this.Section_Appearance_ColourPicker.Location = new System.Drawing.Point(14, 823);
             this.Section_Appearance_ColourPicker.Name = "Section_Appearance_ColourPicker";
             this.Section_Appearance_ColourPicker.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("Section_Appearance_ColourPicker.SectionImage")));
             this.Section_Appearance_ColourPicker.SectionText = "Custom colour";
@@ -2544,7 +2548,7 @@ namespace Unify.Environment3
             this.Label_Description_ProtocolManager.AutoSize = true;
             this.Label_Description_ProtocolManager.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_ProtocolManager.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_ProtocolManager.Location = new System.Drawing.Point(333, 298);
+            this.Label_Description_ProtocolManager.Location = new System.Drawing.Point(333, 323);
             this.Label_Description_ProtocolManager.Name = "Label_Description_ProtocolManager";
             this.Label_Description_ProtocolManager.Size = new System.Drawing.Size(243, 15);
             this.Label_Description_ProtocolManager.TabIndex = 160;
@@ -2556,7 +2560,7 @@ namespace Unify.Environment3
             this.LinkLabel_ProtocolManager.AutoSize = true;
             this.LinkLabel_ProtocolManager.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.LinkLabel_ProtocolManager.LinkColor = System.Drawing.Color.Gold;
-            this.LinkLabel_ProtocolManager.Location = new System.Drawing.Point(11, 298);
+            this.LinkLabel_ProtocolManager.Location = new System.Drawing.Point(11, 323);
             this.LinkLabel_ProtocolManager.Name = "LinkLabel_ProtocolManager";
             this.LinkLabel_ProtocolManager.Size = new System.Drawing.Size(144, 15);
             this.LinkLabel_ProtocolManager.TabIndex = 159;
@@ -2973,6 +2977,30 @@ namespace Unify.Environment3
             this.Container_Rush.TabIndex = 17;
             this.Container_Rush.Title = "Mods";
             // 
+            // Label_Description_UninstallOnLaunch
+            // 
+            this.Label_Description_UninstallOnLaunch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_UninstallOnLaunch.AutoSize = true;
+            this.Label_Description_UninstallOnLaunch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_UninstallOnLaunch.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_UninstallOnLaunch.Location = new System.Drawing.Point(222, 273);
+            this.Label_Description_UninstallOnLaunch.Name = "Label_Description_UninstallOnLaunch";
+            this.Label_Description_UninstallOnLaunch.Size = new System.Drawing.Size(352, 15);
+            this.Label_Description_UninstallOnLaunch.TabIndex = 164;
+            this.Label_Description_UninstallOnLaunch.Text = "Disable if you plan to keep mods installed for long periods of time.";
+            // 
+            // CheckBox_UninstallOnLaunch
+            // 
+            this.CheckBox_UninstallOnLaunch.AutoSize = true;
+            this.CheckBox_UninstallOnLaunch.BackColor = System.Drawing.Color.Transparent;
+            this.CheckBox_UninstallOnLaunch.Location = new System.Drawing.Point(14, 272);
+            this.CheckBox_UninstallOnLaunch.Name = "CheckBox_UninstallOnLaunch";
+            this.CheckBox_UninstallOnLaunch.Size = new System.Drawing.Size(161, 19);
+            this.CheckBox_UninstallOnLaunch.TabIndex = 163;
+            this.CheckBox_UninstallOnLaunch.Text = "Uninstall mods on launch";
+            this.CheckBox_UninstallOnLaunch.UseVisualStyleBackColor = false;
+            this.CheckBox_UninstallOnLaunch.CheckedChanged += new System.EventHandler(this.CheckBox_Settings_CheckedChanged);
+            // 
             // RushInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3242,5 +3270,7 @@ namespace Unify.Environment3
         private System.Windows.Forms.LinkLabel LinkLabel_Knuxfan24;
         private System.Windows.Forms.LinkLabel LinkLabel_HyperPolygon64;
         private System.Windows.Forms.LinkLabel LinkLabel_SEGACarnival;
+        private System.Windows.Forms.Label Label_Description_UninstallOnLaunch;
+        private System.Windows.Forms.CheckBox CheckBox_UninstallOnLaunch;
     }
 }
