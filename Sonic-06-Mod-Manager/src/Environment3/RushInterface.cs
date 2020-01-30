@@ -1033,21 +1033,22 @@ namespace Unify.Environment3
                                     RedirectSaves(mod.SubItems[6].Text, mod.Text);
                             }
                     }
-
-                    // Begin tweak application
-                    try { TweakEngine.ApplyTweaks(this); }
-                    catch (Exception ex) {
-                        UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst applying your tweaks...\n\n{ex}",
-                                                               "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                    
+                    try {
+                        TweakEngine.ApplyTweaks(this); // Begin tweak application
+                        InstallPatches(); // Begin patch installation
                     }
-
-                    // Begin patch installation
-                    try { InstallPatches(); }
                     catch (Exception ex) {
-                        UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your patches...\n\n{ex}",
-                                                               "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        if (_debug) Console.WriteLine(ex.ToString());
+                        if (ex is Win32Exception) {
+                            UnifyMessenger.UnifyMessage.ShowDialog($"Sonic '06 Mod Manager requires Java to decompile Lua scripts. Please install Java and restart your computer...",
+                                                                   "Missing pre-requisites", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        } else {
+                            UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your patches and tweaks...\n\n{ex}",
+                                                                   "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
                     }
 
                     // Check skipped list to ensure any errors occurred
