@@ -487,15 +487,27 @@ namespace Unify.Patcher
         }
 
         private static void Copy(string location, string newFile, bool overwrite) {
-            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            if (_archive != string.Empty)
+                location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             if (File.Exists(newFile)) File.Copy(location, newFile, overwrite);
         }
 
         private static void Delete(string location) {
-            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            if (_archive != string.Empty)
+                location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             if (File.Exists(location)) File.Delete(location);
         }
@@ -510,27 +522,36 @@ namespace Unify.Patcher
 
         private static void DecryptXEX(string location) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-            if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             XEX.Decrypt(location);
         }
 
         private static void DecompressXEX(string location) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-            if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             XEX.Decompress(location);
         }
 
         private static void WriteByte(string location, long offset, byte _byte) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             if (File.Exists(location))
                 using (FileStream stream = File.Open(location, FileMode.Open, FileAccess.Write)) {
@@ -540,7 +561,12 @@ namespace Unify.Patcher
 
         private static void WriteNopPPC(string location, long offset) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             if (File.Exists(location)) {
                 using (FileStream stream = File.Open(location, FileMode.Open, FileAccess.Write)) {
@@ -556,7 +582,12 @@ namespace Unify.Patcher
 
         private static void WriteBase64(string location, string data) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             byte[] bytes = Convert.FromBase64String(data);
             File.WriteAllBytes(location, bytes);
@@ -564,7 +595,12 @@ namespace Unify.Patcher
 
         private static void Rename(string location, string _new) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+            else {
+                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+            }
 
             string newName = Path.Combine(Path.GetDirectoryName(location), Path.GetFileName(_new));
             if (!File.Exists(newName)) File.Move(location, newName);
