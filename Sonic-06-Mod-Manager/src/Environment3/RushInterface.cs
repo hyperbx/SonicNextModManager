@@ -259,6 +259,7 @@ namespace Unify.Environment3
                 #region Set controls to AccentColour setting
                 Button_ColourPicker_Preview.FlatAppearance.MouseOverBackColor =
                 Button_ColourPicker_Preview.FlatAppearance.MouseDownBackColor =
+                Rush_Section_Mods.AccentColour =
                 Rush_Section_Settings.AccentColour =
                 Button_ColourPicker_Preview.BackColor =
                 StatusStrip_Main.BackColor =
@@ -566,7 +567,7 @@ namespace Unify.Environment3
                 if (CheckBox_AutoColour.Checked) {
                     int RegistryColour = (int)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM", "ColorizationColor", null);
                     Properties.Settings.Default.General_AccentColour = Color.FromArgb(RegistryColour);
-                } else Properties.Settings.Default.General_AccentColour = Color.FromArgb(186, 0, 0);
+                }
                 Properties.Settings.Default.General_AutoColour = ((CheckBox)sender).Checked;
             } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.General_HighContrastText     = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.General_Debug                = ((CheckBox)sender).Checked;
