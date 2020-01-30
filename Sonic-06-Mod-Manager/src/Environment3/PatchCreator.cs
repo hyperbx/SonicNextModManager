@@ -88,15 +88,15 @@ namespace Unify.Environment3
         {
             try {
                 string safeTitle = text_Title.Text.Replace(@"\", "")
-                                                  .Replace("/", " - ")
-                                                  .Replace(":", " - ")
-                                                  .Replace("*", "")
-                                                  .Replace("?", "")
+                                                  .Replace("/",  "-")
+                                                  .Replace(":",  "-")
+                                                  .Replace("*",  "")
+                                                  .Replace("?",  "")
                                                   .Replace("\"", "'")
-                                                  .Replace("<", "")
-                                                  .Replace(">", "")
-                                                  .Replace("|", "")
-                                                  .Replace(" ", "");
+                                                  .Replace("<",  "")
+                                                  .Replace(">",  "")
+                                                  .Replace("|",  "")
+                                                  .Replace(" ",  "");
 
                 if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua") && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A patch called {safeTitle} already exists. Please rename your patch.",
@@ -137,7 +137,7 @@ namespace Unify.Environment3
                     Close();
                 }
             } catch {
-                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to edit '{Path.GetFileName(Path.GetDirectoryName(patch))}.'",
+                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to edit '{text_Title.Text}.'",
                                                        "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

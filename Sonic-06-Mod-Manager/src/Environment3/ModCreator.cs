@@ -5,6 +5,7 @@ using System.Drawing;
 using Unify.Messenger;
 using Unify.Networking;
 using Unify.Serialisers;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
@@ -118,14 +119,14 @@ namespace Unify.Environment3
         {
             try {
                 string safeTitle = text_Title.Text.Replace(@"\", "")
-                                                  .Replace("/", " - ")
-                                                  .Replace(":", " - ")
-                                                  .Replace("*", "")
-                                                  .Replace("?", "")
+                                                  .Replace("/",  "-")
+                                                  .Replace(":",  "-")
+                                                  .Replace("*",  "")
+                                                  .Replace("?",  "")
                                                   .Replace("\"", "'")
-                                                  .Replace("<", "")
-                                                  .Replace(">", "")
-                                                  .Replace("|", "");
+                                                  .Replace("<",  "")
+                                                  .Replace(">",  "")
+                                                  .Replace("|",  "");
 
                 if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, safeTitle)) && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A mod called {safeTitle} already exists. Please rename your mod.",
@@ -215,10 +216,18 @@ namespace Unify.Environment3
                         }
                     }
 
+                    if (!edit)
+                        try { Process.Start(newPath); }
+                        catch {
+                            UnifyMessenger.UnifyMessage.ShowDialog($"Failed to open the directory to the created mod.",
+                                                                   "Unable to load patch...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Process.Start(Properties.Settings.Default.Path_ModsDirectory);
+                        }
+
                     Close();
                 }
             } catch {
-                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to edit '{Path.GetFileName(Path.GetDirectoryName(mod))}.' Please ensure that nothing is accessing that mod's directory, or delete it manually.",
+                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to edit '{text_Title.Text}.' Please ensure that nothing is accessing that mod's directory, or delete it manually.",
                                                        "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
