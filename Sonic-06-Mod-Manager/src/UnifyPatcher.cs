@@ -947,6 +947,10 @@ namespace Unify.Patcher
             // Field of View
             if (fieldOfView != 90) {
                 string xex = Path.Combine(gameDirectory, "default.xex"); // Location of the XEX
+
+                if (!File.Exists($"{xex}_back"))
+                    File.Copy(xex, $"{xex}_back", true);
+
                 XEX.Decrypt(xex); // Decrypt the XEX to be able to modify it properly
                 XEX.FieldOfView(xex, fieldOfView); // Set FOV
             }

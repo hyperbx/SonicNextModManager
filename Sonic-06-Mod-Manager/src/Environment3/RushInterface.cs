@@ -12,11 +12,11 @@ using Unify.Serialisers;
 using System.Diagnostics;
 using Unify.Globalisation;
 using System.Windows.Forms;
+using System.Configuration;
 using System.ComponentModel;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Configuration;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
