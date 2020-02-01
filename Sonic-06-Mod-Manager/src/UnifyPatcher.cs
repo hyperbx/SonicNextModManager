@@ -636,15 +636,13 @@ namespace Unify.Patcher
                 File.WriteAllLines(location, scriptList);
             } else if (Directory.Exists(location)) {
                 foreach (string luaData in Directory.GetFiles(location, "*.lub", SearchOption.TopDirectoryOnly)) {
-                    if (_ignoreList.Count != 0)
-                        foreach (string file in _ignoreList)
-                            if (Path.GetFileName(luaData).Contains(file)) return;
-
-                    DecompileLua(luaData);
-                    value = value.Replace("\\\"", "\"");
-                    List<string> scriptList = File.ReadAllLines(location).ToList();
-                    scriptList.Add($"{parameter} = {value}");
-                    File.WriteAllLines(location, scriptList);
+                    if (!_ignoreList.Any(s => Path.GetFileName(luaData).Contains(s))) {
+                        DecompileLua(luaData);
+                        value = value.Replace("\\\"", "\"");
+                        List<string> scriptList = File.ReadAllLines(location).ToList();
+                        scriptList.Add($"{parameter} = {value}");
+                        File.WriteAllLines(location, scriptList);
+                    }
                 }
             }
         }
@@ -673,27 +671,25 @@ namespace Unify.Patcher
                 File.WriteAllLines(location, script);
             } else if (Directory.Exists(location)) {
                 foreach (string luaData in Directory.GetFiles(location, "*.lub", SearchOption.TopDirectoryOnly)) {
-                    if (_ignoreList.Count != 0)
-                        foreach (string file in _ignoreList)
-                            if (Path.GetFileName(luaData).Contains(file)) return;
+                    if (!_ignoreList.Any(s => Path.GetFileName(luaData).Contains(s))) {
+                        DecompileLua(luaData);
+                        List<string> script = File.ReadAllLines(luaData).ToList();
+                        int lineCount = 0;
 
-                    DecompileLua(luaData);
-                    List<string> script = File.ReadAllLines(luaData).ToList();
-                    int lineCount = 0;
-
-                    value = value.Replace("\\\"", "\"");
-                    foreach (string line in script) {
-                        if (line.StartsWith(parameter)) {
-                            string[] split = line.Split(' ');
-                            split[2] = value;
-                            for (int i = 3; i < split.Count(); i++) split[i] = string.Empty;
-                            script[lineCount] = string.Join(" ", split);
-                            break;
+                        value = value.Replace("\\\"", "\"");
+                        foreach (string line in script) {
+                            if (line.StartsWith(parameter)) {
+                                string[] split = line.Split(' ');
+                                split[2] = value;
+                                for (int i = 3; i < split.Count(); i++) split[i] = string.Empty;
+                                script[lineCount] = string.Join(" ", split);
+                                break;
+                            }
+                            lineCount++;
                         }
-                        lineCount++;
-                    }
 
-                    File.WriteAllLines(luaData, script);
+                        File.WriteAllLines(luaData, script);
+                    }
                 }
             }
         }
@@ -716,7 +712,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(location, editedScript);
             } else if (Directory.Exists(location)) {
                 foreach (string luaData in Directory.GetFiles(location, "*.lub", SearchOption.TopDirectoryOnly)) {
-                    if (!_ignoreList.Contains(Path.GetFileName(luaData))) {
+                    if (!_ignoreList.Any(s => Path.GetFileName(luaData).Contains(s))) {
                         DecompileLua(luaData);
                         List<string> script = File.ReadAllLines(luaData).ToList();
                         List<string> editedScript = File.ReadAllLines(luaData).ToList();
@@ -755,7 +751,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(location, script);
             } else if (Directory.Exists(location)) {
                 foreach (string luaData in Directory.GetFiles(location, "*.lub", SearchOption.TopDirectoryOnly)) {
-                    if (!_ignoreList.Contains(Path.GetFileName(luaData))) {
+                    if (!_ignoreList.Any(s => Path.GetFileName(luaData).Contains(s))) {
                         DecompileLua(luaData);
                         string[] script = File.ReadAllLines(location);
                         int lineCount = 0;
@@ -796,7 +792,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(location, script);
             } else if (Directory.Exists(location)) {
                 foreach (string luaData in Directory.GetFiles(location, "*.lub", SearchOption.TopDirectoryOnly)) {
-                    if (!_ignoreList.Contains(Path.GetFileName(luaData))) {
+                    if (!_ignoreList.Any(s => Path.GetFileName(luaData).Contains(s))) {
                         DecompileLua(luaData);
                         string[] script = File.ReadAllLines(luaData);
                         int lineCount = 0;
@@ -829,7 +825,7 @@ namespace Unify.Patcher
                 PKG.PKGTool($"{location}.txt");
             } else if (Directory.Exists(location)) {
                 foreach (string packageData in Directory.GetFiles(location, "*.pkg", SearchOption.TopDirectoryOnly)) {
-                    if (!_ignoreList.Contains(Path.GetFileName(packageData))) {
+                    if (!_ignoreList.Any(s => Path.GetFileName(packageData).Contains(s))) {
                         PKG.PKGTool(packageData);
                         List<string> package = File.ReadAllLines(packageData).ToList();
                         package.Add($"\"{key}\"\n{"{"}");
@@ -870,7 +866,7 @@ namespace Unify.Patcher
                 File.WriteAllLines($"{location}.txt", editedPackage); PKG.PKGTool($"{location}.txt");
             } else if (Directory.Exists(location)) {
                 foreach (string packageData in Directory.GetFiles(location, "*.pkg", SearchOption.TopDirectoryOnly)) {
-                    if (!_ignoreList.Contains(Path.GetFileName(packageData))) {
+                    if (!_ignoreList.Any(s => Path.GetFileName(packageData).Contains(s))) {
                         PKG.PKGTool(packageData);
                         List<string> package = File.ReadAllLines(packageData).ToList();
                         List<string> editedPackage = File.ReadAllLines($"{location}.txt").ToList();
