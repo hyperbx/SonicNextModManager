@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Media;
 using System.Drawing;
+using Unify.Environment3;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
@@ -174,15 +175,6 @@ namespace Unify.Messenger
                 Height = TextHeight + 140;
             else
                 Height = TextHeight + 135;
-        }
-
-        private void Btn_Copy_Click(object sender, EventArgs e) {
-            try { Clipboard.SetText(rtb_Message.Text); }
-            catch {
-                btn_Copy.Text = "Error";
-                btn_Copy.BackColor = Color.Tomato;
-                btn_Copy.Enabled = false;
-            }
         }
     }
 }

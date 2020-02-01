@@ -122,19 +122,21 @@ namespace Unify.Patcher
         /// Uninstalls all mods.
         /// </summary>
         public static void UninstallMods() {
+            // If the game directory is empty/doesn't exist, ignore request
             if (Properties.Settings.Default.Path_GameDirectory != string.Empty ||
-                File.Exists(Properties.Settings.Default.Path_GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
-                    // Search for all files with specified LINQ filters
-                    List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), "*.*", SearchOption.AllDirectories)
-                                        .Where(s => s.EndsWith("_back") ||
-                                                    s.EndsWith("_orig")).ToList();
+                File.Exists(Properties.Settings.Default.Path_GameDirectory)) {
+                    // Search for all files
+                    List<string> files = Directory.GetFiles(
+                                         Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory),
+                                         "*.*_back",
+                                         SearchOption.AllDirectories).ToList();
 
                     foreach (string file in files) {
                         if (File.Exists(file.Remove(file.Length - 5))) {
                             if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
-                            File.Delete(file.Remove(file.Length - 5)); // Delete file with last five characters set to '_back' or '_orig'
+                            File.Delete(file.Remove(file.Length - 5)); // Delete file with last five characters set to '_back'
                         }
-                        File.Move(file, file.Remove(file.Length - 5)); // Remove last five characters ('_back' or '_orig')
+                        File.Move(file, file.Remove(file.Length - 5)); // Remove last five characters ('_back')
                 }
             }
         }
@@ -492,8 +494,8 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             if (File.Exists(newFile)) File.Copy(location, newFile, overwrite);
@@ -505,16 +507,16 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             if (File.Exists(location)) File.Delete(location);
         }
 
         private static void EndBlock() {
-            if (!File.Exists($"{_archiveLocation}_back") && !File.Exists($"{_archiveLocation}_orig"))
-                File.Copy(_archiveLocation, $"{_archiveLocation}_orig");
+            if (!File.Exists($"{_archiveLocation}_back"))
+                File.Copy(_archiveLocation, $"{_archiveLocation}_back");
 
             ModEngine.RepackARC(_archive, _archiveLocation);
             _archive = _archiveLocation = string.Empty;
@@ -525,8 +527,8 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             XEX.Decrypt(location);
@@ -537,8 +539,8 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             XEX.Decompress(location);
@@ -549,8 +551,8 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             if (File.Exists(location))
@@ -564,8 +566,8 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             if (File.Exists(location)) {
@@ -585,8 +587,8 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             byte[] bytes = Convert.FromBase64String(data);
@@ -598,16 +600,15 @@ namespace Unify.Patcher
             else {
                 location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back") && !File.Exists($"{location}_orig"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_orig");
+                if (!File.Exists($"{location}_back"))
+                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
             }
 
             string newName = Path.Combine(Path.GetDirectoryName(location), Path.GetFileName(_new)),
-                   backup = $"{location}_back",
-                   original = $"{location}_orig";
+                   backup = $"{location}_back";
 
             if (!File.Exists(newName)) File.Move(location, newName);
-            else if ((newName == backup || newName == original) && (File.Exists(backup) || File.Exists(original))) File.Delete(location);
+            else if (newName == backup && File.Exists(backup)) File.Delete(location);
         }
 
         private static void RenameByExtension(string location, string extension, string _new) {
@@ -616,11 +617,10 @@ namespace Unify.Patcher
 
             foreach (string file in Directory.GetFiles(location, extension, SearchOption.TopDirectoryOnly)) {
                 string newName = Path.ChangeExtension(file, _new),
-                       backup = $"{file}_back",
-                       original = $"{file}_orig";
+                       backup = $"{file}_back";
 
                 if (!File.Exists(Path.ChangeExtension(file, _new))) File.Move(file, newName);
-                else if ((newName == backup || newName == original) && (File.Exists(backup) || File.Exists(original))) File.Delete(file);
+                else if (newName == backup && File.Exists(backup)) File.Delete(file);
             }
         }
 
@@ -967,8 +967,8 @@ namespace Unify.Patcher
                     if (cameraDistance != 650) proceed++;
 
                     if (proceed != 0) {
-                        if (!File.Exists($"{archive}_back") && !File.Exists($"{archive}_orig"))
-                            File.Copy(archive, $"{archive}_orig", true);
+                        if (!File.Exists($"{archive}_back"))
+                            File.Copy(archive, $"{archive}_back", true);
 
                         // Unpack archive to temporary location
                         tweak = ModEngine.UnpackARC(archive, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
@@ -1031,8 +1031,8 @@ namespace Unify.Patcher
                     if (!forceMSAA) proceed++;
 
                     if (proceed != 0) {
-                        if (!File.Exists($"{archive}_back") && !File.Exists($"{archive}_orig"))
-                            File.Copy(archive, $"{archive}_orig", true);
+                        if (!File.Exists($"{archive}_back"))
+                            File.Copy(archive, $"{archive}_back", true);
 
                         // Unpack archive to temporary location
                         tweak = ModEngine.UnpackARC(archive, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
@@ -1055,8 +1055,8 @@ namespace Unify.Patcher
                     if (cameraDistance != 650) proceed++;
 
                     if (proceed != 0) {
-                        if (!File.Exists($"{archive}_back") && !File.Exists($"{archive}_orig"))
-                            File.Copy(archive, $"{archive}_orig", true);
+                        if (!File.Exists($"{archive}_back"))
+                            File.Copy(archive, $"{archive}_back", true);
 
                         // Unpack archive to temporary location
                         tweak = ModEngine.UnpackARC(archive, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
@@ -1084,8 +1084,8 @@ namespace Unify.Patcher
                     if (!tailsFlightLimit) proceed++;
 
                     if (proceed != 0) {
-                        if (!File.Exists($"{archive}_back") && !File.Exists($"{archive}_orig"))
-                            File.Copy(archive, $"{archive}_orig", true);
+                        if (!File.Exists($"{archive}_back"))
+                            File.Copy(archive, $"{archive}_back", true);
 
                         // Unpack archive to temporary location
                         tweak = ModEngine.UnpackARC(archive, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
@@ -1162,27 +1162,27 @@ namespace Unify.Patcher
 
             foreach (string line in editedLua) {
                 if (line.StartsWith("EnableReflection")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    string[] tempLine = line.Split(' ');
                     if (scale == 0)
-                        tempLine[2] = "false"; //Replace the 2nd section (the original number)
+                        tempLine[2] = "false";
                     else
-                        tempLine[2] = "true"; //Replace the 2nd section (the original number)
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        tempLine[2] = "true";
+                    editedLua[lineNum] = string.Join(" ", tempLine);
                 }
 
                 if (line.StartsWith("  texture_width") || line.StartsWith("  texture_height")) {
-                    string[] tempLine = line.Split(' '); //Split line into different sections
+                    string[] tempLine = line.Split(' ');
                     if (scale == 1)
-                        tempLine[7] = "4"; //Replace the 2nd section (the original number)
+                        tempLine[7] = "4";
                     else if (scale == 2)
-                        tempLine[7] = "2"; //Replace the 2nd section (the original number)
+                        tempLine[7] = "2";
                     else if (scale == 3)
-                        tempLine[6] = tempLine[7] = string.Empty; //Replace the 2nd section (the original number)
-                    editedLua[lineNum] = string.Join(" ", tempLine); //Place the edited line back into the Lua
+                        tempLine[6] = tempLine[7] = string.Empty;
+                    editedLua[lineNum] = string.Join(" ", tempLine);
                 }
                 lineNum++;
             }
-            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+            File.WriteAllLines(directoryRoot, editedLua);
         }
 
         private static void CameraType(string directoryRoot, int type, decimal fov) {
@@ -1377,8 +1377,8 @@ namespace Unify.Patcher
         /// </summary>
         public static void AddEntry(string filepath, string directoryRoot, string key, string _event, string reference) {
             // Backs up the archive containing the PKG
-            if (!File.Exists($"{filepath}_orig"))
-                File.Copy(filepath, $"{filepath}_orig", true);
+            if (!File.Exists($"{filepath}_back"))
+                File.Copy(filepath, $"{filepath}_back", true);
 
             // Extracts the archive containing the PKG
             string unpack = ModEngine.UnpackARC(filepath, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
@@ -1474,7 +1474,8 @@ namespace Unify.Patcher
                 Process.Start(psi).WaitForExit(1000 * 60 * 5);
 
                 key.Close();
-            } else { InstallFromWinRAR(ArchivePath, location); }
+            }
+            else { InstallFromWinRAR(ArchivePath, location); }
         }
 
         /// <summary>

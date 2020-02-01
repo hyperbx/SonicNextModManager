@@ -37,7 +37,9 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber = "Version 3.02";
+        public static readonly string VersionNumberDev    = "Version 3.02",
+                                      VersionNumber = $"Version 3.03-indev-{DateTime.Now.ToString("ddMMyy")}r1";
+
         public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                              Arctool         = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
                              XexTool         = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",

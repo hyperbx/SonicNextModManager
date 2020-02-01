@@ -422,12 +422,12 @@ namespace Unify.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool General_UninstallOnLaunch {
+        public bool General_AutoUninstall {
             get {
-                return ((bool)(this["General_UninstallOnLaunch"]));
+                return ((bool)(this["General_AutoUninstall"]));
             }
             set {
-                this["General_UninstallOnLaunch"] = value;
+                this["General_AutoUninstall"] = value;
             }
         }
     }

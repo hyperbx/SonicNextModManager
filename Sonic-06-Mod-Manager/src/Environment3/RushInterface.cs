@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Configuration;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -94,12 +95,20 @@ namespace Unify.Environment3
             set { Label_Status.Text = value; }
         }
 
+        public ListView.ListViewItemCollection ModsList {
+            get { return ListView_ModsList.Items; }
+        }
+
+        public ListView.ListViewItemCollection PatchesList {
+            get { return ListView_PatchesList.Items; }
+        }
+
         /// <summary>
         /// Performs actions on launch.
         /// </summary>
         private void RushInterface_Load(object sender, EventArgs e) {
             RefreshLists(); // Refresh mods list
-            if (Properties.Settings.Default.General_UninstallOnLaunch) UninstallThread(); // Uninstall everything
+            if (Properties.Settings.Default.General_AutoUninstall) UninstallThread(); // Uninstall everything
         }
 
         /// <summary>
@@ -197,7 +206,7 @@ namespace Unify.Environment3
                 CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.Emulator_DiscordRPC;
                 CheckBox_ForceMSAA.Checked          = Properties.Settings.Default.Tweak_ForceMSAA;
                 CheckBox_TailsFlightLimit.Checked   = Properties.Settings.Default.Tweak_TailsFlightLimit;
-                CheckBox_UninstallOnLaunch.Checked  = Properties.Settings.Default.General_UninstallOnLaunch;
+                CheckBox_UninstallOnLaunch.Checked  = Properties.Settings.Default.General_AutoUninstall;
 
                 if (CheckBox_HighContrastText.Checked = Properties.Settings.Default.General_HighContrastText)
                     Label_Status.ForeColor = SystemColors.ControlText;
@@ -571,7 +580,7 @@ namespace Unify.Environment3
                 }
                 Properties.Settings.Default.General_AutoColour = ((CheckBox)sender).Checked;
             } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.General_HighContrastText     = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_UninstallOnLaunch)    Properties.Settings.Default.General_UninstallOnLaunch    = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_UninstallOnLaunch)    Properties.Settings.Default.General_AutoUninstall    = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.General_Debug                = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_SaveFileRedirection)  Properties.Settings.Default.General_SaveFileRedirection  = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_CheckUpdatesOnLaunch) Properties.Settings.Default.General_CheckUpdatesOnLaunch = ((CheckBox)sender).Checked;
@@ -1200,7 +1209,9 @@ namespace Unify.Environment3
                     Process xenia = Process.Start(xeniaProc); // Launch Xenia
                     Label_Status.Text = "Waiting for Xenia exit call...";
                     xenia.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
-                    UninstallThread(); // Uninstall mods after emulator quits
+
+                    // Uninstall mods after emulator quits
+                    if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
                 } else if (emulator == "RPCS3") {
                     ProcessStartInfo rpcs3Proc = new ProcessStartInfo() {
                         FileName = Properties.Settings.Default.Path_EmulatorDirectory,
@@ -1212,7 +1223,9 @@ namespace Unify.Environment3
                     Process rpcs3 = Process.Start(rpcs3Proc); // Launch RPCS3
                     Label_Status.Text = "Waiting for RPCS3 exit call...";
                     rpcs3.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
-                    UninstallThread(); // Uninstall mods after emulator quits
+
+                    // Uninstall mods after emulator quits
+                    if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
                 } else { // Emulator not detected...
                     UnifyMessenger.UnifyMessage.ShowDialog("Unable to detect the required emulator for the game's executable. The specified game directory may be invalid.",
                                                            "Unable to load...", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1653,7 +1666,7 @@ namespace Unify.Environment3
                     // File is an archive
                     if (Path.GetExtension(droppedFiles[0]) == ".zip" || Path.GetExtension(droppedFiles[0]) == ".7z" || Path.GetExtension(droppedFiles[0]) == ".rar") { 
                         DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog($"Do you want to add '{Path.GetFileName(droppedFiles[0])}' as a mod?",
-                                                                                            "Add mod?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                                                           "Add mod?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                         if (confirmation == DialogResult.Yes) {
                             byte[] bytes = File.ReadAllBytes(droppedFiles[0]).Take(2).ToArray();
@@ -1959,6 +1972,57 @@ namespace Unify.Environment3
                         menuDark.Items.Add(new ToolStripMenuItem("Create Patch", Properties.Resources.NewPatchPackage_16x, ContextMenu_PatchMenu_Items_Click));
                         menuDark.Show(Cursor.Position);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Dumps current user settings and selected items.
+        /// </summary>
+        private void LinkLabel_Snapshot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            // Save location for snapshot
+            SaveFileDialog snapShot = new SaveFileDialog() {
+                Title = "Save snapshot...",
+                Filter = "Snapshot (*.dmp)|*.dmp",
+                FileName = $"sonic06mm-snapshot-{DateTime.Now.ToString("ddMMyy")}.dmp"
+            };
+
+            if (snapShot.ShowDialog() == DialogResult.OK) {
+                string architecture = "x86";
+
+                // Get application architecture
+                if (IntPtr.Size == 4) architecture = "x86";
+                else if (IntPtr.Size == 8) architecture = "x64";
+                else architecture = "Unknown";
+
+                // Create snapshot
+                using (StreamWriter sw = File.CreateText(snapShot.FileName)) {
+                    sw.WriteLine($"Sonic '06 Mod Manager");
+                    sw.WriteLine($"Framework version: {Program.VersionNumber}");
+#if !DEBUG
+                    sw.WriteLine($"\nBuild type: Release");
+#elif DEBUG
+                    sw.WriteLine($"\nBuild type: Debug");
+#endif
+                    sw.WriteLine($"Build architecture: {architecture}");
+
+                    sw.WriteLine($"\nSnapshot time: {DateTime.Now}");
+
+                    if (ListView_ModsList.CheckedItems.Count != 0) {
+                        sw.WriteLine("\nMods:");
+                        foreach (object mod in ListView_ModsList.CheckedItems)
+                            sw.WriteLine(mod);
+                    }
+
+                    if (ListView_PatchesList.CheckedItems.Count != 0) {
+                        sw.WriteLine("\nPatches:");
+                        foreach (object patch in ListView_PatchesList.CheckedItems)
+                            sw.WriteLine(patch);
+                    }
+
+                    sw.WriteLine("\nSettings:");
+                    foreach (SettingsPropertyValue property in Properties.Settings.Default.PropertyValues)
+                        sw.WriteLine($"{property.Name}: {property.PropertyValue}");
                 }
             }
         }

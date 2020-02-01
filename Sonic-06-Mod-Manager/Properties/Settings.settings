@@ -101,7 +101,7 @@
     <Setting Name="Tweak_TailsFlightLimit" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="General_UninstallOnLaunch" Type="System.Boolean" Scope="User">
+    <Setting Name="General_AutoUninstall" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

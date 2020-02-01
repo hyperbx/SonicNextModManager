@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Messenger.UnifyMessenger));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UnifyMessenger));
             this.lbl_Description = new System.Windows.Forms.Label();
             this.pnl_ButtonBackdrop = new System.Windows.Forms.Panel();
-            this.btn_Copy = new System.Windows.Forms.Button();
             this.btn_Abort = new System.Windows.Forms.Button();
             this.btn_OK = new System.Windows.Forms.Button();
             this.btn_Yes = new System.Windows.Forms.Button();
@@ -58,7 +57,6 @@
             this.pnl_ButtonBackdrop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnl_ButtonBackdrop.BackColor = System.Drawing.SystemColors.Control;
-            this.pnl_ButtonBackdrop.Controls.Add(this.btn_Copy);
             this.pnl_ButtonBackdrop.Controls.Add(this.btn_Abort);
             this.pnl_ButtonBackdrop.Controls.Add(this.btn_OK);
             this.pnl_ButtonBackdrop.Controls.Add(this.btn_Yes);
@@ -67,21 +65,6 @@
             this.pnl_ButtonBackdrop.Name = "pnl_ButtonBackdrop";
             this.pnl_ButtonBackdrop.Size = new System.Drawing.Size(268, 58);
             this.pnl_ButtonBackdrop.TabIndex = 1;
-            // 
-            // btn_Copy
-            // 
-            this.btn_Copy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_Copy.BackColor = System.Drawing.Color.SkyBlue;
-            this.btn_Copy.FlatAppearance.BorderSize = 0;
-            this.btn_Copy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Copy.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Copy.Location = new System.Drawing.Point(11, 10);
-            this.btn_Copy.Name = "btn_Copy";
-            this.btn_Copy.Size = new System.Drawing.Size(75, 23);
-            this.btn_Copy.TabIndex = 4;
-            this.btn_Copy.Text = "Copy";
-            this.btn_Copy.UseVisualStyleBackColor = false;
-            this.btn_Copy.Click += new System.EventHandler(this.Btn_Copy_Click);
             // 
             // btn_Abort
             // 
@@ -173,7 +156,7 @@
             this.rtb_Message.Text = "None";
             this.rtb_Message.ContentsResized += new System.Windows.Forms.ContentsResizedEventHandler(this.Rtb_Message_ContentsResized);
             // 
-            // UnifyMessages
+            // UnifyMessenger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -190,7 +173,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "UnifyMessages";
+            this.Name = "UnifyMessenger";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unify Messenger";
@@ -212,6 +195,5 @@
         private System.Windows.Forms.Button btn_Abort;
         private System.Windows.Forms.Button btn_No;
         private System.Windows.Forms.RichTextBox rtb_Message;
-        private System.Windows.Forms.Button btn_Copy;
     }
 }
