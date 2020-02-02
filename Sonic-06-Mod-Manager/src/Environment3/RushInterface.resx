@@ -314,7 +314,7 @@
         Aibv9W8SyxtwvBVOFDv3YMyoYOV4K7TfuA8rpb6PR1K/dknjHgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
+  <data name="Label_Contributors.Text" xml:space="preserve">
     <value>► HyperPolygon64 - Lead programmer and designer
 ► Knuxfan24 - Initial developer and project maintainer
 ► Shadow LAG - Lua decompiler

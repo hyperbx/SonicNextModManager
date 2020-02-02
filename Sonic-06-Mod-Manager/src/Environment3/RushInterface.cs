@@ -280,20 +280,39 @@ namespace Unify.Environment3
 
                 #region Set controls depending on emulator
                 if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "Xenia") {
+                    if (Properties.Settings.Default.Tweak_Renderer == 0) {
+                        // Set text colour to Control
+                        Label_AntiAliasing.ForeColor = Label_Reflections.ForeColor = SystemColors.Control;
+
+                        // Set text colour to ControlDark
+                        Label_Description_AntiAliasing.ForeColor =
+                        Label_Description_Reflections.ForeColor =
+                        SystemColors.ControlDark;
+
+                        // Set enabled state of controls
+                        Button_AntiAliasing_Default.Enabled =
+                        ComboBox_AntiAliasing.Enabled =
+                        ComboBox_Reflections.Enabled =
+                        Button_Reflections_Default.Enabled =
+                        true;
+
+                        if (CheckBox_ForceMSAA.Enabled = Properties.Settings.Default.Tweak_AntiAliasing == 1)
+                            // Set text colour to ControlDark
+                            Label_Description_ForceMSAA.ForeColor = SystemColors.ControlDark;
+                        else
+                            // Set text colour to GrayText
+                            Label_Description_ForceMSAA.ForeColor = SystemColors.GrayText;
+                    }
+
                     // Set text colour to Control
                     Label_Subtitle_Emulator_Options.ForeColor =
-                    Label_AntiAliasing.ForeColor =
                     Label_GraphicsAPI.ForeColor =
                     Label_FieldOfView.ForeColor =
-                    Label_Reflections.ForeColor = 
                     SystemColors.Control;
 
                     // Set text colour to ControlDark
                     Label_Description_GraphicsAPI.ForeColor =
                     Label_Description_FieldOfView.ForeColor =
-                    Label_Description_AntiAliasing.ForeColor =
-                    Label_Description_ForceMSAA.ForeColor =
-                    Label_Description_Reflections.ForeColor =
                     SystemColors.ControlDark;
 
                     // Set enabled state of controls
@@ -306,11 +325,6 @@ namespace Unify.Environment3
                     ComboBox_API.Enabled =
                     NumericUpDown_FieldOfView.Enabled =
                     Button_FieldOfView_Default.Enabled =
-                    Button_AntiAliasing_Default.Enabled =
-                    ComboBox_AntiAliasing.Enabled =
-                    CheckBox_ForceMSAA.Enabled =
-                    ComboBox_Reflections.Enabled =
-                    Button_Reflections_Default.Enabled =
                     true;
 
                     // Set visibility state of controls
@@ -1802,16 +1816,18 @@ namespace Unify.Environment3
                     Label_Description_ForceMSAA.ForeColor =
                     SystemColors.GrayText;
                 } else {
-                    // Set enabled state for controls
-                    ComboBox_AntiAliasing.Enabled = Button_AntiAliasing_Default.Enabled = CheckBox_ForceMSAA.Enabled = true;
+                    if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "Xenia") {
+                        // Set enabled state for controls
+                        ComboBox_AntiAliasing.Enabled = Button_AntiAliasing_Default.Enabled = CheckBox_ForceMSAA.Enabled = true;
 
-                    // Set controls to Control
-                    Label_AntiAliasing.ForeColor = SystemColors.Control;
+                        // Set controls to Control
+                        Label_AntiAliasing.ForeColor = SystemColors.Control;
 
-                    // Set controls to GrayText
-                    Label_Description_AntiAliasing.ForeColor =
-                    Label_Description_ForceMSAA.ForeColor =
-                    SystemColors.ControlDark;
+                        // Set controls to GrayText
+                        Label_Description_AntiAliasing.ForeColor =
+                        Label_Description_ForceMSAA.ForeColor =
+                        SystemColors.ControlDark;
+                    }
                 }
             }
             else if  (sender == ComboBox_Reflections) Properties.Settings.Default.Tweak_Reflections  = ((ComboBox)sender).SelectedIndex;

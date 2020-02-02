@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Linq;
 using System.Drawing;
 using Unify.Messenger;
 using Unify.Serialisers;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -98,41 +100,80 @@ namespace Unify.Environment3
                                                   .Replace("|",  "")
                                                   .Replace(" ",  "");
 
-                if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua") && !edit)
-                    UnifyMessenger.UnifyMessage.ShowDialog($"A patch called {safeTitle} already exists. Please rename your patch.",
+                if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua"))
+                    UnifyMessenger.UnifyMessage.ShowDialog($"A patch called '{text_Title.Text}' already exists. Please rename your patch.",
                                                            "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else {
                     string newPath = $"{Path.Combine(Program.Patches, safeTitle)}.mlua";
 
-                    using (Stream configCreate = File.Open(newPath, FileMode.Create))
-                    using (StreamWriter configInfo = new StreamWriter(configCreate)) {
-                                                              configInfo.WriteLine("--[Patch]--");
-                                                              configInfo.WriteLine($"Title(\"{text_Title.Text}\")");
-                        if (text_Author.Text != string.Empty) configInfo.WriteLine($"Author(\"{text_Author.Text}\")");
-                                                              configInfo.WriteLine($"Platform(\"{combo_System.Text}\")");
-                        if (text_Blurb.Text != string.Empty)  configInfo.WriteLine($"Blurb(\"{text_Blurb.Text}\")");
+                    if (!edit) {
+                        using (Stream configCreate = File.Open(newPath, FileMode.Create))
+                            using (StreamWriter configInfo = new StreamWriter(configCreate)) {
+                                                                      configInfo.WriteLine("--[Patch]--");
+                                                                      configInfo.WriteLine($"Title(\"{text_Title.Text}\")");
+                                if (text_Author.Text != string.Empty) configInfo.WriteLine($"Author(\"{text_Author.Text}\")");
+                                                                      configInfo.WriteLine($"Platform(\"{combo_System.Text}\")");
+                                if (text_Blurb.Text != string.Empty)  configInfo.WriteLine($"Blurb(\"{text_Blurb.Text}\")");
 
-                        if (tb_Description.Text != string.Empty) {
-                            string descriptionText = string.Empty;
-                            string lastLine = tb_Description.Lines.Last();
-                            foreach (var newLine in tb_Description.Lines) {
-                                if (newLine != lastLine) descriptionText += $"{newLine}\\n";
-                                else descriptionText += newLine;
+                                if (tb_Description.Text != string.Empty) {
+                                    string descriptionText = string.Empty;
+                                    string lastLine = tb_Description.Lines.Last();
+                                    foreach (var newLine in tb_Description.Lines) {
+                                        if (newLine != lastLine) descriptionText += $"{newLine}\\n";
+                                        else descriptionText += newLine;
+                                    }
+                                    configInfo.WriteLine($"Description(\"{descriptionText}\")");
+                                }
+
+                                configInfo.WriteLine("\n--[Functions]--");
+                                configInfo.Close();
                             }
-                            configInfo.WriteLine($"Description(\"{descriptionText}\")");
-                        }
 
-                        configInfo.WriteLine("\n--[Functions]--");
-                        configInfo.Close();
-                    }
-
-                    if (!edit)
                         try { Process.Start(newPath); }
                         catch {
                             UnifyMessenger.UnifyMessage.ShowDialog($"Please associate the MLUA format with your text editor of choice.",
                                                                    "Unable to load patch...", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             Process.Start(Program.Patches);
                         }
+                    } else {
+                        // Backup functions from edited patch
+                        List<string> patch = new List<string>();
+                        using (StreamReader patchScript = new StreamReader(this.patch, Encoding.Default)) {
+                            string line;
+                            bool functionsReached = false;
+                            while ((line = patchScript.ReadLine()) != null) {
+                                if (line.StartsWith("--[Functions]--")) functionsReached = true;
+                                if (functionsReached) patch.Add(line);
+                            }
+                        }
+
+                        File.Delete(this.patch);
+
+                        using (Stream configOpen = File.Open(newPath, FileMode.Create))
+                            using (StreamWriter configInfo = new StreamWriter(configOpen)) {
+                                                                      configInfo.WriteLine("--[Patch]--");
+                                                                      configInfo.WriteLine($"Title(\"{text_Title.Text}\")");
+                                if (text_Author.Text != string.Empty) configInfo.WriteLine($"Author(\"{text_Author.Text}\")");
+                                                                      configInfo.WriteLine($"Platform(\"{combo_System.Text}\")");
+                                if (text_Blurb.Text != string.Empty)  configInfo.WriteLine($"Blurb(\"{text_Blurb.Text}\")");
+
+                                if (tb_Description.Text != string.Empty) {
+                                    string descriptionText = string.Empty;
+                                    string lastLine = tb_Description.Lines.Last();
+                                    foreach (var newLine in tb_Description.Lines) {
+                                        if (newLine != lastLine) descriptionText += $"{newLine}\\n";
+                                        else descriptionText += newLine;
+                                    }
+                                    configInfo.WriteLine($"Description(\"{descriptionText}\")");
+                                }
+
+                                // Write stored functions to patch
+                                configInfo.WriteLine();
+                                foreach (string function in patch) configInfo.WriteLine(function);
+
+                                configInfo.Close();
+                            }
+                    }
 
                     Close();
                 }

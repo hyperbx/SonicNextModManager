@@ -978,7 +978,7 @@ namespace Unify.Patcher
                             // Force MSAA
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
-                                MSAA(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_utility.lub"), antiAliasing, SearchOption.TopDirectoryOnly);
+                                MSAA(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly);
                             }
                         }
 

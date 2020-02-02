@@ -219,12 +219,12 @@ namespace Unify.Environment3
             this.LinkLabel_GerbilSoft = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_Knuxfan24 = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_HyperPolygon64 = new System.Windows.Forms.LinkLabel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.Label_Testers = new System.Windows.Forms.Label();
+            this.Title_Testers = new System.Windows.Forms.Label();
+            this.Label_SpecialThanks = new System.Windows.Forms.Label();
+            this.Title_SpecialThanks = new System.Windows.Forms.Label();
+            this.Label_Contributors = new System.Windows.Forms.Label();
+            this.Title_Contributors = new System.Windows.Forms.Label();
             this.Label_Version = new System.Windows.Forms.Label();
             this.Panel_About_UICleanSpace = new System.Windows.Forms.Panel();
             this.Rush_Section_Settings = new Unify.Environment3.SectionButton();
@@ -459,7 +459,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(837, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(843, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -476,7 +476,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1397, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1403, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1017,7 +1017,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(794, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(800, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1143,7 +1143,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(296, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(302, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -2655,12 +2655,12 @@ namespace Unify.Environment3
             this.Tab_Section_About.Controls.Add(this.LinkLabel_GerbilSoft);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Knuxfan24);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_HyperPolygon64);
-            this.Tab_Section_About.Controls.Add(this.label6);
-            this.Tab_Section_About.Controls.Add(this.label5);
-            this.Tab_Section_About.Controls.Add(this.label4);
-            this.Tab_Section_About.Controls.Add(this.label3);
-            this.Tab_Section_About.Controls.Add(this.label2);
-            this.Tab_Section_About.Controls.Add(this.label1);
+            this.Tab_Section_About.Controls.Add(this.Label_Testers);
+            this.Tab_Section_About.Controls.Add(this.Title_Testers);
+            this.Tab_Section_About.Controls.Add(this.Label_SpecialThanks);
+            this.Tab_Section_About.Controls.Add(this.Title_SpecialThanks);
+            this.Tab_Section_About.Controls.Add(this.Label_Contributors);
+            this.Tab_Section_About.Controls.Add(this.Title_Contributors);
             this.Tab_Section_About.Controls.Add(this.Label_Version);
             this.Tab_Section_About.Controls.Add(this.Panel_About_UICleanSpace);
             this.Tab_Section_About.Location = new System.Drawing.Point(4, 20);
@@ -2850,66 +2850,66 @@ namespace Unify.Environment3
             this.LinkLabel_HyperPolygon64.Text = "HyperPolygon64";
             this.LinkLabel_HyperPolygon64.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
             // 
-            // label6
+            // Label_Testers
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label6.Location = new System.Drawing.Point(9, 457);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(150, 125);
-            this.label6.TabIndex = 39;
-            this.label6.Text = "► sharu6262\r\n► Melpontro\r\n► ChrisHighwind\r\n► Velcomia\r\n► Radfordhound";
+            this.Label_Testers.AutoSize = true;
+            this.Label_Testers.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Label_Testers.Location = new System.Drawing.Point(9, 457);
+            this.Label_Testers.Name = "Label_Testers";
+            this.Label_Testers.Size = new System.Drawing.Size(150, 150);
+            this.Label_Testers.TabIndex = 39;
+            this.Label_Testers.Text = "► sharu6262\r\n► Melpontro\r\n► ChrisHighwind\r\n► Velcomia\r\n► Radfordhound\r\n► Dunker";
             // 
-            // label5
+            // Title_Testers
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label5.Location = new System.Drawing.Point(6, 403);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(118, 45);
-            this.label5.TabIndex = 38;
-            this.label5.Text = "Testers";
+            this.Title_Testers.AutoSize = true;
+            this.Title_Testers.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.Title_Testers.Location = new System.Drawing.Point(6, 403);
+            this.Title_Testers.Name = "Title_Testers";
+            this.Title_Testers.Size = new System.Drawing.Size(118, 45);
+            this.Title_Testers.TabIndex = 38;
+            this.Title_Testers.Text = "Testers";
             // 
-            // label4
+            // Label_SpecialThanks
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label4.Location = new System.Drawing.Point(9, 308);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(294, 75);
-            this.label4.TabIndex = 37;
-            this.label4.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration\r\n► SEGA Carni" +
+            this.Label_SpecialThanks.AutoSize = true;
+            this.Label_SpecialThanks.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Label_SpecialThanks.Location = new System.Drawing.Point(9, 308);
+            this.Label_SpecialThanks.Name = "Label_SpecialThanks";
+            this.Label_SpecialThanks.Size = new System.Drawing.Size(294, 75);
+            this.Label_SpecialThanks.TabIndex = 37;
+            this.Label_SpecialThanks.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration\r\n► SEGA Carni" +
     "val - Update Servers";
             // 
-            // label3
+            // Title_SpecialThanks
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label3.Location = new System.Drawing.Point(6, 254);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(228, 45);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "Special Thanks";
+            this.Title_SpecialThanks.AutoSize = true;
+            this.Title_SpecialThanks.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.Title_SpecialThanks.Location = new System.Drawing.Point(6, 254);
+            this.Title_SpecialThanks.Name = "Title_SpecialThanks";
+            this.Title_SpecialThanks.Size = new System.Drawing.Size(228, 45);
+            this.Title_SpecialThanks.TabIndex = 36;
+            this.Title_SpecialThanks.Text = "Special Thanks";
             // 
-            // label2
+            // Label_Contributors
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.label2.Location = new System.Drawing.Point(9, 60);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(442, 175);
-            this.label2.TabIndex = 35;
-            this.label2.Text = resources.GetString("label2.Text");
+            this.Label_Contributors.AutoSize = true;
+            this.Label_Contributors.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Label_Contributors.Location = new System.Drawing.Point(9, 60);
+            this.Label_Contributors.Name = "Label_Contributors";
+            this.Label_Contributors.Size = new System.Drawing.Size(442, 175);
+            this.Label_Contributors.TabIndex = 35;
+            this.Label_Contributors.Text = resources.GetString("Label_Contributors.Text");
             // 
-            // label1
+            // Title_Contributors
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.label1.Location = new System.Drawing.Point(6, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(199, 45);
-            this.label1.TabIndex = 34;
-            this.label1.Text = "Contributors";
+            this.Title_Contributors.AutoSize = true;
+            this.Title_Contributors.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.Title_Contributors.Location = new System.Drawing.Point(6, 6);
+            this.Title_Contributors.Name = "Title_Contributors";
+            this.Title_Contributors.Size = new System.Drawing.Size(199, 45);
+            this.Title_Contributors.TabIndex = 34;
+            this.Title_Contributors.Text = "Contributors";
             // 
             // Label_Version
             // 
@@ -2926,7 +2926,7 @@ namespace Unify.Environment3
             // 
             // Panel_About_UICleanSpace
             // 
-            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 581);
+            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 606);
             this.Panel_About_UICleanSpace.Name = "Panel_About_UICleanSpace";
             this.Panel_About_UICleanSpace.Size = new System.Drawing.Size(214, 17);
             this.Panel_About_UICleanSpace.TabIndex = 175;
@@ -3228,12 +3228,12 @@ namespace Unify.Environment3
         private System.Windows.Forms.LinkLabel LinkLabel_ProtocolManager;
         private System.Windows.Forms.Label Label_Warning_ModsDirectoryInvalid;
         private System.Windows.Forms.Label Label_Description_ModsDirectory;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label Label_Testers;
+        private System.Windows.Forms.Label Title_Testers;
+        private System.Windows.Forms.Label Label_SpecialThanks;
+        private System.Windows.Forms.Label Title_SpecialThanks;
+        private System.Windows.Forms.Label Label_Contributors;
+        private System.Windows.Forms.Label Title_Contributors;
         private SectionButton SectionButton_RefreshPatches;
         private System.Windows.Forms.SplitContainer SplitContainer_PatchSelectionControls;
         private System.Windows.Forms.SplitContainer SplitContainer_PatchesControls;
