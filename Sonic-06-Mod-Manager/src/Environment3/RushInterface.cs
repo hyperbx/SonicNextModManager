@@ -8,6 +8,7 @@ using System.Drawing;
 using Microsoft.Win32;
 using Unify.Messenger;
 using Unify.Networking;
+using System.Management;
 using Unify.Serialisers;
 using System.Diagnostics;
 using Unify.Globalisation;
@@ -17,6 +18,7 @@ using System.ComponentModel;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -1981,14 +1983,15 @@ namespace Unify.Environment3
         /// </summary>
         private void LinkLabel_Snapshot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             // Save location for snapshot
-            SaveFileDialog snapShot = new SaveFileDialog() {
+            SaveFileDialog snapshot = new SaveFileDialog() {
                 Title = "Save snapshot...",
                 Filter = "Snapshot (*.dmp)|*.dmp",
                 FileName = $"sonic06mm-snapshot-{DateTime.Now.ToString("ddMMyy")}.dmp"
             };
 
-            if (snapShot.ShowDialog() == DialogResult.OK) {
+            if (snapshot.ShowDialog() == DialogResult.OK) {
                 string architecture = "x86";
+                int gpuCount = 0;
 
                 // Get application architecture
                 if (IntPtr.Size == 4) architecture = "x86";
@@ -1996,33 +1999,62 @@ namespace Unify.Environment3
                 else architecture = "Unknown";
 
                 // Create snapshot
-                using (StreamWriter sw = File.CreateText(snapShot.FileName)) {
-                    sw.WriteLine($"Sonic '06 Mod Manager");
-                    sw.WriteLine($"Framework version: {Program.VersionNumber}");
+                using (StreamWriter sw = File.CreateText(snapshot.FileName)) {
+                    try {
+                        sw.WriteLine($"Sonic '06 Mod Manager");
+                        sw.WriteLine(DateTime.Now);
+
+                        sw.WriteLine("\nBuild:");
 #if !DEBUG
-                    sw.WriteLine($"\nBuild type: Release");
+                        sw.WriteLine($"Type: Release");
 #elif DEBUG
-                    sw.WriteLine($"\nBuild type: Debug");
+                        sw.WriteLine($"Type: Debug");
 #endif
-                    sw.WriteLine($"Build architecture: {architecture}");
+                        sw.WriteLine($"Version: {Program.VersionNumber}");
+                        sw.WriteLine($"Architecture: {architecture}");
 
-                    sw.WriteLine($"\nSnapshot time: {DateTime.Now}");
+                        sw.WriteLine("\nSpecifications:");
+                        
+                        // Get CPU name
+                        ManagementObjectSearcher getCPU = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor");
+                        foreach (ManagementObject mo in getCPU.Get())
+                            sw.WriteLine($"CPU: {mo["Name"].ToString()}");
 
-                    if (ListView_ModsList.CheckedItems.Count != 0) {
-                        sw.WriteLine("\nMods:");
-                        foreach (object mod in ListView_ModsList.CheckedItems)
-                            sw.WriteLine(mod);
+                        // Format RAM as long to readable bytes
+                        sw.WriteLine($"RAM: {Literal.FormatBytes(new ManagementObjectSearcher("SELECT Capacity FROM Win32_PhysicalMemory").Get().Cast<ManagementObject>().Sum(x => Convert.ToInt64(x.Properties["Capacity"].Value)))}");
+
+                        // Get GPU names
+                        ManagementObjectSearcher getGPU = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
+                        foreach (ManagementObject mo in getGPU.Get())
+                            foreach (PropertyData property in mo.Properties)
+                                if (property.Name == "Description") {
+                                    sw.WriteLine($"GPU #{gpuCount}: {property.Value.ToString()}");
+                                    gpuCount++;
+                                }
+
+                        // Print list of checked mods
+                        if (ListView_ModsList.CheckedItems.Count != 0) {
+                            sw.WriteLine("\nMods:");
+                            foreach (object mod in ListView_ModsList.CheckedItems)
+                                sw.WriteLine(mod);
+                        }
+
+                        // Print list of checked patches
+                        if (ListView_PatchesList.CheckedItems.Count != 0) {
+                            sw.WriteLine("\nPatches:");
+                            foreach (object patch in ListView_PatchesList.CheckedItems)
+                                sw.WriteLine(patch);
+                        }
+
+                        // Print list of current settings
+                        sw.WriteLine("\nSettings:");
+                        foreach (SettingsPropertyValue property in Properties.Settings.Default.PropertyValues)
+                            sw.WriteLine($"{property.Name}: {property.PropertyValue}");
+                    } catch (Exception ex) {
+                        // Print exception if something failed
+                        sw.WriteLine("\nExceptions:");
+                        sw.WriteLine(ex);
                     }
-
-                    if (ListView_PatchesList.CheckedItems.Count != 0) {
-                        sw.WriteLine("\nPatches:");
-                        foreach (object patch in ListView_PatchesList.CheckedItems)
-                            sw.WriteLine(patch);
-                    }
-
-                    sw.WriteLine("\nSettings:");
-                    foreach (SettingsPropertyValue property in Properties.Settings.Default.PropertyValues)
-                        sw.WriteLine($"{property.Name}: {property.PropertyValue}");
                 }
             }
         }
