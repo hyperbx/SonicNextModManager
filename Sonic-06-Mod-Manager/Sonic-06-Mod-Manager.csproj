@@ -60,6 +60,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="src\Environment3\PatchCreator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,11 +103,6 @@
     </Compile>
     <Compile Include="src\UnifyConsole.cs" />
     <Compile Include="src\UnifySerialisers.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="src\Environment3\Controls\ContextMenuDark.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -261,8 +261,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="res\Scripts\barebones_render_gamemode.lub" />
-    <None Include="res\Scripts\barebones_render_main.lub" />
+    <None Include="res\Scripts\optimised_render_main.lub" />
     <None Include="res\Scripts\render_cheap.lub" />
     <None Include="res\Scripts\vulkan_render_gamemode.lub" />
     <None Include="res\Scripts\vulkan_render_main.lub" />

@@ -121,12 +121,6 @@
   <data name="arctool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\applications\arctool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="barebones_render_gamemode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\scripts\barebones_render_gamemode.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="barebones_render_main" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\scripts\barebones_render_main.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="Cancel_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\Images\Cancel_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -207,6 +201,9 @@
   </data>
   <data name="Open_grey_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\open_grey_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="optimised_render_main" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\scripts\optimised_render_main.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="PaintBrush_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\paintbrush_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

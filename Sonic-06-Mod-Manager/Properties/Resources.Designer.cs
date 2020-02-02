@@ -71,26 +71,6 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] barebones_render_gamemode {
-            get {
-                object obj = ResourceManager.GetObject("barebones_render_gamemode", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] barebones_render_main {
-            get {
-                object obj = ResourceManager.GetObject("barebones_render_main", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Cancel_16x {
@@ -381,6 +361,16 @@ namespace Unify.Properties {
             get {
                 object obj = ResourceManager.GetObject("Open_grey_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] optimised_render_main {
+            get {
+                object obj = ResourceManager.GetObject("optimised_render_main", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

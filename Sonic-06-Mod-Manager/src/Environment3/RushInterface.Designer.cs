@@ -459,7 +459,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(822, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(837, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -476,7 +476,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1382, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1397, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -722,6 +722,7 @@ namespace Unify.Environment3
             // 
             // Label_RPCS3Warning
             // 
+            this.Label_RPCS3Warning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_RPCS3Warning.AutoSize = true;
             this.Label_RPCS3Warning.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_RPCS3Warning.ForeColor = System.Drawing.Color.Tomato;
@@ -1016,7 +1017,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(779, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(794, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1142,7 +1143,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(299, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(296, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -1793,11 +1794,9 @@ namespace Unify.Environment3
             // SectionButton_FetchPatches
             // 
             this.SectionButton_FetchPatches.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SectionButton_FetchPatches.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.SectionButton_FetchPatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.SectionButton_FetchPatches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_FetchPatches.Location = new System.Drawing.Point(14, 557);
+            this.SectionButton_FetchPatches.Location = new System.Drawing.Point(14, 561);
             this.SectionButton_FetchPatches.Name = "SectionButton_FetchPatches";
             this.SectionButton_FetchPatches.SectionImage = global::Unify.Properties.Resources.InstallMods;
             this.SectionButton_FetchPatches.SectionText = "Fetch latest patches";
@@ -1809,10 +1808,9 @@ namespace Unify.Environment3
             // 
             // Label_LastPatchUpdate
             // 
-            this.Label_LastPatchUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_LastPatchUpdate.AutoSize = true;
             this.Label_LastPatchUpdate.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_LastPatchUpdate.Location = new System.Drawing.Point(256, 566);
+            this.Label_LastPatchUpdate.Location = new System.Drawing.Point(256, 570);
             this.Label_LastPatchUpdate.Name = "Label_LastPatchUpdate";
             this.Label_LastPatchUpdate.Size = new System.Drawing.Size(218, 17);
             this.Label_LastPatchUpdate.TabIndex = 151;
@@ -1820,10 +1818,9 @@ namespace Unify.Environment3
             // 
             // Label_LastModUpdate
             // 
-            this.Label_LastModUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_LastModUpdate.AutoSize = true;
             this.Label_LastModUpdate.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_LastModUpdate.Location = new System.Drawing.Point(256, 525);
+            this.Label_LastModUpdate.Location = new System.Drawing.Point(256, 529);
             this.Label_LastModUpdate.Name = "Label_LastModUpdate";
             this.Label_LastModUpdate.Size = new System.Drawing.Size(216, 17);
             this.Label_LastModUpdate.TabIndex = 150;
@@ -1832,11 +1829,9 @@ namespace Unify.Environment3
             // SectionButton_CheckForModUpdates
             // 
             this.SectionButton_CheckForModUpdates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SectionButton_CheckForModUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.SectionButton_CheckForModUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.SectionButton_CheckForModUpdates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_CheckForModUpdates.Location = new System.Drawing.Point(14, 516);
+            this.SectionButton_CheckForModUpdates.Location = new System.Drawing.Point(14, 520);
             this.SectionButton_CheckForModUpdates.Name = "SectionButton_CheckForModUpdates";
             this.SectionButton_CheckForModUpdates.SectionImage = global::Unify.Properties.Resources.Update_4;
             this.SectionButton_CheckForModUpdates.SectionText = "Check for mod updates";
@@ -1993,7 +1988,7 @@ namespace Unify.Environment3
             // 
             this.Label_Title_ModsAndPatches.AutoSize = true;
             this.Label_Title_ModsAndPatches.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.Label_Title_ModsAndPatches.Location = new System.Drawing.Point(6, 459);
+            this.Label_Title_ModsAndPatches.Location = new System.Drawing.Point(6, 463);
             this.Label_Title_ModsAndPatches.Name = "Label_Title_ModsAndPatches";
             this.Label_Title_ModsAndPatches.Size = new System.Drawing.Size(280, 45);
             this.Label_Title_ModsAndPatches.TabIndex = 43;
@@ -2056,7 +2051,6 @@ namespace Unify.Environment3
             // 
             // CheckBox_CheckUpdatesOnLaunch
             // 
-            this.CheckBox_CheckUpdatesOnLaunch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckBox_CheckUpdatesOnLaunch.AutoSize = true;
             this.CheckBox_CheckUpdatesOnLaunch.BackColor = System.Drawing.Color.Transparent;
             this.CheckBox_CheckUpdatesOnLaunch.Location = new System.Drawing.Point(259, 124);
@@ -2087,8 +2081,6 @@ namespace Unify.Environment3
             // SectionButton_CheckForSoftwareUpdates
             // 
             this.SectionButton_CheckForSoftwareUpdates.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SectionButton_CheckForSoftwareUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.SectionButton_CheckForSoftwareUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.SectionButton_CheckForSoftwareUpdates.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SectionButton_CheckForSoftwareUpdates.Location = new System.Drawing.Point(14, 114);

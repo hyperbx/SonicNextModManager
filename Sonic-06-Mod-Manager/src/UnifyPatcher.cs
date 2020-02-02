@@ -978,15 +978,14 @@ namespace Unify.Patcher
                             // Force MSAA
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
-                                MSAA(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly);
+                                MSAA(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_utility.lub"), antiAliasing, SearchOption.TopDirectoryOnly);
                             }
                         }
 
                         // Optimised
                         else if (renderer == 1) {
                             rush.Status = $"Tweaking Renderer...";
-                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"),   Properties.Resources.barebones_render_gamemode);
-                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.barebones_render_main);
+                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.optimised_render_main);
                         }
 
                         // Destructive
@@ -1122,19 +1121,38 @@ namespace Unify.Patcher
         }
 
         private static void MSAA(string directoryRoot, int MSAA, SearchOption searchOption) {
-            string[] files = Directory.GetFiles(directoryRoot, "*.lub", searchOption);
+            if (File.Exists(directoryRoot)) {
+                PatchEngine.DecompileLua(directoryRoot);
 
-            foreach (var lub in files) {
-                PatchEngine.DecompileLua(lub);
-
-                if (Path.GetFileName(lub) == "render_utility.lub") {
-                    List<string> editedLua = File.ReadAllLines(lub).ToList();
+                if (Path.GetFileName(directoryRoot) == "render_utility.lub") {
+                    List<string> editedLua = File.ReadAllLines(directoryRoot).ToList();
 
                     if (MSAA == 0)      editedLua.Add("MSAAType = \"1x\"");
                     else if (MSAA == 1) editedLua.Add("MSAAType = \"2x\"");
                     else if (MSAA == 2) editedLua.Add("MSAAType = \"4x\"");
-                    File.WriteAllLines(lub, editedLua);
+                    File.WriteAllLines(directoryRoot, editedLua);
                 } else {
+                    string[] editedLua = File.ReadAllLines(directoryRoot);
+                    int lineNum = 0;
+                    int modified = 0;
+
+                    foreach (string line in editedLua) {
+                        if (line.Contains("MSAAType")) {
+                            string[] tempLine = line.Split(' ');
+                            if (MSAA == 0)      tempLine[2] = "\"1x\"";
+                            else if (MSAA == 1) tempLine[2] = "\"2x\"";
+                            else if (MSAA == 2) tempLine[2] = "\"4x\"";
+                            editedLua[lineNum] = string.Join(" ", tempLine);
+                            modified++;
+                        }
+                        lineNum++;
+                    }
+                    if (modified != 0) File.WriteAllLines(directoryRoot, editedLua);
+                }
+            } else if (Directory.Exists(directoryRoot)) {
+                foreach (string lub in Directory.GetFiles(directoryRoot, "*.lub", searchOption)) {
+                    PatchEngine.DecompileLua(lub);
+
                     string[] editedLua = File.ReadAllLines(lub);
                     int lineNum = 0;
                     int modified = 0;

@@ -18,7 +18,6 @@ using System.ComponentModel;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -283,13 +282,18 @@ namespace Unify.Environment3
                 if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "Xenia") {
                     // Set text colour to Control
                     Label_Subtitle_Emulator_Options.ForeColor =
+                    Label_AntiAliasing.ForeColor =
                     Label_GraphicsAPI.ForeColor =
                     Label_FieldOfView.ForeColor =
+                    Label_Reflections.ForeColor = 
                     SystemColors.Control;
 
                     // Set text colour to ControlDark
                     Label_Description_GraphicsAPI.ForeColor =
                     Label_Description_FieldOfView.ForeColor =
+                    Label_Description_AntiAliasing.ForeColor =
+                    Label_Description_ForceMSAA.ForeColor =
+                    Label_Description_Reflections.ForeColor =
                     SystemColors.ControlDark;
 
                     // Set enabled state of controls
@@ -302,6 +306,11 @@ namespace Unify.Environment3
                     ComboBox_API.Enabled =
                     NumericUpDown_FieldOfView.Enabled =
                     Button_FieldOfView_Default.Enabled =
+                    Button_AntiAliasing_Default.Enabled =
+                    ComboBox_AntiAliasing.Enabled =
+                    CheckBox_ForceMSAA.Enabled =
+                    ComboBox_Reflections.Enabled =
+                    Button_Reflections_Default.Enabled =
                     true;
 
                     // Set visibility state of controls
@@ -311,8 +320,13 @@ namespace Unify.Environment3
                     Label_Subtitle_Emulator_Options.ForeColor =
                     Label_Description_GraphicsAPI.ForeColor =
                     Label_Description_FieldOfView.ForeColor =
+                    Label_Description_AntiAliasing.ForeColor =
+                    Label_Description_ForceMSAA.ForeColor =
+                    Label_Description_Reflections.ForeColor =
+                    Label_AntiAliasing.ForeColor =
                     Label_GraphicsAPI.ForeColor =
                     Label_FieldOfView.ForeColor =
+                    Label_Reflections.ForeColor =
                     SystemColors.GrayText;
 
                     // Set enabled state of controls
@@ -325,6 +339,11 @@ namespace Unify.Environment3
                     ComboBox_API.Enabled =
                     NumericUpDown_FieldOfView.Enabled =
                     Button_FieldOfView_Default.Enabled =
+                    Button_AntiAliasing_Default.Enabled =
+                    ComboBox_AntiAliasing.Enabled =
+                    CheckBox_ForceMSAA.Enabled =
+                    ComboBox_Reflections.Enabled =
+                    Button_Reflections_Default.Enabled =
                     false;
 
                     // Set visibility state of controls
@@ -1147,9 +1166,14 @@ namespace Unify.Environment3
         /// </summary>
         private void UninstallThread() {
             Label_Status.Text = "Removing modified game data...";
-            ModEngine.UninstallMods(); // Uninstalls all mods.
-            ModEngine.UninstallCustomFilesystem(ListView_ModsList.Items); // Uninstalls user-made filesystems.
-            ModEngine.UninstallSaves(ListView_ModsList.Items); // Removes redirected save data.
+            try {
+                ModEngine.UninstallMods(); // Uninstalls all mods.
+                ModEngine.UninstallCustomFilesystem(ListView_ModsList.Items); // Uninstalls user-made filesystems.
+                ModEngine.UninstallSaves(ListView_ModsList.Items); // Removes redirected save data. 
+            } catch (Exception ex) {
+                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to uninstall modified game data...\n\n{ex}",
+                                                       "Uninstall failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             Label_Status.Text = "Ready.";
         }
 
@@ -1405,8 +1429,9 @@ namespace Unify.Environment3
 
                 for (int i = 0; i < repoLinks.Length; i++)
                     using (WebClient client = new WebClient())
-                        // Download scripts from update servers
-                        client.DownloadFileAsync(new Uri(repoLinks[i]), Path.Combine(Program.Patches, Path.GetFileName(repoLinks[i])));
+                        if (repoLinks[i] != string.Empty)
+                            // Download scripts from update servers
+                            client.DownloadFileAsync(new Uri(repoLinks[i]), Path.Combine(Program.Patches, Path.GetFileName(repoLinks[i])));
 
                 //Feedback
                 UnifyMessenger.UnifyMessage.ShowDialog("The latest patches have been downloaded!",
