@@ -81,7 +81,6 @@ namespace Unify.Environment3
 
                 // Force splitter widths - because WinForms is dumb and ignores it at design time
                 SplitContainer_PatchesControls.SplitterWidth = SplitContainer_ModsControls.SplitterWidth = 1;
-                SplitContainer_PatchSelectionControls.SplitterWidth = 2;
                 SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
                 // If the application is a debug build, force debug mode on
