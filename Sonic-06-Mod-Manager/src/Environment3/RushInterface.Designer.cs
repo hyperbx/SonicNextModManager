@@ -459,7 +459,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(846, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(849, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -476,7 +476,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1406, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1409, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1017,7 +1017,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(803, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(806, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1143,7 +1143,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(2, 2);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(293, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(296, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -2677,7 +2677,7 @@ namespace Unify.Environment3
             this.LinkLabel_SEGACarnival.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
             this.LinkLabel_SEGACarnival.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.LinkLabel_SEGACarnival.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_SEGACarnival.Location = new System.Drawing.Point(30, 358);
+            this.LinkLabel_SEGACarnival.Location = new System.Drawing.Point(30, 384);
             this.LinkLabel_SEGACarnival.Name = "LinkLabel_SEGACarnival";
             this.LinkLabel_SEGACarnival.Size = new System.Drawing.Size(122, 25);
             this.LinkLabel_SEGACarnival.TabIndex = 187;
@@ -2692,7 +2692,7 @@ namespace Unify.Environment3
             this.LinkLabel_Testers_Radfordhound.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
             this.LinkLabel_Testers_Radfordhound.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.LinkLabel_Testers_Radfordhound.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Testers_Radfordhound.Location = new System.Drawing.Point(30, 556);
+            this.LinkLabel_Testers_Radfordhound.Location = new System.Drawing.Point(30, 582);
             this.LinkLabel_Testers_Radfordhound.Name = "LinkLabel_Testers_Radfordhound";
             this.LinkLabel_Testers_Radfordhound.Size = new System.Drawing.Size(129, 25);
             this.LinkLabel_Testers_Radfordhound.TabIndex = 186;
@@ -2707,7 +2707,7 @@ namespace Unify.Environment3
             this.LinkLabel_Velcomia.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
             this.LinkLabel_Velcomia.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.LinkLabel_Velcomia.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Velcomia.Location = new System.Drawing.Point(30, 531);
+            this.LinkLabel_Velcomia.Location = new System.Drawing.Point(30, 557);
             this.LinkLabel_Velcomia.Name = "LinkLabel_Velcomia";
             this.LinkLabel_Velcomia.Size = new System.Drawing.Size(83, 25);
             this.LinkLabel_Velcomia.TabIndex = 185;
@@ -2722,7 +2722,7 @@ namespace Unify.Environment3
             this.LinkLabel_Melpontro.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
             this.LinkLabel_Melpontro.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.LinkLabel_Melpontro.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Melpontro.Location = new System.Drawing.Point(30, 482);
+            this.LinkLabel_Melpontro.Location = new System.Drawing.Point(30, 508);
             this.LinkLabel_Melpontro.Name = "LinkLabel_Melpontro";
             this.LinkLabel_Melpontro.Size = new System.Drawing.Size(96, 25);
             this.LinkLabel_Melpontro.TabIndex = 184;
@@ -2737,7 +2737,7 @@ namespace Unify.Environment3
             this.LinkLabel_sharu6262.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
             this.LinkLabel_sharu6262.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.LinkLabel_sharu6262.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_sharu6262.Location = new System.Drawing.Point(30, 457);
+            this.LinkLabel_sharu6262.Location = new System.Drawing.Point(30, 483);
             this.LinkLabel_sharu6262.Name = "LinkLabel_sharu6262";
             this.LinkLabel_sharu6262.Size = new System.Drawing.Size(95, 25);
             this.LinkLabel_sharu6262.TabIndex = 183;
@@ -2752,7 +2752,7 @@ namespace Unify.Environment3
             this.LinkLabel_AssemblyPP.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
             this.LinkLabel_AssemblyPP.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.LinkLabel_AssemblyPP.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_AssemblyPP.Location = new System.Drawing.Point(30, 333);
+            this.LinkLabel_AssemblyPP.Location = new System.Drawing.Point(30, 359);
             this.LinkLabel_AssemblyPP.Name = "LinkLabel_AssemblyPP";
             this.LinkLabel_AssemblyPP.Size = new System.Drawing.Size(113, 25);
             this.LinkLabel_AssemblyPP.TabIndex = 182;
@@ -2767,7 +2767,7 @@ namespace Unify.Environment3
             this.LinkLabel_Microsoft.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
             this.LinkLabel_Microsoft.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.LinkLabel_Microsoft.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Microsoft.Location = new System.Drawing.Point(30, 308);
+            this.LinkLabel_Microsoft.Location = new System.Drawing.Point(30, 334);
             this.LinkLabel_Microsoft.Name = "LinkLabel_Microsoft";
             this.LinkLabel_Microsoft.Size = new System.Drawing.Size(88, 25);
             this.LinkLabel_Microsoft.TabIndex = 181;
@@ -2854,7 +2854,7 @@ namespace Unify.Environment3
             // 
             this.Label_Testers.AutoSize = true;
             this.Label_Testers.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_Testers.Location = new System.Drawing.Point(9, 457);
+            this.Label_Testers.Location = new System.Drawing.Point(9, 483);
             this.Label_Testers.Name = "Label_Testers";
             this.Label_Testers.Size = new System.Drawing.Size(150, 150);
             this.Label_Testers.TabIndex = 39;
@@ -2864,7 +2864,7 @@ namespace Unify.Environment3
             // 
             this.Title_Testers.AutoSize = true;
             this.Title_Testers.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.Title_Testers.Location = new System.Drawing.Point(6, 403);
+            this.Title_Testers.Location = new System.Drawing.Point(6, 429);
             this.Title_Testers.Name = "Title_Testers";
             this.Title_Testers.Size = new System.Drawing.Size(118, 45);
             this.Title_Testers.TabIndex = 38;
@@ -2874,7 +2874,7 @@ namespace Unify.Environment3
             // 
             this.Label_SpecialThanks.AutoSize = true;
             this.Label_SpecialThanks.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_SpecialThanks.Location = new System.Drawing.Point(9, 308);
+            this.Label_SpecialThanks.Location = new System.Drawing.Point(9, 334);
             this.Label_SpecialThanks.Name = "Label_SpecialThanks";
             this.Label_SpecialThanks.Size = new System.Drawing.Size(294, 75);
             this.Label_SpecialThanks.TabIndex = 37;
@@ -2885,7 +2885,7 @@ namespace Unify.Environment3
             // 
             this.Title_SpecialThanks.AutoSize = true;
             this.Title_SpecialThanks.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.Title_SpecialThanks.Location = new System.Drawing.Point(6, 254);
+            this.Title_SpecialThanks.Location = new System.Drawing.Point(6, 280);
             this.Title_SpecialThanks.Name = "Title_SpecialThanks";
             this.Title_SpecialThanks.Size = new System.Drawing.Size(228, 45);
             this.Title_SpecialThanks.TabIndex = 36;
@@ -2897,7 +2897,7 @@ namespace Unify.Environment3
             this.Label_Contributors.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.Label_Contributors.Location = new System.Drawing.Point(9, 60);
             this.Label_Contributors.Name = "Label_Contributors";
-            this.Label_Contributors.Size = new System.Drawing.Size(442, 175);
+            this.Label_Contributors.Size = new System.Drawing.Size(442, 200);
             this.Label_Contributors.TabIndex = 35;
             this.Label_Contributors.Text = resources.GetString("Label_Contributors.Text");
             // 
@@ -2926,7 +2926,7 @@ namespace Unify.Environment3
             // 
             // Panel_About_UICleanSpace
             // 
-            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 606);
+            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 632);
             this.Panel_About_UICleanSpace.Name = "Panel_About_UICleanSpace";
             this.Panel_About_UICleanSpace.Size = new System.Drawing.Size(214, 17);
             this.Panel_About_UICleanSpace.TabIndex = 175;
