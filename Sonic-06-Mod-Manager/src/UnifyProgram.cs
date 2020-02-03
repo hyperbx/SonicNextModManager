@@ -37,24 +37,34 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber    = "Version 3.04",
-                                      VersionNumberDev = $"Version 3.04-indev-{DateTime.Now.ToString("ddMMyy")}r1";
+        public static readonly string VersionNumber    = "Version 3.05",
+                                      VersionNumberDev = $"Version 3.05-indev-{DateTime.Now.ToString("ddMMyy")}r1";
 
-        public static string ApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                             Arctool         = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
-                             XexTool         = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
-                             pkgtool         = $"{ApplicationData}\\Unify\\Tools\\pkgtool.exe",
-                             vcruntime       = $"{ApplicationData}\\Unify\\Tools\\vcruntime140_1.dll",
-                             unlub           = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
-                             Patches         = $"{ApplicationData}\\Unify\\Patches\\",
-                             ProtocolManager = $"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe";
+        public static string ApplicationData    = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                             Arctool            = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
+                             XexTool            = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
+                             pkgtool            = $"{ApplicationData}\\Unify\\Tools\\pkgtool.exe",
+                             vcruntime          = $"{ApplicationData}\\Unify\\Tools\\vcruntime140_1.dll",
+                             unlub              = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
+                             Patches            = $"{ApplicationData}\\Unify\\Patches\\",
+                             ProtocolManager    = $"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe",
+                             scetool            = $"{ApplicationData}\\Unify\\Tools\\scetool.exe",
+                             zlib               = $"{ApplicationData}\\Unify\\Tools\\zlib1.dll",
+                             make_fself         = $"{ApplicationData}\\Unify\\Tools\\make_fself.exe",
+                             scetool_keys       = $"{ApplicationData}\\Unify\\Tools\\data\\keys",
+                             scetool_ldr_curves = $"{ApplicationData}\\Unify\\Tools\\data\\ldr_curves",
+                             scetool_vsh_curves = $"{ApplicationData}\\Unify\\Tools\\data\\vsh_curves";
 
         [STAThread]
 
         static void Main(string[] args) {
-            // Write required pre-requisites to the Tools directory
+
+            #region Write required pre-requisites to the Tools directory
             if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\"))
                 Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\");
+
+            if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\data\\"))
+                Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\data\\");
 
             if (!Directory.Exists(Patches))
                 Directory.CreateDirectory(Patches);
@@ -76,6 +86,25 @@ namespace Unify.Environment3
 
             if (!File.Exists(ProtocolManager))
                 File.WriteAllBytes(ProtocolManager, Properties.Resources.Protocol_Manager);
+
+            if (!File.Exists(scetool))
+                File.WriteAllBytes(scetool, Properties.Resources.scetool);
+
+            if (!File.Exists(zlib))
+                File.WriteAllBytes(zlib, Properties.Resources.zlib1);
+
+            if (!File.Exists(make_fself))
+                File.WriteAllBytes(make_fself, Properties.Resources.make_fself);
+
+            if (!File.Exists(scetool_keys))
+                File.WriteAllBytes(scetool_keys, Properties.Resources.keys);
+
+            if (!File.Exists(scetool_ldr_curves))
+                File.WriteAllBytes(scetool_ldr_curves, Properties.Resources.ldr_curves);
+
+            if (!File.Exists(scetool_vsh_curves))
+                File.WriteAllBytes(scetool_vsh_curves, Properties.Resources.vsh_curves);
+            #endregion
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -366,116 +366,132 @@ namespace Unify.Patcher
         public static void InstallPatches(string patch, string name) {
             string platform = Lua.DeserialiseParameter("Platform", patch, true); // Deserialise 'Platform' parameter
 
-            //Skip the patch if the platform is invalid
+            bool allSystemsMode = platform == "All Systems",
+                 systemReached  = false;
+
+            // Skip the patch if the platform is invalid
             string system = Literal.System(Properties.Settings.Default.Path_GameDirectory);
-            if (system != platform && platform != "All Systems") {
+            if (system != platform && !allSystemsMode) {
                 ModEngine.skipped.Add($"► {name} (failed because the patch was not targeted for the {system})");
                 return;
             }
 
+            // Begin reading patch script
             using (StreamReader patchScript = new StreamReader(patch, Encoding.Default)) {
                 string line;
                 while ((line = patchScript.ReadLine()) != null) {
 
-                    if (line.StartsWith("BeginBlock")) {
-                        string _BeginBlock = Lua.DeserialiseParameter("BeginBlock", line, false); // Deserialise 'BeginBlock' parameter
+                    // If the platform is 'All Systems' then check if it shall proceed if labels are involved
+                    if (allSystemsMode) {
+                        if (line.StartsWith("All Systems") || line.StartsWith(Literal.System(Properties.Settings.Default.Path_GameDirectory))) systemReached = true;
+                        else if (line.StartsWith(Literal.OppositeSystem(Properties.Settings.Default.Path_GameDirectory))) systemReached = false;
+                    } else
+                        // System is specific, so proceed as normal
+                        systemReached = true;
 
-                        if (_BeginBlock != string.Empty)
-                            BeginBlock(Literal.CoreReplace(_BeginBlock));
-                    }
+                    if (systemReached) {
+                        if (line.StartsWith("BeginBlock")) {
+                            string _BeginBlock = Lua.DeserialiseParameter("BeginBlock", line, false); // Deserialise 'BeginBlock' parameter
 
-                    if (line.StartsWith("Dec")) {
-                        string _DecryptXEX    = Lua.DeserialiseParameter("DecryptXEX", line, false),    // Deserialise 'DecryptXEX' parameter
-                               _DecompressXEX = Lua.DeserialiseParameter("DecompressXEX", line, false); // Deserialise 'DecompressXEX' parameter
+                            if (_BeginBlock != string.Empty)
+                                BeginBlock(Literal.CoreReplace(_BeginBlock));
+                        }
 
-                        if (line.StartsWith("DecryptXEX") && _DecryptXEX.Length != 0)
-                            DecryptXEX(Literal.CoreReplace(_DecryptXEX));
-                        else if (line.StartsWith("DecompressXEX") && _DecompressXEX.Length != 0)
-                            DecompressXEX(Literal.CoreReplace(_DecompressXEX));
-                    }
+                        if (line.StartsWith("Dec")) {
+                            if (line.StartsWith("DecryptExecutable"))
+                                DecryptExecutable();
+                            else if (line.StartsWith("DecompressExecutable"))
+                                DecompressExecutable();
+                        }
 
-                    if (line.StartsWith("Write")) {
-                        string[] _WriteByte   = Lua.DeserialiseParameterList("WriteByte", line, false),   // Deserialise 'WriteByte' parameter
-                                 _WriteNopPPC = Lua.DeserialiseParameterList("WriteNopPPC", line, false), // Deserialise 'WriteNopPPC' parameter
-                                 _WriteBase64 = Lua.DeserialiseParameterList("WriteBase64", line, false); // Deserialise 'WriteBase64' parameter
+                        if (line.StartsWith("Enc")) {
+                            if (line.StartsWith("EncryptExecutable"))
+                                EncryptExecutable();
+                        }
 
-                        if (line.StartsWith("WriteByte") && _WriteByte.Length != 0)
-                            WriteByte(Literal.CoreReplace(_WriteByte[0]), Convert.ToInt32(_WriteByte[1], 16), Convert.ToByte(_WriteByte[2], 16));
-                        else if (line.StartsWith("WriteNopPPC") && _WriteNopPPC.Length != 0)
-                            WriteNopPPC(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16));
-                        else if (line.StartsWith("WriteBase64") && _WriteBase64.Length != 0)
-                            WriteBase64(Literal.CoreReplace(_WriteBase64[0]), _WriteBase64[1]);
-                    }
+                        if (line.StartsWith("Write")) {
+                            string[] _WriteByte   = Lua.DeserialiseParameterList("WriteByte", line, false),   // Deserialise 'WriteByte' parameter
+                                     _WriteNopPPC = Lua.DeserialiseParameterList("WriteNopPPC", line, false), // Deserialise 'WriteNopPPC' parameter
+                                     _WriteBase64 = Lua.DeserialiseParameterList("WriteBase64", line, false); // Deserialise 'WriteBase64' parameter
 
-                    if (line.StartsWith("Rename")) {
-                        string[] _Rename            = Lua.DeserialiseParameterList("Rename", line, false),            // Deserialise 'Rename' parameter
-                                 _RenameByExtension = Lua.DeserialiseParameterList("RenameByExtension", line, false); // Deserialise 'RenameByExtension' parameter
+                            if (line.StartsWith("WriteByte") && _WriteByte.Length != 0)
+                                WriteByte(Literal.CoreReplace(_WriteByte[0]), Convert.ToInt32(_WriteByte[1], 16), Convert.ToByte(_WriteByte[2], 16));
+                            else if (line.StartsWith("WriteNopPPC") && _WriteNopPPC.Length != 0)
+                                WriteNopPPC(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16));
+                            else if (line.StartsWith("WriteBase64") && _WriteBase64.Length != 0)
+                                WriteBase64(Literal.CoreReplace(_WriteBase64[0]), _WriteBase64[1]);
+                        }
 
-                        if (line.StartsWith("RenameByExtension") && _RenameByExtension.Length != 0)
-                            RenameByExtension(Literal.CoreReplace(_RenameByExtension[0]), _RenameByExtension[1], _RenameByExtension[2]);
-                        else if (_Rename.Length != 0)
-                            Rename(Literal.CoreReplace(_Rename[0]), _Rename[1]);
-                    }
+                        if (line.StartsWith("Rename")) {
+                            string[] _Rename            = Lua.DeserialiseParameterList("Rename", line, false),            // Deserialise 'Rename' parameter
+                                     _RenameByExtension = Lua.DeserialiseParameterList("RenameByExtension", line, false); // Deserialise 'RenameByExtension' parameter
 
-                    if (line.StartsWith("Copy")) {
-                        string[] _Copy = Lua.DeserialiseParameterList("Copy", line, false); // Deserialise 'Copy' parameter
+                            if (line.StartsWith("RenameByExtension") && _RenameByExtension.Length != 0)
+                                RenameByExtension(Literal.CoreReplace(_RenameByExtension[0]), _RenameByExtension[1], _RenameByExtension[2]);
+                            else if (_Rename.Length != 0)
+                                Rename(Literal.CoreReplace(_Rename[0]), _Rename[1]);
+                        }
 
-                        if (_Copy.Length != 0)
-                            Copy(Literal.CoreReplace(_Copy[0]), Literal.CoreReplace(_Copy[1]), bool.Parse(_Copy[2]));
-                    }
+                        if (line.StartsWith("Copy")) {
+                            string[] _Copy = Lua.DeserialiseParameterList("Copy", line, false); // Deserialise 'Copy' parameter
 
-                    if (line.StartsWith("Delete")) {
-                        string _Delete = Lua.DeserialiseParameter("Delete", line, false); // Deserialise 'Delete' parameter
+                            if (_Copy.Length != 0)
+                                Copy(Literal.CoreReplace(_Copy[0]), Literal.CoreReplace(_Copy[1]), bool.Parse(_Copy[2]));
+                        }
 
-                        if (_Delete != string.Empty)
-                            Delete(Literal.CoreReplace(_Delete));
-                    }
+                        if (line.StartsWith("Delete")) {
+                            string _Delete = Lua.DeserialiseParameter("Delete", line, false); // Deserialise 'Delete' parameter
 
-                    if (line.StartsWith("Ignore")) {
-                        string[] _Ignore = Lua.DeserialiseParameterList("Ignore", line, false); // Deserialise 'Ignore' parameter
+                            if (_Delete != string.Empty)
+                                Delete(Literal.CoreReplace(_Delete));
+                        }
 
-                        if (_Ignore.Length != 0)
-                            _ignoreList = _Ignore.ToList();
-                    }
+                        if (line.StartsWith("Ignore")) {
+                            string[] _Ignore = Lua.DeserialiseParameterList("Ignore", line, false); // Deserialise 'Ignore' parameter
 
-                    if (line.StartsWith("Parameter")) {
-                        string[] _ParameterAdd = Lua.DeserialiseParameterList("ParameterAdd", line, false),     // Deserialise 'ParameterEdit' parameter
-                                 _ParameterEdit = Lua.DeserialiseParameterList("ParameterEdit", line, false),     // Deserialise 'ParameterEdit' parameter
-                                 _ParameterErase = Lua.DeserialiseParameterList("ParameterErase", line, false),   // Deserialise 'ParameterErase' parameter
-                                 _ParameterRename = Lua.DeserialiseParameterList("ParameterRename", line, false); // Deserialise 'ParameterRename' parameter
+                            if (_Ignore.Length != 0)
+                                _ignoreList = _Ignore.ToList();
+                        }
 
-                        if (line.StartsWith("ParameterAdd") && _ParameterAdd.Length != 0)
-                            ParameterAdd(Literal.CoreReplace(_ParameterAdd[0]), _ParameterAdd[1], _ParameterAdd[2]);
-                        else if (line.StartsWith("ParameterEdit") && _ParameterEdit.Length != 0)
-                            ParameterEdit(Literal.CoreReplace(_ParameterEdit[0]), _ParameterEdit[1], _ParameterEdit[2]);
-                        else if (line.StartsWith("ParameterErase") && _ParameterErase.Length != 0)
-                            ParameterErase(Literal.CoreReplace(_ParameterErase[0]), _ParameterErase[1]);
-                        else if (line.StartsWith("ParameterRename") && _ParameterRename.Length != 0)
-                            ParameterRename(Literal.CoreReplace(_ParameterRename[0]), _ParameterRename[1], _ParameterRename[2]);
-                    }
+                        if (line.StartsWith("Parameter")) {
+                            string[] _ParameterAdd = Lua.DeserialiseParameterList("ParameterAdd", line, false),     // Deserialise 'ParameterEdit' parameter
+                                     _ParameterEdit = Lua.DeserialiseParameterList("ParameterEdit", line, false),     // Deserialise 'ParameterEdit' parameter
+                                     _ParameterErase = Lua.DeserialiseParameterList("ParameterErase", line, false),   // Deserialise 'ParameterErase' parameter
+                                     _ParameterRename = Lua.DeserialiseParameterList("ParameterRename", line, false); // Deserialise 'ParameterRename' parameter
 
-                    if (line.StartsWith("StringReplace")) {
-                        string[] _StringReplace = Lua.DeserialiseParameterList("StringReplace", line, false); // Deserialise 'StringReplace' parameter
+                            if (line.StartsWith("ParameterAdd") && _ParameterAdd.Length != 0)
+                                ParameterAdd(Literal.CoreReplace(_ParameterAdd[0]), _ParameterAdd[1], _ParameterAdd[2]);
+                            else if (line.StartsWith("ParameterEdit") && _ParameterEdit.Length != 0)
+                                ParameterEdit(Literal.CoreReplace(_ParameterEdit[0]), _ParameterEdit[1], _ParameterEdit[2]);
+                            else if (line.StartsWith("ParameterErase") && _ParameterErase.Length != 0)
+                                ParameterErase(Literal.CoreReplace(_ParameterErase[0]), _ParameterErase[1]);
+                            else if (line.StartsWith("ParameterRename") && _ParameterRename.Length != 0)
+                                ParameterRename(Literal.CoreReplace(_ParameterRename[0]), _ParameterRename[1], _ParameterRename[2]);
+                        }
 
-                        if (_StringReplace.Length != 0)
-                            StringReplace(Literal.CoreReplace(_StringReplace[0]), _StringReplace[1], _StringReplace[2]);
-                    }
+                        if (line.StartsWith("StringReplace")) {
+                            string[] _StringReplace = Lua.DeserialiseParameterList("StringReplace", line, false); // Deserialise 'StringReplace' parameter
 
-                    if (line.StartsWith("Package")) {
-                        string[] _PackageAdd = Lua.DeserialiseParameterList("PackageAdd", line, false), // Deserialise 'PackageAdd' parameter
-                                 _PackageEdit = Lua.DeserialiseParameterList("PackageEdit", line, false); // Deserialise 'PackageEdit' parameter
+                            if (_StringReplace.Length != 0)
+                                StringReplace(Literal.CoreReplace(_StringReplace[0]), _StringReplace[1], _StringReplace[2]);
+                        }
 
-                        if (line.StartsWith("PackageAdd") && _PackageAdd.Length != 0)
-                            PackageAdd(Literal.CoreReplace(_PackageAdd[0]), _PackageAdd[1], _PackageAdd[2], _PackageAdd[3]);
-                        else if (line.StartsWith("PackageEdit") && _PackageEdit.Length != 0)
-                            PackageEdit(Literal.CoreReplace(_PackageEdit[0]), _PackageEdit[1], _PackageEdit[2], _PackageEdit[3]);
-                    }
+                        if (line.StartsWith("Package")) {
+                            string[] _PackageAdd = Lua.DeserialiseParameterList("PackageAdd", line, false), // Deserialise 'PackageAdd' parameter
+                                     _PackageEdit = Lua.DeserialiseParameterList("PackageEdit", line, false); // Deserialise 'PackageEdit' parameter
 
-                    if (line.StartsWith("EndBlock")) {
-                        string _EndBlock = Lua.DeserialiseParameter("EndBlock", line, false); // Deserialise 'EndBlock' parameter
+                            if (line.StartsWith("PackageAdd") && _PackageAdd.Length != 0)
+                                PackageAdd(Literal.CoreReplace(_PackageAdd[0]), _PackageAdd[1], _PackageAdd[2], _PackageAdd[3]);
+                            else if (line.StartsWith("PackageEdit") && _PackageEdit.Length != 0)
+                                PackageEdit(Literal.CoreReplace(_PackageEdit[0]), _PackageEdit[1], _PackageEdit[2], _PackageEdit[3]);
+                        }
 
-                        if (_EndBlock != string.Empty)
-                            EndBlock();
+                        if (line.StartsWith("EndBlock")) {
+                            string _EndBlock = Lua.DeserialiseParameter("EndBlock", line, false); // Deserialise 'EndBlock' parameter
+
+                            if (_EndBlock != string.Empty)
+                                EndBlock();
+                        }
                     }
                 }
             }
@@ -522,37 +538,45 @@ namespace Unify.Patcher
             _archive = _archiveLocation = string.Empty;
         }
 
-        private static void DecryptXEX(string location) {
-            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else {
-                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+        private static void EncryptExecutable() {
+            string gameDirectory = Properties.Settings.Default.Path_GameDirectory;
 
-                if (!File.Exists($"{location}_back"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
-            }
+            if (!File.Exists($"{gameDirectory}_back"))
+                if (File.Exists(gameDirectory)) File.Copy(gameDirectory, $"{gameDirectory}_back");
 
-            XEX.Decrypt(location);
+            if (Literal.System(gameDirectory) == "Xbox 360")           XEX.Encrypt(gameDirectory);
+            else if (Literal.System(gameDirectory) == "PlayStation 3") EBOOT.Encrypt(gameDirectory);
         }
 
-        private static void DecompressXEX(string location) {
-            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
-            else {
-                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+        private static void DecryptExecutable() {
+            string gameDirectory = Properties.Settings.Default.Path_GameDirectory;
 
-                if (!File.Exists($"{location}_back"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
-            }
+            if (!File.Exists($"{gameDirectory}_back"))
+                if (File.Exists(gameDirectory)) File.Copy(gameDirectory, $"{gameDirectory}_back");
 
-            XEX.Decompress(location);
+            if (Literal.System(gameDirectory) == "Xbox 360")           XEX.Decrypt(gameDirectory);
+            else if (Literal.System(gameDirectory) == "PlayStation 3") EBOOT.Decrypt(gameDirectory);
+        }
+
+        private static void DecompressExecutable() {
+            string gameDirectory = Properties.Settings.Default.Path_GameDirectory;
+
+            if (!File.Exists($"{gameDirectory}_back"))
+                if (File.Exists(gameDirectory)) File.Copy(gameDirectory, $"{gameDirectory}_back");
+
+            if (Literal.System(gameDirectory) == "Xbox 360") XEX.Decompress(gameDirectory);
         }
 
         private static void WriteByte(string location, long offset, byte _byte) {
-            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+            if (location == "Executable") location = Properties.Settings.Default.Path_GameDirectory;
             else {
-                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+                if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+                else {
+                    location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
+                    if (!File.Exists($"{location}_back"))
+                        if (File.Exists(location)) File.Copy(location, $"{location}_back");
+                }
             }
 
             if (File.Exists(location))
@@ -562,12 +586,15 @@ namespace Unify.Patcher
         }
 
         private static void WriteNopPPC(string location, long offset) {
-            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+            if (location == "Executable") location = Properties.Settings.Default.Path_GameDirectory;
             else {
-                location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+                if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+                else {
+                    location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
 
-                if (!File.Exists($"{location}_back"))
-                    if (File.Exists(location)) File.Copy(location, $"{location}_back");
+                    if (!File.Exists($"{location}_back"))
+                        if (File.Exists(location)) File.Copy(location, $"{location}_back");
+                }
             }
 
             if (File.Exists(location)) {
@@ -1317,8 +1344,55 @@ namespace Unify.Patcher
         }
     }
 
+    class EBOOT
+    {
+        public static void Encrypt(string filepath) {
+            string encryptedLocation = Path.ChangeExtension(filepath, "BIN_encrypt");
+
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = Program.make_fself,
+                Arguments = $"\"{filepath}\" \"{encryptedLocation}\""
+            };
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+
+            if (File.Exists(encryptedLocation)) {
+                File.Delete(filepath);
+                File.Move(encryptedLocation, filepath);
+            }
+        }
+
+        public static void Decrypt(string filepath) {
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = Program.scetool,
+                Arguments = $"-d \"{filepath}\" \"{filepath}\"",
+                WorkingDirectory = Path.GetDirectoryName(Program.scetool)
+            };
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+        }
+    }
+
     class XEX
     {
+        public static void Encrypt(string filepath) {
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = Program.XexTool,
+                Arguments = $"-e e \"{filepath}\""
+            };
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+        }
+
         public static void Decrypt(string filepath) {
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo {

@@ -261,6 +261,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="res\Applications\data\keys" />
+    <None Include="res\Applications\data\ldr_curves" />
+    <None Include="res\Applications\data\vsh_curves" />
     <None Include="res\Scripts\optimised_render_main.lub" />
     <None Include="res\Scripts\render_cheap.lub" />
     <None Include="res\Scripts\vulkan_render_gamemode.lub" />
@@ -271,11 +274,14 @@
   <ItemGroup>
     <Content Include="license.txt" />
     <Content Include="res\Applications\arctool.exe" />
+    <Content Include="res\Applications\make_fself.exe" />
     <Content Include="res\Applications\pkgtool.exe" />
     <Content Include="res\Applications\Protocol Manager.exe" />
+    <Content Include="res\Applications\scetool.exe" />
     <Content Include="res\Applications\unlub.jar" />
     <Content Include="res\Applications\vcruntime140_1.dll" />
     <Content Include="res\Applications\xextool.exe" />
+    <Content Include="res\Applications\zlib1.dll" />
     <Content Include="res\Icons\error.ico" />
     <Content Include="res\Icons\logo_main_icon.ico" />
     <Content Include="res\Images\Cancel_16x.png" />

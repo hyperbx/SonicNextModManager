@@ -181,11 +181,20 @@
   <data name="InstallMods" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\installmods.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="keys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\data\keys;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ldr_curves" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\data\ldr_curves;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_main_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\icons\logo_main_icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="make_fself" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\make_fself.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Menu_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\menu_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -229,6 +238,9 @@
   <data name="Run_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\run_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="scetool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\scetool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="unlub" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\applications\unlub.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -244,6 +256,9 @@
   <data name="VersionURI_SEGACarnival" xml:space="preserve">
     <value>https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/latest.txt</value>
   </data>
+  <data name="vsh_curves" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\data\vsh_curves;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="vulkan_render_gamemode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\scripts\vulkan_render_gamemode.lub;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -255,5 +270,8 @@
   </data>
   <data name="xextool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\applications\xextool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="zlib1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\applications\zlib1.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

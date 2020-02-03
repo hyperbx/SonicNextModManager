@@ -51,6 +51,15 @@ namespace Unify.Globalisation
         }
 
         /// <summary>
+        /// Returns the opposite system.
+        /// </summary>
+        public static string OppositeSystem(string path) {
+            if (System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") return "PlayStation 3";
+            else if (System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") return "Xbox 360";
+            else return "unspecified";
+        }
+
+        /// <summary>
         /// Translates a file extension to 'Xenia' or 'RPCS3'
         /// </summary>
         public static string Emulator(string path) {

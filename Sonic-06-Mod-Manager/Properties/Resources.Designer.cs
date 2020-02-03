@@ -295,6 +295,26 @@ namespace Unify.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] keys {
+            get {
+                object obj = ResourceManager.GetObject("keys", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ldr_curves {
+            get {
+                object obj = ResourceManager.GetObject("ldr_curves", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Logo {
@@ -311,6 +331,16 @@ namespace Unify.Properties {
             get {
                 object obj = ResourceManager.GetObject("logo_main_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] make_fself {
+            get {
+                object obj = ResourceManager.GetObject("make_fself", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -456,6 +486,16 @@ namespace Unify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] scetool {
+            get {
+                object obj = ResourceManager.GetObject("scetool", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] unlub {
             get {
                 object obj = ResourceManager.GetObject("unlub", resourceCulture);
@@ -504,6 +544,16 @@ namespace Unify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] vsh_curves {
+            get {
+                object obj = ResourceManager.GetObject("vsh_curves", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] vulkan_render_gamemode {
             get {
                 object obj = ResourceManager.GetObject("vulkan_render_gamemode", resourceCulture);
@@ -537,6 +587,16 @@ namespace Unify.Properties {
         internal static byte[] xextool {
             get {
                 object obj = ResourceManager.GetObject("xextool", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] zlib1 {
+            get {
+                object obj = ResourceManager.GetObject("zlib1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
