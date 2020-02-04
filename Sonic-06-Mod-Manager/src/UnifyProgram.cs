@@ -37,8 +37,8 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber    = "Version 3.05",
-                                      VersionNumberDev = $"Version 3.05-indev-{DateTime.Now.ToString("ddMMyy")}r1";
+        public static readonly string VersionNumberDev    = "Version 3.05",
+                                      VersionNumber       = $"Version 3.06-indev-{DateTime.Now.ToString("ddMMyy")}r1";
 
         public static string ApplicationData    = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                              Arctool            = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",

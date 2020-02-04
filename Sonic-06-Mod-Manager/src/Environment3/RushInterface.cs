@@ -123,6 +123,13 @@ namespace Unify.Environment3
         {
             if (!DesignMode) {
 
+                #region Unsubscribe from events
+                // Prevents replacement values being saved
+                NumericUpDown_CameraDistance.ValueChanged -= NumericUpDown_Tweaks_ValueChanged;
+                NumericUpDown_CameraHeight.ValueChanged -= NumericUpDown_Tweaks_ValueChanged;
+                NumericUpDown_FieldOfView.ValueChanged -= NumericUpDown_Tweaks_ValueChanged;
+                #endregion
+
                 #region Restore label strings
                 Label_LastSoftwareUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.General_LastSoftwareUpdate);
                 Label_LastModUpdate.Text      = Literal.Date("Last checked", Properties.Settings.Default.General_LastModUpdate);
@@ -362,6 +369,13 @@ namespace Unify.Environment3
                     // Set visibility state of controls
                     Label_RPCS3Warning.Visible = true;
                 }
+                #endregion
+
+                #region Subscribe to events
+                // Prevents replacement values being saved
+                NumericUpDown_CameraDistance.ValueChanged += NumericUpDown_Tweaks_ValueChanged;
+                NumericUpDown_CameraHeight.ValueChanged += NumericUpDown_Tweaks_ValueChanged;
+                NumericUpDown_FieldOfView.ValueChanged += NumericUpDown_Tweaks_ValueChanged;
                 #endregion
 
             }
@@ -1876,6 +1890,7 @@ namespace Unify.Environment3
                     NumericUpDown_FieldOfView.Value = 90;
                 }
             }
+
             Properties.Settings.Default.Save();
         }
 
@@ -1910,11 +1925,16 @@ namespace Unify.Environment3
                 Properties.Settings.Default.Tweak_AntiAliasing = 1;
 
             // Reset Camera Type
-            else if (sender == Button_CameraType_Default)
+            else if (sender == Button_CameraType_Default) {
                 Properties.Settings.Default.Tweak_CameraType = 0;
+                Properties.Settings.Default.Tweak_CameraDistance = 650;
+                Properties.Settings.Default.Tweak_CameraHeight = 70;
+                Properties.Settings.Default.Tweak_FieldOfView = 90;
+            }
 
             // Reset Camera Distance
-            else if (sender == Button_CameraDistance_Default) {
+            else if (sender == Button_CameraDistance_Default)
+            {
                 if (ComboBox_CameraType.SelectedIndex == 0) // Retail
                     Properties.Settings.Default.Tweak_CameraDistance = 650;
                 else if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
@@ -1927,7 +1947,8 @@ namespace Unify.Environment3
             }
 
             // Reset Camera Height
-            else if (sender == Button_CameraHeight_Default) {
+            else if (sender == Button_CameraHeight_Default)
+            {
                 if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
                     Properties.Settings.Default.Tweak_CameraHeight = 32.5m;
                 else // Retail
@@ -1935,7 +1956,8 @@ namespace Unify.Environment3
             }
 
             // Reset Field of View
-            else if (sender == Button_FieldOfView_Default) {
+            else if (sender == Button_FieldOfView_Default)
+            {
                 if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
                     if (isXbox360) // Xbox 360 supports FOV changes
                         Properties.Settings.Default.Tweak_FieldOfView = 110;
