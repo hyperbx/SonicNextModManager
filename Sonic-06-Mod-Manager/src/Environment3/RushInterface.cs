@@ -768,7 +768,7 @@ namespace Unify.Environment3
                     SectionButton_DeselectAll();
                     Rush_Section_Updates.SelectedSection = true;
                     TabControl_Rush.SelectedTab = Tab_Section_Updates;
-                    TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Patches_UICleanSpace);
+                    TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Updates_UICleanSpace);
 
                     // Check for updates...
                     await CheckForModUpdates(ListView_ModsList.FocusedItem.SubItems[6].Text);
@@ -1459,7 +1459,7 @@ namespace Unify.Environment3
         private async Task UpdatePatches() {
             // Set controls enabled and visibility state
             SectionButton_FetchPatches.Enabled = false;
-            TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Patches_UICleanSpace);
+            TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Updates_UICleanSpace);
 
             try {
                 //Clone Sonic '06 Mod Manager Patches repository from GitHub

@@ -138,6 +138,7 @@ namespace Unify.Environment3
             this.SectionButton_ClearLog = new Unify.Environment3.SectionButton();
             this.ListBox_Debug = new System.Windows.Forms.ListBox();
             this.Tab_Section_Updates = new System.Windows.Forms.TabPage();
+            this.Panel_Updates_UICleanSpace = new System.Windows.Forms.Panel();
             this.SectionButton_FetchPatches = new Unify.Environment3.SectionButton();
             this.Label_LastPatchUpdate = new System.Windows.Forms.Label();
             this.Label_LastModUpdate = new System.Windows.Forms.Label();
@@ -233,7 +234,6 @@ namespace Unify.Environment3
             this.Rush_Section_Emulator = new Unify.Environment3.SectionButton();
             this.Rush_Section_Mods = new Unify.Environment3.SectionButton();
             this.Container_Rush = new Unify.Environment3.UserContainer();
-            this.Panel_Patches_UICleanSpace = new System.Windows.Forms.Panel();
             this.Panel_MainControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_MainControls)).BeginInit();
             this.SplitContainer_MainControls.Panel1.SuspendLayout();
@@ -352,7 +352,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1056, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1059, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -458,7 +458,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1727, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1730, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1032,7 +1032,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1124, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1127, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1733,7 +1733,7 @@ namespace Unify.Environment3
             // 
             this.Tab_Section_Updates.AutoScroll = true;
             this.Tab_Section_Updates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.Tab_Section_Updates.Controls.Add(this.Panel_Patches_UICleanSpace);
+            this.Tab_Section_Updates.Controls.Add(this.Panel_Updates_UICleanSpace);
             this.Tab_Section_Updates.Controls.Add(this.SectionButton_FetchPatches);
             this.Tab_Section_Updates.Controls.Add(this.Label_LastPatchUpdate);
             this.Tab_Section_Updates.Controls.Add(this.Label_LastModUpdate);
@@ -1755,6 +1755,13 @@ namespace Unify.Environment3
             this.Tab_Section_Updates.TabIndex = 6;
             this.Tab_Section_Updates.Tag = "HideControls";
             this.Tab_Section_Updates.Text = "Updates";
+            // 
+            // Panel_Updates_UICleanSpace
+            // 
+            this.Panel_Updates_UICleanSpace.Location = new System.Drawing.Point(14, 993);
+            this.Panel_Updates_UICleanSpace.Name = "Panel_Updates_UICleanSpace";
+            this.Panel_Updates_UICleanSpace.Size = new System.Drawing.Size(214, 8);
+            this.Panel_Updates_UICleanSpace.TabIndex = 176;
             // 
             // SectionButton_FetchPatches
             // 
@@ -3029,13 +3036,6 @@ namespace Unify.Environment3
             this.Container_Rush.TabIndex = 17;
             this.Container_Rush.Title = "Mods";
             // 
-            // Panel_Patches_UICleanSpace
-            // 
-            this.Panel_Patches_UICleanSpace.Location = new System.Drawing.Point(14, 993);
-            this.Panel_Patches_UICleanSpace.Name = "Panel_Patches_UICleanSpace";
-            this.Panel_Patches_UICleanSpace.Size = new System.Drawing.Size(214, 8);
-            this.Panel_Patches_UICleanSpace.TabIndex = 176;
-            // 
             // RushInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3311,6 +3311,6 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label Label_Description_Snapshot;
         private System.Windows.Forms.Panel Panel_MainControls;
         private System.Windows.Forms.SplitContainer SplitContainer_MainControls;
-        private System.Windows.Forms.Panel Panel_Patches_UICleanSpace;
+        private System.Windows.Forms.Panel Panel_Updates_UICleanSpace;
     }
 }
