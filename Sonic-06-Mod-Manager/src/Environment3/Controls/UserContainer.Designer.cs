@@ -30,12 +30,9 @@
         {
             this.Container_Control = new System.Windows.Forms.SplitContainer();
             this.Label_Title = new System.Windows.Forms.Label();
-            this.Image_Preferences_Logo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.Container_Control)).BeginInit();
             this.Container_Control.Panel1.SuspendLayout();
-            this.Container_Control.Panel2.SuspendLayout();
             this.Container_Control.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Image_Preferences_Logo)).BeginInit();
             this.SuspendLayout();
             // 
             // Container_Control
@@ -54,10 +51,6 @@
             this.Container_Control.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.Container_Control.Panel1.Controls.Add(this.Label_Title);
             this.Container_Control.Panel1MinSize = 281;
-            // 
-            // Container_Control.Panel2
-            // 
-            this.Container_Control.Panel2.Controls.Add(this.Image_Preferences_Logo);
             this.Container_Control.Panel2MinSize = 389;
             this.Container_Control.Size = new System.Drawing.Size(849, 435);
             this.Container_Control.SplitterDistance = 281;
@@ -74,17 +67,6 @@
             this.Label_Title.TabIndex = 1;
             this.Label_Title.Text = "Container";
             // 
-            // Image_Preferences_Logo
-            // 
-            this.Image_Preferences_Logo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Image_Preferences_Logo.BackgroundImage = global::Unify.Properties.Resources.Menu_Logo;
-            this.Image_Preferences_Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Image_Preferences_Logo.Location = new System.Drawing.Point(270, 173);
-            this.Image_Preferences_Logo.Name = "Image_Preferences_Logo";
-            this.Image_Preferences_Logo.Size = new System.Drawing.Size(297, 264);
-            this.Image_Preferences_Logo.TabIndex = 8;
-            this.Image_Preferences_Logo.TabStop = false;
-            // 
             // UserContainer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -96,10 +78,8 @@
             this.Size = new System.Drawing.Size(849, 435);
             this.Container_Control.Panel1.ResumeLayout(false);
             this.Container_Control.Panel1.PerformLayout();
-            this.Container_Control.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Container_Control)).EndInit();
             this.Container_Control.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Image_Preferences_Logo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -108,6 +88,5 @@
 
         private System.Windows.Forms.SplitContainer Container_Control;
         private System.Windows.Forms.Label Label_Title;
-        private System.Windows.Forms.PictureBox Image_Preferences_Logo;
     }
 }

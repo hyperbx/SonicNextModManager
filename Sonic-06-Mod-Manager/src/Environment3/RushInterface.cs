@@ -80,7 +80,7 @@ namespace Unify.Environment3
                 TabControl_Rush.Height += 23; // Increase height on load to accommodate for lack of tabs in the section controller
 
                 // Force splitter widths - because WinForms is dumb and ignores it at design time
-                SplitContainer_PatchesControls.SplitterWidth = SplitContainer_ModsControls.SplitterWidth = 1;
+                SplitContainer_ModsControls.SplitterWidth = SplitContainer_PatchesControls.SplitterWidth = SplitContainer_MainControls.SplitterWidth = 1;
                 SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
                 // If the application is a debug build, force debug mode on
@@ -224,10 +224,10 @@ namespace Unify.Environment3
                     Console.SetOut(new ListBoxWriter(ListBox_Debug));
 
                 if (CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.General_LaunchEmulator) {
-                    SectionButton_InstallMods.SectionText = "Install mods and launch Sonic '06";
+                    SectionButton_InstallMods.SectionText = "Save, install content and launch Sonic '06";
                     SectionButton_InstallMods.Refresh();
                 } else {
-                    SectionButton_InstallMods.SectionText = "Install mods";
+                    SectionButton_InstallMods.SectionText = "Save and install content";
                     SectionButton_InstallMods.Refresh();
                 }
 
@@ -536,6 +536,18 @@ namespace Unify.Environment3
             TabControl_Rush.SelectedTab.VerticalScroll.Value = 0;
             RefreshColumnSize();
 
+            if ((string)TabControl_Rush.SelectedTab.Tag == "HideControls") {
+                if (Panel_MainControls.Visible) {
+                    Panel_MainControls.Visible = false;
+                    TabControl_Rush.Height += 40;
+                }
+            } else {
+                if (!Panel_MainControls.Visible) {
+                    Panel_MainControls.Visible = true;
+                    TabControl_Rush.Height -= 40;
+                }
+            }
+
             // Clear mod updating UI to delist any mods that may be changed later
             if (TabControl_Rush.SelectedTab != Tab_Section_Updates) {
                 ListBox_UpdateLogs.Items.Clear();
@@ -756,7 +768,7 @@ namespace Unify.Environment3
                     SectionButton_DeselectAll();
                     Rush_Section_Updates.SelectedSection = true;
                     TabControl_Rush.SelectedTab = Tab_Section_Updates;
-                    TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Updates_UICleanSpace);
+                    TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Patches_UICleanSpace);
 
                     // Check for updates...
                     await CheckForModUpdates(ListView_ModsList.FocusedItem.SubItems[6].Text);
@@ -1447,7 +1459,7 @@ namespace Unify.Environment3
         private async Task UpdatePatches() {
             // Set controls enabled and visibility state
             SectionButton_FetchPatches.Enabled = false;
-            TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Updates_UICleanSpace);
+            TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Patches_UICleanSpace);
 
             try {
                 //Clone Sonic '06 Mod Manager Patches repository from GitHub
