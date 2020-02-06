@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Linq;
 using Unify.Patcher;
-using Ookii.Dialogs;
 using Unify.Dialogs;
 using System.Drawing;
 using Microsoft.Win32;
