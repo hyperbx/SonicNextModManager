@@ -163,5 +163,10 @@ namespace Unify.Serialisers
         public static bool IsDirectoryEmpty(string path) {
             return !Directory.EnumerateFileSystemEntries(path).Any();
         }
+
+        public static bool CheckLegitimacy(string path) {
+            if (Directory.Exists(path) && path != string.Empty) return true;
+            else return false;
+        }
     }
 }
