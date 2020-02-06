@@ -29,7 +29,7 @@
     <Setting Name="Path_SaveData" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Emulator_GraphicsAPI" Type="System.Int32" Scope="User">
+    <Setting Name="Emulator_API" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Emulator_ForceRTV" Type="System.Boolean" Scope="User">

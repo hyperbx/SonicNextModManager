@@ -65,7 +65,7 @@ namespace Unify.Environment3
             this.Label_Description_VerticalSync = new System.Windows.Forms.Label();
             this.Label_Description_2xResolution = new System.Windows.Forms.Label();
             this.Label_Description_ForceRTV = new System.Windows.Forms.Label();
-            this.Label_Description_GraphicsAPI = new System.Windows.Forms.Label();
+            this.Label_Description_API = new System.Windows.Forms.Label();
             this.Button_Open_SaveData = new System.Windows.Forms.Button();
             this.Button_Open_EmulatorExecutable = new System.Windows.Forms.Button();
             this.Label_RPCS3Warning = new System.Windows.Forms.Label();
@@ -75,7 +75,7 @@ namespace Unify.Environment3
             this.CheckBox_Xenia_VerticalSync = new System.Windows.Forms.CheckBox();
             this.CheckBox_Xenia_2xResolution = new System.Windows.Forms.CheckBox();
             this.CheckBox_Xenia_ForceRTV = new System.Windows.Forms.CheckBox();
-            this.Label_GraphicsAPI = new System.Windows.Forms.Label();
+            this.Label_API = new System.Windows.Forms.Label();
             this.ComboBox_API = new System.Windows.Forms.ComboBox();
             this.Label_Subtitle_Emulator_Options = new System.Windows.Forms.Label();
             this.TextBox_SaveData = new System.Windows.Forms.TextBox();
@@ -361,7 +361,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1089, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1092, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -467,7 +467,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1790, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1793, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -648,7 +648,7 @@ namespace Unify.Environment3
             this.Tab_Section_Emulator.Controls.Add(this.Label_Description_VerticalSync);
             this.Tab_Section_Emulator.Controls.Add(this.Label_Description_2xResolution);
             this.Tab_Section_Emulator.Controls.Add(this.Label_Description_ForceRTV);
-            this.Tab_Section_Emulator.Controls.Add(this.Label_Description_GraphicsAPI);
+            this.Tab_Section_Emulator.Controls.Add(this.Label_Description_API);
             this.Tab_Section_Emulator.Controls.Add(this.Button_Open_SaveData);
             this.Tab_Section_Emulator.Controls.Add(this.Button_Open_EmulatorExecutable);
             this.Tab_Section_Emulator.Controls.Add(this.Label_RPCS3Warning);
@@ -658,7 +658,7 @@ namespace Unify.Environment3
             this.Tab_Section_Emulator.Controls.Add(this.CheckBox_Xenia_VerticalSync);
             this.Tab_Section_Emulator.Controls.Add(this.CheckBox_Xenia_2xResolution);
             this.Tab_Section_Emulator.Controls.Add(this.CheckBox_Xenia_ForceRTV);
-            this.Tab_Section_Emulator.Controls.Add(this.Label_GraphicsAPI);
+            this.Tab_Section_Emulator.Controls.Add(this.Label_API);
             this.Tab_Section_Emulator.Controls.Add(this.ComboBox_API);
             this.Tab_Section_Emulator.Controls.Add(this.Label_Subtitle_Emulator_Options);
             this.Tab_Section_Emulator.Controls.Add(this.TextBox_SaveData);
@@ -802,17 +802,17 @@ namespace Unify.Environment3
             this.Label_Description_ForceRTV.TabIndex = 145;
             this.Label_Description_ForceRTV.Text = "An alternative rendering technique for DirectX 12 (not recommended).";
             // 
-            // Label_Description_GraphicsAPI
+            // Label_Description_API
             // 
-            this.Label_Description_GraphicsAPI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Description_GraphicsAPI.AutoSize = true;
-            this.Label_Description_GraphicsAPI.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Description_GraphicsAPI.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_GraphicsAPI.Location = new System.Drawing.Point(288, 205);
-            this.Label_Description_GraphicsAPI.Name = "Label_Description_GraphicsAPI";
-            this.Label_Description_GraphicsAPI.Size = new System.Drawing.Size(286, 15);
-            this.Label_Description_GraphicsAPI.TabIndex = 144;
-            this.Label_Description_GraphicsAPI.Text = "The graphics API the emulator will use to render with.";
+            this.Label_Description_API.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_API.AutoSize = true;
+            this.Label_Description_API.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_API.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_API.Location = new System.Drawing.Point(339, 205);
+            this.Label_Description_API.Name = "Label_Description_API";
+            this.Label_Description_API.Size = new System.Drawing.Size(235, 15);
+            this.Label_Description_API.TabIndex = 144;
+            this.Label_Description_API.Text = "The API the emulator will use as a backend.";
             // 
             // Button_Open_SaveData
             // 
@@ -923,15 +923,15 @@ namespace Unify.Environment3
             this.CheckBox_Xenia_ForceRTV.Text = "Force Render Target Views";
             this.CheckBox_Xenia_ForceRTV.UseVisualStyleBackColor = false;
             // 
-            // Label_GraphicsAPI
+            // Label_API
             // 
-            this.Label_GraphicsAPI.AutoSize = true;
-            this.Label_GraphicsAPI.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.Label_GraphicsAPI.Location = new System.Drawing.Point(11, 203);
-            this.Label_GraphicsAPI.Name = "Label_GraphicsAPI";
-            this.Label_GraphicsAPI.Size = new System.Drawing.Size(81, 17);
-            this.Label_GraphicsAPI.TabIndex = 60;
-            this.Label_GraphicsAPI.Text = "Graphics API";
+            this.Label_API.AutoSize = true;
+            this.Label_API.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_API.Location = new System.Drawing.Point(11, 203);
+            this.Label_API.Name = "Label_API";
+            this.Label_API.Size = new System.Drawing.Size(26, 17);
+            this.Label_API.TabIndex = 60;
+            this.Label_API.Text = "API";
             // 
             // ComboBox_API
             // 
@@ -942,7 +942,8 @@ namespace Unify.Environment3
             this.ComboBox_API.FormattingEnabled = true;
             this.ComboBox_API.Items.AddRange(new object[] {
             "DirectX 12",
-            "Vulkan (not recommended)"});
+            "Vulkan (not recommended)",
+            "Custom"});
             this.ComboBox_API.Location = new System.Drawing.Point(14, 225);
             this.ComboBox_API.Name = "ComboBox_API";
             this.ComboBox_API.Size = new System.Drawing.Size(560, 23);
@@ -1175,7 +1176,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1187, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1190, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -3316,7 +3317,7 @@ namespace Unify.Environment3
         private System.Windows.Forms.Button Button_EmulatorExecutable;
         private System.Windows.Forms.TextBox TextBox_EmulatorExecutable;
         private System.Windows.Forms.Label Label_EmulatorExecutable;
-        private System.Windows.Forms.Label Label_GraphicsAPI;
+        private System.Windows.Forms.Label Label_API;
         private System.Windows.Forms.ComboBox ComboBox_API;
         private System.Windows.Forms.Label Label_Subtitle_Emulator_Options;
         private System.Windows.Forms.CheckBox CheckBox_Xenia_Gamma;
@@ -3370,7 +3371,7 @@ namespace Unify.Environment3
         private System.Windows.Forms.LinkLabel LinkLabel_Reset;
         private System.Windows.Forms.Label Label_LastSoftwareUpdate;
         private System.Windows.Forms.ProgressBar ProgressBar_SoftwareUpdate;
-        private System.Windows.Forms.Label Label_Description_GraphicsAPI;
+        private System.Windows.Forms.Label Label_Description_API;
         private SectionButton SectionButton_RefreshMods;
         private SectionButton SectionButton_CheckForModUpdates;
         private System.Windows.Forms.ListView ListView_ModUpdates;

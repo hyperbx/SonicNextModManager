@@ -134,12 +134,12 @@ namespace Unify.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Emulator_GraphicsAPI {
+        public int Emulator_API {
             get {
-                return ((int)(this["Emulator_GraphicsAPI"]));
+                return ((int)(this["Emulator_API"]));
             }
             set {
-                this["Emulator_GraphicsAPI"] = value;
+                this["Emulator_API"] = value;
             }
         }
         

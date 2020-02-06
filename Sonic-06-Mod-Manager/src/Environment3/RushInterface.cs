@@ -169,7 +169,7 @@ namespace Unify.Environment3
                 #endregion
 
                 #region Restore combo box states
-                ComboBox_API.SelectedIndex          = Properties.Settings.Default.Emulator_GraphicsAPI;
+                ComboBox_API.SelectedIndex          = Properties.Settings.Default.Emulator_API;
                 ComboBox_UserLanguage.SelectedIndex = Properties.Settings.Default.Emulator_UserLanguage;
                 ComboBox_Reflections.SelectedIndex  = Properties.Settings.Default.Tweak_Reflections;
                 ComboBox_AntiAliasing.SelectedIndex = Properties.Settings.Default.Tweak_AntiAliasing;
@@ -288,115 +288,25 @@ namespace Unify.Environment3
 
                 #region Set controls depending on emulator
                 if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "Xenia") {
-                    if (Properties.Settings.Default.Tweak_Renderer == 0) {
-                        // Set text colour to Control
-                        Label_AntiAliasing.ForeColor = Label_Reflections.ForeColor = SystemColors.Control;
-
-                        // Set text colour to ControlDark
-                        Label_Description_AntiAliasing.ForeColor =
-                        Label_Description_Reflections.ForeColor =
-                        SystemColors.ControlDark;
-
-                        // Set enabled state of controls
-                        Button_AntiAliasing_Default.Enabled =
-                        ComboBox_AntiAliasing.Enabled =
-                        ComboBox_Reflections.Enabled =
-                        Button_Reflections_Default.Enabled =
-                        true;
-
-                        if (CheckBox_ForceMSAA.Enabled = Properties.Settings.Default.Tweak_AntiAliasing == 1)
-                            // Set text colour to ControlDark
-                            Label_Description_ForceMSAA.ForeColor = SystemColors.ControlDark;
-                        else
-                            // Set text colour to GrayText
-                            Label_Description_ForceMSAA.ForeColor = SystemColors.GrayText;
-                    }
-
-                    // Set text colour to Control
-                    Label_Subtitle_Emulator_Options.ForeColor =
-                    Label_GraphicsAPI.ForeColor =
-                    Label_FieldOfView.ForeColor =
-                    Label_UserLanguage.ForeColor =
-                    SystemColors.Control;
-
-                    // Set text colour to ControlDark
-                    Label_Description_GraphicsAPI.ForeColor =
-                    Label_Description_FieldOfView.ForeColor =
-                    Label_Description_UserLanguage.ForeColor =
-                    Label_Description_ForceRTV.ForeColor =
-                    Label_Description_2xResolution.ForeColor =
-                    Label_Description_VerticalSync.ForeColor =
-                    Label_Description_Gamma.ForeColor =
-                    Label_Description_Fullscreen.ForeColor =
-                    Label_Description_DiscordRPC.ForeColor =
-                    SystemColors.ControlDark;
-
-                    // Set enabled state of controls
-                    CheckBox_Xenia_ForceRTV.Enabled =
-                    CheckBox_Xenia_2xResolution.Enabled =
-                    CheckBox_Xenia_VerticalSync.Enabled =
-                    CheckBox_Xenia_Gamma.Enabled =
-                    CheckBox_Xenia_Fullscreen.Enabled =
-                    CheckBox_Xenia_DiscordRPC.Enabled =
-                    ComboBox_API.Enabled =
-                    NumericUpDown_FieldOfView.Enabled =
-                    Button_FieldOfView_Default.Enabled =
-                    ComboBox_UserLanguage.Enabled =
-                    CheckBox_Xenia_ForceRTV.Enabled =
-                    CheckBox_Xenia_2xResolution.Enabled =
-                    CheckBox_Xenia_VerticalSync.Enabled =
-                    CheckBox_Xenia_Gamma.Enabled =
-                    CheckBox_Xenia_Fullscreen.Enabled =
-                    CheckBox_Xenia_DiscordRPC.Enabled =
-                    true;
+                    if (Properties.Settings.Default.Emulator_API != 2)
+                        // Enables most controls in the Emulator UI
+                        EnableEmulatorInterface();
+                    else
+                        // Disables most controls in the Emulator UI
+                        DisableEmulatorInterface();
 
                     // Set visibility state of controls
                     Label_RPCS3Warning.Visible = false;
                 } else if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "RPCS3") {
-                    // Set text colour to GrayText
-                    Label_Subtitle_Emulator_Options.ForeColor =
-                    Label_Description_GraphicsAPI.ForeColor =
-                    Label_Description_FieldOfView.ForeColor =
-                    Label_Description_AntiAliasing.ForeColor =
-                    Label_Description_ForceMSAA.ForeColor =
-                    Label_Description_Reflections.ForeColor =
-                    Label_Description_UserLanguage.ForeColor =
-                    Label_Description_ForceRTV.ForeColor =
-                    Label_Description_2xResolution.ForeColor =
-                    Label_Description_VerticalSync.ForeColor =
-                    Label_Description_Gamma.ForeColor =
-                    Label_Description_Fullscreen.ForeColor =
-                    Label_Description_DiscordRPC.ForeColor =
-                    Label_AntiAliasing.ForeColor =
-                    Label_GraphicsAPI.ForeColor =
-                    Label_FieldOfView.ForeColor =
-                    Label_Reflections.ForeColor =
-                    Label_UserLanguage.ForeColor =
-                    SystemColors.GrayText;
+                    // Disables most controls in the Emulator UI
+                    DisableEmulatorInterface();
 
-                    // Set enabled state of controls
-                    CheckBox_Xenia_ForceRTV.Enabled =
-                    CheckBox_Xenia_2xResolution.Enabled =
-                    CheckBox_Xenia_VerticalSync.Enabled =
-                    CheckBox_Xenia_Gamma.Enabled =
-                    CheckBox_Xenia_Fullscreen.Enabled =
-                    CheckBox_Xenia_DiscordRPC.Enabled =
-                    ComboBox_API.Enabled =
-                    NumericUpDown_FieldOfView.Enabled =
-                    Button_FieldOfView_Default.Enabled =
-                    Button_AntiAliasing_Default.Enabled =
-                    ComboBox_AntiAliasing.Enabled =
-                    CheckBox_ForceMSAA.Enabled =
-                    ComboBox_Reflections.Enabled =
-                    Button_Reflections_Default.Enabled =
-                    ComboBox_UserLanguage.Enabled =
-                    CheckBox_Xenia_ForceRTV.Enabled =
-                    CheckBox_Xenia_2xResolution.Enabled =
-                    CheckBox_Xenia_VerticalSync.Enabled =
-                    CheckBox_Xenia_Gamma.Enabled =
-                    CheckBox_Xenia_Fullscreen.Enabled =
-                    CheckBox_Xenia_DiscordRPC.Enabled =
-                    false;
+                    ComboBox_API.Enabled = false;
+
+                    Label_Subtitle_Emulator_Options.ForeColor =
+                    Label_API.ForeColor =
+                    Label_Description_API.ForeColor =
+                    SystemColors.GrayText;
 
                     // Set visibility state of controls
                     Label_RPCS3Warning.Visible = true;
@@ -411,6 +321,123 @@ namespace Unify.Environment3
                 #endregion
 
             }
+        }
+
+        /// <summary>
+        /// Enables most controls in the Emulator UI.
+        /// </summary>
+        private void EnableEmulatorInterface() {
+            #region Enable controls
+            if (Properties.Settings.Default.Tweak_Renderer == 0) {
+                // Set text colour to Control
+                Label_AntiAliasing.ForeColor = Label_Reflections.ForeColor = SystemColors.Control;
+
+                // Set text colour to ControlDark
+                Label_Description_AntiAliasing.ForeColor =
+                Label_Description_Reflections.ForeColor =
+                SystemColors.ControlDark;
+
+                // Set enabled state of controls
+                Button_AntiAliasing_Default.Enabled =
+                ComboBox_AntiAliasing.Enabled =
+                ComboBox_Reflections.Enabled =
+                Button_Reflections_Default.Enabled =
+                true;
+
+                if (CheckBox_ForceMSAA.Enabled = Properties.Settings.Default.Tweak_AntiAliasing == 1)
+                    // Set text colour to ControlDark
+                    Label_Description_ForceMSAA.ForeColor = SystemColors.ControlDark;
+                else
+                    // Set text colour to GrayText
+                    Label_Description_ForceMSAA.ForeColor = SystemColors.GrayText;
+            }
+
+            // Set text colour to Control
+            Label_Subtitle_Emulator_Options.ForeColor =
+            Label_API.ForeColor =
+            Label_FieldOfView.ForeColor =
+            Label_UserLanguage.ForeColor =
+            SystemColors.Control;
+
+            // Set text colour to ControlDark
+            Label_Description_API.ForeColor =
+            Label_Description_FieldOfView.ForeColor =
+            Label_Description_UserLanguage.ForeColor =
+            Label_Description_ForceRTV.ForeColor =
+            Label_Description_2xResolution.ForeColor =
+            Label_Description_VerticalSync.ForeColor =
+            Label_Description_Gamma.ForeColor =
+            Label_Description_Fullscreen.ForeColor =
+            Label_Description_DiscordRPC.ForeColor =
+            SystemColors.ControlDark;
+
+            // Set enabled state of controls
+            CheckBox_Xenia_ForceRTV.Enabled =
+            CheckBox_Xenia_2xResolution.Enabled =
+            CheckBox_Xenia_VerticalSync.Enabled =
+            CheckBox_Xenia_Gamma.Enabled =
+            CheckBox_Xenia_Fullscreen.Enabled =
+            CheckBox_Xenia_DiscordRPC.Enabled =
+            ComboBox_API.Enabled =
+            NumericUpDown_FieldOfView.Enabled =
+            Button_FieldOfView_Default.Enabled =
+            ComboBox_UserLanguage.Enabled =
+            CheckBox_Xenia_ForceRTV.Enabled =
+            CheckBox_Xenia_2xResolution.Enabled =
+            CheckBox_Xenia_VerticalSync.Enabled =
+            CheckBox_Xenia_Gamma.Enabled =
+            CheckBox_Xenia_Fullscreen.Enabled =
+            CheckBox_Xenia_DiscordRPC.Enabled =
+            true;
+            #endregion
+        }
+
+        /// <summary>
+        /// Disables most controls in the Emulator UI.
+        /// </summary>
+        private void DisableEmulatorInterface() {
+            #region Disable controls
+            // Set text colour to GrayText
+            Label_Description_FieldOfView.ForeColor =
+            Label_Description_AntiAliasing.ForeColor =
+            Label_Description_ForceMSAA.ForeColor =
+            Label_Description_Reflections.ForeColor =
+            Label_Description_UserLanguage.ForeColor =
+            Label_Description_ForceRTV.ForeColor =
+            Label_Description_2xResolution.ForeColor =
+            Label_Description_VerticalSync.ForeColor =
+            Label_Description_Gamma.ForeColor =
+            Label_Description_Fullscreen.ForeColor =
+            Label_Description_DiscordRPC.ForeColor =
+            Label_AntiAliasing.ForeColor =
+            Label_FieldOfView.ForeColor =
+            Label_Reflections.ForeColor =
+            Label_UserLanguage.ForeColor =
+            SystemColors.GrayText;
+
+            // Set enabled state of controls
+            CheckBox_Xenia_ForceRTV.Enabled =
+            CheckBox_Xenia_2xResolution.Enabled =
+            CheckBox_Xenia_VerticalSync.Enabled =
+            CheckBox_Xenia_Gamma.Enabled =
+            CheckBox_Xenia_Fullscreen.Enabled =
+            CheckBox_Xenia_DiscordRPC.Enabled =
+            NumericUpDown_FieldOfView.Enabled =
+            Button_FieldOfView_Default.Enabled =
+            Button_AntiAliasing_Default.Enabled =
+            ComboBox_AntiAliasing.Enabled =
+            CheckBox_ForceMSAA.Enabled =
+            ComboBox_Reflections.Enabled =
+            Button_Reflections_Default.Enabled =
+            ComboBox_UserLanguage.Enabled =
+            CheckBox_Xenia_ForceRTV.Enabled =
+            CheckBox_Xenia_2xResolution.Enabled =
+            CheckBox_Xenia_VerticalSync.Enabled =
+            CheckBox_Xenia_Gamma.Enabled =
+            CheckBox_Xenia_Fullscreen.Enabled =
+            CheckBox_Xenia_DiscordRPC.Enabled =
+            false;
+            #endregion
         }
 
         /// <summary>
@@ -1282,19 +1309,20 @@ namespace Unify.Environment3
                         }
                     }
 
-                    // Xenia parameter setup
-                    if (ComboBox_API.SelectedIndex == 0) {
-                        parameters.Add("--gpu=d3d12"); // Use DirectX 12
-                        if (CheckBox_Xenia_ForceRTV.Checked)     parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
-                        if (CheckBox_Xenia_2xResolution.Checked) parameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
-                    } else parameters.Add("--gpu=vulkan"); // Use Vulkan
+                    if (ComboBox_API.SelectedIndex != 2) {
+                        // Xenia parameter setup
+                        if (ComboBox_API.SelectedIndex == 0) {
+                            parameters.Add("--gpu=d3d12"); // Use DirectX 12
+                            if (CheckBox_Xenia_ForceRTV.Checked)     parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
+                            if (CheckBox_Xenia_2xResolution.Checked) parameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
+                        } else parameters.Add("--gpu=vulkan"); // Use Vulkan
 
-                    if (!CheckBox_Xenia_VerticalSync.Checked) parameters.Add("--vsync=false"); // V-Sync
-                    if (CheckBox_Xenia_Gamma.Checked)         parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
-                    if (CheckBox_Xenia_Fullscreen.Checked)    parameters.Add("--fullscreen"); // Launch in Fullscreen
-                    if (!CheckBox_Xenia_DiscordRPC.Checked)   parameters.Add("--discord=false"); // Discord Rich Presence
-                    parameters.Add($"--user_language={Properties.Settings.Default.Emulator_UserLanguage + 1}");
-
+                        if (!CheckBox_Xenia_VerticalSync.Checked) parameters.Add("--vsync=false"); // V-Sync
+                        if (CheckBox_Xenia_Gamma.Checked)         parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
+                        if (CheckBox_Xenia_Fullscreen.Checked)    parameters.Add("--fullscreen"); // Launch in Fullscreen
+                        if (!CheckBox_Xenia_DiscordRPC.Checked)   parameters.Add("--discord=false"); // Discord Rich Presence
+                        parameters.Add($"--user_language={Properties.Settings.Default.Emulator_UserLanguage + 1}");
+                    }
                     ProcessStartInfo xeniaProc = new ProcessStartInfo() {
                         FileName = Properties.Settings.Default.Path_EmulatorDirectory,
 
@@ -2173,8 +2201,9 @@ namespace Unify.Environment3
         /// Changed index selection events for the Emulator section.
         /// </summary>
         private void ComboBox_Emulator_SelectedIndexChanged(object sender, EventArgs e) {
-            if               (sender == ComboBox_API) Properties.Settings.Default.Emulator_GraphicsAPI  = ((ComboBox)sender).SelectedIndex;
+            if               (sender == ComboBox_API) Properties.Settings.Default.Emulator_API  = ((ComboBox)sender).SelectedIndex;
             else if (sender == ComboBox_UserLanguage) Properties.Settings.Default.Emulator_UserLanguage = ((ComboBox)sender).SelectedIndex;
+            Properties.Settings.Default.Save();
         }
     }
 }
