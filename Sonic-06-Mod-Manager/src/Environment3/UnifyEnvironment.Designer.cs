@@ -40,7 +40,8 @@
             this.Unify_Rush.ForeColor = System.Drawing.SystemColors.Control;
             this.Unify_Rush.Location = new System.Drawing.Point(0, 0);
             this.Unify_Rush.Name = "Unify_Rush";
-            this.Unify_Rush.Size = new System.Drawing.Size(849, 569);
+            this.Unify_Rush.Size = new System.Drawing.Size(849, 589);
+            this.Unify_Rush.Status = "Ready.";
             this.Unify_Rush.TabIndex = 0;
             // 
             // UnifyEnvironment
@@ -48,13 +49,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(849, 569);
+            this.ClientSize = new System.Drawing.Size(849, 589);
             this.Controls.Add(this.Unify_Rush);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(865, 608);
+            this.MinimumSize = new System.Drawing.Size(865, 628);
             this.Name = "UnifyEnvironment";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sonic \'06 Mod Manager";

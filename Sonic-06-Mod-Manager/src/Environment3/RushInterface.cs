@@ -137,7 +137,7 @@ namespace Unify.Environment3
                 Label_LastPatchUpdate.Text    = Literal.Date("Last updated", Properties.Settings.Default.General_LastPatchUpdate);
                 #endregion
 
-                #region Restore directories
+                #region Restore text fields
                 _isPathInvalid = false;
 
                 TextBox_ModsDirectory.Text = Properties.Settings.Default.Path_ModsDirectory;
@@ -166,6 +166,7 @@ namespace Unify.Environment3
 
                 TextBox_EmulatorExecutable.Text = Properties.Settings.Default.Path_EmulatorDirectory;
                 TextBox_SaveData.Text           = Properties.Settings.Default.Path_SaveData;
+                TextBox_Arguments.Text          = Properties.Settings.Default.Emulator_Arguments;
                 #endregion
 
                 #region Restore combo box states
@@ -352,6 +353,14 @@ namespace Unify.Environment3
                     Label_Description_ForceMSAA.ForeColor = SystemColors.GrayText;
             }
 
+            if (Properties.Settings.Default.Emulator_API != 0) {
+                CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = false;
+                Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.GrayText;
+            } else {
+                CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = true;
+                Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.ControlDark;
+            }
+
             // Set text colour to Control
             Label_Subtitle_Emulator_Options.ForeColor =
             Label_API.ForeColor =
@@ -363,8 +372,6 @@ namespace Unify.Environment3
             Label_Description_API.ForeColor =
             Label_Description_FieldOfView.ForeColor =
             Label_Description_UserLanguage.ForeColor =
-            Label_Description_ForceRTV.ForeColor =
-            Label_Description_2xResolution.ForeColor =
             Label_Description_VerticalSync.ForeColor =
             Label_Description_Gamma.ForeColor =
             Label_Description_Fullscreen.ForeColor =
@@ -372,18 +379,10 @@ namespace Unify.Environment3
             SystemColors.ControlDark;
 
             // Set enabled state of controls
-            CheckBox_Xenia_ForceRTV.Enabled =
-            CheckBox_Xenia_2xResolution.Enabled =
-            CheckBox_Xenia_VerticalSync.Enabled =
-            CheckBox_Xenia_Gamma.Enabled =
-            CheckBox_Xenia_Fullscreen.Enabled =
-            CheckBox_Xenia_DiscordRPC.Enabled =
             ComboBox_API.Enabled =
             NumericUpDown_FieldOfView.Enabled =
             Button_FieldOfView_Default.Enabled =
             ComboBox_UserLanguage.Enabled =
-            CheckBox_Xenia_ForceRTV.Enabled =
-            CheckBox_Xenia_2xResolution.Enabled =
             CheckBox_Xenia_VerticalSync.Enabled =
             CheckBox_Xenia_Gamma.Enabled =
             CheckBox_Xenia_Fullscreen.Enabled =
@@ -416,12 +415,6 @@ namespace Unify.Environment3
             SystemColors.GrayText;
 
             // Set enabled state of controls
-            CheckBox_Xenia_ForceRTV.Enabled =
-            CheckBox_Xenia_2xResolution.Enabled =
-            CheckBox_Xenia_VerticalSync.Enabled =
-            CheckBox_Xenia_Gamma.Enabled =
-            CheckBox_Xenia_Fullscreen.Enabled =
-            CheckBox_Xenia_DiscordRPC.Enabled =
             NumericUpDown_FieldOfView.Enabled =
             Button_FieldOfView_Default.Enabled =
             Button_AntiAliasing_Default.Enabled =
@@ -1279,6 +1272,24 @@ namespace Unify.Environment3
         /// Launches Xenia or RPCS3 depending on the selected game executable.
         /// </summary>
         private void LaunchEmulator(string emulator) {
+            List<string> parameters = new List<string>();
+
+            if (File.Exists(Properties.Settings.Default.Path_GameDirectory)) parameters.Add($"\"{Properties.Settings.Default.Path_GameDirectory}\"");
+            else { // If the game directory is invalid, prompt the user to select a new one
+                OpenFileDialog browseGame = new OpenFileDialog() {
+                    Title = "Please select an executable for Sonic '06...",
+                    Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
+                };
+
+                if (browseGame.ShowDialog() == DialogResult.OK) {
+                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
+                    Properties.Settings.Default.Save();
+                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)); // Perform task again with specified emulator
+                }
+            }
+
+            parameters.AddRange(Properties.Settings.Default.Emulator_Arguments.Split(' '));
+
             if (Properties.Settings.Default.Path_EmulatorDirectory == string.Empty ||
                 !File.Exists(Properties.Settings.Default.Path_EmulatorDirectory)) { // If the emulator is empty/doesn't exist, prompt the user to select one
                     OpenFileDialog browseEmulator = new OpenFileDialog() {
@@ -1293,29 +1304,14 @@ namespace Unify.Environment3
                     }
             } else {
                 if (emulator == "Xenia") {
-                    List<string> parameters = new List<string>();
-
-                    if (File.Exists(Properties.Settings.Default.Path_GameDirectory)) parameters.Add($"\"{Properties.Settings.Default.Path_GameDirectory}\"");
-                    else { // If the game directory is invalid, prompt the user to select a new one
-                        OpenFileDialog browseGame = new OpenFileDialog() {
-                            Title = "Please select an executable for Sonic '06...",
-                            Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
-                        };
-
-                        if (browseGame.ShowDialog() == DialogResult.OK) {
-                            Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame.FileName;
-                            Properties.Settings.Default.Save();
-                            LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)); // Perform task again with specified emulator
-                        }
-                    }
-
+                    // Xenia parameter setup
                     if (ComboBox_API.SelectedIndex != 2) {
-                        // Xenia parameter setup
                         if (ComboBox_API.SelectedIndex == 0) {
                             parameters.Add("--gpu=d3d12"); // Use DirectX 12
                             if (CheckBox_Xenia_ForceRTV.Checked)     parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
                             if (CheckBox_Xenia_2xResolution.Checked) parameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
-                        } else parameters.Add("--gpu=vulkan"); // Use Vulkan
+                        } else
+                            parameters.Add("--gpu=vulkan"); // Use Vulkan
 
                         if (!CheckBox_Xenia_VerticalSync.Checked) parameters.Add("--vsync=false"); // V-Sync
                         if (CheckBox_Xenia_Gamma.Checked)         parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
@@ -1323,40 +1319,24 @@ namespace Unify.Environment3
                         if (!CheckBox_Xenia_DiscordRPC.Checked)   parameters.Add("--discord=false"); // Discord Rich Presence
                         parameters.Add($"--user_language={Properties.Settings.Default.Emulator_UserLanguage + 1}");
                     }
-                    ProcessStartInfo xeniaProc = new ProcessStartInfo() {
-                        FileName = Properties.Settings.Default.Path_EmulatorDirectory,
-
-                        // Ensure emulator directory is the working dir - prevents 'xenia.log' and save data being in the wrong locations
-                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.Path_EmulatorDirectory),
-
-                        Arguments = string.Join(" ", parameters.ToArray()) // Join all parameters for args
-                    };
-
-                    Process xenia = Process.Start(xeniaProc); // Launch Xenia
-                    Label_Status.Text = "Waiting for Xenia exit call...";
-                    xenia.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
-
-                    // Uninstall mods after emulator quits
-                    if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
-                } else if (emulator == "RPCS3") {
-                    ProcessStartInfo rpcs3Proc = new ProcessStartInfo() {
-                        FileName = Properties.Settings.Default.Path_EmulatorDirectory,
-
-                        // Same reason for Xenia, except this is just as a precaution in case RPCS3 changes anything
-                        WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.Path_EmulatorDirectory),
-                    };
-
-                    Process rpcs3 = Process.Start(rpcs3Proc); // Launch RPCS3
-                    Label_Status.Text = "Waiting for RPCS3 exit call...";
-                    rpcs3.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
-
-                    // Uninstall mods after emulator quits
-                    if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
-                } else { // Emulator not detected...
-                    UnifyMessenger.UnifyMessage.ShowDialog("Unable to detect the required emulator for the game's executable. The specified game directory may be invalid.",
-                                                           "Unable to load...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    UninstallThread(); // Failed to load emulator, so uninstall mods
                 }
+
+                ProcessStartInfo xeniaProc = new ProcessStartInfo() {
+                    FileName = Properties.Settings.Default.Path_EmulatorDirectory,
+
+                    // Ensure emulator directory is the working dir - prevents 'xenia.log' and save data being in the wrong locations
+                    WorkingDirectory = Path.GetDirectoryName(Properties.Settings.Default.Path_EmulatorDirectory),
+
+                    // Join all parameters for arguments
+                    Arguments = string.Join(" ", parameters.ToArray())
+                };
+
+                Process emulatorProc = Process.Start(xeniaProc); // Launch the emulator
+                Label_Status.Text = "Waiting for emulator exit call...";
+                emulatorProc.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
+
+                // Uninstall mods after emulator quits
+                if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
             }
         }
 
@@ -2201,8 +2181,37 @@ namespace Unify.Environment3
         /// Changed index selection events for the Emulator section.
         /// </summary>
         private void ComboBox_Emulator_SelectedIndexChanged(object sender, EventArgs e) {
-            if               (sender == ComboBox_API) Properties.Settings.Default.Emulator_API  = ((ComboBox)sender).SelectedIndex;
+            if (sender == ComboBox_API) {
+                if ((Properties.Settings.Default.Emulator_API = ((ComboBox)sender).SelectedIndex) != 0) {
+                    CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = false;
+                    Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.GrayText;
+                } else {
+                    CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = true;
+                    Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.ControlDark;
+                }
+            }
             else if (sender == ComboBox_UserLanguage) Properties.Settings.Default.Emulator_UserLanguage = ((ComboBox)sender).SelectedIndex;
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Save arguments on text changed.
+        /// </summary>
+        private void TextBox_Arguments_TextChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.Emulator_Arguments = ((TextBox)sender).Text;
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Save Xenia parameter settings.
+        /// </summary>
+        private void CheckBox_Xenia_CheckedChanged(object sender, EventArgs e) {
+            if          (sender == CheckBox_Xenia_ForceRTV) Properties.Settings.Default.Emulator_ForceRTV         = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_Xenia_2xResolution) Properties.Settings.Default.Emulator_DoubleResolution = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_Xenia_VerticalSync) Properties.Settings.Default.Emulator_VerticalSync     = ((CheckBox)sender).Checked;
+            else if        (sender == CheckBox_Xenia_Gamma) Properties.Settings.Default.Emulator_Gamma            = ((CheckBox)sender).Checked;
+            else if   (sender == CheckBox_Xenia_Fullscreen) Properties.Settings.Default.Emulator_Fullscreen       = ((CheckBox)sender).Checked;
+            else if   (sender == CheckBox_Xenia_DiscordRPC) Properties.Settings.Default.Emulator_DiscordRPC       = ((CheckBox)sender).Checked;
             Properties.Settings.Default.Save();
         }
     }

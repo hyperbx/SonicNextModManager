@@ -442,5 +442,17 @@ namespace Unify.Properties {
                 this["Emulator_UserLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Emulator_Arguments {
+            get {
+                return ((string)(this["Emulator_Arguments"]));
+            }
+            set {
+                this["Emulator_Arguments"] = value;
+            }
+        }
     }
 }

@@ -56,6 +56,9 @@ namespace Unify.Environment3
             this.Column_ModsList_Merge = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Column_ModsList_Blank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Tab_Section_Emulator = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TextBox_Arguments = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.Label_Description_UserLanguage = new System.Windows.Forms.Label();
             this.Label_UserLanguage = new System.Windows.Forms.Label();
             this.ComboBox_UserLanguage = new System.Windows.Forms.ComboBox();
@@ -361,7 +364,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1092, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1110, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -467,7 +470,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1793, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1829, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -639,6 +642,9 @@ namespace Unify.Environment3
             // Tab_Section_Emulator
             // 
             this.Tab_Section_Emulator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_Emulator.Controls.Add(this.label1);
+            this.Tab_Section_Emulator.Controls.Add(this.TextBox_Arguments);
+            this.Tab_Section_Emulator.Controls.Add(this.label2);
             this.Tab_Section_Emulator.Controls.Add(this.Label_Description_UserLanguage);
             this.Tab_Section_Emulator.Controls.Add(this.Label_UserLanguage);
             this.Tab_Section_Emulator.Controls.Add(this.ComboBox_UserLanguage);
@@ -678,13 +684,48 @@ namespace Unify.Environment3
             this.Tab_Section_Emulator.Text = "Emulator";
             this.Tab_Section_Emulator.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label1.Location = new System.Drawing.Point(212, 154);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(363, 15);
+            this.label1.TabIndex = 157;
+            this.label1.Text = "User-specific arguments that are fed into the emulator upon launch.";
+            // 
+            // TextBox_Arguments
+            // 
+            this.TextBox_Arguments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextBox_Arguments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.TextBox_Arguments.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TextBox_Arguments.ForeColor = System.Drawing.SystemColors.Control;
+            this.TextBox_Arguments.Location = new System.Drawing.Point(14, 174);
+            this.TextBox_Arguments.Name = "TextBox_Arguments";
+            this.TextBox_Arguments.Size = new System.Drawing.Size(560, 23);
+            this.TextBox_Arguments.TabIndex = 155;
+            this.TextBox_Arguments.TextChanged += new System.EventHandler(this.TextBox_Arguments_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label2.Location = new System.Drawing.Point(11, 152);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 17);
+            this.label2.TabIndex = 154;
+            this.label2.Text = "Arguments";
+            // 
             // Label_Description_UserLanguage
             // 
             this.Label_Description_UserLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Description_UserLanguage.AutoSize = true;
             this.Label_Description_UserLanguage.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_UserLanguage.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_UserLanguage.Location = new System.Drawing.Point(370, 257);
+            this.Label_Description_UserLanguage.Location = new System.Drawing.Point(370, 307);
             this.Label_Description_UserLanguage.Name = "Label_Description_UserLanguage";
             this.Label_Description_UserLanguage.Size = new System.Drawing.Size(204, 15);
             this.Label_Description_UserLanguage.TabIndex = 153;
@@ -694,7 +735,7 @@ namespace Unify.Environment3
             // 
             this.Label_UserLanguage.AutoSize = true;
             this.Label_UserLanguage.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.Label_UserLanguage.Location = new System.Drawing.Point(11, 255);
+            this.Label_UserLanguage.Location = new System.Drawing.Point(11, 305);
             this.Label_UserLanguage.Name = "Label_UserLanguage";
             this.Label_UserLanguage.Size = new System.Drawing.Size(65, 17);
             this.Label_UserLanguage.TabIndex = 152;
@@ -724,7 +765,7 @@ namespace Unify.Environment3
             "Norwegian",
             "Dutch",
             "Chinese (Traditional)"});
-            this.ComboBox_UserLanguage.Location = new System.Drawing.Point(14, 277);
+            this.ComboBox_UserLanguage.Location = new System.Drawing.Point(14, 327);
             this.ComboBox_UserLanguage.Name = "ComboBox_UserLanguage";
             this.ComboBox_UserLanguage.Size = new System.Drawing.Size(560, 23);
             this.ComboBox_UserLanguage.TabIndex = 151;
@@ -736,7 +777,7 @@ namespace Unify.Environment3
             this.Label_Description_DiscordRPC.AutoSize = true;
             this.Label_Description_DiscordRPC.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_DiscordRPC.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_DiscordRPC.Location = new System.Drawing.Point(368, 441);
+            this.Label_Description_DiscordRPC.Location = new System.Drawing.Point(368, 491);
             this.Label_Description_DiscordRPC.Name = "Label_Description_DiscordRPC";
             this.Label_Description_DiscordRPC.Size = new System.Drawing.Size(206, 15);
             this.Label_Description_DiscordRPC.TabIndex = 150;
@@ -748,7 +789,7 @@ namespace Unify.Environment3
             this.Label_Description_Fullscreen.AutoSize = true;
             this.Label_Description_Fullscreen.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_Fullscreen.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_Fullscreen.Location = new System.Drawing.Point(378, 416);
+            this.Label_Description_Fullscreen.Location = new System.Drawing.Point(378, 466);
             this.Label_Description_Fullscreen.Name = "Label_Description_Fullscreen";
             this.Label_Description_Fullscreen.Size = new System.Drawing.Size(196, 15);
             this.Label_Description_Fullscreen.TabIndex = 149;
@@ -760,7 +801,7 @@ namespace Unify.Environment3
             this.Label_Description_Gamma.AutoSize = true;
             this.Label_Description_Gamma.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_Gamma.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_Gamma.Location = new System.Drawing.Point(207, 391);
+            this.Label_Description_Gamma.Location = new System.Drawing.Point(207, 441);
             this.Label_Description_Gamma.Name = "Label_Description_Gamma";
             this.Label_Description_Gamma.Size = new System.Drawing.Size(368, 15);
             this.Label_Description_Gamma.TabIndex = 148;
@@ -772,7 +813,7 @@ namespace Unify.Environment3
             this.Label_Description_VerticalSync.AutoSize = true;
             this.Label_Description_VerticalSync.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_VerticalSync.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_VerticalSync.Location = new System.Drawing.Point(225, 366);
+            this.Label_Description_VerticalSync.Location = new System.Drawing.Point(225, 416);
             this.Label_Description_VerticalSync.Name = "Label_Description_VerticalSync";
             this.Label_Description_VerticalSync.Size = new System.Drawing.Size(349, 15);
             this.Label_Description_VerticalSync.TabIndex = 147;
@@ -784,7 +825,7 @@ namespace Unify.Environment3
             this.Label_Description_2xResolution.AutoSize = true;
             this.Label_Description_2xResolution.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_2xResolution.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_2xResolution.Location = new System.Drawing.Point(403, 341);
+            this.Label_Description_2xResolution.Location = new System.Drawing.Point(403, 391);
             this.Label_Description_2xResolution.Name = "Label_Description_2xResolution";
             this.Label_Description_2xResolution.Size = new System.Drawing.Size(171, 15);
             this.Label_Description_2xResolution.TabIndex = 146;
@@ -796,7 +837,7 @@ namespace Unify.Environment3
             this.Label_Description_ForceRTV.AutoSize = true;
             this.Label_Description_ForceRTV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_ForceRTV.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_ForceRTV.Location = new System.Drawing.Point(203, 316);
+            this.Label_Description_ForceRTV.Location = new System.Drawing.Point(203, 366);
             this.Label_Description_ForceRTV.Name = "Label_Description_ForceRTV";
             this.Label_Description_ForceRTV.Size = new System.Drawing.Size(372, 15);
             this.Label_Description_ForceRTV.TabIndex = 145;
@@ -808,7 +849,7 @@ namespace Unify.Environment3
             this.Label_Description_API.AutoSize = true;
             this.Label_Description_API.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_API.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_API.Location = new System.Drawing.Point(339, 205);
+            this.Label_Description_API.Location = new System.Drawing.Point(339, 255);
             this.Label_Description_API.Name = "Label_Description_API";
             this.Label_Description_API.Size = new System.Drawing.Size(235, 15);
             this.Label_Description_API.TabIndex = 144;
@@ -850,84 +891,90 @@ namespace Unify.Environment3
             this.Label_RPCS3Warning.AutoSize = true;
             this.Label_RPCS3Warning.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_RPCS3Warning.ForeColor = System.Drawing.Color.Tomato;
-            this.Label_RPCS3Warning.Location = new System.Drawing.Point(149, 172);
+            this.Label_RPCS3Warning.Location = new System.Drawing.Point(271, 222);
             this.Label_RPCS3Warning.Name = "Label_RPCS3Warning";
-            this.Label_RPCS3Warning.Size = new System.Drawing.Size(425, 15);
+            this.Label_RPCS3Warning.Size = new System.Drawing.Size(303, 15);
             this.Label_RPCS3Warning.TabIndex = 67;
-            this.Label_RPCS3Warning.Text = "RPCS3 does not support command line instructions - please configure internally!";
+            this.Label_RPCS3Warning.Text = "RPCS3 does not support these command line arguments!";
             this.Label_RPCS3Warning.Visible = false;
             // 
             // CheckBox_Xenia_DiscordRPC
             // 
             this.CheckBox_Xenia_DiscordRPC.AutoSize = true;
             this.CheckBox_Xenia_DiscordRPC.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_Xenia_DiscordRPC.Location = new System.Drawing.Point(14, 440);
+            this.CheckBox_Xenia_DiscordRPC.Location = new System.Drawing.Point(14, 490);
             this.CheckBox_Xenia_DiscordRPC.Name = "CheckBox_Xenia_DiscordRPC";
             this.CheckBox_Xenia_DiscordRPC.Size = new System.Drawing.Size(142, 19);
             this.CheckBox_Xenia_DiscordRPC.TabIndex = 66;
             this.CheckBox_Xenia_DiscordRPC.Text = "Discord Rich Presence";
             this.CheckBox_Xenia_DiscordRPC.UseVisualStyleBackColor = false;
+            this.CheckBox_Xenia_DiscordRPC.CheckedChanged += new System.EventHandler(this.CheckBox_Xenia_CheckedChanged);
             // 
             // CheckBox_Xenia_Fullscreen
             // 
             this.CheckBox_Xenia_Fullscreen.AutoSize = true;
             this.CheckBox_Xenia_Fullscreen.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_Xenia_Fullscreen.Location = new System.Drawing.Point(14, 415);
+            this.CheckBox_Xenia_Fullscreen.Location = new System.Drawing.Point(14, 465);
             this.CheckBox_Xenia_Fullscreen.Name = "CheckBox_Xenia_Fullscreen";
             this.CheckBox_Xenia_Fullscreen.Size = new System.Drawing.Size(134, 19);
             this.CheckBox_Xenia_Fullscreen.TabIndex = 65;
             this.CheckBox_Xenia_Fullscreen.Text = "Launch in Fullscreen";
             this.CheckBox_Xenia_Fullscreen.UseVisualStyleBackColor = false;
+            this.CheckBox_Xenia_Fullscreen.CheckedChanged += new System.EventHandler(this.CheckBox_Xenia_CheckedChanged);
             // 
             // CheckBox_Xenia_Gamma
             // 
             this.CheckBox_Xenia_Gamma.AutoSize = true;
             this.CheckBox_Xenia_Gamma.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_Xenia_Gamma.Location = new System.Drawing.Point(14, 390);
+            this.CheckBox_Xenia_Gamma.Location = new System.Drawing.Point(14, 440);
             this.CheckBox_Xenia_Gamma.Name = "CheckBox_Xenia_Gamma";
             this.CheckBox_Xenia_Gamma.Size = new System.Drawing.Size(127, 19);
             this.CheckBox_Xenia_Gamma.TabIndex = 64;
             this.CheckBox_Xenia_Gamma.Text = "Gamma Correction";
             this.CheckBox_Xenia_Gamma.UseVisualStyleBackColor = false;
+            this.CheckBox_Xenia_Gamma.CheckedChanged += new System.EventHandler(this.CheckBox_Xenia_CheckedChanged);
             // 
             // CheckBox_Xenia_VerticalSync
             // 
             this.CheckBox_Xenia_VerticalSync.AutoSize = true;
             this.CheckBox_Xenia_VerticalSync.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_Xenia_VerticalSync.Location = new System.Drawing.Point(14, 365);
+            this.CheckBox_Xenia_VerticalSync.Location = new System.Drawing.Point(14, 415);
             this.CheckBox_Xenia_VerticalSync.Name = "CheckBox_Xenia_VerticalSync";
             this.CheckBox_Xenia_VerticalSync.Size = new System.Drawing.Size(63, 19);
             this.CheckBox_Xenia_VerticalSync.TabIndex = 63;
             this.CheckBox_Xenia_VerticalSync.Text = "V-Sync";
             this.CheckBox_Xenia_VerticalSync.UseVisualStyleBackColor = false;
+            this.CheckBox_Xenia_VerticalSync.CheckedChanged += new System.EventHandler(this.CheckBox_Xenia_CheckedChanged);
             // 
             // CheckBox_Xenia_2xResolution
             // 
             this.CheckBox_Xenia_2xResolution.AutoSize = true;
             this.CheckBox_Xenia_2xResolution.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_Xenia_2xResolution.Location = new System.Drawing.Point(14, 340);
+            this.CheckBox_Xenia_2xResolution.Location = new System.Drawing.Point(14, 390);
             this.CheckBox_Xenia_2xResolution.Name = "CheckBox_Xenia_2xResolution";
             this.CheckBox_Xenia_2xResolution.Size = new System.Drawing.Size(97, 19);
             this.CheckBox_Xenia_2xResolution.TabIndex = 62;
             this.CheckBox_Xenia_2xResolution.Text = "2x Resolution";
             this.CheckBox_Xenia_2xResolution.UseVisualStyleBackColor = false;
+            this.CheckBox_Xenia_2xResolution.CheckedChanged += new System.EventHandler(this.CheckBox_Xenia_CheckedChanged);
             // 
             // CheckBox_Xenia_ForceRTV
             // 
             this.CheckBox_Xenia_ForceRTV.AutoSize = true;
             this.CheckBox_Xenia_ForceRTV.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_Xenia_ForceRTV.Location = new System.Drawing.Point(14, 315);
+            this.CheckBox_Xenia_ForceRTV.Location = new System.Drawing.Point(14, 365);
             this.CheckBox_Xenia_ForceRTV.Name = "CheckBox_Xenia_ForceRTV";
             this.CheckBox_Xenia_ForceRTV.Size = new System.Drawing.Size(163, 19);
             this.CheckBox_Xenia_ForceRTV.TabIndex = 61;
             this.CheckBox_Xenia_ForceRTV.Text = "Force Render Target Views";
             this.CheckBox_Xenia_ForceRTV.UseVisualStyleBackColor = false;
+            this.CheckBox_Xenia_ForceRTV.CheckedChanged += new System.EventHandler(this.CheckBox_Xenia_CheckedChanged);
             // 
             // Label_API
             // 
             this.Label_API.AutoSize = true;
             this.Label_API.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.Label_API.Location = new System.Drawing.Point(11, 203);
+            this.Label_API.Location = new System.Drawing.Point(11, 253);
             this.Label_API.Name = "Label_API";
             this.Label_API.Size = new System.Drawing.Size(26, 17);
             this.Label_API.TabIndex = 60;
@@ -942,9 +989,9 @@ namespace Unify.Environment3
             this.ComboBox_API.FormattingEnabled = true;
             this.ComboBox_API.Items.AddRange(new object[] {
             "DirectX 12",
-            "Vulkan (not recommended)",
+            "Vulkan",
             "Custom"});
-            this.ComboBox_API.Location = new System.Drawing.Point(14, 225);
+            this.ComboBox_API.Location = new System.Drawing.Point(14, 275);
             this.ComboBox_API.Name = "ComboBox_API";
             this.ComboBox_API.Size = new System.Drawing.Size(560, 23);
             this.ComboBox_API.TabIndex = 59;
@@ -954,7 +1001,7 @@ namespace Unify.Environment3
             // 
             this.Label_Subtitle_Emulator_Options.AutoSize = true;
             this.Label_Subtitle_Emulator_Options.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_Subtitle_Emulator_Options.Location = new System.Drawing.Point(9, 166);
+            this.Label_Subtitle_Emulator_Options.Location = new System.Drawing.Point(9, 216);
             this.Label_Subtitle_Emulator_Options.Name = "Label_Subtitle_Emulator_Options";
             this.Label_Subtitle_Emulator_Options.Size = new System.Drawing.Size(76, 25);
             this.Label_Subtitle_Emulator_Options.TabIndex = 57;
@@ -1176,7 +1223,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1190, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1226, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -3465,5 +3512,8 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label Label_Description_UserLanguage;
         private System.Windows.Forms.Label Label_UserLanguage;
         private System.Windows.Forms.ComboBox ComboBox_UserLanguage;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox TextBox_Arguments;
+        private System.Windows.Forms.Label label2;
     }
 }
