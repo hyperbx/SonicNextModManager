@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Ookii.Dialogs;
+using Unify.Dialogs;
 using System.Drawing;
 using Unify.Messenger;
 using Unify.Environment3;
@@ -49,10 +49,10 @@ namespace Unify
         /// Loads all user settings.
         /// </summary>
         private void LoadSettings() {
-            TextBox_ModsDirectory.Text = Properties.Settings.Default.Path_ModsDirectory;
-            TextBox_GameDirectory.Text = Properties.Settings.Default.Path_GameDirectory;
+            TextBox_ModsDirectory.Text      = Properties.Settings.Default.Path_ModsDirectory;
+            TextBox_GameDirectory.Text      = Properties.Settings.Default.Path_GameDirectory;
             TextBox_EmulatorExecutable.Text = Properties.Settings.Default.Path_EmulatorDirectory;
-            TextBox_SaveData.Text = Properties.Settings.Default.Path_SaveData;
+            TextBox_SaveData.Text           = Properties.Settings.Default.Path_SaveData;
             CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.General_LaunchEmulator;
         }
 
@@ -76,10 +76,10 @@ namespace Unify
         /// Saves the settings, unsubscribes from the FormClosing event and closes the form.
         /// </summary>
         private void Button_Continue_Click(object sender, EventArgs e) {
-            Properties.Settings.Default.Path_ModsDirectory = TextBox_ModsDirectory.Text;
-            Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text;
+            Properties.Settings.Default.Path_ModsDirectory     = TextBox_ModsDirectory.Text;
+            Properties.Settings.Default.Path_GameDirectory     = TextBox_GameDirectory.Text;
             Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text;
-            Properties.Settings.Default.Path_SaveData = TextBox_SaveData.Text;
+            Properties.Settings.Default.Path_SaveData          = TextBox_SaveData.Text;
             Properties.Settings.Default.General_LaunchEmulator = CheckBox_LaunchEmulator.Checked;
 
             // If something was changed, unsubscribe from event.
@@ -102,57 +102,46 @@ namespace Unify
         private void Button_Browse_Click(object sender, EventArgs e) {
             if (sender == Button_ModsDirectory) {
                 // Browse for mods directory
-                VistaFolderBrowserDialog browseMods = new VistaFolderBrowserDialog() {
-                    Description = "Please select your mods directory...",
-                    UseDescriptionForTitle = true
-                };
+                string browseMods = RequestPath.ModsDirectory();
 
-                if (browseMods.ShowDialog() == DialogResult.OK)
-                    TextBox_ModsDirectory.Text = browseMods.SelectedPath;
+                if (browseMods != string.Empty)
+                    TextBox_ModsDirectory.Text = browseMods;
 
-                    if (TextBox_GameDirectory.Text != string.Empty)
-                        if (Literal.IsPathSubdirectory(browseMods.SelectedPath, Path.GetDirectoryName(TextBox_GameDirectory.Text)) ||
-                            browseMods.SelectedPath == Path.GetDirectoryName(TextBox_GameDirectory.Text))
+                if (TextBox_GameDirectory.Text != string.Empty)
+                    if (Literal.IsPathSubdirectory(browseMods, Path.GetDirectoryName(TextBox_GameDirectory.Text)) ||
+                        browseMods == Path.GetDirectoryName(TextBox_GameDirectory.Text))
 
-                            // If the mods directory is inside the game directory, warn the user
-                            Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
-                        else
-                            Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
+                        // If the mods directory is inside the game directory, warn the user
+                        Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                    else
+                        Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
             } else if (sender == Button_GameDirectory) {
                 // Browse for game executables
-                OpenFileDialog browseGame = new OpenFileDialog() {
-                    Title = "Please select an executable for Sonic '06...",
-                    Filter = "Xbox Executable (*.xex)|*.xex|PlayStation Executable (*.bin)|*.bin"
-                };
+                string browseGame = RequestPath.GameExecutable();
 
-                if (browseGame.ShowDialog() == DialogResult.OK)
-                    TextBox_GameDirectory.Text = browseGame.FileName;
+                if (browseGame != string.Empty)
+                    TextBox_GameDirectory.Text = browseGame;
 
-                    if (TextBox_ModsDirectory.Text != string.Empty)
-                        if (Literal.IsPathSubdirectory(Path.GetDirectoryName(browseGame.FileName), TextBox_ModsDirectory.Text) ||
-                            Path.GetDirectoryName(browseGame.FileName) == TextBox_ModsDirectory.Text)
+                if (TextBox_ModsDirectory.Text != string.Empty)
+                    if (Literal.IsPathSubdirectory(Path.GetDirectoryName(browseGame), TextBox_ModsDirectory.Text) ||
+                        Path.GetDirectoryName(browseGame) == TextBox_ModsDirectory.Text)
 
-                            // If the mods directory is inside the game directory, warn the user
-                            Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
-                        else
-                            Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
+                        // If the mods directory is inside the game directory, warn the user
+                        Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
+                    else
+                        Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
             } else if (sender == Button_EmulatorExecutable) {
                 // Browse for emulator executables
-                OpenFileDialog browseEmulator = new OpenFileDialog() {
-                    Title = $"Please select an executable for {Literal.Emulator(TextBox_GameDirectory.Text)}...",
-                    Filter = "Programs (*.exe)|*.exe"
-                };
+                string browseEmulator = RequestPath.EmulatorExecutable();
 
-                if (browseEmulator.ShowDialog() == DialogResult.OK)
-                    TextBox_EmulatorExecutable.Text = browseEmulator.FileName;
+                if (browseEmulator != string.Empty)
+                    TextBox_EmulatorExecutable.Text = browseEmulator;
             } else if (sender == Button_SaveData) {
                 // Browse for save data
-                OpenFileDialog browseSave = new OpenFileDialog() {
-                    Title = $"Please select Sonic '06 save data...",
-                    Filter = "Xbox 360 Save File (SonicNextSaveData.bin)|SonicNextSaveData.bin|PlayStation 3 Save File (SYS-DATA)|SYS-DATA"
-                };
+                string browseSave = RequestPath.SaveData();
 
-                if (browseSave.ShowDialog() == DialogResult.OK) TextBox_SaveData.Text = browseSave.FileName;
+                if (browseSave != string.Empty)
+                    TextBox_SaveData.Text = browseSave;
             }
         }
     }

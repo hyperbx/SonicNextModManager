@@ -215,6 +215,7 @@
     <Compile Include="src\Environment3\UnifySetup.Designer.cs">
       <DependentUpon>UnifySetup.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\UnifyDialogs.cs" />
     <EmbeddedResource Include="src\Environment3\PatchCreator.resx">
       <DependentUpon>PatchCreator.cs</DependentUpon>
     </EmbeddedResource>
