@@ -147,6 +147,7 @@
             this.btn_Update.Enabled = false;
             this.btn_Update.FlatAppearance.BorderSize = 0;
             this.btn_Update.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Update.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Update.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btn_Update.Location = new System.Drawing.Point(0, 440);
             this.btn_Update.Name = "btn_Update";

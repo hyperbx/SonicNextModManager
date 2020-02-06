@@ -120,7 +120,7 @@ namespace Unify.Environment3
                             using (ZipArchive zip = new ZipArchive(new MemoryStream(File.ReadAllBytes(archive))))
                                 ZIP.ExtractToDirectory(zip, Properties.Settings.Default.Path_ModsDirectory, true);
                         else
-                            ZIP.InstallFrom7zArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
+                            ZIP.InstallFromCustomArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
 
                         UnifyMessenger.UnifyMessage.ShowDialog($"{lbl_Title.Text} has been updated successfully...",
                                                                lbl_Title.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);

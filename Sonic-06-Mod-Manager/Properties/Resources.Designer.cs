@@ -63,6 +63,16 @@ namespace Unify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] _7z {
+            get {
+                object obj = ResourceManager.GetObject("_7z", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] arctool {
             get {
                 object obj = ResourceManager.GetObject("arctool", resourceCulture);

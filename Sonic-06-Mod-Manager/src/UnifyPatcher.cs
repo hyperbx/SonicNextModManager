@@ -309,10 +309,10 @@ namespace Unify.Patcher
         /// Repacks an archive from a temporary location.
         /// </summary>
         public static void RepackARC(string arc, string output) {
-            string tempPath = Path.GetFileNameWithoutExtension(output);
+            string tempPath = Path.Combine(arc, Path.GetFileNameWithoutExtension(output));
 
             ArcPacker repack = new ArcPacker();
-            repack.WriteArc(output, Path.Combine(arc, tempPath));
+            repack.WriteArc(output, tempPath);
 
             // Erases temporary repack data
             try {
@@ -1494,12 +1494,17 @@ namespace Unify.Patcher
         /// <summary>
         /// Extracts a ZIP file.
         /// </summary>
-        /// <param name="ZipPath"></param>
         public static void InstallFromZip(string ZipPath, string location) {
             try {
-                // Extracts all contents inside of the zip file
-                ZipFile.ExtractToDirectory(ZipPath, location);
-            } catch { InstallFrom7zArchive(ZipPath, location); }
+                if (File.Exists(ZipPath)) {
+                    // Extracts all contents inside of the zip file
+                    ZipFile.ExtractToDirectory(ZipPath, location);
+                } else {
+                    UnifyMessenger.UnifyMessage.ShowDialog($"Failed to extract '{Path.GetFileName(ZipPath)}'...",
+                                                           "Extract failed...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch { InstallFromCustomArchive(ZipPath, location); }
         }
 
         /// <summary>
@@ -1527,50 +1532,23 @@ namespace Unify.Patcher
         }
 
         /// <summary>
-        /// Requires 7-Zip to be installed.
+        /// Extracts 7Z/RAR files with 7-Zip.
         /// </summary>
-        public static void InstallFrom7zArchive(string ArchivePath, string location) {
-            // Gets 7-Zip's Registry Key.
-            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\7-Zip");
-            // If null then try get it from the 64-bit Registry.
-            if (key == null)
-                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
-                    .OpenSubKey("SOFTWARE\\7-Zip");
-            // Checks if 7-Zip is installed by checking if the key and path value exists.
-            if (key != null && key.GetValue("Path") is string path) {
-                // Path to 7z.exe.
-                string exe = Path.Combine(path, "7z.exe");
-
+        public static void InstallFromCustomArchive(string ArchivePath, string location) {
+            if (File.Exists(ArchivePath)) {
                 // Extracts the archive to the temp folder.
-                var psi = new ProcessStartInfo(exe, $"x \"{ArchivePath}\" -o \"{location}\" -y");
-                psi.CreateNoWindow = true;
-                Process.Start(psi).WaitForExit(1000 * 60 * 5);
-
-                key.Close();
-            }
-            else { InstallFromWinRAR(ArchivePath, location); }
-        }
-
-        /// <summary>
-        /// Requires WinRAR to be installed.
-        /// </summary>
-        public static void InstallFromWinRAR(string ArchivePath, string location) {
-            // Gets WinRAR's Registry Key.
-            var key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WinRAR");
-            // If null then try to get it from the 64-bit registry.
-            if (key == null)
-                key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("SOFTWARE\\WinRAR");
-            if (key != null && key.GetValue("exe64") is string path) {
-                // Extracts the archive to the temp folder.
-                var psi = new ProcessStartInfo(path, $"x \"{ArchivePath}\" \"{location}\"");
-                psi.CreateNoWindow = true;
-                Process.Start(psi).WaitForExit(1000 * 60 * 5);
-
-                key.Close();
-
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = Program._7Zip,
+                    Arguments = $"x -y -o\"{location}\" \"{ArchivePath}\""
+                };
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
             } else {
-                UnifyMessenger.UnifyMessage.ShowDialog("Failed to install from archive because 7-Zip and/or WinRAR is not installed.",
-                                                       "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to extract '{Path.GetFileName(ArchivePath)}'...",
+                                                       "Extract failed...", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

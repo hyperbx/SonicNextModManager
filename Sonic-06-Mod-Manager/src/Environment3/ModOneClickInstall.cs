@@ -127,21 +127,17 @@ namespace Unify.Environment3
 
         private void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) { dl_Progress.Value = e.ProgressPercentage; }
 
-        private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            try
-            {
-                var bytes = File.ReadAllBytes(archive).Take(2).ToArray();
-                var hexString = BitConverter.ToString(bytes); hexString = hexString.Replace("-", " ");
+        private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e) {
+            try {
+                string hexString = BitConverter.ToString(File.ReadAllBytes(archive).Take(2).ToArray()).Replace("-", " ");
 
                 if (hexString == "50 4B") ZIP.InstallFromZip(archive, Properties.Settings.Default.Path_ModsDirectory);
-                else ZIP.InstallFrom7zArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
+                else ZIP.InstallFromCustomArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
 
                 UnifyMessenger.UnifyMessage.ShowDialog($"{item.ModName} has been installed in your mods directory.",
                                                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Close();
-
                 File.Delete(archive);
+                Close();
             } catch {
                 UnifyMessenger.UnifyMessage.ShowDialog($"Failed to extract {item.ModName}...",
                                                        "Extract failed...", MessageBoxButtons.OK, MessageBoxIcon.Error);

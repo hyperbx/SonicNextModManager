@@ -104,6 +104,7 @@
             this.btn_Uninstall.Enabled = false;
             this.btn_Uninstall.FlatAppearance.BorderSize = 0;
             this.btn_Uninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Uninstall.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Uninstall.Location = new System.Drawing.Point(218, 114);
             this.btn_Uninstall.Name = "btn_Uninstall";
             this.btn_Uninstall.Size = new System.Drawing.Size(105, 23);
@@ -119,6 +120,7 @@
             this.btn_Install.Enabled = false;
             this.btn_Install.FlatAppearance.BorderSize = 0;
             this.btn_Install.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Install.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Install.Location = new System.Drawing.Point(7, 114);
             this.btn_Install.Name = "btn_Install";
             this.btn_Install.Size = new System.Drawing.Size(205, 23);

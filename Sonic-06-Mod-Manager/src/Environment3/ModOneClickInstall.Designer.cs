@@ -203,6 +203,7 @@
             this.btn_Decline.BackColor = System.Drawing.Color.Tomato;
             this.btn_Decline.FlatAppearance.BorderSize = 0;
             this.btn_Decline.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Decline.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Decline.Location = new System.Drawing.Point(417, 545);
             this.btn_Decline.Name = "btn_Decline";
             this.btn_Decline.Size = new System.Drawing.Size(139, 23);
@@ -217,6 +218,7 @@
             this.btn_Accept.BackColor = System.Drawing.Color.LightGreen;
             this.btn_Accept.FlatAppearance.BorderSize = 0;
             this.btn_Accept.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Accept.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Accept.Location = new System.Drawing.Point(272, 545);
             this.btn_Accept.Name = "btn_Accept";
             this.btn_Accept.Size = new System.Drawing.Size(139, 23);

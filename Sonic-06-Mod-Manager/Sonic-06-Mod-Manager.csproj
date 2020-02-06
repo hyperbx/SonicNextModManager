@@ -40,6 +40,7 @@
     <ApplicationIcon>res\Icons\logo_main_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -273,6 +274,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
+    <Content Include="res\Applications\7z.exe" />
     <Content Include="res\Applications\arctool.exe" />
     <Content Include="res\Applications\make_fself.exe" />
     <Content Include="res\Applications\pkgtool.exe" />

@@ -430,5 +430,17 @@ namespace Unify.Properties {
                 this["General_AutoUninstall"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Emulator_UserLanguage {
+            get {
+                return ((int)(this["Emulator_UserLanguage"]));
+            }
+            set {
+                this["Emulator_UserLanguage"] = value;
+            }
+        }
     }
 }

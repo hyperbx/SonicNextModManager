@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.VisualBasic.Devices;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -169,6 +170,7 @@ namespace Unify.Environment3
 
                 #region Restore combo box states
                 ComboBox_API.SelectedIndex          = Properties.Settings.Default.Emulator_GraphicsAPI;
+                ComboBox_UserLanguage.SelectedIndex = Properties.Settings.Default.Emulator_UserLanguage;
                 ComboBox_Reflections.SelectedIndex  = Properties.Settings.Default.Tweak_Reflections;
                 ComboBox_AntiAliasing.SelectedIndex = Properties.Settings.Default.Tweak_AntiAliasing;
                 ComboBox_CameraType.SelectedIndex   = Properties.Settings.Default.Tweak_CameraType;
@@ -314,11 +316,19 @@ namespace Unify.Environment3
                     Label_Subtitle_Emulator_Options.ForeColor =
                     Label_GraphicsAPI.ForeColor =
                     Label_FieldOfView.ForeColor =
+                    Label_UserLanguage.ForeColor =
                     SystemColors.Control;
 
                     // Set text colour to ControlDark
                     Label_Description_GraphicsAPI.ForeColor =
                     Label_Description_FieldOfView.ForeColor =
+                    Label_Description_UserLanguage.ForeColor =
+                    Label_Description_ForceRTV.ForeColor =
+                    Label_Description_2xResolution.ForeColor =
+                    Label_Description_VerticalSync.ForeColor =
+                    Label_Description_Gamma.ForeColor =
+                    Label_Description_Fullscreen.ForeColor =
+                    Label_Description_DiscordRPC.ForeColor =
                     SystemColors.ControlDark;
 
                     // Set enabled state of controls
@@ -331,6 +341,13 @@ namespace Unify.Environment3
                     ComboBox_API.Enabled =
                     NumericUpDown_FieldOfView.Enabled =
                     Button_FieldOfView_Default.Enabled =
+                    ComboBox_UserLanguage.Enabled =
+                    CheckBox_Xenia_ForceRTV.Enabled =
+                    CheckBox_Xenia_2xResolution.Enabled =
+                    CheckBox_Xenia_VerticalSync.Enabled =
+                    CheckBox_Xenia_Gamma.Enabled =
+                    CheckBox_Xenia_Fullscreen.Enabled =
+                    CheckBox_Xenia_DiscordRPC.Enabled =
                     true;
 
                     // Set visibility state of controls
@@ -343,10 +360,18 @@ namespace Unify.Environment3
                     Label_Description_AntiAliasing.ForeColor =
                     Label_Description_ForceMSAA.ForeColor =
                     Label_Description_Reflections.ForeColor =
+                    Label_Description_UserLanguage.ForeColor =
+                    Label_Description_ForceRTV.ForeColor =
+                    Label_Description_2xResolution.ForeColor =
+                    Label_Description_VerticalSync.ForeColor =
+                    Label_Description_Gamma.ForeColor =
+                    Label_Description_Fullscreen.ForeColor =
+                    Label_Description_DiscordRPC.ForeColor =
                     Label_AntiAliasing.ForeColor =
                     Label_GraphicsAPI.ForeColor =
                     Label_FieldOfView.ForeColor =
                     Label_Reflections.ForeColor =
+                    Label_UserLanguage.ForeColor =
                     SystemColors.GrayText;
 
                     // Set enabled state of controls
@@ -364,6 +389,13 @@ namespace Unify.Environment3
                     CheckBox_ForceMSAA.Enabled =
                     ComboBox_Reflections.Enabled =
                     Button_Reflections_Default.Enabled =
+                    ComboBox_UserLanguage.Enabled =
+                    CheckBox_Xenia_ForceRTV.Enabled =
+                    CheckBox_Xenia_2xResolution.Enabled =
+                    CheckBox_Xenia_VerticalSync.Enabled =
+                    CheckBox_Xenia_Gamma.Enabled =
+                    CheckBox_Xenia_Fullscreen.Enabled =
+                    CheckBox_Xenia_DiscordRPC.Enabled =
                     false;
 
                     // Set visibility state of controls
@@ -1261,6 +1293,7 @@ namespace Unify.Environment3
                     if (CheckBox_Xenia_Gamma.Checked)         parameters.Add("--kernel_display_gamma_type=2"); // Enable Gamma
                     if (CheckBox_Xenia_Fullscreen.Checked)    parameters.Add("--fullscreen"); // Launch in Fullscreen
                     if (!CheckBox_Xenia_DiscordRPC.Checked)   parameters.Add("--discord=false"); // Discord Rich Presence
+                    parameters.Add($"--user_language={Properties.Settings.Default.Emulator_UserLanguage + 1}");
 
                     ProcessStartInfo xeniaProc = new ProcessStartInfo() {
                         FileName = Properties.Settings.Default.Path_EmulatorDirectory,
@@ -1632,7 +1665,7 @@ namespace Unify.Environment3
                                 ZIP.ExtractToDirectory(zip, Properties.Settings.Default.Path_ModsDirectory, true);
                         else
                             // Try 7-Zip - if it doesn't work, try WinRAR before throwing exception
-                            ZIP.InstallFrom7zArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
+                            ZIP.InstallFromCustomArchive(archive, Properties.Settings.Default.Path_ModsDirectory);
 
                         // Delete archive regardless of extracted state
                         File.Delete(archive);
@@ -1739,7 +1772,7 @@ namespace Unify.Environment3
                             string hexString = BitConverter.ToString(bytes);
 
                             if (hexString == "50-4B") ZIP.InstallFromZip(droppedFiles[0], Properties.Settings.Default.Path_ModsDirectory);
-                            else ZIP.InstallFrom7zArchive(droppedFiles[0], Properties.Settings.Default.Path_ModsDirectory);
+                            else ZIP.InstallFromCustomArchive(droppedFiles[0], Properties.Settings.Default.Path_ModsDirectory);
 
                             RefreshLists();
                         }
@@ -1759,7 +1792,7 @@ namespace Unify.Environment3
                             // File is an archive
                             if (Path.GetExtension(item) == ".zip" || Path.GetExtension(item) == ".7z" || Path.GetExtension(item) == ".rar")
                                 if (hexString == "50-4B") ZIP.InstallFromZip(item, Properties.Settings.Default.Path_ModsDirectory);
-                                else ZIP.InstallFrom7zArchive(item, Properties.Settings.Default.Path_ModsDirectory);
+                                else ZIP.InstallFromCustomArchive(item, Properties.Settings.Default.Path_ModsDirectory);
 
                             RefreshLists(); // Refresh on completion
                         }
@@ -1781,7 +1814,7 @@ namespace Unify.Environment3
                             string hexString = BitConverter.ToString(bytes);
 
                             if (hexString == "50-4B") ZIP.InstallFromZip(droppedFiles[0], Program.Patches);
-                            else ZIP.InstallFrom7zArchive(droppedFiles[0], Program.Patches);
+                            else ZIP.InstallFromCustomArchive(droppedFiles[0], Program.Patches);
 
                             RefreshLists();
                         }
@@ -1811,7 +1844,7 @@ namespace Unify.Environment3
                             // File is an archive
                             if (Path.GetExtension(item) == ".zip" || Path.GetExtension(item) == ".7z" || Path.GetExtension(item) == ".rar")
                                 if (hexString == "50-4B") ZIP.InstallFromZip(item, Program.Patches);
-                                else ZIP.InstallFrom7zArchive(item, Program.Patches);
+                                else ZIP.InstallFromCustomArchive(item, Program.Patches);
 
                             // File is a MLUA
                             else if (Path.GetExtension(item) == ".mlua")
@@ -2088,7 +2121,10 @@ namespace Unify.Environment3
                         sw.WriteLine($"Architecture: {architecture}");
 
                         sw.WriteLine("\nSpecifications:");
-                        
+
+                        // Get OS version
+                        sw.WriteLine($"OS: {new ComputerInfo().OSFullName}");
+
                         // Get CPU name
                         ManagementObjectSearcher getCPU = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor");
                         foreach (ManagementObject mo in getCPU.Get())
@@ -2131,6 +2167,14 @@ namespace Unify.Environment3
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Changed index selection events for the Emulator section.
+        /// </summary>
+        private void ComboBox_Emulator_SelectedIndexChanged(object sender, EventArgs e) {
+            if               (sender == ComboBox_API) Properties.Settings.Default.Emulator_GraphicsAPI  = ((ComboBox)sender).SelectedIndex;
+            else if (sender == ComboBox_UserLanguage) Properties.Settings.Default.Emulator_UserLanguage = ((ComboBox)sender).SelectedIndex;
         }
     }
 }

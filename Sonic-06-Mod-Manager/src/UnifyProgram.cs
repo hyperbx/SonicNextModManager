@@ -37,10 +37,11 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber    = "Version 3.06",
-                                      VersionNumberDev = $"Version 3.06-indev-{DateTime.Now.ToString("ddMMyy")}r1";
+        public static readonly string VersionNumber    = "Version 3.07",
+                                      VersionNumberDev = $"Version 3.07-indev-{DateTime.Now.ToString("ddMMyy")}r1";
 
         public static string ApplicationData    = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                             _7Zip              = $"{ApplicationData}\\Unify\\Tools\\7z.exe",
                              Arctool            = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
                              XexTool            = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
                              pkgtool            = $"{ApplicationData}\\Unify\\Tools\\pkgtool.exe",
@@ -68,6 +69,9 @@ namespace Unify.Environment3
 
             if (!Directory.Exists(Patches))
                 Directory.CreateDirectory(Patches);
+
+            if (!File.Exists(_7Zip))
+                File.WriteAllBytes(_7Zip, Properties.Resources._7z);
 
             if (!File.Exists(Arctool))
                 File.WriteAllBytes(Arctool, Properties.Resources.arctool);
