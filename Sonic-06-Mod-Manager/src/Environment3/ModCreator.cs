@@ -128,7 +128,7 @@ namespace Unify.Environment3
                                                   .Replace(">",  "")
                                                   .Replace("|",  "");
 
-                if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, safeTitle)))
+                if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, safeTitle)) && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A mod called '{text_Title.Text}' already exists. Please rename your mod.",
                                                            "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else {

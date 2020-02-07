@@ -100,7 +100,7 @@ namespace Unify.Environment3
                                                   .Replace("|",  "")
                                                   .Replace(" ",  "");
 
-                if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua"))
+                if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua") && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A patch called '{text_Title.Text}' already exists. Please rename your patch.",
                                                            "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else {
