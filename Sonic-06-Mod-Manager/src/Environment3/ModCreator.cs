@@ -140,7 +140,7 @@ namespace Unify.Environment3
                     if (!edit)
                         Directory.CreateDirectory(newPath);
                     else if (!Directory.Exists(newPath))
-                        Directory.Move(mod, newPath);
+                        Directory.Move(Path.GetDirectoryName(mod), newPath);
 
                     using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
                     using (StreamWriter configInfo = new StreamWriter(configCreate)) {
