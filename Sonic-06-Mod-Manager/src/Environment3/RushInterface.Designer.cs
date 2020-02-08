@@ -211,8 +211,8 @@ namespace Unify.Environment3
             this.Button_Open_ModsDirectory = new System.Windows.Forms.Button();
             this.Button_ColourPicker_Default = new System.Windows.Forms.Button();
             this.Section_Appearance_ColourPicker = new Unify.Environment3.SectionButton();
-            this.Label_Description_ProtocolManager = new System.Windows.Forms.Label();
-            this.LinkLabel_ProtocolManager = new System.Windows.Forms.LinkLabel();
+            this.Label_Description_1ClickURLHandler = new System.Windows.Forms.Label();
+            this.LinkLabel_1ClickURLHandler = new System.Windows.Forms.LinkLabel();
             this.Label_Warning_ModsDirectoryInvalid = new System.Windows.Forms.Label();
             this.Label_Description_ModsDirectory = new System.Windows.Forms.Label();
             this.Label_Description_Snapshot = new System.Windows.Forms.Label();
@@ -364,7 +364,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1116, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1137, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -470,7 +470,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1835, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1901, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1223,7 +1223,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1232, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1298, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -2295,8 +2295,8 @@ namespace Unify.Environment3
             this.Tab_Section_Settings.Controls.Add(this.Button_Open_ModsDirectory);
             this.Tab_Section_Settings.Controls.Add(this.Button_ColourPicker_Default);
             this.Tab_Section_Settings.Controls.Add(this.Section_Appearance_ColourPicker);
-            this.Tab_Section_Settings.Controls.Add(this.Label_Description_ProtocolManager);
-            this.Tab_Section_Settings.Controls.Add(this.LinkLabel_ProtocolManager);
+            this.Tab_Section_Settings.Controls.Add(this.Label_Description_1ClickURLHandler);
+            this.Tab_Section_Settings.Controls.Add(this.LinkLabel_1ClickURLHandler);
             this.Tab_Section_Settings.Controls.Add(this.Label_Warning_ModsDirectoryInvalid);
             this.Tab_Section_Settings.Controls.Add(this.Label_Description_ModsDirectory);
             this.Tab_Section_Settings.Controls.Add(this.Label_Description_Snapshot);
@@ -2731,31 +2731,31 @@ namespace Unify.Environment3
             this.Section_Appearance_ColourPicker.TextColour = System.Drawing.SystemColors.Control;
             this.Section_Appearance_ColourPicker.Click += new System.EventHandler(this.Section_Appearance_ColourPicker_Click);
             // 
-            // Label_Description_ProtocolManager
+            // Label_Description_1ClickURLHandler
             // 
-            this.Label_Description_ProtocolManager.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Description_ProtocolManager.AutoSize = true;
-            this.Label_Description_ProtocolManager.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Description_ProtocolManager.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_ProtocolManager.Location = new System.Drawing.Point(333, 323);
-            this.Label_Description_ProtocolManager.Name = "Label_Description_ProtocolManager";
-            this.Label_Description_ProtocolManager.Size = new System.Drawing.Size(243, 15);
-            this.Label_Description_ProtocolManager.TabIndex = 160;
-            this.Label_Description_ProtocolManager.Text = "Used to install the GameBanana registry key.";
+            this.Label_Description_1ClickURLHandler.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_1ClickURLHandler.AutoSize = true;
+            this.Label_Description_1ClickURLHandler.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_1ClickURLHandler.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_1ClickURLHandler.Location = new System.Drawing.Point(270, 323);
+            this.Label_Description_1ClickURLHandler.Name = "Label_Description_1ClickURLHandler";
+            this.Label_Description_1ClickURLHandler.Size = new System.Drawing.Size(304, 15);
+            this.Label_Description_1ClickURLHandler.TabIndex = 160;
+            this.Label_Description_1ClickURLHandler.Text = "Modifies the registry key for GameBanana 1-Click Install.";
             // 
-            // LinkLabel_ProtocolManager
+            // LinkLabel_1ClickURLHandler
             // 
-            this.LinkLabel_ProtocolManager.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_ProtocolManager.AutoSize = true;
-            this.LinkLabel_ProtocolManager.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.LinkLabel_ProtocolManager.LinkColor = System.Drawing.Color.Gold;
-            this.LinkLabel_ProtocolManager.Location = new System.Drawing.Point(11, 323);
-            this.LinkLabel_ProtocolManager.Name = "LinkLabel_ProtocolManager";
-            this.LinkLabel_ProtocolManager.Size = new System.Drawing.Size(144, 15);
-            this.LinkLabel_ProtocolManager.TabIndex = 159;
-            this.LinkLabel_ProtocolManager.TabStop = true;
-            this.LinkLabel_ProtocolManager.Text = "Launch Protocol Manager";
-            this.LinkLabel_ProtocolManager.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_ProtocolManager_LinkClicked);
+            this.LinkLabel_1ClickURLHandler.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_1ClickURLHandler.AutoSize = true;
+            this.LinkLabel_1ClickURLHandler.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.LinkLabel_1ClickURLHandler.LinkColor = System.Drawing.Color.Gold;
+            this.LinkLabel_1ClickURLHandler.Location = new System.Drawing.Point(11, 323);
+            this.LinkLabel_1ClickURLHandler.Name = "LinkLabel_1ClickURLHandler";
+            this.LinkLabel_1ClickURLHandler.Size = new System.Drawing.Size(147, 15);
+            this.LinkLabel_1ClickURLHandler.TabIndex = 159;
+            this.LinkLabel_1ClickURLHandler.TabStop = true;
+            this.LinkLabel_1ClickURLHandler.Text = "Install 1-Click URL Handler";
+            this.LinkLabel_1ClickURLHandler.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_1ClickURLHandler_LinkClicked);
             // 
             // Label_Warning_ModsDirectoryInvalid
             // 
@@ -3428,8 +3428,8 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label Label_LastPatchUpdate;
         private System.Windows.Forms.Label Label_LastModUpdate;
         private SectionButton SectionButton_FetchPatches;
-        private System.Windows.Forms.Label Label_Description_ProtocolManager;
-        private System.Windows.Forms.LinkLabel LinkLabel_ProtocolManager;
+        private System.Windows.Forms.Label Label_Description_1ClickURLHandler;
+        private System.Windows.Forms.LinkLabel LinkLabel_1ClickURLHandler;
         private System.Windows.Forms.Label Label_Warning_ModsDirectoryInvalid;
         private System.Windows.Forms.Label Label_Description_ModsDirectory;
         private System.Windows.Forms.Label Label_Testers;

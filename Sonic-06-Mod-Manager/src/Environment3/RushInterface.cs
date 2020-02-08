@@ -52,6 +52,7 @@ namespace Unify.Environment3
     {
         public static bool _debug = false;
         private bool _isPathInvalid = false;
+        private static string protocol = "sonic06mm";
 
         public RushInterface() {
             InitializeComponent(); // Designer support
@@ -75,6 +76,9 @@ namespace Unify.Environment3
                 }
 
                 LoadSettings(); // Load user settings
+
+                // Check registry for 1-Click Install registry key
+                try { CheckRegistry(); } catch { LinkLabel_1ClickURLHandler.Text = "Reinstall 1-Click URL Handler"; }
 
                 Label_Version.Text = Program.VersionNumber; // Sets the version string in the About section
                 Properties.Settings.Default.SettingsSaving += Settings_SettingsSaving; // Subscribe to event for SettingsSaving
@@ -1706,23 +1710,69 @@ namespace Unify.Environment3
         }
 
         /// <summary>
-        /// Launches Protocol Manager for GameBanana registry key installation.
+        /// Installs/uninstalls the GameBanana registry key.
         /// </summary>
-        private void LinkLabel_ProtocolManager_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            string protocolManager = $"{Program.ApplicationData}\\Unify\\Tools\\Protocol Manager.exe";
-            
-            if (File.Exists(protocolManager)) {
-                ProcessStartInfo info = new ProcessStartInfo() {
-                    FileName = protocolManager,
-                    Arguments = $"\"{Application.ExecutablePath}\" \"True\"",
-                    UseShellExecute = true,
-                    Verb = "runas"
-                };
-                Process.Start(info);
-                Application.Exit();
-            } else
-                UnifyMessenger.UnifyMessage.ShowDialog("Protocol Manager is missing, please restart Sonic '06 Mod Manager.",
-                                                       "Protocol Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        private void LinkLabel_1ClickURLHandler_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            try {
+                RegistryKey sonic06mmKey = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\{protocol}\\shell\\open\\command", true);
+
+                // Install handler
+                if (((LinkLabel)sender).Text == "Install 1-Click URL Handler" || ((LinkLabel)sender).Text == "Reinstall 1-Click URL Handler") {
+                    sonic06mmKey = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\{protocol}", true);
+                    if (sonic06mmKey == null)
+                        sonic06mmKey = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{protocol}");
+                    sonic06mmKey.SetValue(string.Empty, "URL:Sonic '06 Mod Manager");
+                    sonic06mmKey.SetValue("URL Protocol", string.Empty);
+                    RegistryKey prevkey = sonic06mmKey;
+                    sonic06mmKey = sonic06mmKey.OpenSubKey("shell", true);
+                    if (sonic06mmKey == null)
+                        sonic06mmKey = prevkey.CreateSubKey("shell");
+                    prevkey = sonic06mmKey;
+                    sonic06mmKey = sonic06mmKey.OpenSubKey("open", true);
+                    if (sonic06mmKey == null)
+                        sonic06mmKey = prevkey.CreateSubKey("open");
+                    prevkey = sonic06mmKey;
+                    sonic06mmKey = sonic06mmKey.OpenSubKey("command", true);
+                    if (sonic06mmKey == null)
+                        sonic06mmKey = prevkey.CreateSubKey("command");
+
+                    sonic06mmKey.SetValue(string.Empty, $"\"{Application.ExecutablePath}\" \"-banana\" \"%1\"");
+                    sonic06mmKey.Close();
+
+                // Uninstall handler
+                } else if (((LinkLabel)sender).Text == "Uninstall 1-Click URL Handler") {
+                    sonic06mmKey = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\{protocol}", true);
+                    sonic06mmKey.SetValue(string.Empty, string.Empty);
+                    sonic06mmKey = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\{protocol}\\shell\\open\\command", true);
+                    sonic06mmKey.SetValue(string.Empty, string.Empty);
+                    sonic06mmKey.Close();
+                }
+
+                CheckRegistry();
+            } catch {
+                UnifyMessenger.UnifyMessage.ShowDialog("Failed to modify the Windows Registry...",
+                                                       "Registry error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Checks to see if the GameBanana 1-Click registry key is installed.
+        /// </summary>
+        private void CheckRegistry() {
+            RegistryKey key         = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\{protocol}", false), // Open the Sonic '06 Mod Manager protocol key
+                        getLocation = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\{protocol}\\shell\\open\\command", false);
+
+            string command = $"\"{Application.ExecutablePath}\" \"-banana\" \"%1\"";
+
+            // If the key does not exist, keep the checkbox unchecked.
+            if (key == null || getLocation.GetValue(null).ToString() == string.Empty)
+                LinkLabel_1ClickURLHandler.Text = "Install 1-Click URL Handler";
+            else {
+                if (getLocation.GetValue(null).ToString() != command)
+                    LinkLabel_1ClickURLHandler.Text = "Reinstall 1-Click URL Handler";
+                else if (getLocation.GetValue(null).ToString() == command)
+                    LinkLabel_1ClickURLHandler.Text = "Uninstall 1-Click URL Handler";
+            }
         }
 
         /// <summary>
@@ -2187,6 +2237,11 @@ namespace Unify.Environment3
             else if   (sender == CheckBox_Xenia_Fullscreen) Properties.Settings.Default.Emulator_Fullscreen       = ((CheckBox)sender).Checked;
             else if   (sender == CheckBox_Xenia_DiscordRPC) Properties.Settings.Default.Emulator_DiscordRPC       = ((CheckBox)sender).Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void LinkLabel_ProtocolManager_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
         }
     }
 }

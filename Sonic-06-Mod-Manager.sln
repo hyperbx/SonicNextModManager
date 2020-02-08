@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonic-06-Mod-Manager", "Sonic-06-Mod-Manager\Sonic-06-Mod-Manager.csproj", "{277111E3-79D8-41B5-B0D7-7609DFF6E36F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocol Manager", "Protocol-Manager\Protocol Manager.csproj", "{6867A094-EEF6-4ADE-8574-0C4EA4FA93E5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,15 +15,11 @@ Global
 		{277111E3-79D8-41B5-B0D7-7609DFF6E36F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{277111E3-79D8-41B5-B0D7-7609DFF6E36F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{277111E3-79D8-41B5-B0D7-7609DFF6E36F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6867A094-EEF6-4ADE-8574-0C4EA4FA93E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6867A094-EEF6-4ADE-8574-0C4EA4FA93E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6867A094-EEF6-4ADE-8574-0C4EA4FA93E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6867A094-EEF6-4ADE-8574-0C4EA4FA93E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A345D514-BBA0-46E8-A0E0-A92835092A29}
+		SolutionGuid = {B9D55C6D-ACAD-48F6-B353-BE835CC85FD3}
 	EndGlobalSection
 EndGlobal
