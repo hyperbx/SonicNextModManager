@@ -167,8 +167,16 @@ namespace Unify.Serialisers
         /// <summary>
         /// Checks if the path is valid and exists.
         /// </summary>
-        public static bool CheckLegitimacy(string path) {
+        public static bool CheckPathLegitimacy(string path) {
             if (Directory.Exists(path) && path != string.Empty) return true;
+            else return false;
+        }
+
+        /// <summary>
+        /// Checks if the path is valid and exists.
+        /// </summary>
+        public static bool CheckFileLegitimacy(string path) {
+            if (File.Exists(path) && path != string.Empty) return true;
             else return false;
         }
 

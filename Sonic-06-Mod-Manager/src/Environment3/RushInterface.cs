@@ -113,7 +113,7 @@ namespace Unify.Environment3
         /// </summary>
         private void RushInterface_Load(object sender, EventArgs e) {
             RefreshLists(); // Refresh mods list
-            if (Paths.CheckLegitimacy(Properties.Settings.Default.Path_GameDirectory) && 
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory) && 
                 Properties.Settings.Default.General_AutoUninstall) UninstallThread(); // Uninstall everything
         }
 

@@ -4,7 +4,6 @@ using System.Text;
 using System.Linq;
 using ArcPackerLib;
 using Unify.Messenger;
-using Microsoft.Win32;
 using Unify.Serialisers;
 using Unify.Environment3;
 using System.Diagnostics;
@@ -123,8 +122,7 @@ namespace Unify.Patcher
         /// </summary>
         public static void UninstallMods() {
             // If the game directory is empty/doesn't exist, ignore request
-            if (Properties.Settings.Default.Path_GameDirectory != string.Empty ||
-                File.Exists(Properties.Settings.Default.Path_GameDirectory)) {
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory)) {
                     // Search for all files
                     List<string> files = Directory.GetFiles(
                                          Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory),
@@ -145,24 +143,23 @@ namespace Unify.Patcher
         /// Uninstalls user-made filesystems.
         /// </summary>
         public static void UninstallCustomFilesystem(ListView.ListViewItemCollection listViewItems) {
-            if (Properties.Settings.Default.Path_GameDirectory != string.Empty ||
-                File.Exists(Properties.Settings.Default.Path_GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
-                    foreach (ListViewItem mod in listViewItems) {
-                        string[] custom = INI.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory)) { // If the game directory is empty/doesn't exist, ignore request
+                foreach (ListViewItem mod in listViewItems) {
+                    string[] custom = INI.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
 
-                        if (custom[0] != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
-                            foreach (string file in custom) {
-                                // Search for all files with filters from custom
-                                List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), file, SearchOption.AllDirectories).ToList();
+                    if (custom[0] != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
+                        foreach (string file in custom) {
+                            // Search for all files with filters from custom
+                            List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), file, SearchOption.AllDirectories).ToList();
                                 
-                                foreach (string customfile in files)
-                                    try {
-                                        if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
-                                        File.Delete(customfile); // If custom archive is found, erase...
-                                    } catch { }
-                            }
+                            foreach (string customfile in files)
+                                try {
+                                    if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
+                                    File.Delete(customfile); // If custom archive is found, erase...
+                                } catch { }
                         }
                     }
+                }
             }
         }
 
@@ -971,7 +968,7 @@ namespace Unify.Patcher
                  tailsFlightLimit = Properties.Settings.Default.Tweak_TailsFlightLimit;
 
             // Field of View
-            if (fieldOfView != 90) {
+            if (fieldOfView != 90 && system == "Xbox 360") {
                 string xex = Path.Combine(gameDirectory, "default.xex"); // Location of the XEX
 
                 if (!File.Exists($"{xex}_back"))

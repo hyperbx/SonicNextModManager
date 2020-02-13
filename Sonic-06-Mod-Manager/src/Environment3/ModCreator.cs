@@ -150,6 +150,16 @@ namespace Unify.Environment3
                         if (text_Date.Text != string.Empty)     configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
                         if (text_Author.Text != string.Empty)   configInfo.WriteLine($"Author=\"{text_Author.Text}\"");
                                                                 configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
+                        
+                        if (tb_Description.Text != string.Empty) {
+                            string descriptionText = string.Empty;
+                            string lastLine = tb_Description.Lines.Last();
+                            foreach (var newLine in tb_Description.Lines) {
+                                if (newLine != lastLine) descriptionText += $"{newLine}\\n";
+                                else descriptionText += newLine;
+                            }
+                            configInfo.WriteLine($"Description=\"{descriptionText}\"");
+                        }
 
                                                                 configInfo.WriteLine("\n[Filesystem]");
                                                                 configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
@@ -160,16 +170,6 @@ namespace Unify.Environment3
                             configInfo.WriteLine($"Save=\"savedata.360\"");
                         else if (text_Save.Text != string.Empty && combo_System.SelectedIndex == 1)
                             configInfo.WriteLine($"Save=\"savedata.ps3\"");
-
-                        if (tb_Description.Text != string.Empty) {
-                            string descriptionText = string.Empty;
-                            string lastLine = tb_Description.Lines.Last();
-                            foreach (var newLine in tb_Description.Lines) {
-                                if (newLine != lastLine) descriptionText += $"{newLine}\\n";
-                                else descriptionText += newLine;
-                            }
-                            configInfo.WriteLine($"Description=\"{descriptionText}\"");
-                        }
 
                         if (text_Server.Text != string.Empty) {
                             configInfo.WriteLine();
