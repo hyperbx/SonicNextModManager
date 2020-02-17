@@ -24,7 +24,7 @@ Uncheck `Launch emulator after installing mods` in the Settings section, then se
 # ISO Extraction
 In order to use the Mod Manager, your copy of SONIC THE HEDGEHOG (2006) needs to be extracted, how you will do this depends on your system, follow the appropriate instructions in the links below.
 
-- Xbox 360: https://www.reddit.com/r/xenia/wiki/how_to_rip_games
+- Xbox 360: https://github.com/xenia-project/xenia/wiki/Quickstart#how-to-rip-games
 - PlayStation 3: https://www.reddit.com/r/ps3homebrew/wiki/multiman#wiki_making_backups_of_games
 
 (Xbox 360 users) - If you end up with an ISO disc image, then you can use [Sonic '06 Toolkit](https://github.com/HyperPolygon64/Sonic-06-Toolkit) to extract the Xbox 360 ISO.
