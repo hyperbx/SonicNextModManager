@@ -100,14 +100,6 @@ namespace Unify.Environment3
             set { Label_Status.Text = value; }
         }
 
-        public ListView.ListViewItemCollection ModsList {
-            get { return ListView_ModsList.Items; }
-        }
-
-        public ListView.ListViewItemCollection PatchesList {
-            get { return ListView_PatchesList.Items; }
-        }
-
         /// <summary>
         /// Performs actions on launch.
         /// </summary>
@@ -140,6 +132,11 @@ namespace Unify.Environment3
                 Label_LastSoftwareUpdate.Text = Literal.Date("Last checked", Properties.Settings.Default.General_LastSoftwareUpdate);
                 Label_LastModUpdate.Text      = Literal.Date("Last checked", Properties.Settings.Default.General_LastModUpdate);
                 Label_LastPatchUpdate.Text    = Literal.Date("Last updated", Properties.Settings.Default.General_LastPatchUpdate);
+
+                if (Properties.Settings.Default.General_Priority)
+                    Button_Priority.Text = "Priority: Bottom to Top";
+                else
+                    Button_Priority.Text = "Priority: Top to Bottom";
                 #endregion
 
                 #region Restore text fields
@@ -1366,13 +1363,10 @@ namespace Unify.Environment3
         /// Switches between Top to Bottom or Bottom to Top priority.
         /// </summary>
         private void Button_Priority_Click(object sender, EventArgs e) {
-            if (Properties.Settings.Default.General_Priority) {
-                Button_Priority.Text = "Priority: Bottom to Top";
+            if (Properties.Settings.Default.General_Priority)
                 Properties.Settings.Default.General_Priority = false;
-            } else {
-                Button_Priority.Text = "Priority: Top to Bottom";
+            else
                 Properties.Settings.Default.General_Priority = true;
-            }
             Properties.Settings.Default.Save();
         }
 
