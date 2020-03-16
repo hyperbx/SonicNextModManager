@@ -52,9 +52,9 @@ namespace Unify.Patcher
         /// <param name="mod">File path to the mod's INI file.</param>
         /// <param name="name">Name of the mod by Title key.</param>
         public static void InstallMods(string mod, string name) {
-            string platform = INI.DeserialiseKey("Platform", mod); // Deserialise 'Platform' key
-            bool merge = bool.Parse(INI.DeserialiseKey("Merge", mod)); // Deserialise 'Merge' key and parse as a Boolean value
-            string[] custom = INI.DeserialiseKey("Custom", mod).Split(','); // Deserialise 'Custom' key
+            string platform    = INI.DeserialiseKey("Platform", mod);             // Deserialise 'Platform' key
+            bool merge         = bool.Parse(INI.DeserialiseKey("Merge", mod));    // Deserialise 'Merge' key and parse as a Boolean value
+            string[] custom    = INI.DeserialiseKey("Custom", mod).Split(',');    // Deserialise 'Custom' key
             string[] read_only = INI.DeserialiseKey("Read-only", mod).Split(','); // Deserialise 'Read-only' key
 
             //Skip the mod if the platform is invalid
@@ -406,12 +406,16 @@ namespace Unify.Patcher
                         }
 
                         if (line.StartsWith("Write")) {
-                            string[] _WriteByte   = Lua.DeserialiseParameterList("WriteByte", line, false),   // Deserialise 'WriteByte' parameter
-                                     _WriteNopPPC = Lua.DeserialiseParameterList("WriteNopPPC", line, false), // Deserialise 'WriteNopPPC' parameter
-                                     _WriteBase64 = Lua.DeserialiseParameterList("WriteBase64", line, false); // Deserialise 'WriteBase64' parameter
+                            string[] _WriteByte      = Lua.DeserialiseParameterList("WriteByte", line, false),      // Deserialise 'WriteByte' parameter
+                                     _WriteNullBytes = Lua.DeserialiseParameterList("WriteNullBytes", line, false), // Deserialise 'WriteNullBytes' parameter
+                                     _WriteNopPPC    = Lua.DeserialiseParameterList("WriteNopPPC", line, false),    // Deserialise 'WriteNopPPC' parameter
+                                     _WriteBase64    = Lua.DeserialiseParameterList("WriteBase64", line, false);    // Deserialise 'WriteBase64' parameter
 
                             if (line.StartsWith("WriteByte") && _WriteByte.Length != 0)
                                 WriteByte(Literal.CoreReplace(_WriteByte[0]), Convert.ToInt32(_WriteByte[1], 16), Convert.ToByte(_WriteByte[2], 16));
+                            else if (line.StartsWith("WriteNullBytes") && _WriteNullBytes.Length != 0)
+                                for (int i = 0; i < Convert.ToInt32(_WriteNullBytes[2]); i++)
+                                    WriteByte(Literal.CoreReplace(_WriteNullBytes[0]), Convert.ToInt32(_WriteNullBytes[1], 16) + i, 0);
                             else if (line.StartsWith("WriteNopPPC") && _WriteNopPPC.Length != 0)
                                 WriteNopPPC(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16));
                             else if (line.StartsWith("WriteBase64") && _WriteBase64.Length != 0)
@@ -524,6 +528,17 @@ namespace Unify.Patcher
             }
 
             if (File.Exists(location)) File.Delete(location);
+            else if (Directory.Exists(location) && _archive != string.Empty) {
+                try {
+                    // Erases the directory
+                    DirectoryInfo data = new DirectoryInfo(location);
+                    if (Directory.Exists(location)) {
+                        foreach (FileInfo file in data.GetFiles()) file.Delete();
+                        foreach (DirectoryInfo directory in data.GetDirectories()) directory.Delete(true);
+                        Directory.Delete(location);
+                    }
+                } catch { }
+            }
         }
 
         private static void EndBlock() {
