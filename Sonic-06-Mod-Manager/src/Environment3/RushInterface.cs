@@ -203,6 +203,7 @@ namespace Unify.Environment3
                 NumericUpDown_CameraHeight.Value   = Properties.Settings.Default.Tweak_CameraHeight;
                 NumericUpDown_FieldOfView.Value    = Properties.Settings.Default.Tweak_FieldOfView;
                 NumericUpDown_AmyHammerRange.Value = Properties.Settings.Default.Tweak_AmyHammerRange;
+                NumericUpDown_BeginWithRings.Value = Properties.Settings.Default.Tweak_BeginWithRings;
                 #endregion
 
                 #region Restore check box states
@@ -1973,6 +1974,7 @@ namespace Unify.Environment3
             else if   (sender == NumericUpDown_CameraHeight) Properties.Settings.Default.Tweak_CameraHeight   = ((NumericUpDown)sender).Value;
             else if    (sender == NumericUpDown_FieldOfView) Properties.Settings.Default.Tweak_FieldOfView    = ((NumericUpDown)sender).Value;
             else if (sender == NumericUpDown_AmyHammerRange) Properties.Settings.Default.Tweak_AmyHammerRange = ((NumericUpDown)sender).Value;
+            else if (sender == NumericUpDown_BeginWithRings) Properties.Settings.Default.Tweak_BeginWithRings = ((NumericUpDown)sender).Value;
             Properties.Settings.Default.Save();
         }
 
@@ -1996,7 +1998,8 @@ namespace Unify.Environment3
                 Properties.Settings.Default.Tweak_AntiAliasing = 1;
 
             // Reset Camera Type
-            else if (sender == Button_CameraType_Default) {
+            else if (sender == Button_CameraType_Default)
+            {
                 Properties.Settings.Default.Tweak_CameraType = 0;
                 Properties.Settings.Default.Tweak_CameraDistance = 650;
                 Properties.Settings.Default.Tweak_CameraHeight = 70;
@@ -2041,6 +2044,10 @@ namespace Unify.Environment3
             // Reset Amy's Hammer Range
             else if (sender == Button_AmyHammerRange_Default)
                 Properties.Settings.Default.Tweak_AmyHammerRange = 50;
+
+            // Reset Begin with Rings
+            else if (sender == Button_BeginWithRings_Default)
+                Properties.Settings.Default.Tweak_BeginWithRings = 0;
 
             Properties.Settings.Default.Save();
         }

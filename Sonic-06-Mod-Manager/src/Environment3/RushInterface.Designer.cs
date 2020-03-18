@@ -105,6 +105,10 @@ namespace Unify.Environment3
             this.Column_PatchesList_Blurb = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Column_PatchesList_Blank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Tab_Section_Tweaks = new System.Windows.Forms.TabPage();
+            this.Button_BeginWithRings_Default = new System.Windows.Forms.Button();
+            this.Label_Description_BeginWithRings = new System.Windows.Forms.Label();
+            this.Label_BeginWithRings = new System.Windows.Forms.Label();
+            this.NumericUpDown_BeginWithRings = new System.Windows.Forms.NumericUpDown();
             this.Label_Description_TailsFlightLimit = new System.Windows.Forms.Label();
             this.CheckBox_TailsFlightLimit = new System.Windows.Forms.CheckBox();
             this.Button_AmyHammerRange_Default = new System.Windows.Forms.Button();
@@ -266,6 +270,7 @@ namespace Unify.Environment3
             this.SplitContainer_PatchesControls.SuspendLayout();
             this.Panel_PatchBackdrop.SuspendLayout();
             this.Tab_Section_Tweaks.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_BeginWithRings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_FieldOfView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraDistance)).BeginInit();
@@ -364,7 +369,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1143, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1158, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -470,7 +475,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1907, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(1937, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1205,7 +1210,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(3, 0);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(294, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(291, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -1223,7 +1228,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1304, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1334, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1307,6 +1312,10 @@ namespace Unify.Environment3
             // 
             this.Tab_Section_Tweaks.AutoScroll = true;
             this.Tab_Section_Tweaks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_Tweaks.Controls.Add(this.Button_BeginWithRings_Default);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_BeginWithRings);
+            this.Tab_Section_Tweaks.Controls.Add(this.Label_BeginWithRings);
+            this.Tab_Section_Tweaks.Controls.Add(this.NumericUpDown_BeginWithRings);
             this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_TailsFlightLimit);
             this.Tab_Section_Tweaks.Controls.Add(this.CheckBox_TailsFlightLimit);
             this.Tab_Section_Tweaks.Controls.Add(this.Button_AmyHammerRange_Default);
@@ -1354,13 +1363,65 @@ namespace Unify.Environment3
             this.Tab_Section_Tweaks.Tag = "HideControls";
             this.Tab_Section_Tweaks.Text = "Tweaks";
             // 
+            // Button_BeginWithRings_Default
+            // 
+            this.Button_BeginWithRings_Default.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_BeginWithRings_Default.FlatAppearance.BorderSize = 0;
+            this.Button_BeginWithRings_Default.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Button_BeginWithRings_Default.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Button_BeginWithRings_Default.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_BeginWithRings_Default.Image = ((System.Drawing.Image)(resources.GetObject("Button_BeginWithRings_Default.Image")));
+            this.Button_BeginWithRings_Default.Location = new System.Drawing.Point(554, 630);
+            this.Button_BeginWithRings_Default.Name = "Button_BeginWithRings_Default";
+            this.Button_BeginWithRings_Default.Size = new System.Drawing.Size(21, 20);
+            this.Button_BeginWithRings_Default.TabIndex = 188;
+            this.Button_BeginWithRings_Default.UseVisualStyleBackColor = true;
+            this.Button_BeginWithRings_Default.Click += new System.EventHandler(this.Button_Tweaks_Default);
+            // 
+            // Label_Description_BeginWithRings
+            // 
+            this.Label_Description_BeginWithRings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_BeginWithRings.AutoSize = true;
+            this.Label_Description_BeginWithRings.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Description_BeginWithRings.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.Label_Description_BeginWithRings.Location = new System.Drawing.Point(324, 608);
+            this.Label_Description_BeginWithRings.Name = "Label_Description_BeginWithRings";
+            this.Label_Description_BeginWithRings.Size = new System.Drawing.Size(224, 15);
+            this.Label_Description_BeginWithRings.TabIndex = 186;
+            this.Label_Description_BeginWithRings.Text = "Start with Rings when the player spawns.";
+            // 
+            // Label_BeginWithRings
+            // 
+            this.Label_BeginWithRings.AutoSize = true;
+            this.Label_BeginWithRings.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.Label_BeginWithRings.Location = new System.Drawing.Point(11, 606);
+            this.Label_BeginWithRings.Name = "Label_BeginWithRings";
+            this.Label_BeginWithRings.Size = new System.Drawing.Size(103, 17);
+            this.Label_BeginWithRings.TabIndex = 185;
+            this.Label_BeginWithRings.Text = "Begin with Rings";
+            // 
+            // NumericUpDown_BeginWithRings
+            // 
+            this.NumericUpDown_BeginWithRings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NumericUpDown_BeginWithRings.Location = new System.Drawing.Point(14, 629);
+            this.NumericUpDown_BeginWithRings.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.NumericUpDown_BeginWithRings.Name = "NumericUpDown_BeginWithRings";
+            this.NumericUpDown_BeginWithRings.Size = new System.Drawing.Size(534, 23);
+            this.NumericUpDown_BeginWithRings.TabIndex = 187;
+            this.NumericUpDown_BeginWithRings.ValueChanged += new System.EventHandler(this.NumericUpDown_Tweaks_ValueChanged);
+            // 
             // Label_Description_TailsFlightLimit
             // 
             this.Label_Description_TailsFlightLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Description_TailsFlightLimit.AutoSize = true;
             this.Label_Description_TailsFlightLimit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_TailsFlightLimit.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_TailsFlightLimit.Location = new System.Drawing.Point(402, 615);
+            this.Label_Description_TailsFlightLimit.Location = new System.Drawing.Point(402, 667);
             this.Label_Description_TailsFlightLimit.Name = "Label_Description_TailsFlightLimit";
             this.Label_Description_TailsFlightLimit.Size = new System.Drawing.Size(173, 15);
             this.Label_Description_TailsFlightLimit.TabIndex = 184;
@@ -1370,7 +1431,7 @@ namespace Unify.Environment3
             // 
             this.CheckBox_TailsFlightLimit.AutoSize = true;
             this.CheckBox_TailsFlightLimit.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_TailsFlightLimit.Location = new System.Drawing.Point(14, 614);
+            this.CheckBox_TailsFlightLimit.Location = new System.Drawing.Point(14, 666);
             this.CheckBox_TailsFlightLimit.Name = "CheckBox_TailsFlightLimit";
             this.CheckBox_TailsFlightLimit.Size = new System.Drawing.Size(154, 19);
             this.CheckBox_TailsFlightLimit.TabIndex = 183;
@@ -1861,7 +1922,7 @@ namespace Unify.Environment3
             // 
             // Panel_Tweaks_UICleanSpace
             // 
-            this.Panel_Tweaks_UICleanSpace.Location = new System.Drawing.Point(14, 632);
+            this.Panel_Tweaks_UICleanSpace.Location = new System.Drawing.Point(14, 684);
             this.Panel_Tweaks_UICleanSpace.Name = "Panel_Tweaks_UICleanSpace";
             this.Panel_Tweaks_UICleanSpace.Size = new System.Drawing.Size(214, 17);
             this.Panel_Tweaks_UICleanSpace.TabIndex = 174;
@@ -3274,6 +3335,7 @@ namespace Unify.Environment3
             this.Panel_PatchBackdrop.ResumeLayout(false);
             this.Tab_Section_Tweaks.ResumeLayout(false);
             this.Tab_Section_Tweaks.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_BeginWithRings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_FieldOfView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_CameraDistance)).EndInit();
@@ -3515,5 +3577,9 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TextBox_Arguments;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button Button_BeginWithRings_Default;
+        private System.Windows.Forms.Label Label_Description_BeginWithRings;
+        private System.Windows.Forms.Label Label_BeginWithRings;
+        private System.Windows.Forms.NumericUpDown NumericUpDown_BeginWithRings;
     }
 }

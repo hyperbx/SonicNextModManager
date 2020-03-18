@@ -677,9 +677,9 @@ namespace Unify.Patcher
                     if (!_ignoreList.Any(s => Path.GetFileName(luaData).Contains(s))) {
                         DecompileLua(luaData);
                         value = value.Replace("\\\"", "\"");
-                        List<string> scriptList = File.ReadAllLines(location).ToList();
+                        List<string> scriptList = File.ReadAllLines(luaData).ToList();
                         scriptList.Add($"{parameter} = {value}");
-                        File.WriteAllLines(location, scriptList);
+                        File.WriteAllLines(luaData, scriptList);
                     }
                 }
             }
@@ -969,15 +969,16 @@ namespace Unify.Patcher
             string tweak = string.Empty;
 
             // Define short variables to properties
-            int renderer     = Properties.Settings.Default.Tweak_Renderer,
-                reflections  = Properties.Settings.Default.Tweak_Reflections,
-                antiAliasing = Properties.Settings.Default.Tweak_AntiAliasing,
-                cameraType   = Properties.Settings.Default.Tweak_CameraType;
+            int renderer       = Properties.Settings.Default.Tweak_Renderer,
+                reflections    = Properties.Settings.Default.Tweak_Reflections,
+                antiAliasing   = Properties.Settings.Default.Tweak_AntiAliasing,
+                cameraType     = Properties.Settings.Default.Tweak_CameraType;
 
             decimal cameraHeight   = Properties.Settings.Default.Tweak_CameraHeight,
                     cameraDistance = Properties.Settings.Default.Tweak_CameraDistance,
                     hammerRange    = Properties.Settings.Default.Tweak_AmyHammerRange,
-                    fieldOfView    = Properties.Settings.Default.Tweak_FieldOfView;
+                    fieldOfView    = Properties.Settings.Default.Tweak_FieldOfView,
+                    beginWithRings = Properties.Settings.Default.Tweak_BeginWithRings;
 
             bool forceMSAA        = Properties.Settings.Default.Tweak_ForceMSAA,
                  tailsFlightLimit = Properties.Settings.Default.Tweak_TailsFlightLimit;
@@ -1065,7 +1066,7 @@ namespace Unify.Patcher
                     int proceed = 0;
 
                     if (antiAliasing != 1)  proceed++;
-                    if (!forceMSAA) proceed++;
+                    if (!forceMSAA)         proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{archive}_back"))
@@ -1116,9 +1117,10 @@ namespace Unify.Patcher
                 } else if (Path.GetFileName(archive) == "player.arc") {
                     int proceed = 0;
 
-                    if (cameraHeight != 70) proceed++;
-                    if (hammerRange != 50)  proceed++;
-                    if (!tailsFlightLimit) proceed++;
+                    if (cameraHeight != 70)  proceed++;
+                    if (hammerRange != 50)   proceed++;
+                    if (!tailsFlightLimit)   proceed++;
+                    if (beginWithRings != 0) proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{archive}_back"))
@@ -1143,6 +1145,11 @@ namespace Unify.Patcher
                         if (hammerRange != 50) {
                             rush.Status = $"Tweaking Characters...";
                             HammerRange(Path.Combine(tweak, $"player\\{system}\\player\\amy.lub"), hammerRange);
+                        }
+
+                        if (beginWithRings != 0) {
+                            rush.Status = $"Tweaking Characters...";
+                            BeginWithRings(Path.Combine(tweak, $"player\\{system}\\player\\"), beginWithRings);
                         }
 
                         // Unlock Tails' Flight Limit
@@ -1332,6 +1339,19 @@ namespace Unify.Patcher
                 lineNum++;
             }
             File.WriteAllLines(directoryRoot, editedLua);
+        }
+
+        private static void BeginWithRings(string directoryRoot, decimal rings) {
+            foreach (string lub in Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories)) {
+                PatchEngine.DecompileLua(lub);
+                List<string> editedLua = File.ReadAllLines(lub).ToList();
+
+                for (int i = 0; i < editedLua.Count; i++)
+                    if (editedLua[i].Contains("c_default_ring")) editedLua.RemoveAt(i);
+
+                editedLua.Add($"c_default_ring = {rings}");
+                File.WriteAllLines(lub, editedLua);
+            }
         }
 
         private static void UnlockTailsFlightLimit(string directoryRoot) {

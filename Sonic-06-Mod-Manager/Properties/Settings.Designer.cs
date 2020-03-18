@@ -454,5 +454,17 @@ namespace Unify.Properties {
                 this["Emulator_Arguments"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public decimal Tweak_BeginWithRings {
+            get {
+                return ((decimal)(this["Tweak_BeginWithRings"]));
+            }
+            set {
+                this["Tweak_BeginWithRings"] = value;
+            }
+        }
     }
 }
