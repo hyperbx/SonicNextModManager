@@ -53,6 +53,7 @@ namespace Unify.Environment3
         public static bool _debug = false;
         private bool _isPathInvalid = false;
         private static string protocol = "sonic06mm";
+        private bool _useBackupServer = false;
 
         public RushInterface() {
             InitializeComponent(); // Designer support
@@ -236,15 +237,7 @@ namespace Unify.Environment3
 
                 if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.General_CheckUpdatesOnLaunch) {
                     Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                    try { CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival); }
-                    catch {
-                        try { CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub); }
-                        catch (Exception ex) {
-                            Label_UpdaterStatus.Text = "Connection error";
-                            PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
-                            RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
-                        }
-                    }
+                    CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
                 }
 
                 if (CheckBox_SaveFileRedirection.Checked = Properties.Settings.Default.General_SaveFileRedirection) {
@@ -461,22 +454,35 @@ namespace Unify.Environment3
             try {
                 string latestVersion = await Client.RequestString(versionURI), // Request version number
                        changelogs = await Client.RequestString(changelogsURI);
-                if (Program.VersionNumber != latestVersion) // New update available!
+
+                // New update available!
+                if (Program.VersionNumber != latestVersion && latestVersion.StartsWith("Version"))
                     if (InvokeRequired)
                         Invoke(new MethodInvoker(delegate { OnCheckForUpdates(latestVersion, changelogs); }));
                     else
                         OnCheckForUpdates(latestVersion, changelogs);
-            } catch (Exception ex) {
-                Label_UpdaterStatus.Text = "Connection error";
-                PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
 
-                // Reset update button for future checking
-                SectionButton_CheckForSoftwareUpdates.SectionText = "Check for software updates";
-                SectionButton_CheckForSoftwareUpdates.Refresh();
+                // String was downloaded, but invalid
+                else if (!latestVersion.StartsWith("Version"))
+                    throw new WebException();
+            } catch {
+                try {
+                    // Check for updates via GitHub
+                    CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
+                    Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
+                    _useBackupServer = true;
+                } catch (Exception ex) {
+                    Label_UpdaterStatus.Text = "Connection error";
+                    PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
 
-                // Write exception to logs
-                RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
-                if (_debug) Console.WriteLine(ex.ToString());
+                    // Reset update button for future checking
+                    SectionButton_CheckForSoftwareUpdates.SectionText = "Check for software updates";
+                    SectionButton_CheckForSoftwareUpdates.Refresh();
+
+                    // Write exception to logs
+                    RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
+                    if (_debug) Console.WriteLine(ex.ToString());
+                }
             }
 
             // Feedback
@@ -677,7 +683,7 @@ namespace Unify.Environment3
                 }
                 Properties.Settings.Default.General_AutoColour = ((CheckBox)sender).Checked;
             } else if (sender == CheckBox_HighContrastText)   Properties.Settings.Default.General_HighContrastText     = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_UninstallOnLaunch)    Properties.Settings.Default.General_AutoUninstall    = ((CheckBox)sender).Checked;
+            else if (sender == CheckBox_UninstallOnLaunch)    Properties.Settings.Default.General_AutoUninstall        = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_DebugMode)            Properties.Settings.Default.General_Debug                = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_SaveFileRedirection)  Properties.Settings.Default.General_SaveFileRedirection  = ((CheckBox)sender).Checked;
             else if (sender == CheckBox_CheckUpdatesOnLaunch) Properties.Settings.Default.General_CheckUpdatesOnLaunch = ((CheckBox)sender).Checked;
@@ -1435,7 +1441,7 @@ namespace Unify.Environment3
                             // Extract and overwrite all with ZIP contents
                             ZIP.ExtractToDirectory(archive, Application.StartupPath, true);
 
-                            //Overwrite 'Sonic '06 Mod Manager.exe' with the newly extracted build
+                            // Overwrite 'Sonic '06 Mod Manager.exe' with the newly extracted build
                             File.Replace($"{Application.ExecutablePath}.new", Application.ExecutablePath, $"{Application.ExecutablePath}.bak");
 
                             UnifyMessenger.UnifyMessage.ShowDialog("Update complete! Restarting Sonic '06 Mod Manager...",
@@ -1443,7 +1449,6 @@ namespace Unify.Environment3
 
                             // Erase ZIP file
                             File.Delete($"{Application.ExecutablePath}.pak");
-
                             Application.Restart();
                         }
                     };
@@ -1514,17 +1519,10 @@ namespace Unify.Environment3
         private async void SectionButton_Updates_Click(object sender, EventArgs e) {
             // Check for software updates is clicked
             if (sender == SectionButton_CheckForSoftwareUpdates) {
-                try {
-                    // Check for updates via SEGA Carnival
-                    CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
-                    Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                    if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(false); // Update if prompted
-                } catch { // SEGA Carnival timed out...
-                    // Check for updates via GitHub
-                    CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
-                    Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                    if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(true); // Update if prompted
-                }
+                // Check for updates via SEGA Carnival
+                CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
+                Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
+                if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(_useBackupServer); // Update if prompted
                 Properties.Settings.Default.Save();
 
             // Check for mod updates is clicked
