@@ -237,7 +237,7 @@ namespace Unify.Environment3
 
                 if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.General_CheckUpdatesOnLaunch) {
                     Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                    CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
+                    CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
                 }
 
                 if (CheckBox_SaveFileRedirection.Checked = Properties.Settings.Default.General_SaveFileRedirection) {
@@ -467,8 +467,8 @@ namespace Unify.Environment3
                     throw new WebException();
             } catch {
                 try {
-                    // Check for updates via GitHub
-                    CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
+                    // Check for updates via SEGA Carnival
+                    CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
                     Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
                     _useBackupServer = true;
                 } catch (Exception ex) {
@@ -1430,8 +1430,8 @@ namespace Unify.Environment3
 
             try {
                 // If SEGA Carnival is offline, use GitHub
-                Uri serverUri = new Uri(Properties.Resources.DataURI_SEGACarnival);
-                if (useBackupServer) serverUri = new Uri(Properties.Resources.DataURI_GitHub);
+                Uri serverUri = new Uri(Properties.Resources.DataURI_GitHub);
+                if (useBackupServer) serverUri = new Uri(Properties.Resources.DataURI_SEGACarnival);
 
                 using (WebClient client = new WebClient()) {
                     client.DownloadProgressChanged += (s, clientEventArgs) => { ProgressBar_SoftwareUpdate.Value = clientEventArgs.ProgressPercentage; };
@@ -1519,8 +1519,8 @@ namespace Unify.Environment3
         private async void SectionButton_Updates_Click(object sender, EventArgs e) {
             // Check for software updates is clicked
             if (sender == SectionButton_CheckForSoftwareUpdates) {
-                // Check for updates via SEGA Carnival
-                CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
+                // Check for updates via GitHub
+                CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
                 Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
                 if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(_useBackupServer); // Update if prompted
                 Properties.Settings.Default.Save();
