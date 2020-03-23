@@ -791,7 +791,7 @@ namespace Unify.Patcher
                 foreach (string luaData in Directory.GetFiles(location, "*.lub", SearchOption.TopDirectoryOnly)) {
                     if (!_ignoreList.Any(s => Path.GetFileName(luaData).Contains(s))) {
                         DecompileLua(luaData);
-                        string[] script = File.ReadAllLines(location);
+                        string[] script = File.ReadAllLines(luaData);
                         int lineCount = 0;
 
                         foreach (string line in script) {
@@ -907,7 +907,7 @@ namespace Unify.Patcher
                     if (!_ignoreList.Any(s => Path.GetFileName(packageData).Contains(s))) {
                         PKG.PKGTool(packageData);
                         List<string> package = File.ReadAllLines(packageData).ToList();
-                        List<string> editedPackage = File.ReadAllLines($"{location}.txt").ToList();
+                        List<string> editedPackage = File.ReadAllLines($"{packageData}.txt").ToList();
                         bool keyFound = false;
                         int lineCount = 0;
 
