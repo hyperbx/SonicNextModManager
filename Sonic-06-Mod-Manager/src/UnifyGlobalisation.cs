@@ -64,7 +64,7 @@ namespace Unify.Globalisation
         /// </summary>
         public static string Emulator(string path) {
             if (Path.GetExtension(path).ToLower() == ".xex") return "Xenia";
-            if (Path.GetExtension(path).ToLower() == ".bin") return "RPCS3";
+            else if (Path.GetExtension(path).ToLower() == ".bin") return "RPCS3";
             else return "unspecified";
         }
 
@@ -73,7 +73,7 @@ namespace Unify.Globalisation
         /// </summary>
         public static string Core(string path) {
             if (Path.GetExtension(path).ToLower() == ".xex") return "xenon";
-            if (Path.GetExtension(path).ToLower() == ".bin") return "ps3";
+            else if (Path.GetExtension(path).ToLower() == ".bin") return "ps3";
             else return "core";
         }
 
@@ -81,15 +81,17 @@ namespace Unify.Globalisation
         /// Renames the 'core' folder to the appropriate system root.
         /// </summary>
         public static string CoreReplace(string path) {
+            string system = System(Properties.Settings.Default.Path_GameDirectory);
+
             if (Paths.GetRootFolder(path) == "core") {
                 string[] splitPath = path.Split('\\');
 
                 for (int i = 0; i < splitPath.Length; i++) {
-                    if (splitPath[i] == "core" && System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
+                    if (splitPath[i] == "core" && system == "Xbox 360") {
                         splitPath[i] = "xenon";
                         return string.Join("\\", splitPath);
                     }
-                    else if (splitPath[i] == "core" && System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
+                    else if (splitPath[i] == "core" && system == "PlayStation 3") {
                         splitPath[i] = "ps3";
                         return string.Join("\\", splitPath);
                     }

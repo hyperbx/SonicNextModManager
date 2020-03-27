@@ -1138,7 +1138,12 @@ namespace Unify.Environment3
                                 Label_Status.Text = $"Installing {mod.Text}...";
 
                                 // Install the specified mod
-                                ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
+                                try { ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text); }
+                                catch (Exception ex) {
+                                    UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
+                                                                           "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
 
                                 if (Properties.Settings.Default.General_SaveFileRedirection)
                                     // Redirect save data from the specified mod

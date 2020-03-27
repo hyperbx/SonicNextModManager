@@ -75,11 +75,11 @@ namespace Unify.Patcher
                                             s.EndsWith(".at3")).ToList();
 
             foreach (string file in files) {
-                // Absolute file path (xenon/win32 and beyond)
-                string filePath = file.Remove(0, Path.GetDirectoryName(mod).Length);
+                // Absolute file path (core/xenon/win32 and beyond)
+                string filePath = Literal.CoreReplace(file.Remove(0, Path.GetDirectoryName(mod).Length).Substring(1));
 
                 // Absolute file path (from the mod) combined with the game directory
-                string vanillaFilePath = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), filePath.Substring(1));
+                string vanillaFilePath = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), filePath);
 
                 // Backup file path derived from the file about to be overwritten
                 string targetFilePath = $"{vanillaFilePath}_back";
@@ -454,9 +454,9 @@ namespace Unify.Patcher
                         }
 
                         if (line.StartsWith("Parameter")) {
-                            string[] _ParameterAdd = Lua.DeserialiseParameterList("ParameterAdd", line, false),     // Deserialise 'ParameterEdit' parameter
-                                     _ParameterEdit = Lua.DeserialiseParameterList("ParameterEdit", line, false),     // Deserialise 'ParameterEdit' parameter
-                                     _ParameterErase = Lua.DeserialiseParameterList("ParameterErase", line, false),   // Deserialise 'ParameterErase' parameter
+                            string[] _ParameterAdd    = Lua.DeserialiseParameterList("ParameterAdd", line, false),    // Deserialise 'ParameterEdit' parameter
+                                     _ParameterEdit   = Lua.DeserialiseParameterList("ParameterEdit", line, false),   // Deserialise 'ParameterEdit' parameter
+                                     _ParameterErase  = Lua.DeserialiseParameterList("ParameterErase", line, false),  // Deserialise 'ParameterErase' parameter
                                      _ParameterRename = Lua.DeserialiseParameterList("ParameterRename", line, false); // Deserialise 'ParameterRename' parameter
 
                             if (line.StartsWith("ParameterAdd") && _ParameterAdd.Length != 0)
@@ -477,7 +477,7 @@ namespace Unify.Patcher
                         }
 
                         if (line.StartsWith("Package")) {
-                            string[] _PackageAdd = Lua.DeserialiseParameterList("PackageAdd", line, false), // Deserialise 'PackageAdd' parameter
+                            string[] _PackageAdd  = Lua.DeserialiseParameterList("PackageAdd", line, false),  // Deserialise 'PackageAdd' parameter
                                      _PackageEdit = Lua.DeserialiseParameterList("PackageEdit", line, false); // Deserialise 'PackageEdit' parameter
 
                             if (line.StartsWith("PackageAdd") && _PackageAdd.Length != 0)
@@ -984,7 +984,7 @@ namespace Unify.Patcher
                  tailsFlightLimit = Properties.Settings.Default.Tweak_TailsFlightLimit;
 
             // Field of View
-            if (fieldOfView != 90 && system == "Xbox 360") {
+            if (fieldOfView != 90 && system == "xenon") {
                 string xex = Path.Combine(gameDirectory, "default.xex"); // Location of the XEX
 
                 if (!File.Exists($"{xex}_back"))
