@@ -1118,13 +1118,18 @@ namespace Unify.Environment3
                             if (ListView_ModsList.Items[i].Checked) {
                                 Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
 
-                                // Install the specified mod
-                                try { ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text); }
-                                catch (Exception ex) {
+                            // Install the specified mod
+#if !DEBUG
+                                try {
+#endif
+                                    ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+#if !DEBUG
+                                } catch (Exception ex) {
                                     UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
                                                                            "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
                                 }
+#endif
 
                                 if (Properties.Settings.Default.General_SaveFileRedirection)
                                     // Redirect save data from the specified mod
@@ -1138,24 +1143,31 @@ namespace Unify.Environment3
                                 Label_Status.Text = $"Installing {mod.Text}...";
 
                                 // Install the specified mod
-                                try { ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text); }
-                                catch (Exception ex) {
+#if !DEBUG
+                                try {
+#endif
+                                    ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
+#if !DEBUG
+                                } catch (Exception ex) {
                                     UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
                                                                            "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
                                 }
+#endif
 
-                                if (Properties.Settings.Default.General_SaveFileRedirection)
+                            if (Properties.Settings.Default.General_SaveFileRedirection)
                                     // Redirect save data from the specified mod
                                     RedirectSaves(mod.SubItems[6].Text, mod.Text);
                             }
                     }
-                    
+
+#if !DEBUG
                     try {
+#endif
                         TweakEngine.ApplyTweaks(this); // Begin tweak application
                         InstallPatches(); // Begin patch installation
-                    }
-                    catch (Exception ex) {
+#if !DEBUG
+                    } catch (Exception ex) {
                         if (_debug) Console.WriteLine(ex.ToString());
                         if (ex is Win32Exception) {
                             UnifyMessenger.UnifyMessage.ShowDialog($"Sonic '06 Mod Manager requires Java to decompile Lua scripts. Please install Java and restart your computer...",
@@ -1167,6 +1179,7 @@ namespace Unify.Environment3
                             return;
                         }
                     }
+#endif
 
                     // Check skipped list to ensure any errors occurred
                     if (ModEngine.skipped.Count != 0)
@@ -1942,27 +1955,27 @@ namespace Unify.Environment3
                         if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
                             NumericUpDown_CameraDistance.Value = 350;
                             NumericUpDown_CameraHeight.Value = 32.5m;
-                            NumericUpDown_FieldOfView.Value = 110;
+                            NumericUpDown_FieldOfView.Value = 0.929929435253143m;
 
                         // PlayStation 3 does not support FOV changes
                         } else {
                             NumericUpDown_CameraDistance.Value = 450;
                             NumericUpDown_CameraHeight.Value = 32.5m;
-                            NumericUpDown_FieldOfView.Value = 90;
+                            NumericUpDown_FieldOfView.Value = 0.785398185253143m;
                         }
 
                     // Electronic Entertainment Expo
                     } else if (ComboBox_CameraType.SelectedIndex == 2) {
                         NumericUpDown_CameraDistance.Value = 550;
                         NumericUpDown_CameraHeight.Value = 70;
-                        NumericUpDown_FieldOfView.Value = 90;
+                        NumericUpDown_FieldOfView.Value = 0.785398185253143m;
                     }
 
                 // Retail
                 } else {
                     NumericUpDown_CameraDistance.Value = 650;
                     NumericUpDown_CameraHeight.Value = 70;
-                    NumericUpDown_FieldOfView.Value = 90;
+                    NumericUpDown_FieldOfView.Value = 0.785398185253143m;
                 }
             }
 
@@ -2006,7 +2019,7 @@ namespace Unify.Environment3
                 Properties.Settings.Default.Tweak_CameraType = 0;
                 Properties.Settings.Default.Tweak_CameraDistance = 650;
                 Properties.Settings.Default.Tweak_CameraHeight = 70;
-                Properties.Settings.Default.Tweak_FieldOfView = 90;
+                Properties.Settings.Default.Tweak_FieldOfView = 0.785398185253143m;
             }
 
             // Reset Camera Distance
@@ -2037,11 +2050,11 @@ namespace Unify.Environment3
             {
                 if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
                     if (isXbox360) // Xbox 360 supports FOV changes
-                        Properties.Settings.Default.Tweak_FieldOfView = 110;
+                        Properties.Settings.Default.Tweak_FieldOfView = 0.929929435253143m;
                     else // PlayStation 3 does not support FOV changes
-                        Properties.Settings.Default.Tweak_FieldOfView = 90;
+                        Properties.Settings.Default.Tweak_FieldOfView = 0.785398185253143m;
                 else // Retail
-                    Properties.Settings.Default.Tweak_FieldOfView = 90;
+                    Properties.Settings.Default.Tweak_FieldOfView = 0.785398185253143m;
             }
 
             // Reset Amy's Hammer Range

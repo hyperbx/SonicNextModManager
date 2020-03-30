@@ -977,8 +977,8 @@ namespace Unify.Patcher
             decimal cameraHeight   = Properties.Settings.Default.Tweak_CameraHeight,
                     cameraDistance = Properties.Settings.Default.Tweak_CameraDistance,
                     hammerRange    = Properties.Settings.Default.Tweak_AmyHammerRange,
-                    fieldOfView    = Properties.Settings.Default.Tweak_FieldOfView,
-                    beginWithRings = Properties.Settings.Default.Tweak_BeginWithRings;
+                    beginWithRings = Properties.Settings.Default.Tweak_BeginWithRings,
+                    fieldOfView    = Properties.Settings.Default.Tweak_FieldOfView;
 
             bool forceMSAA        = Properties.Settings.Default.Tweak_ForceMSAA,
                  tailsFlightLimit = Properties.Settings.Default.Tweak_TailsFlightLimit;
@@ -1450,7 +1450,9 @@ namespace Unify.Patcher
 
         public static void FieldOfView(string filepath, decimal fov) {
             using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
-                stream.Position = 0x4F4D; stream.WriteByte(decimal.ToByte(fov));
+                stream.Position = 0x4F4C;
+                byte[] fov32 = BitConverter.GetBytes(decimal.ToSingle(fov));
+                for (int i = fov32.Length - 1; i >= 0; i--) stream.WriteByte(fov32[i]);
             }
         }
     }

@@ -93,7 +93,7 @@
       <Value Profile="(Default)">70.0</Value>
     </Setting>
     <Setting Name="Tweak_FieldOfView" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">90</Value>
+      <Value Profile="(Default)">0.785398185253143</Value>
     </Setting>
     <Setting Name="Tweak_AmyHammerRange" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">50.0</Value>
