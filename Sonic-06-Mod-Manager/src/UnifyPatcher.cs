@@ -98,10 +98,10 @@ namespace Unify.Patcher
 
                 //Check if file should be merged
                 if (Path.GetExtension(file) == ".arc" && merge && !read_only.Contains(Path.GetFileName(file)) && !custom.Contains(Path.GetFileName(file))) {
-                    if (RushInterface._debug) Console.WriteLine($"Merging: {file}");
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Merge] {file}");
                     Merge(vanillaFilePath, file);
                 } else { //If the file is not an archive or it shouldn't be merged, just copy it
-                    if (RushInterface._debug) Console.WriteLine($"Copying: {file}");
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Copy] {file}");
                     File.Copy(file, vanillaFilePath, true);
                 }
 
@@ -131,7 +131,7 @@ namespace Unify.Patcher
 
                     foreach (string file in files) {
                         if (File.Exists(file.Remove(file.Length - 5))) {
-                            if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
                             File.Delete(file.Remove(file.Length - 5)); // Delete file with last five characters set to '_back'
                         }
                         File.Move(file, file.Remove(file.Length - 5)); // Remove last five characters ('_back')
@@ -154,7 +154,7 @@ namespace Unify.Patcher
                                 
                             foreach (string customfile in files)
                                 try {
-                                    if (RushInterface._debug) Console.WriteLine($"Removing: {file}");
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
                                     File.Delete(customfile); // If custom archive is found, erase...
                                 } catch { }
                         }
@@ -188,13 +188,13 @@ namespace Unify.Patcher
 
                                 // Copy redirected save data back to the mod's directory (keeps user progress)
                                 if (File.Exists(saveFile)) {
-                                    Console.WriteLine($"Removing: {dir}");
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {dir}");
                                     if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.360"), true);
                                 }
 
                                 // Recursively erase redirected save data
                                 if (Directory.Exists(dir.ToString().Remove(dir.Length - 5))) {
-                                    Console.WriteLine($"Removing: {dir}");
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {dir}");
                                     Directory.Delete(dir.ToString().Remove(dir.Length - 5), true);
                                 }
 
@@ -212,13 +212,13 @@ namespace Unify.Patcher
 
                                 // Copy redirected save data back to the mod's directory (keeps user progress)
                                 if (File.Exists(saveFile)) {
-                                    Console.WriteLine($"Removing: {file}");
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
                                     if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.ps3"), true);
                                 }
 
                                 // Erase redirected save data
                                 if (File.Exists(file.ToString().Remove(file.Length - 5))) {
-                                    Console.WriteLine($"Removing: {file}");
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
                                     File.Delete(file.ToString().Remove(file.Length - 5));
                                 }
 
@@ -372,129 +372,156 @@ namespace Unify.Patcher
                 return;
             }
 
-            // Begin reading patch script
-            using (StreamReader patchScript = new StreamReader(patch, Encoding.Default)) {
-                string line;
-                while ((line = patchScript.ReadLine()) != null) {
+#if !DEBUG
+            try {
+#endif
+                // Begin reading patch script
+                using (StreamReader patchScript = new StreamReader(patch, Encoding.Default)) {
+                    string line;
+                    while ((line = patchScript.ReadLine()) != null) {
 
-                    // If the platform is 'All Systems' then check if it shall proceed if labels are involved
-                    if (allSystemsMode) {
-                        if (line.StartsWith("All Systems") || line.StartsWith(Literal.System(Properties.Settings.Default.Path_GameDirectory))) systemReached = true;
-                        else if (line.StartsWith(Literal.OppositeSystem(Properties.Settings.Default.Path_GameDirectory))) systemReached = false;
-                    } else
-                        // System is specific, so proceed as normal
-                        systemReached = true;
+                        // If the platform is 'All Systems' then check if it shall proceed if labels are involved
+                        if (allSystemsMode) {
+                            if (line.StartsWith("All Systems") || line.StartsWith(Literal.System(Properties.Settings.Default.Path_GameDirectory))) systemReached = true;
+                            else if (line.StartsWith(Literal.OppositeSystem(Properties.Settings.Default.Path_GameDirectory))) systemReached = false;
+                        } else
+                            // System is specific, so proceed as normal
+                            systemReached = true;
 
-                    if (systemReached) {
-                        if (line.StartsWith("BeginBlock")) {
-                            string _BeginBlock = Lua.DeserialiseParameter("BeginBlock", line, false); // Deserialise 'BeginBlock' parameter
+                        if (systemReached) {
+                            if (line.StartsWith("BeginBlock")) {
+                                string _BeginBlock = Lua.DeserialiseParameter("BeginBlock", line, false); // Deserialise 'BeginBlock' parameter
 
-                            if (_BeginBlock != string.Empty)
-                                BeginBlock(Literal.CoreReplace(_BeginBlock));
-                        }
+                                if (_BeginBlock != string.Empty)
+                                    BeginBlock(Literal.CoreReplace(_BeginBlock));
+                            }
 
-                        if (line.StartsWith("Dec")) {
-                            if (line.StartsWith("DecryptExecutable"))
-                                DecryptExecutable();
-                            else if (line.StartsWith("DecompressExecutable"))
-                                DecompressExecutable();
-                        }
+                            if (line.StartsWith("Dec")) {
+                                if (line.StartsWith("DecryptExecutable"))
+                                    DecryptExecutable();
 
-                        if (line.StartsWith("Enc")) {
-                            if (line.StartsWith("EncryptExecutable"))
-                                EncryptExecutable();
-                        }
+                                else if (line.StartsWith("DecompressExecutable"))
+                                    DecompressExecutable();
+                            }
 
-                        if (line.StartsWith("Write")) {
-                            string[] _WriteByte      = Lua.DeserialiseParameterList("WriteByte", line, false),      // Deserialise 'WriteByte' parameter
-                                     _WriteNullBytes = Lua.DeserialiseParameterList("WriteNullBytes", line, false), // Deserialise 'WriteNullBytes' parameter
-                                     _WriteNopPPC    = Lua.DeserialiseParameterList("WriteNopPPC", line, false),    // Deserialise 'WriteNopPPC' parameter
-                                     _WriteBase64    = Lua.DeserialiseParameterList("WriteBase64", line, false);    // Deserialise 'WriteBase64' parameter
+                            if (line.StartsWith("Enc")) {
+                                if (line.StartsWith("EncryptExecutable"))
+                                    EncryptExecutable();
+                            }
 
-                            if (line.StartsWith("WriteByte") && _WriteByte.Length != 0)
-                                WriteByte(Literal.CoreReplace(_WriteByte[0]), Convert.ToInt32(_WriteByte[1], 16), Convert.ToByte(_WriteByte[2], 16));
-                            else if (line.StartsWith("WriteNullBytes") && _WriteNullBytes.Length != 0)
-                                for (int i = 0; i < Convert.ToInt32(_WriteNullBytes[2]); i++)
-                                    WriteByte(Literal.CoreReplace(_WriteNullBytes[0]), Convert.ToInt32(_WriteNullBytes[1], 16) + i, 0);
-                            else if (line.StartsWith("WriteNopPPC") && _WriteNopPPC.Length != 0)
-                                WriteNopPPC(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16));
-                            else if (line.StartsWith("WriteBase64") && _WriteBase64.Length != 0)
-                                WriteBase64(Literal.CoreReplace(_WriteBase64[0]), _WriteBase64[1]);
-                        }
+                            if (line.StartsWith("Write")) {
+                                string[] _WriteByte      = Lua.DeserialiseParameterList("WriteByte", line, false),      // Deserialise 'WriteByte' parameter
+                                         _WriteNullBytes = Lua.DeserialiseParameterList("WriteNullBytes", line, false), // Deserialise 'WriteNullBytes' parameter
+                                         _WriteNopPPC    = Lua.DeserialiseParameterList("WriteNopPPC", line, false),    // Deserialise 'WriteNopPPC' parameter
+                                         _WriteBase64    = Lua.DeserialiseParameterList("WriteBase64", line, false),    // Deserialise 'WriteBase64' parameter
+                                         _WriteTextBytes = Lua.DeserialiseParameterList("WriteTextBytes", line, false); // Deserialise 'WriteTextBytes' parameter
 
-                        if (line.StartsWith("Rename")) {
-                            string[] _Rename            = Lua.DeserialiseParameterList("Rename", line, false),            // Deserialise 'Rename' parameter
-                                     _RenameByExtension = Lua.DeserialiseParameterList("RenameByExtension", line, false); // Deserialise 'RenameByExtension' parameter
+                                if (line.StartsWith("WriteByte") && _WriteByte.Length != 0)
+                                    WriteByte(Literal.CoreReplace(_WriteByte[0]), Convert.ToInt32(_WriteByte[1], 16), Convert.ToByte(_WriteByte[2], 16));
 
-                            if (line.StartsWith("RenameByExtension") && _RenameByExtension.Length != 0)
-                                RenameByExtension(Literal.CoreReplace(_RenameByExtension[0]), _RenameByExtension[1], _RenameByExtension[2]);
-                            else if (_Rename.Length != 0)
-                                Rename(Literal.CoreReplace(_Rename[0]), _Rename[1]);
-                        }
+                                else if (line.StartsWith("WriteNullBytes") && _WriteNullBytes.Length != 0)
+                                    for (int i = 0; i < Convert.ToInt32(_WriteNullBytes[2]); i++)
+                                        WriteByte(Literal.CoreReplace(_WriteNullBytes[0]), Convert.ToInt32(_WriteNullBytes[1], 16) + i, 0);
 
-                        if (line.StartsWith("Copy")) {
-                            string[] _Copy = Lua.DeserialiseParameterList("Copy", line, false); // Deserialise 'Copy' parameter
+                                else if (line.StartsWith("WriteTextBytes") && _WriteTextBytes.Length != 0)
+                                {
+                                    byte[] textBytes = Encoding.ASCII.GetBytes(_WriteTextBytes[2]);
 
-                            if (_Copy.Length != 0)
-                                Copy(Literal.CoreReplace(_Copy[0]), Literal.CoreReplace(_Copy[1]), bool.Parse(_Copy[2]));
-                        }
+                                    for (int i = 0; i < textBytes.Length; i++)
+                                        WriteByte(Literal.CoreReplace(_WriteTextBytes[0]), Convert.ToInt32(_WriteTextBytes[1], 16) + i, Convert.ToByte(textBytes[i]));
+                                }
 
-                        if (line.StartsWith("Delete")) {
-                            string _Delete = Lua.DeserialiseParameter("Delete", line, false); // Deserialise 'Delete' parameter
+                                else if (line.StartsWith("WriteNopPPC") && _WriteNopPPC.Length != 0)
+                                    WriteNopPPC(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16));
 
-                            if (_Delete != string.Empty)
-                                Delete(Literal.CoreReplace(_Delete));
-                        }
+                                else if (line.StartsWith("WriteBase64") && _WriteBase64.Length != 0)
+                                    WriteBase64(Literal.CoreReplace(_WriteBase64[0]), _WriteBase64[1]);
+                            }
 
-                        if (line.StartsWith("Ignore")) {
-                            string[] _Ignore = Lua.DeserialiseParameterList("Ignore", line, false); // Deserialise 'Ignore' parameter
+                            if (line.StartsWith("Rename")) {
+                                string[] _Rename            = Lua.DeserialiseParameterList("Rename", line, false),            // Deserialise 'Rename' parameter
+                                         _RenameByExtension = Lua.DeserialiseParameterList("RenameByExtension", line, false); // Deserialise 'RenameByExtension' parameter
 
-                            if (_Ignore.Length != 0)
-                                _ignoreList = _Ignore.ToList();
-                        }
+                                if (line.StartsWith("RenameByExtension") && _RenameByExtension.Length != 0)
+                                    RenameByExtension(Literal.CoreReplace(_RenameByExtension[0]), _RenameByExtension[1], _RenameByExtension[2]);
 
-                        if (line.StartsWith("Parameter")) {
-                            string[] _ParameterAdd    = Lua.DeserialiseParameterList("ParameterAdd", line, false),    // Deserialise 'ParameterEdit' parameter
-                                     _ParameterEdit   = Lua.DeserialiseParameterList("ParameterEdit", line, false),   // Deserialise 'ParameterEdit' parameter
-                                     _ParameterErase  = Lua.DeserialiseParameterList("ParameterErase", line, false),  // Deserialise 'ParameterErase' parameter
-                                     _ParameterRename = Lua.DeserialiseParameterList("ParameterRename", line, false); // Deserialise 'ParameterRename' parameter
+                                else if (_Rename.Length != 0)
+                                    Rename(Literal.CoreReplace(_Rename[0]), _Rename[1]);
+                            }
 
-                            if (line.StartsWith("ParameterAdd") && _ParameterAdd.Length != 0)
-                                ParameterAdd(Literal.CoreReplace(_ParameterAdd[0]), _ParameterAdd[1], _ParameterAdd[2]);
-                            else if (line.StartsWith("ParameterEdit") && _ParameterEdit.Length != 0)
-                                ParameterEdit(Literal.CoreReplace(_ParameterEdit[0]), _ParameterEdit[1], _ParameterEdit[2]);
-                            else if (line.StartsWith("ParameterErase") && _ParameterErase.Length != 0)
-                                ParameterErase(Literal.CoreReplace(_ParameterErase[0]), _ParameterErase[1]);
-                            else if (line.StartsWith("ParameterRename") && _ParameterRename.Length != 0)
-                                ParameterRename(Literal.CoreReplace(_ParameterRename[0]), _ParameterRename[1], _ParameterRename[2]);
-                        }
+                            if (line.StartsWith("Copy")) {
+                                string[] _Copy = Lua.DeserialiseParameterList("Copy", line, false); // Deserialise 'Copy' parameter
 
-                        if (line.StartsWith("StringReplace")) {
-                            string[] _StringReplace = Lua.DeserialiseParameterList("StringReplace", line, false); // Deserialise 'StringReplace' parameter
+                                if (_Copy.Length != 0)
+                                    Copy(Literal.CoreReplace(_Copy[0]), Literal.CoreReplace(_Copy[1]), bool.Parse(_Copy[2]));
+                            }
 
-                            if (_StringReplace.Length != 0)
-                                StringReplace(Literal.CoreReplace(_StringReplace[0]), _StringReplace[1], _StringReplace[2]);
-                        }
+                            if (line.StartsWith("Delete")) {
+                                string _Delete = Lua.DeserialiseParameter("Delete", line, false); // Deserialise 'Delete' parameter
 
-                        if (line.StartsWith("Package")) {
-                            string[] _PackageAdd  = Lua.DeserialiseParameterList("PackageAdd", line, false),  // Deserialise 'PackageAdd' parameter
-                                     _PackageEdit = Lua.DeserialiseParameterList("PackageEdit", line, false); // Deserialise 'PackageEdit' parameter
+                                if (_Delete != string.Empty)
+                                    Delete(Literal.CoreReplace(_Delete));
+                            }
 
-                            if (line.StartsWith("PackageAdd") && _PackageAdd.Length != 0)
-                                PackageAdd(Literal.CoreReplace(_PackageAdd[0]), _PackageAdd[1], _PackageAdd[2], _PackageAdd[3]);
-                            else if (line.StartsWith("PackageEdit") && _PackageEdit.Length != 0)
-                                PackageEdit(Literal.CoreReplace(_PackageEdit[0]), _PackageEdit[1], _PackageEdit[2], _PackageEdit[3]);
-                        }
+                            if (line.StartsWith("Ignore")) {
+                                string[] _Ignore = Lua.DeserialiseParameterList("Ignore", line, false); // Deserialise 'Ignore' parameter
 
-                        if (line.StartsWith("EndBlock")) {
-                            string _EndBlock = Lua.DeserialiseParameter("EndBlock", line, false); // Deserialise 'EndBlock' parameter
+                                if (_Ignore.Length != 0)
+                                    _ignoreList = _Ignore.ToList();
+                            }
 
-                            if (_EndBlock != string.Empty)
-                                EndBlock();
+                            if (line.StartsWith("Parameter")) {
+                                string[] _ParameterAdd    = Lua.DeserialiseParameterList("ParameterAdd", line, false),    // Deserialise 'ParameterEdit' parameter
+                                         _ParameterEdit   = Lua.DeserialiseParameterList("ParameterEdit", line, false),   // Deserialise 'ParameterEdit' parameter
+                                         _ParameterErase  = Lua.DeserialiseParameterList("ParameterErase", line, false),  // Deserialise 'ParameterErase' parameter
+                                         _ParameterRename = Lua.DeserialiseParameterList("ParameterRename", line, false); // Deserialise 'ParameterRename' parameter
+
+                                if (line.StartsWith("ParameterAdd") && _ParameterAdd.Length != 0)
+                                    ParameterAdd(Literal.CoreReplace(_ParameterAdd[0]), _ParameterAdd[1], _ParameterAdd[2]);
+
+                                else if (line.StartsWith("ParameterEdit") && _ParameterEdit.Length != 0)
+                                    ParameterEdit(Literal.CoreReplace(_ParameterEdit[0]), _ParameterEdit[1], _ParameterEdit[2]);
+
+                                else if (line.StartsWith("ParameterErase") && _ParameterErase.Length != 0)
+                                    ParameterErase(Literal.CoreReplace(_ParameterErase[0]), _ParameterErase[1]);
+
+                                else if (line.StartsWith("ParameterRename") && _ParameterRename.Length != 0)
+                                    ParameterRename(Literal.CoreReplace(_ParameterRename[0]), _ParameterRename[1], _ParameterRename[2]);
+                            }
+
+                            if (line.StartsWith("StringReplace")) {
+                                string[] _StringReplace = Lua.DeserialiseParameterList("StringReplace", line, false); // Deserialise 'StringReplace' parameter
+
+                                if (_StringReplace.Length != 0)
+                                    StringReplace(Literal.CoreReplace(_StringReplace[0]), _StringReplace[1], _StringReplace[2]);
+                            }
+
+                            if (line.StartsWith("Package")) {
+                                string[] _PackageAdd  = Lua.DeserialiseParameterList("PackageAdd", line, false),  // Deserialise 'PackageAdd' parameter
+                                         _PackageEdit = Lua.DeserialiseParameterList("PackageEdit", line, false); // Deserialise 'PackageEdit' parameter
+
+                                if (line.StartsWith("PackageAdd") && _PackageAdd.Length != 0)
+                                    PackageAdd(Literal.CoreReplace(_PackageAdd[0]), _PackageAdd[1], _PackageAdd[2], _PackageAdd[3]);
+
+                                else if (line.StartsWith("PackageEdit") && _PackageEdit.Length != 0)
+                                    PackageEdit(Literal.CoreReplace(_PackageEdit[0]), _PackageEdit[1], _PackageEdit[2], _PackageEdit[3]);
+                            }
+
+                            if (line.StartsWith("EndBlock")) {
+                                string _EndBlock = Lua.DeserialiseParameter("EndBlock", line, false); // Deserialise 'EndBlock' parameter
+
+                                if (_EndBlock != string.Empty)
+                                    EndBlock();
+                            }
                         }
                     }
                 }
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {name}\n{ex}");
+                ModEngine.skipped.Add($"► {name} (check the debug log for more information)");
             }
+#endif
         }
 
         private static string BeginBlock(string location) {
@@ -1166,212 +1193,284 @@ namespace Unify.Patcher
         }
 
         private static void MSAA(string directoryRoot, int MSAA, SearchOption searchOption) {
-            string[] files = Directory.GetFiles(directoryRoot, "*.lub", searchOption);
+#if !DEBUG
+            try {
+#endif
+                string[] files = Directory.GetFiles(directoryRoot, "*.lub", searchOption);
 
-            foreach (var lub in files) {
-                PatchEngine.DecompileLua(lub);
+                foreach (var lub in files) {
+                    PatchEngine.DecompileLua(lub);
 
-                if (Path.GetFileName(lub) == "render_utility.lub") {
-                    List<string> editedLua = File.ReadAllLines(lub).ToList();
+                    if (Path.GetFileName(lub) == "render_utility.lub") {
+                        List<string> editedLua = File.ReadAllLines(lub).ToList();
 
-                    if (MSAA == 0)      editedLua.Add("MSAAType = \"1x\"");
-                    else if (MSAA == 1) editedLua.Add("MSAAType = \"2x\"");
-                    else if (MSAA == 2) editedLua.Add("MSAAType = \"4x\"");
-                    File.WriteAllLines(lub, editedLua);
-                } else {
-                    string[] editedLua = File.ReadAllLines(lub);
-                    int lineNum = 0;
-                    int modified = 0;
+                        if (MSAA == 0)      editedLua.Add("MSAAType = \"1x\"");
+                        else if (MSAA == 1) editedLua.Add("MSAAType = \"2x\"");
+                        else if (MSAA == 2) editedLua.Add("MSAAType = \"4x\"");
+                        File.WriteAllLines(lub, editedLua);
+                    } else {
+                        string[] editedLua = File.ReadAllLines(lub);
+                        int lineNum = 0;
+                        int modified = 0;
 
-                    foreach (string line in editedLua) {
-                        if (line.Contains("MSAAType")) {
-                            string[] tempLine = line.Split(' ');
-                            if (MSAA == 0)      tempLine[2] = "\"1x\"";
-                            else if (MSAA == 1) tempLine[2] = "\"2x\"";
-                            else if (MSAA == 2) tempLine[2] = "\"4x\"";
-                            editedLua[lineNum] = string.Join(" ", tempLine);
-                            modified++;
+                        foreach (string line in editedLua) {
+                            if (line.Contains("MSAAType")) {
+                                string[] tempLine = line.Split(' ');
+                                if (MSAA == 0)      tempLine[2] = "\"1x\"";
+                                else if (MSAA == 1) tempLine[2] = "\"2x\"";
+                                else if (MSAA == 2) tempLine[2] = "\"4x\"";
+                                editedLua[lineNum] = string.Join(" ", tempLine);
+                                modified++;
+                            }
+                            lineNum++;
                         }
-                        lineNum++;
+                        if (modified != 0) File.WriteAllLines(lub, editedLua);
                     }
-                    if (modified != 0) File.WriteAllLines(lub, editedLua);
                 }
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] MSAA\n{ex}");
+                ModEngine.skipped.Add("► MSAA (check the debug log for more information)");
             }
+#endif
         }
 
         private static void Reflections(string directoryRoot, int scale) {
-            PatchEngine.DecompileLua(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+#if !DEBUG
+            try {
+#endif
+                PatchEngine.DecompileLua(directoryRoot);
+                string[] editedLua = File.ReadAllLines(directoryRoot);
+                int lineNum = 0;
 
-            foreach (string line in editedLua) {
-                if (line.StartsWith("EnableReflection")) {
-                    string[] tempLine = line.Split(' ');
-                    if (scale == 0)
-                        tempLine[2] = "false";
-                    else
-                        tempLine[2] = "true";
-                    editedLua[lineNum] = string.Join(" ", tempLine);
-                }
+                foreach (string line in editedLua) {
+                    if (line.StartsWith("EnableReflection")) {
+                        string[] tempLine = line.Split(' ');
+                        if (scale == 0)
+                            tempLine[2] = "false";
+                        else
+                            tempLine[2] = "true";
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
 
-                if (line.StartsWith("  texture_width") || line.StartsWith("  texture_height")) {
-                    string[] tempLine = line.Split(' ');
-                    if (scale == 1)
-                        tempLine[7] = "4";
-                    else if (scale == 2)
-                        tempLine[7] = "2";
-                    else if (scale == 3)
-                        tempLine[6] = tempLine[7] = string.Empty;
-                    editedLua[lineNum] = string.Join(" ", tempLine);
+                    if (line.StartsWith("  texture_width") || line.StartsWith("  texture_height")) {
+                        string[] tempLine = line.Split(' ');
+                        if (scale == 1)
+                            tempLine[7] = "4";
+                        else if (scale == 2)
+                            tempLine[7] = "2";
+                        else if (scale == 3)
+                            tempLine[6] = tempLine[7] = string.Empty;
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    lineNum++;
                 }
-                lineNum++;
+                File.WriteAllLines(directoryRoot, editedLua);
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Reflections\n{ex}");
+                ModEngine.skipped.Add("► Reflections (check the debug log for more information)");
             }
-            File.WriteAllLines(directoryRoot, editedLua);
+#endif
         }
 
         private static void CameraType(string directoryRoot, int type, decimal fov) {
-            PatchEngine.DecompileLua(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+#if !DEBUG
+            try {
+#endif
+                PatchEngine.DecompileLua(directoryRoot);
+                string[] editedLua = File.ReadAllLines(directoryRoot);
+                int lineNum = 0;
 
-            foreach (string line in editedLua) {
-                if (line.StartsWith("distance")) {
-                    string[] tempLine = line.Split(' ');
-                    if (type == 0)
-                        tempLine[2] = "6.5"; //Retail
-                    else if (type == 1)
-                        if (fov > 90)
-                            tempLine[2] = "3.5";
+                foreach (string line in editedLua) {
+                    if (line.StartsWith("distance")) {
+                        string[] tempLine = line.Split(' ');
+                        if (type == 0)
+                            tempLine[2] = "6.5"; //Retail
+                        else if (type == 1)
+                            if (fov > 90)
+                                tempLine[2] = "3.5";
+                            else
+                                tempLine[2] = "4.5";
+                        else if (type == 2)
+                            tempLine[2] = "5.5"; //E3
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    if (line.StartsWith("springK")) {
+                        string[] tempLine = line.Split(' ');
+                        if (type == 1)
+                            if (fov > 90)
+                                tempLine[2] = "0.325";
+                            else
+                                tempLine[2] = "0.225";
                         else
-                            tempLine[2] = "4.5";
-                    else if (type == 2)
-                        tempLine[2] = "5.5"; //E3
-                    editedLua[lineNum] = string.Join(" ", tempLine);
-                }
-                if (line.StartsWith("springK")) {
-                    string[] tempLine = line.Split(' ');
-                    if (type == 1)
-                        if (fov > 90)
-                            tempLine[2] = "0.325";
+                            tempLine[2] = "0.98";
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    if (line.StartsWith("altitude")) {
+                        string[] tempLine = line.Split(' ');
+                        if (type == 1)
+                            tempLine[2] = "-15";
                         else
-                            tempLine[2] = "0.225";
-                    else
-                        tempLine[2] = "0.98";
-                    editedLua[lineNum] = string.Join(" ", tempLine);
+                            tempLine[2] = "15";
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    if (line.StartsWith("az_driveK")) {
+                        string[] tempLine = line.Split(' ');
+                        if (type == 1)
+                            tempLine[2] = "50000"; //TGS (32500 old)
+                        else if(type == 2)
+                            tempLine[2] = "690";
+                        else
+                            tempLine[2] = "3250";
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    if (line.StartsWith("az_dampingK")) {
+                        string[] tempLine = line.Split(' ');
+                        if (type == 1)
+                            tempLine[2] = "2500";
+                        else if(type == 2)
+                            tempLine[2] = "100";
+                        else
+                            tempLine[2] = "250";
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    lineNum++;
                 }
-                if (line.StartsWith("altitude")) {
-                    string[] tempLine = line.Split(' ');
-                    if (type == 1)
-                        tempLine[2] = "-15";
-                    else
-                        tempLine[2] = "15";
-                    editedLua[lineNum] = string.Join(" ", tempLine);
-                }
-                if (line.StartsWith("az_driveK")) {
-                    string[] tempLine = line.Split(' ');
-                    if (type == 1)
-                        tempLine[2] = "50000"; //TGS (32500 old)
-                    else if(type == 2)
-                        tempLine[2] = "690";
-                    else
-                        tempLine[2] = "3250";
-                    editedLua[lineNum] = string.Join(" ", tempLine);
-                }
-                if (line.StartsWith("az_dampingK")) {
-                    string[] tempLine = line.Split(' ');
-                    if (type == 1)
-                        tempLine[2] = "2500";
-                    else if(type == 2)
-                        tempLine[2] = "100";
-                    else
-                        tempLine[2] = "250";
-                    editedLua[lineNum] = string.Join(" ", tempLine);
-                }
-                lineNum++;
+                File.WriteAllLines(directoryRoot, editedLua);
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Camera Type\n{ex}");
+                ModEngine.skipped.Add("► Camera Type (check the debug log for more information)");
             }
-            File.WriteAllLines(directoryRoot, editedLua);
+#endif
         }
 
         private static void CameraDistance(string directoryRoot, int distance) {
-            PatchEngine.DecompileLua(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+#if !DEBUG
+            try {
+#endif
+                PatchEngine.DecompileLua(directoryRoot);
+                string[] editedLua = File.ReadAllLines(directoryRoot);
+                int lineNum = 0;
 
-            foreach (string line in editedLua) {
-                if (line.StartsWith("distance")) {
-                    string[] tempLine = line.Split(' ');
-                    tempLine[2] = decimal.Divide(distance, 100).ToString();
-                    editedLua[lineNum] = string.Join(" ", tempLine);
+                foreach (string line in editedLua) {
+                    if (line.StartsWith("distance")) {
+                        string[] tempLine = line.Split(' ');
+                        tempLine[2] = decimal.Divide(distance, 100).ToString();
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    lineNum++;
                 }
-                lineNum++;
+                File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Camera Distance\n{ex}");
+                ModEngine.skipped.Add("► Camera Distance (check the debug log for more information)");
             }
-            File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
+#endif
         }
 
         private static void CameraHeight(string directoryRoot, decimal height) {
-            PatchEngine.DecompileLua(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+#if !DEBUG
+            try {
+#endif
+                PatchEngine.DecompileLua(directoryRoot);
+                string[] editedLua = File.ReadAllLines(directoryRoot);
+                int lineNum = 0;
 
-            foreach (string line in editedLua) {
-                if (line.StartsWith("c_camera")) {
-                    if (editedLua[lineNum].Contains("c_camera = { x ="))
-                        editedLua[lineNum] = "c_camera = { x = 0 * meter, y = " + (height / 100) + " * meter, z = 0 * meter }";
-                    else
-                        editedLua[lineNum += 2] = $"  y = {height / 100} * meter,";
+                foreach (string line in editedLua) {
+                    if (line.StartsWith("c_camera")) {
+                        if (editedLua[lineNum].Contains("c_camera = { x ="))
+                            editedLua[lineNum] = "c_camera = { x = 0 * meter, y = " + (height / 100) + " * meter, z = 0 * meter }";
+                        else
+                            editedLua[lineNum += 2] = $"  y = {height / 100} * meter,";
+                    }
+                    lineNum++;
                 }
-                lineNum++;
+                File.WriteAllLines(directoryRoot, editedLua);
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Camera Height\n{ex}");
+                ModEngine.skipped.Add("► Camera Height (check the debug log for more information)");
             }
-            File.WriteAllLines(directoryRoot, editedLua);
+#endif
         }
 
         private static void HammerRange(string directoryRoot, decimal range) {
-            PatchEngine.DecompileLua(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
+#if !DEBUG
+            try {
+#endif
+                PatchEngine.DecompileLua(directoryRoot);
+                string[] editedLua = File.ReadAllLines(directoryRoot);
+                int lineNum = 0;
 
-            foreach (string line in editedLua) {
-                string[] tempLine = line.Split(' ');
-                if (line.StartsWith("c_hammer_head")) {
-                    if (editedLua[lineNum].Contains("c_hammer_head"))
-                        editedLua[lineNum] = $"c_hammer_head = {range / 100} * meter";
+                foreach (string line in editedLua) {
+                    string[] tempLine = line.Split(' ');
+                    if (line.StartsWith("c_hammer_head")) {
+                        if (editedLua[lineNum].Contains("c_hammer_head"))
+                            editedLua[lineNum] = $"c_hammer_head = {range / 100} * meter";
+                    }
+                    lineNum++;
                 }
-                lineNum++;
+                File.WriteAllLines(directoryRoot, editedLua);
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Amy's Hammer Range\n{ex}");
+                ModEngine.skipped.Add("► Amy's Hammer Range (check the debug log for more information)");
             }
-            File.WriteAllLines(directoryRoot, editedLua);
+#endif
         }
 
         private static void BeginWithRings(string directoryRoot, decimal rings) {
-            foreach (string lub in Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories)) {
-                PatchEngine.DecompileLua(lub);
-                List<string> editedLua = File.ReadAllLines(lub).ToList();
+#if !DEBUG
+            try {
+#endif
+                foreach (string lub in Directory.GetFiles(directoryRoot, "*.lub", SearchOption.AllDirectories)) {
+                    PatchEngine.DecompileLua(lub);
+                    List<string> editedLua = File.ReadAllLines(lub).ToList();
 
-                for (int i = 0; i < editedLua.Count; i++)
-                    if (editedLua[i].Contains("c_default_ring")) editedLua.RemoveAt(i);
+                    for (int i = 0; i < editedLua.Count; i++)
+                        if (editedLua[i].Contains("c_default_ring")) editedLua.RemoveAt(i);
 
-                editedLua.Add($"c_default_ring = {rings}");
-                File.WriteAllLines(lub, editedLua);
+                    editedLua.Add($"c_default_ring = {rings}");
+                    File.WriteAllLines(lub, editedLua);
+                }
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Begin with Rings\n{ex}");
+                ModEngine.skipped.Add("► Begin with Rings (check the debug log for more information)");
             }
+#endif
         }
 
         private static void UnlockTailsFlightLimit(string directoryRoot) {
-            PatchEngine.DecompileLua(directoryRoot);
-            string[] editedLua = File.ReadAllLines(directoryRoot);
-            int lineNum = 0;
-            decimal origTimer = 0;
+#if !DEBUG
+            try {
+#endif
+                PatchEngine.DecompileLua(directoryRoot);
+                string[] editedLua = File.ReadAllLines(directoryRoot);
+                int lineNum = 0;
+                decimal origTimer = 0;
 
-            foreach (string line in editedLua) {
-                string[] tempLine = line.Split(' ');
+                foreach (string line in editedLua) {
+                    string[] tempLine = line.Split(' ');
 
-                if (tempLine[0] == "c_flight_timer") origTimer = decimal.Parse(tempLine[2]);
+                    if (tempLine[0] == "c_flight_timer") origTimer = decimal.Parse(tempLine[2]);
 
-                if (tempLine[0] == "c_flight_timer_b") {
-                    tempLine[2] = (((origTimer * 1000) + 125) / 1000).ToString();
-                    editedLua[lineNum] = string.Join(" ", tempLine);
+                    if (tempLine[0] == "c_flight_timer_b") {
+                        tempLine[2] = (((origTimer * 1000) + 125) / 1000).ToString();
+                        editedLua[lineNum] = string.Join(" ", tempLine);
+                    }
+                    lineNum++;
                 }
-                lineNum++;
+                File.WriteAllLines(directoryRoot, editedLua);
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Unlock Tails' Flight Limit\n{ex}");
+                ModEngine.skipped.Add("► Unlock Tails' Flight Limit (check the debug log for more information)");
             }
-            File.WriteAllLines(directoryRoot, editedLua);
+#endif
         }
     }
 
@@ -1449,11 +1548,20 @@ namespace Unify.Patcher
         }
 
         public static void FieldOfView(string filepath, decimal fov) {
-            using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
-                stream.Position = 0x4F4C;
-                byte[] fov32 = BitConverter.GetBytes(decimal.ToSingle(fov));
-                for (int i = fov32.Length - 1; i >= 0; i--) stream.WriteByte(fov32[i]);
+#if !DEBUG
+            try {
+#endif
+                using (var stream = File.Open(filepath, FileMode.Open, FileAccess.Write)) {
+                    stream.Position = 0x4F4C;
+                    byte[] fov32 = BitConverter.GetBytes(decimal.ToSingle(fov));
+                    for (int i = fov32.Length - 1; i >= 0; i--) stream.WriteByte(fov32[i]);
+                }
+#if !DEBUG
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Field of View\n{ex}");
+                ModEngine.skipped.Add("► Field of View (check the debug log for more information)");
             }
+#endif
         }
     }
 

@@ -199,7 +199,7 @@ namespace Unify.Environment3
                         } catch (Exception ex) {
                             UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst removing the save data.",
                                                                    "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Console.WriteLine(ex);
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to remove save data...\n{ex}");
                         }
                     }
 

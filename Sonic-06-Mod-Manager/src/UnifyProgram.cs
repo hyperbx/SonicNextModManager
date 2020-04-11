@@ -38,8 +38,8 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber = "Version 3.19"; //-indev-{DateTime.Now.ToString("ddMMyy")}r1";
-
+        public static readonly string VersionNumber = "Version 3.2"; //-indev-{DateTime.Now.ToString("ddMMyy")}r1";
+        public static bool _debug = false;
         public static string ApplicationData    = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                              _7Zip              = $"{ApplicationData}\\Unify\\Tools\\7z.exe",
                              Arctool            = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
@@ -48,7 +48,6 @@ namespace Unify.Environment3
                              vcruntime          = $"{ApplicationData}\\Unify\\Tools\\vcruntime140_1.dll",
                              unlub              = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
                              Patches            = $"{ApplicationData}\\Unify\\Patches\\",
-                             ProtocolManager    = $"{ApplicationData}\\Unify\\Tools\\Protocol Manager.exe",
                              scetool            = $"{ApplicationData}\\Unify\\Tools\\scetool.exe",
                              zlib               = $"{ApplicationData}\\Unify\\Tools\\zlib1.dll",
                              make_fself         = $"{ApplicationData}\\Unify\\Tools\\make_fself.exe",
@@ -63,9 +62,6 @@ namespace Unify.Environment3
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
 
             #region Write required pre-requisites to the Tools directory
-            if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\"))
-                Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\");
-
             if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\data\\"))
                 Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\data\\");
 
@@ -89,9 +85,6 @@ namespace Unify.Environment3
 
             if (!File.Exists(unlub))
                 File.WriteAllBytes(unlub, Properties.Resources.unlub);
-
-            if (!File.Exists(ProtocolManager))
-                File.WriteAllBytes(ProtocolManager, Properties.Resources.Protocol_Manager);
 
             if (!File.Exists(scetool))
                 File.WriteAllBytes(scetool, Properties.Resources.scetool);
@@ -169,7 +162,7 @@ namespace Unify.Environment3
                                                                                    "Click OK to reset Sonic '06 Mod Manager.",
                                                                                    "Settings failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
 
-                if (confirmation == DialogResult.OK) Program.Reset(); // Reset settings
+                if (confirmation == DialogResult.OK) Reset(); // Reset settings
                 else Process.GetCurrentProcess().Kill(); // Quit immediately
             }
 #endif
@@ -180,6 +173,8 @@ namespace Unify.Environment3
         /// </summary>
         public static void Reset() {
             try {
+                Properties.Settings.Default.Reset();
+
                 string modManagerDataPath = Path.Combine(ApplicationData, "Unify");
 
                 // Erases the Unify directory, containing Tools and user settings
@@ -188,7 +183,6 @@ namespace Unify.Environment3
                     foreach (FileInfo file in modManagerData.GetFiles()) file.Delete();
                     foreach (DirectoryInfo directory in modManagerData.GetDirectories()) directory.Delete(true);
                 }
-                Application.Restart();
             } catch { }
         }
     }

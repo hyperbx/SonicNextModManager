@@ -139,6 +139,9 @@
   <data name="ConfigurationFile_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\configurationfile_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Copy_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\images\copy_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Corner_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\corner_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

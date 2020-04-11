@@ -3,6 +3,7 @@ using System.IO;
 using Unify.Dialogs;
 using System.Drawing;
 using Unify.Messenger;
+using Unify.Serialisers;
 using Unify.Environment3;
 using Unify.Globalisation;
 using System.Windows.Forms;
@@ -107,7 +108,7 @@ namespace Unify
                 if (browseMods != string.Empty)
                     TextBox_ModsDirectory.Text = browseMods;
 
-                if (TextBox_GameDirectory.Text != string.Empty)
+                if (Paths.CheckFileLegitimacy(TextBox_GameDirectory.Text))
                     if (Literal.IsPathSubdirectory(browseMods, Path.GetDirectoryName(TextBox_GameDirectory.Text)) ||
                         browseMods == Path.GetDirectoryName(TextBox_GameDirectory.Text))
 
@@ -122,7 +123,7 @@ namespace Unify
                 if (browseGame != string.Empty)
                     TextBox_GameDirectory.Text = browseGame;
 
-                if (TextBox_ModsDirectory.Text != string.Empty)
+                if (Paths.CheckPathLegitimacy(TextBox_ModsDirectory.Text))
                     if (Literal.IsPathSubdirectory(Path.GetDirectoryName(browseGame), TextBox_ModsDirectory.Text) ||
                         Path.GetDirectoryName(browseGame) == TextBox_ModsDirectory.Text)
 

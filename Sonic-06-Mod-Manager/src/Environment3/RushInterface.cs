@@ -8,17 +8,14 @@ using System.Drawing;
 using Microsoft.Win32;
 using Unify.Messenger;
 using Unify.Networking;
-using System.Management;
 using Unify.Serialisers;
 using System.Diagnostics;
 using Unify.Globalisation;
 using System.Windows.Forms;
-using System.Configuration;
 using System.ComponentModel;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.VisualBasic.Devices;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -50,7 +47,6 @@ namespace Unify.Environment3
 {
     public partial class RushInterface : UserControl
     {
-        public static bool _debug = false;
         private bool _isPathInvalid = false;
         private static string protocol = "sonic06mm";
         private bool _useBackupServer = false;
@@ -90,7 +86,7 @@ namespace Unify.Environment3
                 SplitContainer_ModUpdate.SplitterWidth = 2;
 #if DEBUG
                 // If the application is a debug build, force debug mode on
-                Properties.Settings.Default.General_Debug = _debug = true;
+                Properties.Settings.Default.General_Debug = Program._debug = true;
                 Properties.Settings.Default.Save();
 #endif
             }
@@ -224,7 +220,7 @@ namespace Unify.Environment3
                 else
                     Label_Status.ForeColor = SystemColors.Control;
 
-                if (CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = _debug = Properties.Settings.Default.General_Debug)
+                if (CheckBox_DebugMode.Checked = Rush_Section_Debug.Visible = Program._debug = Properties.Settings.Default.General_Debug)
                     Console.SetOut(new ListBoxWriter(ListBox_Debug));
 
                 if (CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.General_LaunchEmulator) {
@@ -481,7 +477,7 @@ namespace Unify.Environment3
 
                     // Write exception to logs
                     RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
-                    if (_debug) Console.WriteLine(ex.ToString());
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to request changelogs...\n{ex}");
                 }
             }
 
@@ -742,7 +738,7 @@ namespace Unify.Environment3
         /// <summary>
         /// Clears the debug log.
         /// </summary>
-        private void SectionButton_ClearLog_Click(object sender, EventArgs e) { ListBox_Debug.Items.Clear(); }
+        private void SectionButton_ClearLog_Click(object sender, EventArgs e) => ListBox_Debug.Items.Clear();
 
         /// <summary>
         /// Create right-click context menu for the lists at runtime.
@@ -881,9 +877,12 @@ namespace Unify.Environment3
                     RefreshLists(); // Refresh on Patch Creator exit
                     break;
                 case "Edit Patch":
-                    // Launch Patch Editor
-                    new PatchCreator(ListView_PatchesList.FocusedItem.SubItems[5].Text, true).ShowDialog();
-                    RefreshLists(); // Refresh on Patch Editor exit
+                    try { Process.Start(ListView_PatchesList.FocusedItem.SubItems[5].Text); }
+                    catch {
+                        UnifyMessenger.UnifyMessage.ShowDialog("The selected patch is missing...",
+                                                               "Unable to locate patch...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    RefreshLists(); // Refresh patches list
                     break;
                 case "Delete Patch":
                     try {
@@ -1161,25 +1160,8 @@ namespace Unify.Environment3
                             }
                     }
 
-#if !DEBUG
-                    try {
-#endif
-                        TweakEngine.ApplyTweaks(this); // Begin tweak application
-                        InstallPatches(); // Begin patch installation
-#if !DEBUG
-                    } catch (Exception ex) {
-                        if (_debug) Console.WriteLine(ex.ToString());
-                        if (ex is Win32Exception) {
-                            UnifyMessenger.UnifyMessage.ShowDialog($"Sonic '06 Mod Manager requires Java to decompile Lua scripts. Please install Java and restart your computer...",
-                                                                   "Missing pre-requisites", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        } else {
-                            UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your patches and tweaks...\n\n{ex}",
-                                                                   "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
-#endif
+                    TweakEngine.ApplyTweaks(this); // Begin tweak application
+                    InstallPatches(); // Begin patch installation
 
                     // Check skipped list to ensure any errors occurred
                     if (ModEngine.skipped.Count != 0)
@@ -1368,7 +1350,7 @@ namespace Unify.Environment3
         /// <summary>
         /// Sets the item check state depending on the sender.
         /// </summary>
-        private void Button_Mods_Selection_Click(object sender, EventArgs e) {
+        private void Button_Selection_Click(object sender, EventArgs e) {
             // Mods List
             if      (sender == Button_Mods_SelectAll) ListView_ModsList.Items.Cast<ListViewItem>().All(i => i.Checked = true); // Select All
             else if (sender == Button_Mods_DeselectAll) { // Deselect All
@@ -1434,7 +1416,10 @@ namespace Unify.Environment3
             DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("This will clear all of the settings for Sonic '06 Mod Manager. Are you sure you want to continue?",
                                                                                "Sonic '06 Mod Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-            if (confirmation == DialogResult.Yes) Program.Reset();
+            if (confirmation == DialogResult.Yes) {
+                Program.Reset();
+                Application.Restart();
+            }
         }
 
         /// <summary>
@@ -1472,7 +1457,7 @@ namespace Unify.Environment3
                     };
                 }
             } catch (Exception ex) {
-                if (_debug) Console.WriteLine(ex.ToString()); // Write exception to debug log
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to update Sonic '06 Mod Manager...\n{ex}"); // Write exception to debug log
                 UnifyMessenger.UnifyMessage.ShowDialog("Failed to update Sonic '06 Mod Manager. Reverting back to the previous version...",
                                                        "Update failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -1513,7 +1498,7 @@ namespace Unify.Environment3
                 UnifyMessenger.UnifyMessage.ShowDialog("The latest patches have been downloaded!",
                                                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } catch (Exception ex) {
-                if (_debug) Console.WriteLine(ex.ToString()); // Write exception to debug log
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to update patches...\n{ex}"); // Write exception to debug log
                 UnifyMessenger.UnifyMessage.ShowDialog("Failed to update patches...",
                                                        "Update failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1522,14 +1507,13 @@ namespace Unify.Environment3
         /// <summary>
         /// Refreshes the lists.
         /// </summary>
-        private void SectionButton_Refresh_Click(object sender, EventArgs e) { RefreshLists(); }
+        private void SectionButton_Refresh_Click(object sender, EventArgs e) => RefreshLists();
 
         /// <summary>
         /// Enables/disables the Update Mods button depending on how many items are checked in the Mod Updates list.
         /// </summary>
-        private void ListView_ModUpdates_ItemChecked(object sender, ItemCheckedEventArgs e) {
-            SectionButton_UpdateMods.Enabled = ListView_ModUpdates.CheckedItems.Count > 0;
-        }
+        private void ListView_ModUpdates_ItemChecked(object sender, ItemCheckedEventArgs e)
+            => SectionButton_UpdateMods.Enabled = ListView_ModUpdates.CheckedItems.Count > 0;
 
         /// <summary>
         /// Code for all SectionButton controls in the Updates section.
@@ -1588,7 +1572,7 @@ namespace Unify.Environment3
                     } catch (Exception ex) {
                         // Update failed - prints error to debug console and is subsequently ignored
                         ListBox_UpdateLogs.Items.Add($"Failed to update {mod.Text}...");
-                        Console.WriteLine(ex);
+                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to update {mod.Text}\n{ex}");
                     }
 
                     // Feedback
@@ -1789,12 +1773,12 @@ namespace Unify.Environment3
         /// <summary>
         /// Resizes Mod Updates container when splitter is moved.
         /// </summary>
-        private void SplitContainer_ModUpdate_SplitterMoved(object sender, SplitterEventArgs e) { SizeLastColumn(ListView_ModUpdates); }
+        private void SplitContainer_ModUpdate_SplitterMoved(object sender, SplitterEventArgs e) => SizeLastColumn(ListView_ModUpdates);
 
         /// <summary>
         /// Tells the list view how it should handle the DragDrop event.
         /// </summary>
-        private void ListView_DragEnter(object sender, DragEventArgs e) { e.Effect = DragDropEffects.Copy; }
+        private void ListView_DragEnter(object sender, DragEventArgs e) => e.Effect = DragDropEffects.Copy;
 
         /// <summary>
         /// Tells the list view what to do with the dropped item.
@@ -1931,7 +1915,9 @@ namespace Unify.Environment3
                     }
                 }
             }
-            else if  (sender == ComboBox_Reflections) Properties.Settings.Default.Tweak_Reflections  = ((ComboBox)sender).SelectedIndex;
+
+            else if (sender == ComboBox_Reflections) Properties.Settings.Default.Tweak_Reflections  = ((ComboBox)sender).SelectedIndex;
+
             else if (sender == ComboBox_AntiAliasing) {
                 if ((Properties.Settings.Default.Tweak_AntiAliasing = ((ComboBox)sender).SelectedIndex) != 1) {
                     CheckBox_ForceMSAA.Enabled = false; // Set enabled state for Force MSAA
@@ -1941,7 +1927,8 @@ namespace Unify.Environment3
                     Label_Description_ForceMSAA.ForeColor = SystemColors.ControlDark; // Set description to ControlDark
                 }
             }
-            else if   (sender == ComboBox_CameraType) {
+
+            else if (sender == ComboBox_CameraType) {
                 // Save Camera Type ahead of tweaking other values
                 Properties.Settings.Default.Tweak_CameraType = ((ComboBox)sender).SelectedIndex;
 
@@ -2135,87 +2122,12 @@ namespace Unify.Environment3
         }
 
         /// <summary>
-        /// Dumps current user settings and selected items.
+        /// Dumps/loads user settings and selected items.
         /// </summary>
         private void LinkLabel_Snapshot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            // Save location for snapshot
-            SaveFileDialog snapshot = new SaveFileDialog() {
-                Title = "Save snapshot...",
-                Filter = "Snapshot (*.dmp)|*.dmp",
-                FileName = $"sonic06mm-snapshot-{DateTime.Now.ToString("ddMMyy")}.dmp"
-            };
-
-            if (snapshot.ShowDialog() == DialogResult.OK) {
-                string architecture = "x86";
-                int gpuCount = 0;
-
-                // Get application architecture
-                if (IntPtr.Size == 4) architecture = "x86";
-                else if (IntPtr.Size == 8) architecture = "x64";
-                else architecture = "Unknown";
-
-                // Create snapshot
-                using (StreamWriter sw = File.CreateText(snapshot.FileName)) {
-                    try {
-                        sw.WriteLine($"Sonic '06 Mod Manager");
-                        sw.WriteLine(DateTime.Now);
-
-                        sw.WriteLine("\nBuild:");
-#if !DEBUG
-                        sw.WriteLine($"Type: Release");
-#elif DEBUG
-                        sw.WriteLine($"Type: Debug");
-#endif
-                        sw.WriteLine($"Version: {Program.VersionNumber}");
-                        sw.WriteLine($"Architecture: {architecture}");
-
-                        sw.WriteLine("\nSpecifications:");
-
-                        // Get OS version
-                        sw.WriteLine($"OS: {new ComputerInfo().OSFullName}");
-
-                        // Get CPU name
-                        ManagementObjectSearcher getCPU = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor");
-                        foreach (ManagementObject mo in getCPU.Get())
-                            sw.WriteLine($"CPU: {mo["Name"].ToString()}");
-
-                        // Format RAM as long to readable bytes
-                        sw.WriteLine($"RAM: {Literal.FormatBytes(new ManagementObjectSearcher("SELECT Capacity FROM Win32_PhysicalMemory").Get().Cast<ManagementObject>().Sum(x => Convert.ToInt64(x.Properties["Capacity"].Value)))}");
-
-                        // Get GPU names
-                        ManagementObjectSearcher getGPU = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
-                        foreach (ManagementObject mo in getGPU.Get())
-                            foreach (PropertyData property in mo.Properties)
-                                if (property.Name == "Description") {
-                                    sw.WriteLine($"GPU #{gpuCount}: {property.Value.ToString()}");
-                                    gpuCount++;
-                                }
-
-                        // Print list of checked mods
-                        if (ListView_ModsList.CheckedItems.Count != 0) {
-                            sw.WriteLine("\nMods:");
-                            foreach (object mod in ListView_ModsList.CheckedItems)
-                                sw.WriteLine(mod);
-                        }
-
-                        // Print list of checked patches
-                        if (ListView_PatchesList.CheckedItems.Count != 0) {
-                            sw.WriteLine("\nPatches:");
-                            foreach (object patch in ListView_PatchesList.CheckedItems)
-                                sw.WriteLine(patch);
-                        }
-
-                        // Print list of current settings
-                        sw.WriteLine("\nSettings:");
-                        foreach (SettingsPropertyValue property in Properties.Settings.Default.PropertyValues)
-                            sw.WriteLine($"{property.Name}: {property.PropertyValue}");
-                    } catch (Exception ex) {
-                        // Print exception if something failed
-                        sw.WriteLine("\nExceptions:");
-                        sw.WriteLine(ex);
-                    }
-                }
-            }
+            if (sender == LinkLabel_Snapshot_Create) Snapshot.Create(ListView_ModsList, ListView_PatchesList);
+            else if (sender == LinkLabel_Snapshot_Load) Snapshot.Load(ListView_ModsList, ListView_PatchesList);
+            RefreshLists();
         }
 
         /// <summary>
@@ -2255,5 +2167,25 @@ namespace Unify.Environment3
             else if   (sender == CheckBox_Xenia_DiscordRPC) Properties.Settings.Default.Emulator_DiscordRPC       = ((CheckBox)sender).Checked;
             Properties.Settings.Default.Save();
         }
+
+        /// <summary>
+        /// Opens the context menu for the debug box.
+        /// </summary>
+        private void ListBox_Debug_MouseUp(object sender, MouseEventArgs e) {
+            // Perform if the function was called with the right mouse button
+            if (e.Button == MouseButtons.Right) {
+                // Create the dark context menu
+                ContextMenuDark menuDark = new ContextMenuDark();
+                menuDark.Items.Clear();
+                menuDark.Items.Add(new ToolStripMenuItem("Copy debug log", Properties.Resources.Copy_16x, ContextMenu_Debug_Items_Click));
+                menuDark.Show(Cursor.Position);
+            }
+        }
+
+        /// <summary>
+        /// Copies all items from the debug box to the clipboard.
+        /// </summary>
+        private void ContextMenu_Debug_Items_Click(object sender, EventArgs e)
+            => Clipboard.SetText(string.Join(string.Empty, ListBox_Debug.Items.OfType<object>().Select(item => item.ToString()).ToArray()));
     }
 }

@@ -110,11 +110,11 @@ namespace Unify.Globalisation
             if (dateTime == 0) return $"{prefix}: Never";
             else {
                 if (fromLong.Date == DateTime.Today)
-                    return $"{prefix}: Today, {fromLong.ToString("hh:mm tt")}";
+                    return $"{prefix}: Today, {fromLong:hh:mm tt}";
                 else if (fromLong.Date == DateTime.Today.AddDays(-1))
-                    return $"{prefix}: Yesterday, {fromLong.ToString("hh:mm tt")}";
+                    return $"{prefix}: Yesterday, {fromLong:hh:mm tt}";
                 else
-                    return $"{prefix}: {fromLong.ToString("dd/MM/yyyy, hh:mm tt")}";
+                    return $"{prefix}: {fromLong:dd/MM/yyyy, hh:mm tt}";
             }
         }
 
@@ -134,9 +134,8 @@ namespace Unify.Globalisation
                         break;
                     } else candidateInfo = candidateInfo.Parent;
                 }
-            } catch (Exception error) {
-                var message = String.Format("Unable to check directories {0} and {1}: {2}", candidate, other, error);
-                Console.WriteLine(message);
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to check directories...\n{ex}");
             }
 
             return isChild;

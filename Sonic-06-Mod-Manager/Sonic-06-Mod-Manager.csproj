@@ -162,6 +162,12 @@
     <Compile Include="third_party\Ookii.Dialogs\OkButtonClickedEventArgs.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ProgressBarState.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ProgressBarStyle.cs" />
+    <Compile Include="third_party\Ookii.Dialogs\ProgressDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="third_party\Ookii.Dialogs\ProgressDialog.designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="third_party\Ookii.Dialogs\SafeHandles.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ShellAnimation.cs" />
     <Compile Include="third_party\Ookii.Dialogs\TaskDialog.cs">
@@ -258,6 +264,9 @@
     <EmbeddedResource Include="src\Environment3\UnifySetup.resx">
       <DependentUpon>UnifySetup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="third_party\Ookii.Dialogs\ProgressDialog.resx">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -291,6 +300,7 @@
     <Content Include="res\Images\CheckBox_16x_24.bmp" />
     <Content Include="res\Images\ConfigurationEditor_16x.png" />
     <Content Include="res\Images\ConfigurationFile_16x.png" />
+    <Content Include="res\Images\Copy_16x.png" />
     <Content Include="res\Images\Corner_Logo.png" />
     <Content Include="res\Images\Corner_Logo_Colour.png" />
     <Content Include="res\Images\debug 6.png" />
