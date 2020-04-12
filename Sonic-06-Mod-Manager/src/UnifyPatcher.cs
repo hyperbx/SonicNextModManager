@@ -1016,6 +1016,7 @@ namespace Unify.Patcher
                 if (!File.Exists($"{xex}_back"))
                     File.Copy(xex, $"{xex}_back", true);
 
+                rush.Status = $"Tweaking Field of View...";
                 XEX.Decrypt(xex); // Decrypt the XEX to be able to modify it properly
                 XEX.FieldOfView(xex, fieldOfView); // Set FOV
             }
@@ -1043,6 +1044,7 @@ namespace Unify.Patcher
                             // Force MSAA
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set Anti-Aliasing to {antiAliasing}...");
                                 MSAA(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly);
                             }
                         }
@@ -1050,12 +1052,14 @@ namespace Unify.Patcher
                         // Optimised
                         else if (renderer == 1) {
                             rush.Status = $"Tweaking Renderer...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Optimised...");
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.optimised_render_main);
                         }
 
                         // Destructive
                         else if (renderer == 2) {
                             rush.Status = $"Tweaking Renderer...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Destructive...");
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"),   Properties.Resources.vulkan_render_gamemode);
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_title.lub"),      Properties.Resources.vulkan_render_title);
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
@@ -1064,25 +1068,31 @@ namespace Unify.Patcher
                         // Cheap
                         else if (renderer == 3) {
                             rush.Status = $"Tweaking Renderer...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Cheap...");
                             File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_cheap);
                         }
 
                         // Reflections
                         if (reflections != 1) {
                             rush.Status = $"Tweaking Reflections...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set reflection resolution to {reflections}...");
                             Reflections(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_reflection.lub"), reflections);
                         }
 
                         if (system == "ps3") {
-                            rush.Status = $"Tweaking Camera...";
-
                             // Camera Type
-                            if (cameraType != 0)
+                            if (cameraType != 0) {
+                                rush.Status = $"Tweaking Camera...";
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set camera type to {cameraType}...");
                                 CameraType(Path.Combine(tweak, $"cache\\{system}\\cameraparam.lub"), cameraType, fieldOfView);
+                            }
 
                             // Camera Distance
-                            if (cameraDistance != 650)
+                            if (cameraDistance != 650) {
+                                rush.Status = $"Tweaking Camera...";
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set camera distance to {cameraDistance}...");
                                 CameraDistance(Path.Combine(tweak, $"cache\\{system}\\cameraparam.lub"), (int)cameraDistance);
+                            }
                         }
 
                         // Repack archive as tweak
@@ -1106,6 +1116,7 @@ namespace Unify.Patcher
                             // Force MSAA
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <scripts.arc> Set Anti-Aliasing to {antiAliasing}...");
                                 MSAA(Path.Combine(tweak, $"scripts\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.AllDirectories);
                             }
 
@@ -1126,15 +1137,19 @@ namespace Unify.Patcher
                         tweak = ModEngine.UnpackARC(archive, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
                         if (system == "xenon") {
-                            rush.Status = $"Tweaking Camera...";
-
                             // Camera Type
-                            if (cameraType != 0)
+                            if (cameraType != 0) {
+                                rush.Status = $"Tweaking Camera...";
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <game.arc> Set camera type to {cameraType}...");
                                 CameraType(Path.Combine(tweak, $"game\\{system}\\cameraparam.lub"), cameraType, fieldOfView);
+                            }
 
                             // Camera Distance
-                            if (cameraDistance != 650)
+                            if (cameraDistance != 650) {
+                                rush.Status = $"Tweaking Camera...";
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <game.arc> Set camera distance to {cameraDistance}...");
                                 CameraDistance(Path.Combine(tweak, $"game\\{system}\\cameraparam.lub"), (int)cameraDistance);
+                            }
                         }
 
                         // Repack archive as tweak
@@ -1158,29 +1173,34 @@ namespace Unify.Patcher
                         // Tokyo Game Show
                         if (cameraType == 1) {
                             rush.Status = $"Tweaking Camera...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set camera type to {cameraType}...");
                             CameraType(Path.Combine(tweak, $"player\\{system}\\player\\common.lub"), cameraType, fieldOfView);
                         }
 
                         // Camera Height
                         if (cameraHeight != 70) {
                             rush.Status = $"Tweaking Camera...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set camera height to {cameraHeight}...");
                             CameraHeight(Path.Combine(tweak, $"player\\{system}\\player\\common.lub"), cameraHeight);
                         }
 
                         // Amy's Hammer Range
                         if (hammerRange != 50) {
                             rush.Status = $"Tweaking Characters...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set Amy's hammer range to {hammerRange}...");
                             HammerRange(Path.Combine(tweak, $"player\\{system}\\player\\amy.lub"), hammerRange);
                         }
 
                         if (beginWithRings != 0) {
                             rush.Status = $"Tweaking Characters...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set default Ring count to {beginWithRings}...");
                             BeginWithRings(Path.Combine(tweak, $"player\\{system}\\player\\"), beginWithRings);
                         }
 
                         // Unlock Tails' Flight Limit
                         if (tailsFlightLimit) {
                             rush.Status = $"Tweaking Characters...";
+                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Unlocked Tails' flight limit...");
                             UnlockTailsFlightLimit(Path.Combine(tweak, $"player\\{system}\\player\\tails.lub"));
                         }
 
