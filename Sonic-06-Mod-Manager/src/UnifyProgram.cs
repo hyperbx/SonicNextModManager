@@ -162,7 +162,7 @@ namespace Unify.Environment3
                                                                                    "Click OK to reset Sonic '06 Mod Manager.",
                                                                                    "Settings failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
 
-                if (confirmation == DialogResult.OK) Reset(); // Reset settings
+                if (confirmation == DialogResult.OK) { Reset(); Application.Restart(); } // Reset settings
                 else Process.GetCurrentProcess().Kill(); // Quit immediately
             }
 #endif

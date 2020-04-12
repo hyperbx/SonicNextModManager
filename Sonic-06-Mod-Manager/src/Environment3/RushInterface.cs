@@ -1196,6 +1196,10 @@ namespace Unify.Environment3
                     // Install the specified patch
                     PatchEngine.InstallPatches(patch.SubItems[5].Text, patch.Text);
                 }
+
+            // Encrypt if decrypted EBOOT
+            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3")
+                PatchEngine.EncryptExecutable();
         }
 
         /// <summary>

@@ -353,6 +353,7 @@ namespace Unify.Patcher
         static string _archive = string.Empty;
         static string _archiveLocation = string.Empty;
         static List<string> _ignoreList = new List<string>();
+        public static bool decrypted = false;
 
         /// <summary>
         /// Installs the specified patches (requires for statement iteration for more than one mod).
@@ -367,6 +368,7 @@ namespace Unify.Patcher
 
             // Skip the patch if the platform is invalid
             string system = Literal.System(Properties.Settings.Default.Path_GameDirectory);
+
             if (system != platform && !allSystemsMode) {
                 ModEngine.skipped.Add($"► {name} (failed because the patch was not targeted for the {system})");
                 return;
@@ -402,11 +404,8 @@ namespace Unify.Patcher
 
                                 else if (line.StartsWith("DecompressExecutable"))
                                     DecompressExecutable();
-                            }
 
-                            if (line.StartsWith("Enc")) {
-                                if (line.StartsWith("EncryptExecutable"))
-                                    EncryptExecutable();
+                                decrypted = true;
                             }
 
                             if (line.StartsWith("Write")) {
@@ -516,6 +515,8 @@ namespace Unify.Patcher
                         }
                     }
                 }
+
+                if (decrypted && system == "PlayStation 3") EncryptExecutable();
 #if !DEBUG
             } catch (Exception ex) {
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {name}\n{ex}");
@@ -576,7 +577,7 @@ namespace Unify.Patcher
             _archive = _archiveLocation = string.Empty;
         }
 
-        private static void EncryptExecutable() {
+        public static void EncryptExecutable() {
             string gameDirectory = Properties.Settings.Default.Path_GameDirectory;
 
             if (!File.Exists($"{gameDirectory}_back"))
@@ -586,7 +587,7 @@ namespace Unify.Patcher
             else if (Literal.System(gameDirectory) == "PlayStation 3") EBOOT.Encrypt(gameDirectory);
         }
 
-        private static void DecryptExecutable() {
+        public static void DecryptExecutable() {
             string gameDirectory = Properties.Settings.Default.Path_GameDirectory;
 
             if (!File.Exists($"{gameDirectory}_back"))

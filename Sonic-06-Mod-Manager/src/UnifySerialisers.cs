@@ -226,6 +226,8 @@ namespace Unify.Serialisers
                             }
                             else sw.WriteLine($"{property.Name}: {property.PropertyValue}");
                         }
+
+                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Success] Created a snapshot");
 #if !DEBUG
                     } catch (Exception ex) {
                         // Print exception if something failed
@@ -268,8 +270,12 @@ namespace Unify.Serialisers
                                             string[] splitArray = line.Remove(0, valueSplit).Split(',');
                                             int[] colourArray = splitArray.Select(x => int.Parse(x)).ToArray();
                                             property.PropertyValue = Color.FromArgb(colourArray[0], colourArray[1], colourArray[2]);
+                                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Configured property '{property.Name}'");
                                         }
-                                        else if (line.StartsWith(property.Name)) property.PropertyValue = Convert.ChangeType(line.Remove(0, valueSplit), property.PropertyValue.GetType());
+                                        else if (line.StartsWith(property.Name)) {
+                                            property.PropertyValue = Convert.ChangeType(line.Remove(0, valueSplit), property.PropertyValue.GetType());
+                                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Configured property '{property.Name}'");
+                                        }
                                     }
                                     Properties.Settings.Default.Save();
                                 }
@@ -288,9 +294,11 @@ namespace Unify.Serialisers
 
                         // Writes the list in reverse so the mods list writes it in it's preferred order
                         for (int i = mods.Count - 1; i >= 0; i--) {
-                            using (StreamWriter sw = File.AppendText(modCheckList))
+                            using (StreamWriter sw = File.AppendText(modCheckList)) {
                                 // Write mod name by folder name to prevent duplicate mod names conflicting
                                 sw.WriteLine(mods[i]);
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Written mod '{mods[i]}' to configuration");
+                            }
                         }
 
                         // Create 'patches.ini'
@@ -300,12 +308,16 @@ namespace Unify.Serialisers
 
                             // Writes in reverse so the patches list writes it in it's preferred order
                             for (int i = patches.Count - 1; i >= 0; i--) {
-                                using (StreamWriter sw = File.AppendText(patchCheckList))
+                                using (StreamWriter sw = File.AppendText(patchCheckList)) {
                                     // Write patch name by file name to prevent duplicate patch names conflicting
                                     sw.WriteLine(patches[i]);
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Written patch '{patches[i]}' to configuration");
+                                }
                             }
                         } catch { }
                     }
+
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Success] Loaded a snapshot");
 #if !DEBUG
                 } catch (Exception ex) {
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to load snapshot...\n{ex}");
