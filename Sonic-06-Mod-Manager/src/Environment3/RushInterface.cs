@@ -1091,88 +1091,90 @@ namespace Unify.Environment3
         /// Begins the mod installation process by calling the required methods.
         /// </summary>
         private void SectionButton_InstallMods_Click(object sender, EventArgs e) {
-            if (Properties.Settings.Default.Path_GameDirectory != string.Empty ||
-                File.Exists(Properties.Settings.Default.Path_GameDirectory)) {
-                    ModEngine.skipped.Clear(); // Clear the skipped list
-                    SaveChecks(); // Save checked items
-                    RefreshLists();
-                    UninstallThread(); // Uninstall everything before installing more mods
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory)) {
+                ModEngine.skipped.Clear(); // Clear the skipped list
+                SaveChecks(); // Save checked items
+                RefreshLists();
+                UninstallThread(); // Uninstall everything before installing more mods
 
-                    if (_isPathInvalid) {
-                        DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("Ensure that your mods directory is outside your game directory! " +
-                                                                                           "This may cause issues with mod and patch installation.",
-                                                                                           "Invalid directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (_isPathInvalid) {
+                    DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("Ensure that your mods directory is outside your game directory! " +
+                                                                                        "This may cause issues with mod and patch installation.",
+                                                                                        "Invalid directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
-                        if (confirmation == DialogResult.Cancel) {
-                            SectionButton_DeselectAll();
-                            Rush_Section_Settings.SelectedSection = true;
-                            TabControl_Rush.SelectedTab = Tab_Section_Settings;
-                            return;
-                        }
+                    if (confirmation == DialogResult.Cancel) {
+                        SectionButton_DeselectAll();
+                        Rush_Section_Settings.SelectedSection = true;
+                        TabControl_Rush.SelectedTab = Tab_Section_Settings;
+                        return;
                     }
+                }
 
-                    //Top to Bottom Priority
-                    if (Properties.Settings.Default.General_Priority) {
-                        for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
-                            if (ListView_ModsList.Items[i].Checked) {
-                                Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
+                //Top to Bottom Priority
+                if (Properties.Settings.Default.General_Priority) {
+                    for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
+                        if (ListView_ModsList.Items[i].Checked) {
+                            Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
 
                             // Install the specified mod
 #if !DEBUG
-                                try {
+                            try {
 #endif
-                                    ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {ListView_ModsList.Items[i].Text}...");
+                                ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
 #if !DEBUG
-                                } catch (Exception ex) {
-                                    UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
-                                                                           "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    return;
-                                }
-#endif
-
-                                if (Properties.Settings.Default.General_SaveFileRedirection)
-                                    // Redirect save data from the specified mod
-                                    RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                            } catch (Exception ex) {
+                                UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
+                                                                        "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
                             }
-
-                    //Bottom to Top Priority
-                    } else {
-                        foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
-                            if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
-                                Label_Status.Text = $"Installing {mod.Text}...";
-
-                                // Install the specified mod
-#if !DEBUG
-                                try {
 #endif
-                                    ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
+
+                            if (Properties.Settings.Default.General_SaveFileRedirection)
+                                // Redirect save data from the specified mod
+                                RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                        }
+
+                //Bottom to Top Priority
+                } else {
+                    foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
+                        if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
+                            Label_Status.Text = $"Installing {mod.Text}...";
+
+                            // Install the specified mod
 #if !DEBUG
-                                } catch (Exception ex) {
-                                    UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
-                                                                           "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    return;
-                                }
+                            try {
+#endif
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {mod.Text}...");
+                                ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
+#if !DEBUG
+                            } catch (Exception ex) {
+                                UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
+                                                                        "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
 #endif
 
                             if (Properties.Settings.Default.General_SaveFileRedirection)
                                     // Redirect save data from the specified mod
                                     RedirectSaves(mod.SubItems[6].Text, mod.Text);
-                            }
-                    }
+                        }
+                }
 
-                    TweakEngine.ApplyTweaks(this); // Begin tweak application
-                    InstallPatches(); // Begin patch installation
+                TweakEngine.ApplyTweaks(this); // Begin tweak application
+                InstallPatches(); // Begin patch installation
 
-                    // Check skipped list to ensure any errors occurred
-                    if (ModEngine.skipped.Count != 0)
-                        UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
-                                                               "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // Check skipped list to ensure any errors occurred
+                if (ModEngine.skipped.Count != 0)
+                    UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
+                                                            "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    // Launch the emulator of choice
-                    if (Properties.Settings.Default.General_LaunchEmulator) LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
+                // Launch the emulator of choice
+                if (Properties.Settings.Default.General_LaunchEmulator)
+                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
 
-                    // Reset status label once emulator process has ended
-                    Label_Status.Text = $"Ready.";
+                // Reset status label once emulator process has ended
+                Label_Status.Text = $"Ready.";
 
             // No game directory set - choose a new one...
             } else {
@@ -1194,12 +1196,15 @@ namespace Unify.Environment3
                     Label_Status.Text = $"Patching {patch.Text}...";
 
                     // Install the specified patch
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Patching {patch.Text}...");
                     PatchEngine.InstallPatches(patch.SubItems[5].Text, patch.Text);
                 }
 
             // Encrypt if decrypted EBOOT
-            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3")
+            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Encrypted game executable...");
                 PatchEngine.EncryptExecutable();
+            }
         }
 
         /// <summary>
@@ -1211,35 +1216,36 @@ namespace Unify.Environment3
             // Deserialise 'Save' key
             if (INI.DeserialiseKey("Save", mod).Contains("savedata")) {
                 if (File.Exists(saveLocation)) {
-                        // Feedback
-                        Label_Status.Text = $"Redirecting save file for {name}...";
+                    // Feedback
+                    Label_Status.Text = $"Redirecting save file for {name}...";
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Save] Redirecting save file for {name}...");
 
-                        if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
-                            try {
-                                // If the backup directory doesn't exist, create it
-                                if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) 
-                                    Directory.CreateDirectory($"{Path.GetDirectoryName(saveLocation)}_back");
+                    if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
+                        try {
+                            // If the backup directory doesn't exist, create it
+                            if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) 
+                                Directory.CreateDirectory($"{Path.GetDirectoryName(saveLocation)}_back");
 
-                                    // Copy original save to backup directory
-                                    DirectoryInfo backupSave = new DirectoryInfo(Path.GetDirectoryName(saveLocation));
-                                    foreach (FileInfo fi in backupSave.GetFiles())
-                                        fi.CopyTo(Path.Combine($"{Path.GetDirectoryName(saveLocation)}_back", fi.Name), true);
+                                // Copy original save to backup directory
+                                DirectoryInfo backupSave = new DirectoryInfo(Path.GetDirectoryName(saveLocation));
+                                foreach (FileInfo fi in backupSave.GetFiles())
+                                    fi.CopyTo(Path.Combine($"{Path.GetDirectoryName(saveLocation)}_back", fi.Name), true);
 
-                                    // Copy mod's save to the save data location
-                                    File.Copy(Path.Combine(Path.GetDirectoryName(mod), "savedata.360"), saveLocation, true);
-                            } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the Xbox 360)"); }
-                        } else if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
-                            try {
-                                if (File.Exists(Path.Combine(Path.GetDirectoryName(mod), "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
-                                    // If the backup save data doesn't exist, create it
-                                    if (!File.Exists($"{saveLocation}_back"))
-                                        File.Move(saveLocation, $"{saveLocation}_back");
+                                // Copy mod's save to the save data location
+                                File.Copy(Path.Combine(Path.GetDirectoryName(mod), "savedata.360"), saveLocation, true);
+                        } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the Xbox 360)"); }
+                    } else if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
+                        try {
+                            if (File.Exists(Path.Combine(Path.GetDirectoryName(mod), "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
+                                // If the backup save data doesn't exist, create it
+                                if (!File.Exists($"{saveLocation}_back"))
+                                    File.Move(saveLocation, $"{saveLocation}_back");
 
-                                    // Copy mod's save to the save data location
-                                    File.Copy(Path.Combine(Path.GetDirectoryName(mod), "savedata.ps3"), saveLocation, true);
-                                }
-                            } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the PlayStation 3)"); }
-                        }
+                                // Copy mod's save to the save data location
+                                File.Copy(Path.Combine(Path.GetDirectoryName(mod), "savedata.ps3"), saveLocation, true);
+                            }
+                        } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the PlayStation 3)"); }
+                    }
                 } else ModEngine.skipped.Add($"► {name} (save redirect failed because no save data was specified)");
             } else return;
         }
@@ -1317,9 +1323,11 @@ namespace Unify.Environment3
                     Arguments = string.Join(" ", parameters.ToArray())
                 };
 
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Emulator] Launched {emulator}...");
                 Process emulatorProc = Process.Start(xeniaProc); // Launch the emulator
                 Label_Status.Text = "Waiting for emulator exit call...";
                 emulatorProc.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Emulator] {emulator} session ended...");
 
                 // Uninstall mods after emulator quits
                 if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
@@ -2178,18 +2186,41 @@ namespace Unify.Environment3
         private void ListBox_Debug_MouseUp(object sender, MouseEventArgs e) {
             // Perform if the function was called with the right mouse button
             if (e.Button == MouseButtons.Right) {
-                // Create the dark context menu
-                ContextMenuDark menuDark = new ContextMenuDark();
-                menuDark.Items.Clear();
-                menuDark.Items.Add(new ToolStripMenuItem("Copy debug log", Properties.Resources.Copy_16x, ContextMenu_Debug_Items_Click));
-                menuDark.Show(Cursor.Position);
+                if (ListBox_Debug.Items.Count != 0) {
+                    // Create the dark context menu
+                    ContextMenuDark menuDark = new ContextMenuDark();
+                    menuDark.Items.Clear();
+                    menuDark.Items.AddRange(new ToolStripMenuItem[] {
+                                            new ToolStripMenuItem("Copy Debug Log", Properties.Resources.Copy_16x,      ContextMenu_Debug_Items_Click),
+                                            new ToolStripMenuItem("Save Debug Log", Properties.Resources.Save_grey_16x, ContextMenu_Debug_Items_Click)
+                                        });
+                    menuDark.Show(Cursor.Position);
+                }
             }
         }
 
         /// <summary>
-        /// Copies all items from the debug box to the clipboard.
+        /// Event handler for the right-click menu items by index.
         /// </summary>
-        private void ContextMenu_Debug_Items_Click(object sender, EventArgs e)
-            => Clipboard.SetText(string.Join(string.Empty, ListBox_Debug.Items.OfType<object>().Select(item => item.ToString()).ToArray()));
+        private void ContextMenu_Debug_Items_Click(object sender, EventArgs e) {
+            string log = $"Sonic '06 Mod Manager ({Program.VersionNumber})\n\n{string.Join(string.Empty, ListBox_Debug.Items.OfType<object>().Select(item => item.ToString()).ToArray())}";
+
+            switch (((ToolStripMenuItem)sender).ToString()) {
+                case "Copy Debug Log":
+                    Clipboard.SetText(log);
+                    break;
+                case "Save Debug Log":
+                    // Save location for debug log
+                    SaveFileDialog debug = new SaveFileDialog() {
+                        Title = "Save debug log...",
+                        Filter = "Log files (*.log)|*.log",
+                        FileName = $"sonic06mm-debug-{DateTime.Now:ddMMyy}.log"
+                    };
+
+                    if (debug.ShowDialog() == DialogResult.OK)
+                        File.WriteAllText(debug.FileName, log);
+                    break;
+            }
+        }
     }
 }

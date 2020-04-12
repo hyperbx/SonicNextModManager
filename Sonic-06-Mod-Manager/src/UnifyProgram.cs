@@ -38,7 +38,7 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber = "Version 3.2"; //-indev-{DateTime.Now.ToString("ddMMyy")}r1";
+        public static readonly string VersionNumber = "Version 3.21"; //-indev-{DateTime.Now.ToString("ddMMyy")}r1";
         public static bool _debug = false;
         public static string ApplicationData    = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                              _7Zip              = $"{ApplicationData}\\Unify\\Tools\\7z.exe",
