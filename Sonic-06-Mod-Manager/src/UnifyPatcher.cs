@@ -515,8 +515,6 @@ namespace Unify.Patcher
                         }
                     }
                 }
-
-                if (decrypted && system == "PlayStation 3") EncryptExecutable();
 #if !DEBUG
             } catch (Exception ex) {
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {name}\n{ex}");
