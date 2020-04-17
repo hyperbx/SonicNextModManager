@@ -49,11 +49,18 @@
             this.unifytb_Tab_Description = new System.Windows.Forms.TabPage();
             this.group_DescriptionField = new System.Windows.Forms.GroupBox();
             this.tb_Description = new System.Windows.Forms.RichTextBox();
+            this.unifytb_Tab_Patches = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.LinkLabel_EditHybridPatch = new System.Windows.Forms.LinkLabel();
+            this.CheckBox_GenerateHybridPatch = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CheckedListBox_PatchesList = new System.Windows.Forms.CheckedListBox();
             this.unifytb_Tab_Filesystem = new System.Windows.Forms.TabPage();
             this.btn_Custom = new System.Windows.Forms.Button();
             this.lbl_Custom = new System.Windows.Forms.Label();
             this.text_Custom = new System.Windows.Forms.TextBox();
             this.group_Options = new System.Windows.Forms.GroupBox();
+            this.check_CreateCustomFilesystem = new System.Windows.Forms.CheckBox();
             this.check_Merge = new System.Windows.Forms.CheckBox();
             this.check_GenerateFilesystem = new System.Windows.Forms.CheckBox();
             this.btn_ReadOnlyBrowser = new System.Windows.Forms.Button();
@@ -75,6 +82,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).BeginInit();
             this.unifytb_Tab_Description.SuspendLayout();
             this.group_DescriptionField.SuspendLayout();
+            this.unifytb_Tab_Patches.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.unifytb_Tab_Filesystem.SuspendLayout();
             this.group_Options.SuspendLayout();
             this.unifytb_Tab_Networking.SuspendLayout();
@@ -118,6 +128,7 @@
             this.unifytb_ModCreator.ClosingMessage = null;
             this.unifytb_ModCreator.Controls.Add(this.unifytb_Tab_Details);
             this.unifytb_ModCreator.Controls.Add(this.unifytb_Tab_Description);
+            this.unifytb_ModCreator.Controls.Add(this.unifytb_Tab_Patches);
             this.unifytb_ModCreator.Controls.Add(this.unifytb_Tab_Filesystem);
             this.unifytb_ModCreator.Controls.Add(this.unifytb_Tab_Networking);
             this.unifytb_ModCreator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -364,6 +375,90 @@
             this.tb_Description.TabIndex = 85;
             this.tb_Description.Text = "";
             // 
+            // unifytb_Tab_Patches
+            // 
+            this.unifytb_Tab_Patches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.unifytb_Tab_Patches.Controls.Add(this.groupBox2);
+            this.unifytb_Tab_Patches.Controls.Add(this.groupBox1);
+            this.unifytb_Tab_Patches.Location = new System.Drawing.Point(4, 20);
+            this.unifytb_Tab_Patches.Name = "unifytb_Tab_Patches";
+            this.unifytb_Tab_Patches.Size = new System.Drawing.Size(373, 397);
+            this.unifytb_Tab_Patches.TabIndex = 5;
+            this.unifytb_Tab_Patches.Text = "Patches";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.groupBox2.Controls.Add(this.LinkLabel_EditHybridPatch);
+            this.groupBox2.Controls.Add(this.CheckBox_GenerateHybridPatch);
+            this.groupBox2.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox2.Location = new System.Drawing.Point(2, 340);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(369, 56);
+            this.groupBox2.TabIndex = 105;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Options";
+            // 
+            // LinkLabel_EditHybridPatch
+            // 
+            this.LinkLabel_EditHybridPatch.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_EditHybridPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LinkLabel_EditHybridPatch.AutoSize = true;
+            this.LinkLabel_EditHybridPatch.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_EditHybridPatch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.LinkLabel_EditHybridPatch.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_EditHybridPatch.Location = new System.Drawing.Point(250, 25);
+            this.LinkLabel_EditHybridPatch.Name = "LinkLabel_EditHybridPatch";
+            this.LinkLabel_EditHybridPatch.Size = new System.Drawing.Size(106, 15);
+            this.LinkLabel_EditHybridPatch.TabIndex = 177;
+            this.LinkLabel_EditHybridPatch.TabStop = true;
+            this.LinkLabel_EditHybridPatch.Text = "Edit hybrid patch...";
+            this.LinkLabel_EditHybridPatch.Visible = false;
+            this.LinkLabel_EditHybridPatch.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_EditHybridPatch_LinkClicked);
+            // 
+            // CheckBox_GenerateHybridPatch
+            // 
+            this.CheckBox_GenerateHybridPatch.AutoSize = true;
+            this.CheckBox_GenerateHybridPatch.ForeColor = System.Drawing.SystemColors.Control;
+            this.CheckBox_GenerateHybridPatch.Location = new System.Drawing.Point(13, 24);
+            this.CheckBox_GenerateHybridPatch.Name = "CheckBox_GenerateHybridPatch";
+            this.CheckBox_GenerateHybridPatch.Size = new System.Drawing.Size(143, 19);
+            this.CheckBox_GenerateHybridPatch.TabIndex = 95;
+            this.CheckBox_GenerateHybridPatch.Text = "Generate hybrid patch";
+            this.CheckBox_GenerateHybridPatch.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.groupBox1.Controls.Add(this.CheckedListBox_PatchesList);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox1.Location = new System.Drawing.Point(2, 2);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(369, 336);
+            this.groupBox1.TabIndex = 104;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Require Patches";
+            // 
+            // CheckedListBox_PatchesList
+            // 
+            this.CheckedListBox_PatchesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CheckedListBox_PatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.CheckedListBox_PatchesList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CheckedListBox_PatchesList.CheckOnClick = true;
+            this.CheckedListBox_PatchesList.ForeColor = System.Drawing.SystemColors.Control;
+            this.CheckedListBox_PatchesList.FormattingEnabled = true;
+            this.CheckedListBox_PatchesList.Location = new System.Drawing.Point(7, 19);
+            this.CheckedListBox_PatchesList.Name = "CheckedListBox_PatchesList";
+            this.CheckedListBox_PatchesList.Size = new System.Drawing.Size(355, 306);
+            this.CheckedListBox_PatchesList.TabIndex = 0;
+            // 
             // unifytb_Tab_Filesystem
             // 
             this.unifytb_Tab_Filesystem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
@@ -390,7 +485,7 @@
             this.btn_Custom.FlatAppearance.BorderSize = 0;
             this.btn_Custom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Custom.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Custom.Location = new System.Drawing.Point(345, 38);
+            this.btn_Custom.Location = new System.Drawing.Point(344, 38);
             this.btn_Custom.Name = "btn_Custom";
             this.btn_Custom.Size = new System.Drawing.Size(22, 23);
             this.btn_Custom.TabIndex = 106;
@@ -402,7 +497,7 @@
             // 
             this.lbl_Custom.AutoSize = true;
             this.lbl_Custom.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_Custom.Location = new System.Drawing.Point(17, 42);
+            this.lbl_Custom.Location = new System.Drawing.Point(16, 42);
             this.lbl_Custom.Name = "lbl_Custom";
             this.lbl_Custom.Size = new System.Drawing.Size(52, 15);
             this.lbl_Custom.TabIndex = 105;
@@ -415,7 +510,7 @@
             this.text_Custom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.text_Custom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_Custom.ForeColor = System.Drawing.SystemColors.Control;
-            this.text_Custom.Location = new System.Drawing.Point(75, 38);
+            this.text_Custom.Location = new System.Drawing.Point(74, 38);
             this.text_Custom.Name = "text_Custom";
             this.text_Custom.Size = new System.Drawing.Size(265, 23);
             this.text_Custom.TabIndex = 104;
@@ -425,15 +520,27 @@
             this.group_Options.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.group_Options.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.group_Options.Controls.Add(this.check_CreateCustomFilesystem);
             this.group_Options.Controls.Add(this.check_Merge);
             this.group_Options.Controls.Add(this.check_GenerateFilesystem);
             this.group_Options.ForeColor = System.Drawing.SystemColors.Control;
-            this.group_Options.Location = new System.Drawing.Point(7, 98);
+            this.group_Options.Location = new System.Drawing.Point(2, 98);
             this.group_Options.Name = "group_Options";
-            this.group_Options.Size = new System.Drawing.Size(359, 78);
+            this.group_Options.Size = new System.Drawing.Size(369, 100);
             this.group_Options.TabIndex = 103;
             this.group_Options.TabStop = false;
             this.group_Options.Text = "Options";
+            // 
+            // check_CreateCustomFilesystem
+            // 
+            this.check_CreateCustomFilesystem.AutoSize = true;
+            this.check_CreateCustomFilesystem.ForeColor = System.Drawing.SystemColors.Control;
+            this.check_CreateCustomFilesystem.Location = new System.Drawing.Point(13, 70);
+            this.check_CreateCustomFilesystem.Name = "check_CreateCustomFilesystem";
+            this.check_CreateCustomFilesystem.Size = new System.Drawing.Size(159, 19);
+            this.check_CreateCustomFilesystem.TabIndex = 103;
+            this.check_CreateCustomFilesystem.Text = "Create custom filesystem";
+            this.check_CreateCustomFilesystem.UseVisualStyleBackColor = true;
             // 
             // check_Merge
             // 
@@ -466,7 +573,7 @@
             this.btn_ReadOnlyBrowser.FlatAppearance.BorderSize = 0;
             this.btn_ReadOnlyBrowser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ReadOnlyBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ReadOnlyBrowser.Location = new System.Drawing.Point(345, 10);
+            this.btn_ReadOnlyBrowser.Location = new System.Drawing.Point(344, 10);
             this.btn_ReadOnlyBrowser.Name = "btn_ReadOnlyBrowser";
             this.btn_ReadOnlyBrowser.Size = new System.Drawing.Size(22, 23);
             this.btn_ReadOnlyBrowser.TabIndex = 101;
@@ -478,7 +585,7 @@
             // 
             this.lbl_Save.AutoSize = true;
             this.lbl_Save.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbl_Save.Location = new System.Drawing.Point(35, 70);
+            this.lbl_Save.Location = new System.Drawing.Point(34, 70);
             this.lbl_Save.Name = "lbl_Save";
             this.lbl_Save.Size = new System.Drawing.Size(34, 15);
             this.lbl_Save.TabIndex = 100;
@@ -491,7 +598,7 @@
             this.btn_SaveBrowser.FlatAppearance.BorderSize = 0;
             this.btn_SaveBrowser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_SaveBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_SaveBrowser.Location = new System.Drawing.Point(345, 66);
+            this.btn_SaveBrowser.Location = new System.Drawing.Point(344, 66);
             this.btn_SaveBrowser.Name = "btn_SaveBrowser";
             this.btn_SaveBrowser.Size = new System.Drawing.Size(22, 23);
             this.btn_SaveBrowser.TabIndex = 99;
@@ -506,7 +613,7 @@
             this.text_Save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.text_Save.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_Save.ForeColor = System.Drawing.SystemColors.Control;
-            this.text_Save.Location = new System.Drawing.Point(75, 66);
+            this.text_Save.Location = new System.Drawing.Point(74, 66);
             this.text_Save.Name = "text_Save";
             this.text_Save.Size = new System.Drawing.Size(265, 23);
             this.text_Save.TabIndex = 98;
@@ -515,7 +622,7 @@
             // 
             this.lbl_ReadOnly.AutoSize = true;
             this.lbl_ReadOnly.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lbl_ReadOnly.Location = new System.Drawing.Point(5, 14);
+            this.lbl_ReadOnly.Location = new System.Drawing.Point(4, 14);
             this.lbl_ReadOnly.Name = "lbl_ReadOnly";
             this.lbl_ReadOnly.Size = new System.Drawing.Size(64, 15);
             this.lbl_ReadOnly.TabIndex = 97;
@@ -529,7 +636,7 @@
             this.text_ReadOnly.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_ReadOnly.Enabled = false;
             this.text_ReadOnly.ForeColor = System.Drawing.SystemColors.Control;
-            this.text_ReadOnly.Location = new System.Drawing.Point(75, 10);
+            this.text_ReadOnly.Location = new System.Drawing.Point(74, 10);
             this.text_ReadOnly.Name = "text_ReadOnly";
             this.text_ReadOnly.Size = new System.Drawing.Size(265, 23);
             this.text_ReadOnly.TabIndex = 96;
@@ -661,6 +768,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pic_Thumbnail)).EndInit();
             this.unifytb_Tab_Description.ResumeLayout(false);
             this.group_DescriptionField.ResumeLayout(false);
+            this.unifytb_Tab_Patches.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.unifytb_Tab_Filesystem.ResumeLayout(false);
             this.unifytb_Tab_Filesystem.PerformLayout();
             this.group_Options.ResumeLayout(false);
@@ -715,5 +826,12 @@
         private System.Windows.Forms.TextBox text_Custom;
         private System.Windows.Forms.GroupBox group_Options;
         private System.Windows.Forms.CheckBox check_GenerateFilesystem;
+        private System.Windows.Forms.CheckBox check_CreateCustomFilesystem;
+        private System.Windows.Forms.TabPage unifytb_Tab_Patches;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckedListBox CheckedListBox_PatchesList;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox CheckBox_GenerateHybridPatch;
+        private System.Windows.Forms.LinkLabel LinkLabel_EditHybridPatch;
     }
 }

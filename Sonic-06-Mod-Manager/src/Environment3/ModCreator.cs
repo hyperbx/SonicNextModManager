@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Linq;
 using System.Drawing;
 using Unify.Messenger;
@@ -7,13 +8,14 @@ using Unify.Networking;
 using Unify.Serialisers;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -87,6 +89,7 @@ namespace Unify.Environment3
                             btn_ReadOnlyBrowser.Enabled = true;
                             lbl_ReadOnly.ForeColor = SystemColors.Control;
                         }
+                        check_CreateCustomFilesystem.Checked = bool.Parse(INI.DeserialiseKey("CustomFilesystem", mod));
                     } catch { /* ignored */ }
 
                     text_ReadOnly.Text = INI.DeserialiseKey("Read-only", mod);
@@ -95,8 +98,14 @@ namespace Unify.Environment3
                     tb_Description.Text += INI.DeserialiseKey("Description", mod).Replace(@"\n", Environment.NewLine);
                     text_Server.Text += INI.DeserialiseKey("Metadata", mod).Replace(@"\n", Environment.NewLine);
                     text_Data.Text += INI.DeserialiseKey("Data", mod);
-                }
-                else { Close(); }
+
+                    if (Paths.CheckFileLegitimacy(Paths.ReplaceFilename(mod, "patch.mlua"))) {
+                        CheckBox_GenerateHybridPatch.Enabled = false;
+                        CheckBox_GenerateHybridPatch.Checked = true;
+                        LinkLabel_EditHybridPatch.Visible = true;
+                    }
+                } else
+                    Close();
 
                 btn_Create.Text = "Edit Mod";
                 btn_Create.BackColor = Color.SkyBlue;
@@ -110,14 +119,11 @@ namespace Unify.Environment3
             }
         }
 
-        public static bool FilePathHasInvalidChars(string path)
-        {
-            return !string.IsNullOrEmpty(path) && path.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
-        }
-
         private void Btn_Create_Click(object sender, EventArgs e)
         {
+#if !DEBUG
             try {
+#endif
                 string safeTitle = text_Title.Text.Replace(@"\", "")
                                                   .Replace("/",  "-")
                                                   .Replace(":",  "-")
@@ -144,12 +150,12 @@ namespace Unify.Environment3
 
                     using (Stream configCreate = File.Open(Path.Combine(newPath, "mod.ini"), FileMode.Create))
                     using (StreamWriter configInfo = new StreamWriter(configCreate)) {
-                                                                configInfo.WriteLine("[Details]");
-                                                                configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
-                        if (text_Version.Text != string.Empty)  configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
-                        if (text_Date.Text != string.Empty)     configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
-                        if (text_Author.Text != string.Empty)   configInfo.WriteLine($"Author=\"{text_Author.Text}\"");
-                                                                configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
+                        configInfo.WriteLine("[Details]");
+                        configInfo.WriteLine($"Title=\"{text_Title.Text}\"");
+                        if (text_Version.Text != string.Empty) configInfo.WriteLine($"Version=\"{text_Version.Text}\"");
+                        if (text_Date.Text != string.Empty)    configInfo.WriteLine($"Date=\"{text_Date.Text}\"");
+                        if (text_Author.Text != string.Empty)  configInfo.WriteLine($"Author=\"{text_Author.Text}\"");
+                        configInfo.WriteLine($"Platform=\"{combo_System.Text}\"");
                         
                         if (tb_Description.Text != string.Empty) {
                             string descriptionText = string.Empty;
@@ -161,8 +167,14 @@ namespace Unify.Environment3
                             configInfo.WriteLine($"Description=\"{descriptionText}\"");
                         }
 
-                                                                configInfo.WriteLine("\n[Filesystem]");
-                                                                configInfo.WriteLine($"Merge=\"{check_Merge.Checked.ToString()}\"");
+                        if (CheckedListBox_PatchesList.CheckedIndices.Count != 0) {
+                            configInfo.WriteLine("\n[Patches]");
+                            configInfo.WriteLine($"RequiredPatches=\"{string.Join(",", CheckedListBox_PatchesList.CheckedIndices.OfType<int>().Select(i => CheckedListBox_PatchesList.Items[i].ToString()))}\"");
+                        }
+
+                        configInfo.WriteLine("\n[Filesystem]");
+                        configInfo.WriteLine($"Merge=\"{check_Merge.Checked}\"");
+                        configInfo.WriteLine($"CustomFilesystem=\"{check_CreateCustomFilesystem.Checked}\"");
                         if (text_Custom.Text != string.Empty)   configInfo.WriteLine($"Custom=\"{text_Custom.Text}\"");
                         if (text_ReadOnly.Text != string.Empty) configInfo.WriteLine($"Read-only=\"{text_ReadOnly.Text}\"");
 
@@ -173,11 +185,11 @@ namespace Unify.Environment3
 
                         if (text_Server.Text != string.Empty) {
                             configInfo.WriteLine();
-                            configInfo.WriteLine("[Updater]");
+                            configInfo.WriteLine("[Networking]");
                             configInfo.WriteLine($"Metadata=\"{text_Server.Text}\"");
-                        }
 
-                        if (text_Data.Text != string.Empty) configInfo.WriteLine($"Data=\"{text_Data.Text}\"");
+                            if (text_Data.Text != string.Empty) configInfo.WriteLine($"Data=\"{text_Data.Text}\"");
+                        }
 
                         configInfo.Close();
                     }
@@ -216,6 +228,39 @@ namespace Unify.Environment3
                         }
                     }
 
+                    if (CheckBox_GenerateHybridPatch.Checked) {
+                        List<string> patch = new List<string>();
+
+                        if (edit && File.Exists(Path.Combine(newPath, "patch.mlua"))) {
+                            // Backup functions from edited patch
+                            using (StreamReader patchScript = new StreamReader(Path.Combine(newPath, "patch.mlua"), Encoding.Default)) {
+                                string line;
+                                bool functionsReached = false;
+                                while ((line = patchScript.ReadLine()) != null) {
+                                    if (line.StartsWith("--[Functions]--")) functionsReached = true;
+                                    if (functionsReached) patch.Add(line);
+                                }
+                            }
+                        }
+
+                        using (Stream configCreate = File.Open(Path.Combine(newPath, "patch.mlua"), FileMode.Create))
+                        using (StreamWriter configInfo = new StreamWriter(configCreate)) {
+                            configInfo.WriteLine("--[Patch]--");
+                            configInfo.WriteLine($"Title(\"{text_Title.Text}\")");
+                            if (text_Author.Text != string.Empty)  configInfo.WriteLine($"Author(\"{text_Author.Text}\")");
+                            configInfo.WriteLine($"Platform(\"{combo_System.Text}\")");
+                            configInfo.WriteLine();
+
+                            // Write backed up functions to script
+                            if (edit && patch.Count != 0)
+                                foreach (string function in patch) configInfo.WriteLine(function);
+                            else
+                                configInfo.WriteLine("--[Functions]--");
+
+                            configInfo.Close();
+                        }
+                    }
+
                     if (!edit)
                         try { Process.Start(newPath); }
                         catch {
@@ -226,10 +271,12 @@ namespace Unify.Environment3
 
                     Close();
                 }
+#if !DEBUG
             } catch {
-                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to edit '{text_Title.Text}.' Please ensure that nothing is accessing that mod's directory, or delete it manually.",
+                UnifyMessenger.UnifyMessage.ShowDialog($"Failed to edit '{text_Title.Text}.' Please ensure that nothing is accessing that mod's directory.",
                                                        "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#endif
         }
 
         private void Text_Title_TextChanged(object sender, EventArgs e) {
@@ -371,6 +418,17 @@ namespace Unify.Environment3
         }
 
         private void unifytb_ModCreator_SelectedIndexChanged(object sender, EventArgs e) {
+            if (unifytb_ModCreator.SelectedTab == unifytb_Tab_Patches)
+                if (Directory.Exists(Program.Patches)) {
+                    CheckedListBox_PatchesList.Items.Clear(); // Clears the patches list
+                    foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
+                        if (INI.DeserialiseKey("RequiredPatches", mod).Split(',').Contains(Path.GetFileName(patch)))
+                            CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), true);
+                        else
+                            CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), false);
+                    }
+                }
+
             unifytb_ModCreator.Refresh(); //Refresh user control to remove software rendering leftovers.
         }
 
@@ -393,6 +451,14 @@ namespace Unify.Environment3
                     text_Custom.Text += $",{csvList.Substring(0, csvList.Length - 1)}";
                 else
                     text_Custom.Text += csvList.Substring(0, csvList.Length - 1);
+            }
+        }
+
+        private void LinkLabel_EditHybridPatch_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            try { Process.Start(Paths.ReplaceFilename(mod, "patch.mlua")); }
+            catch {
+                UnifyMessenger.UnifyMessage.ShowDialog("The hybrid patch for this mod is missing...",
+                                                       "Unable to locate patch...", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

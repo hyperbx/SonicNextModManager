@@ -13,7 +13,7 @@ using Unify.Networking.GameBanana;
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,14 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string VersionNumber = "Version 3.21"; //-indev-{DateTime.Now.ToString("ddMMyy")}r1";
+        public static readonly string GlobalVersionNumber = "Version 3.22";
+
+#if !DEBUG
+        public static string VersionNumber = GlobalVersionNumber;
+#else
+        public static string VersionNumber = $"{GlobalVersionNumber}-indev-{DateTime.Now:ddMMyy}r1";
+#endif
+
         public static bool _debug = false;
         public static string ApplicationData    = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                              _7Zip              = $"{ApplicationData}\\Unify\\Tools\\7z.exe",
@@ -61,7 +68,7 @@ namespace Unify.Environment3
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
 
-            #region Write required pre-requisites to the Tools directory
+#region Write required pre-requisites to the Tools directory
             if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\data\\"))
                 Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\data\\");
 
@@ -103,7 +110,7 @@ namespace Unify.Environment3
 
             if (!File.Exists(scetool_vsh_curves))
                 File.WriteAllBytes(scetool_vsh_curves, Properties.Resources.vsh_curves);
-            #endregion
+#endregion
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

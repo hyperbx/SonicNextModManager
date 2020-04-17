@@ -17,7 +17,7 @@ using System.Collections.Generic;
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,10 +52,17 @@ namespace Unify.Patcher
         /// <param name="mod">File path to the mod's INI file.</param>
         /// <param name="name">Name of the mod by Title key.</param>
         public static void InstallMods(string mod, string name) {
-            string platform    = INI.DeserialiseKey("Platform", mod);             // Deserialise 'Platform' key
-            bool merge         = bool.Parse(INI.DeserialiseKey("Merge", mod));    // Deserialise 'Merge' key and parse as a Boolean value
-            string[] custom    = INI.DeserialiseKey("Custom", mod).Split(',');    // Deserialise 'Custom' key
-            string[] read_only = INI.DeserialiseKey("Read-only", mod).Split(','); // Deserialise 'Read-only' key
+            string platform          = INI.DeserialiseKey("Platform", mod),                   // Deserialise 'Platform' key
+                   merge             = INI.DeserialiseKey("Merge", mod),                      // Deserialise 'Merge' key
+                   customFilesystem  = INI.DeserialiseKey("CustomFilesystem", mod);           // Deserialise 'CustomFilesystem' key
+            string[] custom          = INI.DeserialiseKey("Custom", mod).Split(','),          // Deserialise 'Custom' key
+                     read_only       = INI.DeserialiseKey("Read-only", mod).Split(','),       // Deserialise 'Read-only' key
+                     requiredPatches = INI.DeserialiseKey("RequiredPatches", mod).Split(','); // Deserialise 'RequiredPatches' key
+            bool _merge, _customFilesystem;
+
+            // Parse strings as Boolean values
+            if (!bool.TryParse(merge, out _merge)) _merge = false;
+            if (!bool.TryParse(customFilesystem, out _customFilesystem)) _customFilesystem = true;
 
             //Skip the mod if the platform is invalid
             string system = Literal.System(Properties.Settings.Default.Path_GameDirectory);
@@ -85,7 +92,7 @@ namespace Unify.Patcher
                 string targetFilePath = $"{vanillaFilePath}_back";
 
                 // Checks if the processed file exists in the custom filesystem - if so, add to PKG preparation list
-                if (custom.Contains(Path.GetFileName(file)) && Path.GetExtension(file) == ".arc") {
+                if (_customFilesystem && custom.Contains(Path.GetFileName(file)) && Path.GetExtension(file) == ".arc") {
                     // If the absolute file path contains 'win32' - add to win32 PKG preparation list
                     if (filePath.Contains("win32")) win32pkg.Add(Path.GetFileName(file));
 
@@ -97,23 +104,46 @@ namespace Unify.Patcher
                 if (File.Exists(vanillaFilePath) && !File.Exists(targetFilePath)) File.Copy(vanillaFilePath, targetFilePath);
 
                 //Check if file should be merged
-                if (Path.GetExtension(file) == ".arc" && merge && !read_only.Contains(Path.GetFileName(file)) && !custom.Contains(Path.GetFileName(file))) {
+                if (Path.GetExtension(file) == ".arc" && _merge && !read_only.Contains(Path.GetFileName(file)) && File.Exists(vanillaFilePath)) {
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Merge] {file}");
                     Merge(vanillaFilePath, file);
-                } else { //If the file is not an archive or it shouldn't be merged, just copy it
+
+                //If the file is not an archive or it shouldn't be merged, just copy it
+                } else {
+                    // Skip if file doesn't exist in the base game and it's not custom.
+                    if (!File.Exists(vanillaFilePath) && !custom.Contains(Path.GetFileName(file))) return;
+
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Copy] {file}");
                     File.Copy(file, vanillaFilePath, true);
                 }
 
                 // Generate custom filesystem in PKG if the lists are populated
-                if (corepkg.Count != 0 || win32pkg.Count != 0) {
+                if (_customFilesystem && (corepkg.Count != 0 || win32pkg.Count != 0)) {
                     if (platform == "Xbox 360") CustomFilesystemPackage("xenon");
                     else if (platform == "PlayStation 3") CustomFilesystemPackage("ps3");
+                    else if (platform == "All Systems") CustomFilesystemPackage(Literal.Core(Properties.Settings.Default.Path_GameDirectory));
                     else {
                         skipped.Add($"► {name} (failed because the targeted platform was invalid)");
                         return;
                     }
                 }
+            }
+
+            // Install the required patches for the mod
+            if (requiredPatches[0] != string.Empty)
+                foreach (string patch in requiredPatches) {
+                    string fullPath = Path.Combine(Program.Patches, patch);
+                    if (Paths.CheckFileLegitimacy(fullPath))
+                        PatchEngine.InstallPatches(fullPath, Lua.DeserialiseParameter("Title", fullPath, true));
+                    else
+                        skipped.Add($"► {name} (could not locate {patch})");
+                }
+
+            // If the mod uses a custom patch, install it.
+            string modPatch = Paths.ReplaceFilename(mod, "patch.mlua");
+            if (Paths.CheckFileLegitimacy(modPatch)) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] <hybrid> Patching {name}...");
+                PatchEngine.InstallPatches(modPatch, name);
             }
         }
 
@@ -154,7 +184,7 @@ namespace Unify.Patcher
                                 
                             foreach (string customfile in files)
                                 try {
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {customfile}");
                                     File.Delete(customfile); // If custom archive is found, erase...
                                 } catch { }
                         }
@@ -908,45 +938,51 @@ namespace Unify.Patcher
 
             if (File.Exists($"{location}.pkg") && !_ignoreList.Contains($"{Path.GetFileName(location)}.pkg")) {
                 PKG.PKGTool($"{location}.pkg");
-                List<string> package = File.ReadAllLines($"{location}.txt").ToList();
-                List<string> editedPackage = File.ReadAllLines($"{location}.txt").ToList();
+                List<string> package = File.ReadAllLines($"{location}.txt").ToList(), editedPackage = package;
                 bool keyFound = false;
                 int lineCount = 0;
 
                 foreach (string entry in package) {
-                    if (entry.StartsWith($"\"{key}\"")) keyFound = true;
-                    if (entry.Contains($"\"{_event}\"")) {
-                        editedPackage.RemoveAt(lineCount);
-                        editedPackage.Insert(lineCount, $"\t\"{_event}\" = \"{reference}\";");
-                        break;
-                    }
-                    if (entry.StartsWith("}") && keyFound) {
-                        editedPackage.Insert(lineCount - 1, $"\t\"{_event}\" = \"{reference}\";");
-                        break;
+                    if (entry == $"\"{key}\"" && !entry.EndsWith(";")) keyFound = true;
+
+                    if (keyFound) {
+                        if (entry.StartsWith($"\t\"{_event}\"") && entry.EndsWith(";")) {
+                            editedPackage.RemoveAt(lineCount);
+                            editedPackage.Insert(lineCount, $"\t\"{_event}\" = \"{reference}\";");
+                            break;
+                        }
+                        if (entry == "}") {
+                            editedPackage.Insert(lineCount - 1, $"\t\"{_event}\" = \"{reference}\";");
+                            break;
+                        }
                     }
                     lineCount++;
                 }
 
-                File.WriteAllLines($"{location}.txt", editedPackage); PKG.PKGTool($"{location}.txt");
+                File.WriteAllLines($"{location}.txt", editedPackage);
+                PKG.PKGTool($"{location}.txt");
+
             } else if (Directory.Exists(location)) {
                 foreach (string packageData in Directory.GetFiles(location, "*.pkg", SearchOption.TopDirectoryOnly)) {
                     if (!_ignoreList.Any(s => Path.GetFileName(packageData).Contains(s))) {
                         PKG.PKGTool(packageData);
-                        List<string> package = File.ReadAllLines(packageData).ToList();
-                        List<string> editedPackage = File.ReadAllLines($"{packageData}.txt").ToList();
+                        List<string> package = File.ReadAllLines($"{packageData}.txt").ToList(), editedPackage = package;
                         bool keyFound = false;
                         int lineCount = 0;
 
                         foreach (string entry in package) {
-                            if (entry.StartsWith($"\"{key}\"")) keyFound = true;
-                            if (entry.Contains($"\"{_event}\"")) {
-                                editedPackage.RemoveAt(lineCount);
-                                editedPackage.Insert(lineCount, $"\t\"{_event}\" = \"{reference}\";");
-                                break;
-                            }
-                            if (entry.StartsWith("}") && keyFound) {
-                                editedPackage.Insert(lineCount - 1, $"\t\"{_event}\" = \"{reference}\";");
-                                break;
+                            if (entry == $"\"{key}\"" && !entry.EndsWith(";")) keyFound = true;
+
+                            if (keyFound) {
+                                if (entry.StartsWith($"\t\"{_event}\"") && entry.EndsWith(";")) {
+                                    editedPackage.RemoveAt(lineCount);
+                                    editedPackage.Insert(lineCount, $"\t\"{_event}\" = \"{reference}\";");
+                                    break;
+                                }
+                                if (entry == "}") {
+                                    editedPackage.Insert(lineCount - 1, $"\t\"{_event}\" = \"{reference}\";");
+                                    break;
+                                }
                             }
                             lineCount++;
                         }

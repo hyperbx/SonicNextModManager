@@ -1,7 +1,7 @@
 ﻿/**
  * Sonic'06 ARC packer class
  *
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 HyperPolygon64
  * Copyright (c) 2020 David Korth <gerbilsoft@gerbilsoft.com>
  *
  * MIT License

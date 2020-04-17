@@ -16,7 +16,7 @@ using Microsoft.VisualBasic.Devices;
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ namespace Unify.Serialisers
             using (StreamReader configFile = new StreamReader(ini))
                 try {
                     while ((line = configFile.ReadLine()) != null) {
-                        if (line.StartsWith(key)) {
+                        if (line.Split('=')[0] == key) {
                             entryValue = line.Substring(line.IndexOf("=") + 2);
                             entryValue = entryValue.Remove(entryValue.Length - 1);
                         }

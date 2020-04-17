@@ -166,9 +166,7 @@ namespace Unify.Environment3
             this.Label_LastSoftwareUpdate = new System.Windows.Forms.Label();
             this.SplitContainer_ModUpdate = new System.Windows.Forms.SplitContainer();
             this.Panel_ModUpdateBackdrop = new System.Windows.Forms.Panel();
-            this.ListView_ModUpdates = new System.Windows.Forms.ListView();
-            this.Column_Updates_Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Column_Updates_Blank = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CheckedListBox_ModUpdates = new System.Windows.Forms.CheckedListBox();
             this.SectionButton_UpdateMods = new Unify.Environment3.SectionButton();
             this.ProgressBar_ModUpdate = new System.Windows.Forms.ProgressBar();
             this.Panel_ModInfoBackdrop = new System.Windows.Forms.Panel();
@@ -374,7 +372,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1254, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1275, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -480,7 +478,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2078, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2099, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1233,7 +1231,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1475, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1496, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -2159,7 +2157,6 @@ namespace Unify.Environment3
             this.SplitContainer_ModUpdate.Size = new System.Drawing.Size(561, 380);
             this.SplitContainer_ModUpdate.SplitterDistance = 225;
             this.SplitContainer_ModUpdate.TabIndex = 44;
-            this.SplitContainer_ModUpdate.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer_ModUpdate_SplitterMoved);
             // 
             // Panel_ModUpdateBackdrop
             // 
@@ -2167,51 +2164,25 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_ModUpdateBackdrop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.Panel_ModUpdateBackdrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Panel_ModUpdateBackdrop.Controls.Add(this.ListView_ModUpdates);
+            this.Panel_ModUpdateBackdrop.Controls.Add(this.CheckedListBox_ModUpdates);
             this.Panel_ModUpdateBackdrop.Location = new System.Drawing.Point(0, 0);
             this.Panel_ModUpdateBackdrop.Name = "Panel_ModUpdateBackdrop";
             this.Panel_ModUpdateBackdrop.Size = new System.Drawing.Size(223, 337);
             this.Panel_ModUpdateBackdrop.TabIndex = 1;
             // 
-            // ListView_ModUpdates
+            // CheckedListBox_ModUpdates
             // 
-            this.ListView_ModUpdates.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.ListView_ModUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.CheckedListBox_ModUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListView_ModUpdates.AutoArrange = false;
-            this.ListView_ModUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ListView_ModUpdates.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ListView_ModUpdates.CheckBoxes = true;
-            this.ListView_ModUpdates.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Column_Updates_Title,
-            this.Column_Updates_Blank});
-            this.ListView_ModUpdates.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ListView_ModUpdates.ForeColor = System.Drawing.SystemColors.Control;
-            this.ListView_ModUpdates.FullRowSelect = true;
-            this.ListView_ModUpdates.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.ListView_ModUpdates.HideSelection = false;
-            this.ListView_ModUpdates.Location = new System.Drawing.Point(0, 0);
-            this.ListView_ModUpdates.MultiSelect = false;
-            this.ListView_ModUpdates.Name = "ListView_ModUpdates";
-            this.ListView_ModUpdates.OwnerDraw = true;
-            this.ListView_ModUpdates.Size = new System.Drawing.Size(221, 352);
-            this.ListView_ModUpdates.TabIndex = 2;
-            this.ListView_ModUpdates.UseCompatibleStateImageBehavior = false;
-            this.ListView_ModUpdates.View = System.Windows.Forms.View.Details;
-            this.ListView_ModUpdates.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView_DrawColumnHeader);
-            this.ListView_ModUpdates.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView_DrawItem);
-            this.ListView_ModUpdates.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.ListView_ModUpdates_ItemChecked);
-            // 
-            // Column_Updates_Title
-            // 
-            this.Column_Updates_Title.Text = "Title";
-            this.Column_Updates_Title.Width = 197;
-            // 
-            // Column_Updates_Blank
-            // 
-            this.Column_Updates_Blank.Text = "";
-            this.Column_Updates_Blank.Width = 1000;
+            this.CheckedListBox_ModUpdates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.CheckedListBox_ModUpdates.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CheckedListBox_ModUpdates.ForeColor = System.Drawing.SystemColors.Control;
+            this.CheckedListBox_ModUpdates.FormattingEnabled = true;
+            this.CheckedListBox_ModUpdates.Location = new System.Drawing.Point(1, 0);
+            this.CheckedListBox_ModUpdates.Name = "CheckedListBox_ModUpdates";
+            this.CheckedListBox_ModUpdates.Size = new System.Drawing.Size(221, 342);
+            this.CheckedListBox_ModUpdates.TabIndex = 0;
             // 
             // SectionButton_UpdateMods
             // 
@@ -3546,10 +3517,7 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label Label_Description_API;
         private SectionButton SectionButton_RefreshMods;
         private SectionButton SectionButton_CheckForModUpdates;
-        private System.Windows.Forms.ListView ListView_ModUpdates;
-        private System.Windows.Forms.ColumnHeader Column_Updates_Title;
         private System.Windows.Forms.ListBox ListBox_UpdateLogs;
-        private System.Windows.Forms.ColumnHeader Column_Updates_Blank;
         private System.Windows.Forms.Label Label_LastPatchUpdate;
         private System.Windows.Forms.Label Label_LastModUpdate;
         private SectionButton SectionButton_FetchPatches;
@@ -3648,5 +3616,6 @@ namespace Unify.Environment3
         private System.Windows.Forms.LinkLabel LinkLabel_Snapshot_Load;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckedListBox CheckedListBox_ModUpdates;
     }
 }

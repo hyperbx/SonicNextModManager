@@ -2,7 +2,7 @@
  * ZlibStream wrapper class for DeflateStream.
  * Adds the zlib header and Adler-32 checksum footer.
  *
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 HyperPolygon64
  * Copyright (c) 2020 David Korth <gerbilsoft@gerbilsoft.com>
  *
  * MIT License

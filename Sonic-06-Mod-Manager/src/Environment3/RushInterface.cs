@@ -22,7 +22,7 @@ using System.Collections.Generic;
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 Gabriel (HyperPolygon64)
+ * Copyright (c) 2020 HyperPolygon64
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -593,7 +593,7 @@ namespace Unify.Environment3
             // Clear mod updating UI to delist any mods that may be changed later
             if (TabControl_Rush.SelectedTab != Tab_Section_Updates) {
                 ListBox_UpdateLogs.Items.Clear();
-                ListView_ModUpdates.Items.Clear();
+                CheckedListBox_ModUpdates.Items.Clear();
             }
         }
 
@@ -602,60 +602,59 @@ namespace Unify.Environment3
         /// </summary>
         /// <param name="searchByMod">File path to another mod's INI to ensure it's searching for the correct mod.</param>
         private async Task CheckForModUpdates(string searchByMod) {
-            if (Properties.Settings.Default.Path_ModsDirectory != string.Empty &&
-                Directory.Exists(Properties.Settings.Default.Path_ModsDirectory)) {
-                    ListView_ModUpdates.Items.Clear();
-                    ListBox_UpdateLogs.Items.Clear();
-                    foreach (string mod in Directory.GetFiles(Properties.Settings.Default.Path_ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
-                        // Block controls to ensure the list isn't added to
-                        SectionButton_CheckForModUpdates.Enabled = false;
+            if (Paths.CheckPathLegitimacy(Properties.Settings.Default.Path_ModsDirectory)) {
+                CheckedListBox_ModUpdates.Items.Clear();
+                ListBox_UpdateLogs.Items.Clear();
+                foreach (string mod in Directory.GetFiles(Properties.Settings.Default.Path_ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
+                    // Block controls to ensure the list isn't added to
+                    SectionButton_CheckForModUpdates.Enabled = false;
 
-                        // Deserialise INI
-                        string title     = INI.DeserialiseKey("Title", mod),
-                               version   = INI.DeserialiseKey("Version", mod),
-                               metadata  = INI.DeserialiseKey("Metadata", mod),
-                               data      = INI.DeserialiseKey("Data", mod),
-                               versionDL = string.Empty;
+                    // Deserialise INI
+                    string title     = INI.DeserialiseKey("Title", mod),
+                            version   = INI.DeserialiseKey("Version", mod),
+                            metadata  = INI.DeserialiseKey("Metadata", mod),
+                            data      = INI.DeserialiseKey("Data", mod),
+                            versionDL = string.Empty;
 
-                        if (metadata.Length != 0) {
-                            string config = await Client.RequestString(metadata);
-                            if (config.Length != 0) {
-                                string[] configLines = config.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                    if (metadata.Length != 0) {
+                        string config = await Client.RequestString(metadata);
+                        if (config.Length != 0) {
+                            string[] configLines = config.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-                                // Manually deserialise downloaded string
-                                foreach (string metadataLine in configLines) {
-                                    string metadataEntry = string.Empty;
-                                    if (metadataLine.StartsWith("Version")) {
-                                        metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
-                                        metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
-                                        versionDL = metadataEntry;
-                                    }
-                                    if (metadataLine.StartsWith("Data")) {
-                                        metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
-                                        metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
-                                        if (data != metadataEntry) data = metadataEntry;
-                                    }
+                            // Manually deserialise downloaded string
+                            foreach (string metadataLine in configLines) {
+                                string metadataEntry = string.Empty;
+                                if (metadataLine.StartsWith("Version")) {
+                                    metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
+                                    metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
+                                    versionDL = metadataEntry;
                                 }
-
-                                if (versionDL != version) {
-                                    // Mod needs updating - add to list
-                                    ListViewItem update = new ListViewItem(new[] { title, string.Empty, mod });
-                                    ListView_ModUpdates.Items.Add(update);
-
-                                    // If the paths are identical, then the mod shall be checked
-                                    update.Checked = mod == searchByMod;
+                                if (metadataLine.StartsWith("Data")) {
+                                    metadataEntry = metadataLine.Substring(metadataLine.IndexOf("=") + 2);
+                                    metadataEntry = metadataEntry.Remove(metadataEntry.Length - 1);
+                                    if (data != metadataEntry) data = metadataEntry;
                                 }
                             }
-                        }
 
-                        //Feedback
-                        SectionButton_CheckForModUpdates.Enabled = true;
+                            if (versionDL != version) {
+                                // Mod needs updating - add to list
+                                ListViewItem update = new ListViewItem(new[] { title, string.Empty, mod });
+                                CheckedListBox_ModUpdates.Items.Add(update);
+
+                                // If the paths are identical, then the mod shall be checked
+                                update.Checked = mod == searchByMod;
+                            }
+                        }
                     }
 
-                    // If no mods are added to the updates list - presumably, all of them are up to date
-                    if (ListView_ModUpdates.Items.Count == 0)
-                        UnifyMessenger.UnifyMessage.ShowDialog("All mods are up to date! Check back later...",
-                                                                "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Feedback
+                    SectionButton_CheckForModUpdates.Enabled = true;
+                }
+
+                // If no mods are added to the updates list - presumably, all of them are up to date
+                if (CheckedListBox_ModUpdates.Items.Count == 0)
+                    UnifyMessenger.UnifyMessage.ShowDialog("All mods are up to date! Check back later...",
+                                                            "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } else {
                 // Browse for mods directory
                 string browseMods = RequestPath.ModsDirectory();
@@ -690,17 +689,17 @@ namespace Unify.Environment3
         /// <summary>
         /// Changes colour of the colour picker button if the preview button is being hovered over.
         /// </summary>
-        private void Button_ColourPicker_Preview_MouseEnter(object sender, EventArgs e) { Section_Appearance_ColourPicker.BackColor = Color.FromArgb(48, 48, 51); }
+        private void Button_ColourPicker_Preview_MouseEnter(object sender, EventArgs e) => Section_Appearance_ColourPicker.BackColor = Color.FromArgb(48, 48, 51);
 
         /// <summary>
         /// Changes colour of the colour picker button if the preview button is no longer being hovered over.
         /// </summary>
-        private void Button_ColourPicker_Preview_MouseLeave(object sender, EventArgs e) { Section_Appearance_ColourPicker.BackColor = Color.FromArgb(42, 42, 45); }
+        private void Button_ColourPicker_Preview_MouseLeave(object sender, EventArgs e) => Section_Appearance_ColourPicker.BackColor = Color.FromArgb(42, 42, 45);
 
         /// <summary>
         /// Changes colour of the colour picker button if the preview button is clicked.
         /// </summary>
-        private void Button_ColourPicker_Preview_MouseDown(object sender, MouseEventArgs e) { Section_Appearance_ColourPicker.BackColor = Color.FromArgb(58, 58, 61); }
+        private void Button_ColourPicker_Preview_MouseDown(object sender, MouseEventArgs e) => Section_Appearance_ColourPicker.BackColor = Color.FromArgb(58, 58, 61);
 
         /// <summary>
         /// Changes colour of the colour picker button if the preview button is released.
@@ -1525,7 +1524,7 @@ namespace Unify.Environment3
         /// Enables/disables the Update Mods button depending on how many items are checked in the Mod Updates list.
         /// </summary>
         private void ListView_ModUpdates_ItemChecked(object sender, ItemCheckedEventArgs e)
-            => SectionButton_UpdateMods.Enabled = ListView_ModUpdates.CheckedItems.Count > 0;
+            => SectionButton_UpdateMods.Enabled = CheckedListBox_ModUpdates.CheckedItems.Count > 0;
 
         /// <summary>
         /// Code for all SectionButton controls in the Updates section.
@@ -1561,10 +1560,10 @@ namespace Unify.Environment3
             // Update mods is clicked
             else if (sender == SectionButton_UpdateMods) {
                 ListBox_UpdateLogs.Items.Clear(); // Clear update logs
-                ListView_ModUpdates.SelectedItems.Clear(); // Clear selected
+                CheckedListBox_ModUpdates.SelectedItems.Clear(); // Clear selected
 
                 // Item is checked in the mod updates list
-                foreach (ListViewItem mod in ListView_ModUpdates.CheckedItems) {
+                foreach (ListViewItem mod in CheckedListBox_ModUpdates.CheckedItems) {
                     // Block controls
                     SectionButton_UpdateMods.Enabled =
                     SectionButton_CheckForModUpdates.Enabled = false;
@@ -1589,7 +1588,7 @@ namespace Unify.Environment3
 
                     // Feedback
                     SectionButton_CheckForModUpdates.Enabled = true;
-                    if (ListView_ModUpdates.CheckedItems.Count == ListView_ModUpdates.Items.Count) SectionButton_UpdateMods.Enabled = false;
+                    if (CheckedListBox_ModUpdates.CheckedItems.Count == CheckedListBox_ModUpdates.Items.Count) SectionButton_UpdateMods.Enabled = false;
                     else SectionButton_UpdateMods.Enabled = true;
                 }
             }
@@ -1665,7 +1664,7 @@ namespace Unify.Environment3
 
                         // Feedback
                         ListBox_UpdateLogs.Items.Add($"{title} was updated successfully...");
-                        ListView_ModUpdates.Items.Remove(listViewItem);
+                        CheckedListBox_ModUpdates.Items.Remove(listViewItem);
                         ProgressBar_ModUpdate.Value = 0;
                     };
                 }
@@ -1691,10 +1690,6 @@ namespace Unify.Environment3
                 lv.Columns[3].Width = (x * 2) + 10;
                 lv.Columns[3].Width = (x * 6) - 30;
                 lv.Columns[4].Width = x * 100;
-            } else if (lv == ListView_ModUpdates) {
-                int x = lv.Width / 15 == 0 ? 1 : lv.Width / 15;
-                lv.Columns[0].Width = Panel_ModUpdateBackdrop.Width;
-                lv.Columns[1].Width = x * 100;
             }
             lv.Refresh();
         }
@@ -1705,7 +1700,6 @@ namespace Unify.Environment3
         private void RefreshColumnSize() {
             SizeLastColumn(ListView_ModsList);
             SizeLastColumn(ListView_PatchesList);
-            SizeLastColumn(ListView_ModUpdates);
         }
 
         /// <summary>
@@ -1781,11 +1775,6 @@ namespace Unify.Environment3
                     LinkLabel_1ClickURLHandler.Text = "Uninstall 1-Click URL Handler";
             }
         }
-
-        /// <summary>
-        /// Resizes Mod Updates container when splitter is moved.
-        /// </summary>
-        private void SplitContainer_ModUpdate_SplitterMoved(object sender, SplitterEventArgs e) => SizeLastColumn(ListView_ModUpdates);
 
         /// <summary>
         /// Tells the list view how it should handle the DragDrop event.
