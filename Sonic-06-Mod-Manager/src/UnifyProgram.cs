@@ -41,9 +41,9 @@ namespace Unify.Environment3
         public static readonly string GlobalVersionNumber = "Version 3.22";
 
 #if !DEBUG
-        public static string VersionNumber = GlobalVersionNumber;
+        public static readonly string VersionNumber = GlobalVersionNumber;
 #else
-        public static string VersionNumber = $"{GlobalVersionNumber}-indev-{DateTime.Now:ddMMyy}r1";
+        public static readonly string VersionNumber = $"{GlobalVersionNumber}-indev-{File.GetLastAccessTime(Application.ExecutablePath):ddMMyy}";
 #endif
 
         public static bool _debug = false;
@@ -68,7 +68,7 @@ namespace Unify.Environment3
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
 
-#region Write required pre-requisites to the Tools directory
+            #region Write required pre-requisites to the Tools directory
             if (!Directory.Exists($"{ApplicationData}\\Unify\\Tools\\data\\"))
                 Directory.CreateDirectory($"{ApplicationData}\\Unify\\Tools\\data\\");
 

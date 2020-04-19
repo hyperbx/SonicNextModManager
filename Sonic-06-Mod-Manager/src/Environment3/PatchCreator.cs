@@ -6,6 +6,7 @@ using System.Drawing;
 using Unify.Messenger;
 using Unify.Serialisers;
 using System.Diagnostics;
+using Unify.Globalisation;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Collections.Generic;
@@ -90,16 +91,7 @@ namespace Unify.Environment3
         private void btn_Create_Click(object sender, EventArgs e)
         {
             try {
-                string safeTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text_Title.Text).Replace(@"\", "")
-                                                                                                   .Replace("/",  "-")
-                                                                                                   .Replace(":",  "-")
-                                                                                                   .Replace("*",  "")
-                                                                                                   .Replace("?",  "")
-                                                                                                   .Replace("\"", "'")
-                                                                                                   .Replace("<",  "")
-                                                                                                   .Replace(">",  "")
-                                                                                                   .Replace("|",  "")
-                                                                                                   .Replace(" ",  "");
+                string safeTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Literal.UseSafeFormattedCharacters(text_Title.Text));
 
                 if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua") && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A patch called '{text_Title.Text}' already exists. Please rename your patch.",

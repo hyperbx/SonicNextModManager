@@ -7,6 +7,7 @@ using Unify.Messenger;
 using Unify.Networking;
 using Unify.Serialisers;
 using System.Diagnostics;
+using Unify.Globalisation;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
@@ -49,6 +50,7 @@ namespace Unify.Environment3
             InitializeComponent();
             this.mod = mod;
             this.edit = edit;
+
             if (!this.edit) {
                 text_Version.Text = "1.0";
                 text_Date.Text = DateTime.Now.ToString("dd/MM/yyyy");
@@ -104,6 +106,17 @@ namespace Unify.Environment3
                         CheckBox_GenerateHybridPatch.Checked = true;
                         LinkLabel_EditHybridPatch.Visible = true;
                     }
+
+                    if (Directory.Exists(Program.Patches)) {
+                        CheckedListBox_PatchesList.Items.Clear(); // Clears the patches list
+                        foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
+                            if (File.Exists(mod))
+                                if (INI.DeserialiseKey("RequiredPatches", mod).Split(',').Contains(Path.GetFileName(patch)))
+                                    CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), true);
+                                else
+                                    CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), false);
+                        }
+                    }
                 } else
                     Close();
 
@@ -124,15 +137,7 @@ namespace Unify.Environment3
 #if !DEBUG
             try {
 #endif
-                string safeTitle = text_Title.Text.Replace(@"\", "")
-                                                  .Replace("/",  "-")
-                                                  .Replace(":",  "-")
-                                                  .Replace("*",  "")
-                                                  .Replace("?",  "")
-                                                  .Replace("\"", "'")
-                                                  .Replace("<",  "")
-                                                  .Replace(">",  "")
-                                                  .Replace("|",  "");
+                string safeTitle = Literal.UseSafeFormattedCharacters(text_Title.Text);
 
                 if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, safeTitle)) && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A mod called '{text_Title.Text}' already exists. Please rename your mod.",
@@ -320,15 +325,7 @@ namespace Unify.Environment3
             };
 
             if (readonlyARC.ShowDialog() == DialogResult.OK)
-                foreach (string name in readonlyARC.FileNames)
-                    csvList += $"{Path.GetFileName(name)},";
-
-            if (csvList != string.Empty) {
-                if (text_ReadOnly.Text != string.Empty && !text_ReadOnly.Text.EndsWith(","))
-                    text_ReadOnly.Text += $",{csvList.Substring(0, csvList.Length - 1)}";
-                else
-                    text_ReadOnly.Text += csvList.Substring(0, csvList.Length - 1);
-            }
+                text_ReadOnly.Text = string.Join(",", readonlyARC.FileNames.Select(Path.GetFileName));
         }
 
         private void Btn_RemoveThumbnail_Click(object sender, EventArgs e) {
@@ -385,7 +382,7 @@ namespace Unify.Environment3
             else btn_TestConnection.Enabled = false;
         }
 
-        private void Log(string value) { list_Console.Items.Add($"[{DateTime.Now.ToString("HH:mm:ss tt")}] {value}"); }
+        private void Log(string value) => list_Console.Items.Add($"[{DateTime.Now:HH:mm:ss tt}] {value}");
 
         private async void Btn_TestConnection_Click(object sender, EventArgs e) {
             string metadata = string.Empty;
@@ -417,20 +414,8 @@ namespace Unify.Environment3
             } else Log("Connection was successful, but no data was found in the specified location...");
         }
 
-        private void unifytb_ModCreator_SelectedIndexChanged(object sender, EventArgs e) {
-            if (unifytb_ModCreator.SelectedTab == unifytb_Tab_Patches)
-                if (Directory.Exists(Program.Patches)) {
-                    CheckedListBox_PatchesList.Items.Clear(); // Clears the patches list
-                    foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
-                        if (INI.DeserialiseKey("RequiredPatches", mod).Split(',').Contains(Path.GetFileName(patch)))
-                            CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), true);
-                        else
-                            CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), false);
-                    }
-                }
-
-            unifytb_ModCreator.Refresh(); //Refresh user control to remove software rendering leftovers.
-        }
+        private void unifytb_ModCreator_SelectedIndexChanged(object sender, EventArgs e) 
+            => unifytb_ModCreator.Refresh(); //Refresh user control to remove software rendering leftovers.
 
         private void Btn_CustomArchives_Click(object sender, EventArgs e) {
             string csvList = string.Empty;
@@ -443,15 +428,7 @@ namespace Unify.Environment3
             };
 
             if (customData.ShowDialog() == DialogResult.OK)
-                foreach (string name in customData.FileNames)
-                    csvList += $"{Path.GetFileName(name)},";
-
-            if (csvList != string.Empty) {
-                if (text_Custom.Text != string.Empty && !text_Custom.Text.EndsWith(","))
-                    text_Custom.Text += $",{csvList.Substring(0, csvList.Length - 1)}";
-                else
-                    text_Custom.Text += csvList.Substring(0, csvList.Length - 1);
-            }
+                text_Custom.Text = string.Join(",", customData.FileNames.Select(Path.GetFileName));
         }
 
         private void LinkLabel_EditHybridPatch_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {

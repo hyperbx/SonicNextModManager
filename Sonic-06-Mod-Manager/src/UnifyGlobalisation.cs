@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Unify.Serialisers;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
@@ -119,29 +120,6 @@ namespace Unify.Globalisation
         }
 
         /// <summary>
-        /// Compares two strings to check if one is a subdirectory of the other.
-        /// </summary>
-        public static bool IsPathSubdirectory(string candidate, string other) {
-            var isChild = false;
-
-            try {
-                var candidateInfo = new DirectoryInfo(candidate);
-                var otherInfo = new DirectoryInfo(other);
-
-                while (candidateInfo.Parent != null) {
-                    if (candidateInfo.Parent.FullName == otherInfo.FullName) {
-                        isChild = true;
-                        break;
-                    } else candidateInfo = candidateInfo.Parent;
-                }
-            } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to check directories...\n{ex}");
-            }
-
-            return isChild;
-        }
-
-        /// <summary>
         /// Formats bytes into human readable values.
         /// </summary>
         public static string FormatBytes(long bytes) {
@@ -153,6 +131,21 @@ namespace Unify.Globalisation
                 dblSByte = bytes / 1024.0;
 
             return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+        }
+
+        /// <summary>
+        /// Removes illegal characters from the path in a cleaner format.
+        /// </summary>
+        public static string UseSafeFormattedCharacters(string text) {
+            return text.Replace(@"\", "")
+                       .Replace("/",  "-")
+                       .Replace(":",  "-")
+                       .Replace("*",  "")
+                       .Replace("?",  "")
+                       .Replace("\"", "'")
+                       .Replace("<",  "")
+                       .Replace(">",  "")
+                       .Replace("|",  "");
         }
     }
 }

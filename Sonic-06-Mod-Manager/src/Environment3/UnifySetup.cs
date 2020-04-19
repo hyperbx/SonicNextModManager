@@ -109,7 +109,7 @@ namespace Unify
                     TextBox_ModsDirectory.Text = browseMods;
 
                 if (Paths.CheckFileLegitimacy(TextBox_GameDirectory.Text))
-                    if (Literal.IsPathSubdirectory(browseMods, Path.GetDirectoryName(TextBox_GameDirectory.Text)) ||
+                    if (Paths.IsSubdirectory(browseMods, Path.GetDirectoryName(TextBox_GameDirectory.Text)) ||
                         browseMods == Path.GetDirectoryName(TextBox_GameDirectory.Text))
 
                         // If the mods directory is inside the game directory, warn the user
@@ -124,7 +124,7 @@ namespace Unify
                     TextBox_GameDirectory.Text = browseGame;
 
                 if (Paths.CheckPathLegitimacy(TextBox_ModsDirectory.Text))
-                    if (Literal.IsPathSubdirectory(Path.GetDirectoryName(browseGame), TextBox_ModsDirectory.Text) ||
+                    if (Paths.IsSubdirectory(Path.GetDirectoryName(browseGame), TextBox_ModsDirectory.Text) ||
                         Path.GetDirectoryName(browseGame) == TextBox_ModsDirectory.Text)
 
                         // If the mods directory is inside the game directory, warn the user

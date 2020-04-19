@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Linq;
+using Ookii.Dialogs;
 using System.Drawing;
 using System.Management;
 using Unify.Environment3;
@@ -327,6 +328,59 @@ namespace Unify.Serialisers
         }
     }
 
+    class Troubleshoot
+    {
+        public static string Mod() {
+            // Location for mod
+            VistaFolderBrowserDialog mod = new VistaFolderBrowserDialog() {
+                Description = "Select a mod folder...",
+                UseDescriptionForTitle = true
+            };
+
+            if (mod.ShowDialog() == DialogResult.OK) {
+                string config = Path.Combine(mod.SelectedPath, "mod.ini");
+
+                if (File.Exists(config)) {
+                    string system = INI.DeserialiseKey("Platform", config);
+
+                    foreach (string file in Paths.CollectModData(mod.SelectedPath)) {
+                        // Absolute file path (core/xenon/win32 and beyond)
+                        string filePath = Literal.CoreReplace(file.Remove(0, mod.SelectedPath.Length).Substring(1));
+
+                        // Absolute file path (from the mod) combined with the game directory
+                        string vanillaFilePath = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), filePath);
+
+                        if (!File.Exists(vanillaFilePath)) return "The selected mod contains an incompatible filesystem...";
+                        else {
+                            if (Path.GetExtension(file) == ".arc") {
+                                string incompatibleArc = "The selected mod contains incompatible archives...";
+
+                                switch (system) {
+                                    case "Xbox 360":
+                                        if (!File.ReadAllText(file).Contains("xenon") && !File.ReadAllText(file).Contains("win32")) return incompatibleArc;
+                                        break;
+                                    case "PlayStation 3":
+                                        if (!File.ReadAllText(file).Contains("ps3") && !File.ReadAllText(file).Contains("win32")) return incompatibleArc;
+                                        break;
+                                    case "All Systems":
+                                        break;
+                                    default:
+                                        return incompatibleArc;
+                                }
+                            }
+                        }
+                    }
+
+                    return "The selected mod should work properly with your configuration.";
+                }
+                else
+                    return "The selected mod doesn't have a configuration file.";
+            }
+
+            return string.Empty;
+        }
+    }
+
     class Paths
     {
         /// <summary>
@@ -384,6 +438,43 @@ namespace Unify.Serialisers
         /// </summary>
         public static string ReplaceFilename(string path, string newFile) {
             return Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(newFile));
+        }
+
+        /// <summary>
+        /// Collects the general file structure for '06 mods.
+        /// </summary>
+        public static List<string> CollectModData(string path) {
+            return Directory.GetFiles(path, "*.*", SearchOption.AllDirectories)
+                    .Where(s => Path.GetExtension(s) == ".arc"        ||
+                                Path.GetExtension(s) == ".wmv"        ||
+                                Path.GetExtension(s) == ".xma"        ||
+                                Path.GetFileName(s)  == "default.xex" ||
+                                Path.GetFileName(s)  == "EBOOT.BIN"   ||
+                                Path.GetExtension(s) == ".pam"        ||
+                                Path.GetExtension(s) == ".at3").ToList();
+        }
+
+        /// <summary>
+        /// Compares two strings to check if one is a subdirectory of the other.
+        /// </summary>
+        public static bool IsSubdirectory(string candidate, string other) {
+            var isChild = false;
+
+            try {
+                var candidateInfo = new DirectoryInfo(candidate);
+                var otherInfo = new DirectoryInfo(other);
+
+                while (candidateInfo.Parent != null) {
+                    if (candidateInfo.Parent.FullName == otherInfo.FullName) {
+                        isChild = true;
+                        break;
+                    } else candidateInfo = candidateInfo.Parent;
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to check directories...\n{ex}");
+            }
+
+            return isChild;
         }
     }
 }

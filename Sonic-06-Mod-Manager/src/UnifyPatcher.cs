@@ -71,17 +71,7 @@ namespace Unify.Patcher
                 return;
             }
 
-            // Search for all files with specified LINQ filters
-            List<string> files = Directory.GetFiles(Path.GetDirectoryName(mod), "*.*", SearchOption.AllDirectories)
-                                .Where(s => s.EndsWith(".arc") ||
-                                            s.EndsWith(".wmv") ||
-                                            s.EndsWith(".xma") ||
-                                            s.EndsWith("default.xex") ||
-                                            s.EndsWith("EBOOT.BIN") ||
-                                            s.EndsWith(".pam") ||
-                                            s.EndsWith(".at3")).ToList();
-
-            foreach (string file in files) {
+            foreach (string file in Paths.CollectModData(Path.GetDirectoryName(mod))) {
                 // Absolute file path (core/xenon/win32 and beyond)
                 string filePath = Literal.CoreReplace(file.Remove(0, Path.GetDirectoryName(mod).Length).Substring(1));
 
