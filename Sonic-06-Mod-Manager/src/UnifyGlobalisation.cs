@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Unify.Serialisers;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:

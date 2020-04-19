@@ -653,7 +653,7 @@ namespace Unify.Environment3
                 // If no mods are added to the updates list - presumably, all of them are up to date
                 if (ListView_ModUpdates.Items.Count == 0)
                     UnifyMessenger.UnifyMessage.ShowDialog("All mods are up to date! Check back later...",
-                                                            "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                                           "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } else {
                 // Browse for mods directory
                 string browseMods = RequestPath.ModsDirectory();
