@@ -91,7 +91,7 @@ namespace Unify.Environment3
         private void btn_Create_Click(object sender, EventArgs e)
         {
             try {
-                string safeTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Literal.UseSafeFormattedCharacters(text_Title.Text));
+                string safeTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Literal.UseSafeFormattedCharacters(text_Title.Text)).Replace(" ", "");
 
                 if (File.Exists($"{Path.Combine(Program.Patches, safeTitle)}.mlua") && !edit)
                     UnifyMessenger.UnifyMessage.ShowDialog($"A patch called '{text_Title.Text}' already exists. Please rename your patch.",
