@@ -64,7 +64,7 @@ namespace Unify.Environment3
                 if (Paths.IsDirectoryEmpty(Program.Patches)) {
                     Properties.Settings.Default.General_LastPatchUpdate = DateTime.Now.Ticks;
                     // Update patches synchronously
-                    Task.Run(() => UpdatePatches()).GetAwaiter().GetResult();
+                    if (Client.CheckNetworkConnection().Result) Task.Run(() => UpdatePatches()).GetAwaiter().GetResult();
 
                     // Reset update button for future checking
                     SectionButton_FetchPatches.Enabled = true;
@@ -449,25 +449,31 @@ namespace Unify.Environment3
             SectionButton_CheckForSoftwareUpdates.Enabled = false;
 
             try {
-                string latestVersion = await Client.RequestString(versionURI), // Request version number
-                       changelogs = await Client.RequestString(changelogsURI);
+                if (Client.CheckNetworkConnection().Result) {
+                    string latestVersion = await Client.RequestString(versionURI),    // Request version number
+                           changelogs    = await Client.RequestString(changelogsURI); // Request changelogs
 
-                // New update available!
-                if (Program.VersionNumber != latestVersion && latestVersion.StartsWith("Version"))
-                    if (InvokeRequired)
-                        Invoke(new MethodInvoker(delegate { OnCheckForUpdates(latestVersion, changelogs); }));
-                    else
-                        OnCheckForUpdates(latestVersion, changelogs);
+                    // New update available!
+                    if (Program.VersionNumber != latestVersion && latestVersion.StartsWith("Version"))
+                        if (InvokeRequired)
+                            Invoke(new MethodInvoker(delegate { OnCheckForUpdates(latestVersion, changelogs); }));
+                        else
+                            OnCheckForUpdates(latestVersion, changelogs);
 
-                // String was downloaded, but invalid
-                else if (!latestVersion.StartsWith("Version"))
-                    throw new WebException();
+                    // String was downloaded, but invalid
+                    else if (!latestVersion.StartsWith("Version"))
+                        throw new WebException("Invalid version number - server might be down...");
+                } else
+                    throw new WebException("Could not establish a connection...");
             } catch {
                 try {
                     // Check for updates via SEGA Carnival
-                    CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
-                    Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                    _useBackupServer = true;
+                    if (Client.CheckNetworkConnection().Result) {
+                        CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
+                        Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
+                        _useBackupServer = true;
+                    } else
+                        throw new WebException("Could not establish a connection...");
                 } catch (Exception ex) {
                     Label_UpdaterStatus.Text = "Connection error";
                     PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
