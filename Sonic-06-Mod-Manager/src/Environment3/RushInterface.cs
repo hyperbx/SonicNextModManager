@@ -214,6 +214,7 @@ namespace Unify.Environment3
                 CheckBox_ForceMSAA.Checked          = Properties.Settings.Default.Tweak_ForceMSAA;
                 CheckBox_TailsFlightLimit.Checked   = Properties.Settings.Default.Tweak_TailsFlightLimit;
                 CheckBox_UninstallOnLaunch.Checked  = Properties.Settings.Default.General_AutoUninstall;
+                CheckBox_AllowModStacking.Checked   = Properties.Settings.Default.Debug_AllowModStacking;
 
                 if (CheckBox_HighContrastText.Checked = Properties.Settings.Default.General_HighContrastText)
                     Label_Status.ForeColor = SystemColors.ControlText;
@@ -1093,7 +1094,7 @@ namespace Unify.Environment3
                 ModEngine.skipped.Clear(); // Clear the skipped list
                 SaveChecks(); // Save checked items
                 RefreshLists();
-                UninstallThread(); // Uninstall everything before installing more mods
+                if (!Properties.Settings.Default.Debug_AllowModStacking) UninstallThread(); // Uninstall everything before installing more mods
 
                 if (_isPathInvalid) {
                     DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("Ensure that your mods directory is outside your game directory! " +
@@ -1164,7 +1165,7 @@ namespace Unify.Environment3
 
                 // Check skipped list to ensure any errors occurred
                 if (ModEngine.skipped.Count != 0)
-                    UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following mods need revising:\n\n{string.Join("\n", ModEngine.skipped)}",
+                    UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following content needs revising...\n\n{string.Join("\n", ModEngine.skipped)}",
                                                             "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 // Launch the emulator of choice
@@ -2220,6 +2221,17 @@ namespace Unify.Environment3
                         File.WriteAllText(debug.FileName, log);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Checked event handler for Allow Mod Stacking.
+        /// </summary>
+        private void CheckBox_AllowModStacking_CheckedChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.Debug_AllowModStacking = ((CheckBox)sender).Checked;
+            Properties.Settings.Default.Save();
+
+            if (Properties.Settings.Default.General_AutoUninstall && ((CheckBox)sender).Checked)
+                UnifyMessenger.UnifyMessage.ShowDialog("Please disable 'Uninstall mods automatically' to use mod stacking correctly.", "Property Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

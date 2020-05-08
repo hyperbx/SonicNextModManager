@@ -159,6 +159,8 @@ namespace Unify.Environment3
             this.SectionButton_ClearLog = new Unify.Environment3.SectionButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ListBox_Debug = new System.Windows.Forms.ListBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.CheckBox_AllowModStacking = new System.Windows.Forms.CheckBox();
             this.Tab_Section_Updates = new System.Windows.Forms.TabPage();
             this.Panel_Updates_UICleanSpace = new System.Windows.Forms.Panel();
             this.SectionButton_FetchPatches = new Unify.Environment3.SectionButton();
@@ -376,7 +378,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1320, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1335, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -482,7 +484,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2156, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2177, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1217,7 +1219,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(3, 0);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(291, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(293, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -1235,7 +1237,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1553, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1574, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1950,6 +1952,8 @@ namespace Unify.Environment3
             this.Tab_Section_Debug.Controls.Add(this.label3);
             this.Tab_Section_Debug.Controls.Add(this.Panel_DebugControls);
             this.Tab_Section_Debug.Controls.Add(this.panel1);
+            this.Tab_Section_Debug.Controls.Add(this.label6);
+            this.Tab_Section_Debug.Controls.Add(this.CheckBox_AllowModStacking);
             this.Tab_Section_Debug.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_Debug.Name = "Tab_Section_Debug";
             this.Tab_Section_Debug.Size = new System.Drawing.Size(591, 1013);
@@ -1962,7 +1966,7 @@ namespace Unify.Environment3
             this.LinkLabel_Troubleshoot_Mod.AutoSize = true;
             this.LinkLabel_Troubleshoot_Mod.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.LinkLabel_Troubleshoot_Mod.LinkColor = System.Drawing.Color.SkyBlue;
-            this.LinkLabel_Troubleshoot_Mod.Location = new System.Drawing.Point(11, 76);
+            this.LinkLabel_Troubleshoot_Mod.Location = new System.Drawing.Point(11, 99);
             this.LinkLabel_Troubleshoot_Mod.Name = "LinkLabel_Troubleshoot_Mod";
             this.LinkLabel_Troubleshoot_Mod.Size = new System.Drawing.Size(122, 15);
             this.LinkLabel_Troubleshoot_Mod.TabIndex = 169;
@@ -1976,7 +1980,7 @@ namespace Unify.Environment3
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label5.Location = new System.Drawing.Point(274, 76);
+            this.label5.Location = new System.Drawing.Point(274, 99);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(303, 15);
             this.label5.TabIndex = 170;
@@ -1988,7 +1992,7 @@ namespace Unify.Environment3
             this.LinkLabel_Snapshot_Load.AutoSize = true;
             this.LinkLabel_Snapshot_Load.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.LinkLabel_Snapshot_Load.LinkColor = System.Drawing.Color.SkyBlue;
-            this.LinkLabel_Snapshot_Load.Location = new System.Drawing.Point(11, 53);
+            this.LinkLabel_Snapshot_Load.Location = new System.Drawing.Point(11, 76);
             this.LinkLabel_Snapshot_Load.Name = "LinkLabel_Snapshot_Load";
             this.LinkLabel_Snapshot_Load.Size = new System.Drawing.Size(102, 15);
             this.LinkLabel_Snapshot_Load.TabIndex = 167;
@@ -2002,7 +2006,7 @@ namespace Unify.Environment3
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label4.Location = new System.Drawing.Point(428, 53);
+            this.label4.Location = new System.Drawing.Point(428, 76);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(149, 15);
             this.label4.TabIndex = 168;
@@ -2053,9 +2057,9 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.ListBox_Debug);
-            this.panel1.Location = new System.Drawing.Point(-1, 112);
+            this.panel1.Location = new System.Drawing.Point(-1, 132);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(593, 860);
+            this.panel1.Size = new System.Drawing.Size(593, 840);
             this.panel1.TabIndex = 2;
             // 
             // ListBox_Debug
@@ -2068,9 +2072,33 @@ namespace Unify.Environment3
             this.ListBox_Debug.ItemHeight = 15;
             this.ListBox_Debug.Location = new System.Drawing.Point(0, 0);
             this.ListBox_Debug.Name = "ListBox_Debug";
-            this.ListBox_Debug.Size = new System.Drawing.Size(591, 858);
+            this.ListBox_Debug.Size = new System.Drawing.Size(591, 838);
             this.ListBox_Debug.TabIndex = 0;
             this.ListBox_Debug.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListBox_Debug_MouseUp);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label6.Location = new System.Drawing.Point(280, 53);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(297, 15);
+            this.label6.TabIndex = 172;
+            this.label6.Text = "Disables mod uninstallation when installing new mods.";
+            // 
+            // CheckBox_AllowModStacking
+            // 
+            this.CheckBox_AllowModStacking.AutoSize = true;
+            this.CheckBox_AllowModStacking.BackColor = System.Drawing.Color.Transparent;
+            this.CheckBox_AllowModStacking.Location = new System.Drawing.Point(14, 52);
+            this.CheckBox_AllowModStacking.Name = "CheckBox_AllowModStacking";
+            this.CheckBox_AllowModStacking.Size = new System.Drawing.Size(131, 19);
+            this.CheckBox_AllowModStacking.TabIndex = 171;
+            this.CheckBox_AllowModStacking.Text = "Allow mod stacking";
+            this.CheckBox_AllowModStacking.UseVisualStyleBackColor = false;
+            this.CheckBox_AllowModStacking.CheckedChanged += new System.EventHandler(this.CheckBox_AllowModStacking_CheckedChanged);
             // 
             // Tab_Section_Updates
             // 
@@ -3674,5 +3702,7 @@ namespace Unify.Environment3
         private System.Windows.Forms.ColumnHeader Column_ModUpdates_Blank;
         private System.Windows.Forms.LinkLabel LinkLabel_Troubleshoot_Mod;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox CheckBox_AllowModStacking;
     }
 }

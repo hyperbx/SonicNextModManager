@@ -466,5 +466,17 @@ namespace Unify.Properties {
                 this["Tweak_BeginWithRings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Debug_AllowModStacking {
+            get {
+                return ((bool)(this["Debug_AllowModStacking"]));
+            }
+            set {
+                this["Debug_AllowModStacking"] = value;
+            }
+        }
     }
 }
