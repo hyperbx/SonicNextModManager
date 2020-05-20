@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using ArcPackerLib;
+using HedgeLib.Text;
+using HedgeLib.Misc;
 using Unify.Messenger;
 using Unify.Serialisers;
 using Unify.Environment3;
@@ -260,39 +262,34 @@ namespace Unify.Patcher
                 File.Copy(system, $"{system}_back", true);
             string unpack = UnpackARC(system, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
-            // Decodes the PKG
+            // Decode the PKG
             string directoryRoot = Path.Combine(unpack, $"system\\{platform}\\archive");
-            PKG.PKGTool($"{directoryRoot}.pkg");
-            List<string> basePKG = File.ReadAllLines($"{directoryRoot}.txt").ToList();
+            S06Package pkg = new S06Package();
+            pkg.Load($"{directoryRoot}.pkg");
 
-            // xenon/ps3 entries
-            if (corepkg.Count != 0) {
-                // Add new key to PKG (doesn't matter where, as long as it uses the same name)
-                basePKG.Add("\"archive\"\n{");
-
-                // Add entries to newly made key
-                foreach (string arc in corepkg) basePKG.Add($"\t\"{Path.GetFileNameWithoutExtension(arc)}\" = \"archives/{arc}\";");
-
-                // Finalise key
-                basePKG.Add("}");
+            foreach (var type in pkg.Types) {
+                if (type.TypeName == "archive")
+                    foreach (string arc in corepkg) {
+                        S06FileEntry file = new S06FileEntry {
+                            FilePath = $"archives/{arc}",
+                            FriendlyName = Path.GetFileNameWithoutExtension(arc)
+                        };
+                        type.Files.Add(file);
+                    }
+                else if (type.TypeName == "archive_win32")
+                    foreach (string arc in win32pkg) {
+                        S06FileEntry file = new S06FileEntry {
+                            FilePath = $"archives/{arc}",
+                            FriendlyName = Path.GetFileNameWithoutExtension(arc)
+                        };
+                        type.Files.Add(file);
+                    }
             }
 
-            // win32 entries
-            if (win32pkg.Count != 0) {
-                // Add new key to PKG (doesn't matter where, as long as it uses the same name)
-                basePKG.Add("\"archive_win32\"\n{");
+            //Save the edited PKG
+            pkg.Save($"{directoryRoot}.pkg", true);
 
-                // Add entries to newly made key
-                foreach (string arc in win32pkg) basePKG.Add($"\t\"{Path.GetFileNameWithoutExtension(arc)}\" = \"archives/{arc}\";");
-
-                // Finalise key
-                basePKG.Add("}");
-            }
-
-            File.WriteAllLines($"{directoryRoot}.txt", basePKG); //Save the edited text file
-
-            //Encodes the PKG
-            PKG.PKGTool($"{directoryRoot}.txt");
+            //Repack changes
             RepackARC(unpack, system);
 
             //Clear lists
@@ -506,6 +503,17 @@ namespace Unify.Patcher
 
                                 else if (line.StartsWith("ParameterRename") && _ParameterRename.Length != 0)
                                     ParameterRename(Literal.CoreReplace(_ParameterRename[0]), _ParameterRename[1], _ParameterRename[2]);
+                            }
+
+                            if (line.StartsWith("Text")) {
+                                string[] _TextAdd    = Lua.DeserialiseParameterList("TextAdd", line, false),  // Deserialise 'TextAdd' parameter
+                                         _TextEdit   = Lua.DeserialiseParameterList("TextEdit", line, false); // Deserialise 'TextEdit' parameter
+
+                                if (line.StartsWith("TextAdd") && _TextAdd.Length != 0)
+                                    TextAdd(Literal.CoreReplace(_TextAdd[0]), _TextAdd[1], _TextAdd[2], _TextAdd[3]);
+
+                                else if (line.StartsWith("TextEdit") && _TextEdit.Length != 0)
+                                    TextEdit(Literal.CoreReplace(_TextEdit[0]), _TextEdit[1], _TextEdit[2], _TextEdit[3]);
                             }
 
                             if (line.StartsWith("StringReplace")) {
@@ -856,6 +864,106 @@ namespace Unify.Patcher
             }
         }
 
+        private static void TextAdd(string location, string name, string placeholder, string text) {
+            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+            // Overwrite single file
+            if (File.Exists(location)) {
+                MST mst = new MST();
+                mst.Load(location);
+
+                MSTEntries entry = new MSTEntries {
+                    Name = name,
+                    Text = text,
+                    Placeholder = placeholder
+                };
+                mst.entries.Add(entry);
+
+                mst.Save(location, true);
+
+            // Overwrite all files in directory
+            } else if (Directory.Exists(location)) {
+                foreach (string mstData in Directory.GetFiles(location, "*.mst", SearchOption.TopDirectoryOnly)) {
+                    if (!_ignoreList.Any(s => Path.GetFileName(mstData).Contains(s))) {
+                        MST mst = new MST();
+                        mst.Load(mstData);
+
+                        MSTEntries entry = new MSTEntries {
+                            Name = name,
+                            Text = text,
+                            Placeholder = placeholder
+                        };
+                        mst.entries.Add(entry);
+
+                        mst.Save(mstData, true);
+                    }
+                }
+            }
+        }
+
+        private static void TextEdit(string location, string name, string placeholder, string text) {
+            if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+            else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
+
+            // Overwrite single file
+            if (File.Exists(location)) {
+                MST mst = new MST();
+                mst.Load(location);
+
+                bool entryFound = false;
+                for (int i = 0; i < mst.entries.Count; i++) {
+                    if (mst.entries[i].Name == name) {
+                        entryFound = true;
+                        mst.entries[i].Text = text;
+                        mst.entries[i].Placeholder = placeholder;
+                    }
+                }
+
+                // If the entry doesn't exist, create a new one
+                if (!entryFound) {
+                    MSTEntries newEntry = new MSTEntries {
+                        Name = name,
+                        Text = text,
+                        Placeholder = placeholder
+                    };
+                    mst.entries.Add(newEntry);
+                }
+
+                mst.Save(location, true);
+
+            // Overwrite all files in directory
+            } else if (Directory.Exists(location)) {
+                foreach (string mstData in Directory.GetFiles(location, "*.mst", SearchOption.TopDirectoryOnly)) {
+                    if (!_ignoreList.Any(s => Path.GetFileName(mstData).Contains(s))) {
+                        MST mst = new MST();
+                        mst.Load(mstData);
+
+                        bool entryFound = false;
+                        for (int i = 0; i < mst.entries.Count; i++) {
+                            if (mst.entries[i].Name == name) {
+                                entryFound = true;
+                                mst.entries[i].Text = text;
+                                mst.entries[i].Placeholder = placeholder;
+                            }
+                        }
+
+                        // If the entry doesn't exist, create a new one
+                        if (!entryFound) {
+                            MSTEntries newEntry = new MSTEntries {
+                                Name = name,
+                                Text = text,
+                                Placeholder = placeholder
+                            };
+                            mst.entries.Add(newEntry);
+                        }
+
+                        mst.Save(mstData, true);
+                    }
+                }
+            }
+        }
+
         private static void StringReplace(string location, string _string, string _new) {
             if (_archive != string.Empty) location = Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
             else location = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location);
@@ -895,90 +1003,111 @@ namespace Unify.Patcher
             }
         }
 
-        private static void PackageAdd(string location, string key, string _event, string reference) {
+        private static void PackageAdd(string location, string _type, string friendlyName, string filePath) {
             if (_archive != string.Empty) location = Paths.GetPathWithoutExtension(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation), location));
             else location = Paths.GetPathWithoutExtension(Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location));
 
+            // Overwrite single file
             if (File.Exists($"{location}.pkg") && !_ignoreList.Contains($"{Path.GetFileName(location)}.pkg")) {
-                PKG.PKGTool($"{location}.pkg");
-                List<string> package = File.ReadAllLines($"{location}.txt").ToList();
-                package.Add($"\"{key}\"\n{"{"}");
-                package.Add($"\t\"{_event}\" = \"{reference}\";");
-                package.Add("}");
-                File.WriteAllLines($"{location}.txt", package);
-                PKG.PKGTool($"{location}.txt");
+                S06Package pkg = new S06Package();
+                pkg.Load($"{location}.pkg");
+
+                foreach (var type in pkg.Types) {
+                    if (type.TypeName == _type) {
+                        S06FileEntry file = new S06FileEntry {
+                            FilePath = filePath,
+                            FriendlyName = friendlyName
+                        };
+                        type.Files.Add(file);
+                    }
+                }
+
+                pkg.Save($"{location}.pkg", true);
+
+            // Overwrite all files in directory
             } else if (Directory.Exists(location)) {
                 foreach (string packageData in Directory.GetFiles(location, "*.pkg", SearchOption.TopDirectoryOnly)) {
                     if (!_ignoreList.Any(s => Path.GetFileName(packageData).Contains(s))) {
-                        PKG.PKGTool(packageData);
-                        List<string> package = File.ReadAllLines(packageData).ToList();
-                        package.Add($"\"{key}\"\n{"{"}");
-                        package.Add($"\t\"{_event}\" = \"{reference}\";");
-                        package.Add("}");
-                        File.WriteAllLines(packageData, package);
-                        PKG.PKGTool(Path.Combine(Path.GetDirectoryName(packageData), $"{Path.GetFileNameWithoutExtension(packageData)}.txt"));
+                        S06Package pkg = new S06Package();
+                        pkg.Load($"{packageData}.pkg");
+
+                        foreach (var type in pkg.Types) {
+                            if (type.TypeName == _type) {
+                                S06FileEntry file = new S06FileEntry {
+                                    FilePath = filePath,
+                                    FriendlyName = friendlyName
+                                };
+                                type.Files.Add(file);
+                            }
+                        }
+
+                        pkg.Save($"{packageData}.pkg", true);
                     }
                 }
             }
         }
 
-        private static void PackageEdit(string location, string key, string _event, string reference) {
+        private static void PackageEdit(string location, string _type, string friendlyName, string filePath) {
             if (_archive != string.Empty) location = Paths.GetPathWithoutExtension(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation), location));
             else location = Paths.GetPathWithoutExtension(Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), location));
 
+            // Overwrite single file
             if (File.Exists($"{location}.pkg") && !_ignoreList.Contains($"{Path.GetFileName(location)}.pkg")) {
-                PKG.PKGTool($"{location}.pkg");
-                List<string> package = File.ReadAllLines($"{location}.txt").ToList(), editedPackage = package;
-                bool keyFound = false;
-                int lineCount = 0;
+                S06Package pkg = new S06Package();
+                pkg.Load($"{location}.pkg");
 
-                foreach (string entry in package) {
-                    if (entry == $"\"{key}\"" && !entry.EndsWith(";")) keyFound = true;
+                foreach (var type in pkg.Types)
+                    if (type.TypeName == _type) {
+                        bool friendlyNameFound = false;
 
-                    if (keyFound) {
-                        if (entry.StartsWith($"\t\"{_event}\"") && entry.EndsWith(";")) {
-                            editedPackage.RemoveAt(lineCount);
-                            editedPackage.Insert(lineCount, $"\t\"{_event}\" = \"{reference}\";");
-                            break;
-                        }
-                        if (entry == "}") {
-                            editedPackage.Insert(lineCount - 1, $"\t\"{_event}\" = \"{reference}\";");
-                            break;
+                        // Replace file path if the friendly name exists
+                        foreach (var file in type.Files)
+                            if (file.FriendlyName == friendlyName) {
+                                friendlyNameFound = true;
+                                file.FilePath = filePath;
+                            }
+
+                        // If the friendly name doesn't exist, create a new reference
+                        if (!friendlyNameFound) {
+                            S06FileEntry file = new S06FileEntry {
+                                FilePath = filePath,
+                                FriendlyName = friendlyName
+                            };
+                            type.Files.Add(file);
                         }
                     }
-                    lineCount++;
-                }
 
-                File.WriteAllLines($"{location}.txt", editedPackage);
-                PKG.PKGTool($"{location}.txt");
+                pkg.Save($"{location}.pkg", true);
 
+            // Overwrite all files in directory
             } else if (Directory.Exists(location)) {
                 foreach (string packageData in Directory.GetFiles(location, "*.pkg", SearchOption.TopDirectoryOnly)) {
                     if (!_ignoreList.Any(s => Path.GetFileName(packageData).Contains(s))) {
-                        PKG.PKGTool(packageData);
-                        List<string> package = File.ReadAllLines($"{packageData}.txt").ToList(), editedPackage = package;
-                        bool keyFound = false;
-                        int lineCount = 0;
+                        S06Package pkg = new S06Package();
+                        pkg.Load($"{packageData}.pkg");
 
-                        foreach (string entry in package) {
-                            if (entry == $"\"{key}\"" && !entry.EndsWith(";")) keyFound = true;
+                        foreach (var type in pkg.Types)
+                            if (type.TypeName == _type) {
+                                bool friendlyNameFound = false;
 
-                            if (keyFound) {
-                                if (entry.StartsWith($"\t\"{_event}\"") && entry.EndsWith(";")) {
-                                    editedPackage.RemoveAt(lineCount);
-                                    editedPackage.Insert(lineCount, $"\t\"{_event}\" = \"{reference}\";");
-                                    break;
-                                }
-                                if (entry == "}") {
-                                    editedPackage.Insert(lineCount - 1, $"\t\"{_event}\" = \"{reference}\";");
-                                    break;
+                                // Replace file path if the friendly name exists
+                                foreach (var file in type.Files)
+                                    if (file.FriendlyName == friendlyName) {
+                                        friendlyNameFound = true;
+                                        file.FilePath = filePath;
+                                    }
+
+                                // If the friendly name doesn't exist, create a new reference
+                                if (!friendlyNameFound) {
+                                    S06FileEntry file = new S06FileEntry {
+                                        FilePath = filePath,
+                                        FriendlyName = friendlyName
+                                    };
+                                    type.Files.Add(file);
                                 }
                             }
-                            lineCount++;
-                        }
 
-                        File.WriteAllLines(packageData, editedPackage);
-                        PKG.PKGTool(Path.Combine(Path.GetDirectoryName(packageData), $"{Path.GetFileNameWithoutExtension(packageData)}.txt"));
+                        pkg.Save($"{packageData}.pkg", true);
                     }
                 }
             }

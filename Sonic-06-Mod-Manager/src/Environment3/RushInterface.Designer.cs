@@ -364,7 +364,7 @@ namespace Unify.Environment3
             this.SectionButton_InstallMods.Size = new System.Drawing.Size(293, 35);
             this.SectionButton_InstallMods.TabIndex = 50;
             this.SectionButton_InstallMods.TextColour = System.Drawing.SystemColors.Control;
-            this.SectionButton_InstallMods.Click += new System.EventHandler(this.SectionButton_InstallMods_Click);
+            this.SectionButton_InstallMods.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SectionButton_InstallMods_MouseClick);
             // 
             // SectionButton_LaunchGame
             // 
@@ -378,7 +378,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1338, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1347, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -484,7 +484,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2180, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2195, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1219,7 +1219,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(3, 0);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(290, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(293, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -1237,7 +1237,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1577, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1592, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -3226,7 +3226,7 @@ namespace Unify.Environment3
             this.Label_Contributors.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.Label_Contributors.Location = new System.Drawing.Point(9, 60);
             this.Label_Contributors.Name = "Label_Contributors";
-            this.Label_Contributors.Size = new System.Drawing.Size(442, 200);
+            this.Label_Contributors.Size = new System.Drawing.Size(531, 200);
             this.Label_Contributors.TabIndex = 35;
             this.Label_Contributors.Text = resources.GetString("Label_Contributors.Text");
             // 

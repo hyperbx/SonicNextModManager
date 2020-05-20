@@ -25,7 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>res\Icons\logo_main_icon.ico</ApplicationIcon>
@@ -140,6 +141,22 @@
       <DependentUpon>SectionButton.cs</DependentUpon>
     </Compile>
     <Compile Include="third_party\ArcPackerLib\ZlibStream.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Exceptions\InvalidSignatureException.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Half.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\HalfHelper.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\BINAHeader.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\BINAv1Header.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\BINAv2Header.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\IHeader.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\PACxHeader.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\IO\BINA.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\IO\ExtendedBinary.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\IO\FileBase.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Misc\S06Package.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Quaternion.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Text\MST.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Text\MSTEntries.cs" />
+    <Compile Include="third_party\HedgeLib\HedgeLib\Vector.cs" />
     <Compile Include="third_party\Ookii.Dialogs\AdditionalVisualStyleElements.cs" />
     <Compile Include="third_party\Ookii.Dialogs\AnimationResource.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ButtonType.cs" />
@@ -324,6 +341,7 @@
     <Content Include="res\Images\Save_grey_16x.png" />
     <Content Include="res\Images\Update 4.png" />
     <None Include="src\Environment3\GBStyleSheetDark.css" />
+    <Content Include="third_party\HedgeLib\License.txt" />
     <Content Include="third_party\Ookii.Dialogs\CustomDictionary.xml" />
     <Content Include="third_party\Ookii.Dialogs\InputDialog.bmp" />
     <Content Include="third_party\Ookii.Dialogs\license.txt" />

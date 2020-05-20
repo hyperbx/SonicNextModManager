@@ -327,12 +327,12 @@
 </value>
   </data>
   <data name="Label_Contributors.Text" xml:space="preserve">
-    <value>► HyperPolygon64 - Lead programmer and designer
-► Knuxfan24 - Initial developer and project maintainer
+    <value>► HyperPolygon64 - Programmer, designer and reverse-engineer
+► Knuxfan24 - Project maintainer and reverse-engineer
 ► Shadow LAG - Lua decompiler
 ► GerbilSoft - ArcPackerLib
 ► SuperSonic16 - GameBanana API Handler
-► Radfordhound - pkgtool
+► Radfordhound - HedgeLib# and format specifications
 ► xorloser - XexTool
 ► naehrwert - scetool</value>
   </data>

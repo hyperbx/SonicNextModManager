@@ -1093,106 +1093,6 @@ namespace Unify.Environment3
         }
 
         /// <summary>
-        /// Begins the mod installation process by calling the required methods.
-        /// </summary>
-        private void SectionButton_InstallMods_Click(object sender, EventArgs e) {
-            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory)) {
-                ModEngine.skipped.Clear(); // Clear the skipped list
-                SaveChecks(); // Save checked items
-                RefreshLists();
-                if (!Properties.Settings.Default.Debug_AllowModStacking) UninstallThread(); // Uninstall everything before installing more mods
-
-                if (_isPathInvalid) {
-                    DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("Ensure that your mods directory is outside your game directory! " +
-                                                                                        "This may cause issues with mod and patch installation.",
-                                                                                        "Invalid directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-
-                    if (confirmation == DialogResult.Cancel) {
-                        SectionButton_DeselectAll();
-                        Rush_Section_Settings.SelectedSection = true;
-                        TabControl_Rush.SelectedTab = Tab_Section_Settings;
-                        return;
-                    }
-                }
-
-                //Top to Bottom Priority
-                if (Properties.Settings.Default.General_Priority) {
-                    for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
-                        if (ListView_ModsList.Items[i].Checked) {
-                            Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
-
-                            // Install the specified mod
-#if !DEBUG
-                            try {
-#endif
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {ListView_ModsList.Items[i].Text}...");
-                                ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
-#if !DEBUG
-                            } catch (Exception ex) {
-                                UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
-                                                                        "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-#endif
-
-                            if (Properties.Settings.Default.General_SaveFileRedirection)
-                                // Redirect save data from the specified mod
-                                RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
-                        }
-
-                //Bottom to Top Priority
-                } else {
-                    foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
-                        if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
-                            Label_Status.Text = $"Installing {mod.Text}...";
-
-                            // Install the specified mod
-#if !DEBUG
-                            try {
-#endif
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {mod.Text}...");
-                                ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
-#if !DEBUG
-                            } catch (Exception ex) {
-                                UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
-                                                                        "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-#endif
-
-                            if (Properties.Settings.Default.General_SaveFileRedirection)
-                                    // Redirect save data from the specified mod
-                                    RedirectSaves(mod.SubItems[6].Text, mod.Text);
-                        }
-                }
-
-                TweakEngine.ApplyTweaks(this); // Begin tweak application
-                InstallPatches(); // Begin patch installation
-
-                // Check skipped list to ensure any errors occurred
-                if (ModEngine.skipped.Count != 0)
-                    UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following content needs revising...\n\n{string.Join("\n", ModEngine.skipped)}",
-                                                            "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                // Launch the emulator of choice
-                if (Properties.Settings.Default.General_LaunchEmulator)
-                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
-
-                // Reset status label once emulator process has ended
-                Label_Status.Text = $"Ready.";
-
-            // No game directory set - choose a new one...
-            } else {
-                string browseGame = RequestPath.GameExecutable();
-
-                if (browseGame != string.Empty) {
-                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame;
-                    Properties.Settings.Default.Save();
-                } else return;
-            }
-        }
-
-        /// <summary>
         /// Begins the patch installation process.
         /// </summary>
         private void InstallPatches() {
@@ -2238,6 +2138,165 @@ namespace Unify.Environment3
 
             if (Properties.Settings.Default.General_AutoUninstall && ((CheckBox)sender).Checked)
                 UnifyMessenger.UnifyMessage.ShowDialog("Please disable 'Uninstall mods automatically' to use mod stacking correctly.", "Property Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        /// <summary>
+        /// Begins the mod installation process by calling the required methods.
+        /// </summary>
+        private void SectionButton_InstallMods_MouseClick(object sender, MouseEventArgs e)
+        {
+            // If button is left-clicked, install content
+            if (e.Button == MouseButtons.Left) InstallThread(true, true);
+
+            // If button is right-clicked, show a context menu
+            else if (e.Button == MouseButtons.Right) {
+                // Create the dark context menu
+                ContextMenuDark menuDark = new ContextMenuDark();
+
+                /* Menu items that need to have local events assigned */
+
+                // Uninstalls everything
+                ToolStripMenuItem uninstallThread = new ToolStripMenuItem() {
+                    Text = "Uninstall content",
+                    Image = Properties.Resources.Refresh_grey_16x,
+                };
+
+                // Installs mods without patches
+                ToolStripMenuItem installWithoutPatches = new ToolStripMenuItem() {
+                    Text = "Install mods without patches",
+                    Image = Properties.Resources.ConfigurationFile_16x,
+                };
+
+                // Installs patches without mods
+                ToolStripMenuItem installWithoutMods = new ToolStripMenuItem() {
+                    Text = "Install patches without mods",
+                    Image = Properties.Resources.PatchPackage_16x,
+                };
+
+                // Subscribe to events
+                uninstallThread.Click += (uSender, uArgs) => UninstallThread();
+                installWithoutPatches.Click += (uSender, uArgs) => InstallThread(true, false);
+                installWithoutMods.Click += (uSender, uArgs) => InstallThread(false, true);
+
+                // Add menu items to control
+                menuDark.Items.Clear();
+                menuDark.Items.AddRange(new ToolStripMenuItem[] {
+                    uninstallThread
+                });
+                menuDark.Items.Add(new ToolStripSeparator());
+                menuDark.Items.AddRange(new ToolStripMenuItem[] {
+                    installWithoutPatches,
+                    installWithoutMods
+                });
+                menuDark.Show(Cursor.Position);
+            }
+        }
+
+        /// <summary>
+        /// Installs content...
+        /// </summary>
+        private void InstallThread(bool mods, bool patches)
+        {
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory)) {
+                ModEngine.skipped.Clear(); // Clear the skipped list
+                SaveChecks(); // Save checked items
+                RefreshLists();
+
+                // Uninstall everything before installing more mods
+                if (!Properties.Settings.Default.Debug_AllowModStacking) UninstallThread();
+
+                if (_isPathInvalid) {
+                    DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("Ensure that your mods directory is outside your game directory! " +
+                                                                                        "This may cause issues with mod and patch installation.",
+                                                                                        "Invalid directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                    if (confirmation == DialogResult.Cancel) {
+                        SectionButton_DeselectAll();
+                        Rush_Section_Settings.SelectedSection = true;
+                        TabControl_Rush.SelectedTab = Tab_Section_Settings;
+                        return;
+                    }
+                }
+
+                if (mods) {
+                    //Top to Bottom Priority
+                    if (Properties.Settings.Default.General_Priority) {
+                        for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
+                            if (ListView_ModsList.Items[i].Checked) {
+                                Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
+
+                                // Install the specified mod
+                            #if !DEBUG
+                                try {
+                            #endif
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {ListView_ModsList.Items[i].Text}...");
+                                    ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                            #if !DEBUG
+                                } catch (Exception ex) {
+                                    UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
+                                                                            "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                            #endif
+
+                                if (Properties.Settings.Default.General_SaveFileRedirection)
+                                    // Redirect save data from the specified mod
+                                    RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                            }
+
+                    //Bottom to Top Priority
+                    } else {
+                        foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
+                            if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
+                                Label_Status.Text = $"Installing {mod.Text}...";
+
+                                // Install the specified mod
+                            #if !DEBUG
+                                try {
+                            #endif
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {mod.Text}...");
+                                    ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
+                            #if !DEBUG
+                                } catch (Exception ex) {
+                                    UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
+                                                                            "Installation failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                            #endif
+
+                                if (Properties.Settings.Default.General_SaveFileRedirection)
+                                        // Redirect save data from the specified mod
+                                        RedirectSaves(mod.SubItems[6].Text, mod.Text);
+                            }
+                    }
+                }
+
+                if (patches) {
+                    TweakEngine.ApplyTweaks(this); // Begin tweak installation
+                    InstallPatches(); // Begin patch installation
+                }
+
+                // Check skipped list to ensure any errors occurred
+                if (ModEngine.skipped.Count != 0)
+                    UnifyMessenger.UnifyMessage.ShowDialog($"Installation completed, but the following content needs revising...\n\n{string.Join("\n", ModEngine.skipped)}",
+                                                            "Installation completed with warnings...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                // Launch the emulator of choice
+                if (Properties.Settings.Default.General_LaunchEmulator)
+                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
+
+                // Reset status label once emulator process has ended
+                Label_Status.Text = $"Ready.";
+
+            // No game directory set - choose a new one...
+            } else {
+                string browseGame = RequestPath.GameExecutable();
+
+                if (browseGame != string.Empty) {
+                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame;
+                    Properties.Settings.Default.Save();
+                } else return;
+            }
         }
     }
 }
