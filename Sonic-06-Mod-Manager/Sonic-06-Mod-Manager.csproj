@@ -304,11 +304,8 @@
     <Content Include="res\Applications\7z.exe" />
     <Content Include="res\Applications\arctool.exe" />
     <Content Include="res\Applications\make_fself.exe" />
-    <Content Include="res\Applications\pkgtool.exe" />
-    <Content Include="res\Applications\Protocol Manager.exe" />
     <Content Include="res\Applications\scetool.exe" />
     <Content Include="res\Applications\unlub.jar" />
-    <Content Include="res\Applications\vcruntime140_1.dll" />
     <Content Include="res\Applications\xextool.exe" />
     <Content Include="res\Applications\zlib1.dll" />
     <Content Include="res\Icons\error.ico" />

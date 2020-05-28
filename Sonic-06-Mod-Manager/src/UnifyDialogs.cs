@@ -57,8 +57,8 @@ namespace Unify.Dialogs
         public static string EmulatorExecutable() {
             string title = "Please select an executable...";
 
-            if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) != "unspecified")
-                title = $"Please select an executable for {Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)}...";
+            if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) != "unspecified")
+                title = $"Please select an executable for {Literal.Emulator(Properties.Settings.Default.Path_GameExecutable)}...";
 
             OpenFileDialog browseEmulator = new OpenFileDialog() {
                 Title = title,

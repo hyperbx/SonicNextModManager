@@ -220,11 +220,11 @@ namespace Unify.Environment3
                         }
                     }
 
-                    if (check_GenerateFilesystem.Checked && Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory) != string.Empty) {
-                        string[] directories = Directory.GetDirectories(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), "*.*", SearchOption.AllDirectories);
+                    if (check_GenerateFilesystem.Checked && Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable) != string.Empty) {
+                        string[] directories = Directory.GetDirectories(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable), "*.*", SearchOption.AllDirectories);
 
                         foreach (string path in directories) {
-                            string pathTrim = path.Remove(0, Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory).Length).Substring(1);
+                            string pathTrim = path.Remove(0, Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable).Length).Substring(1);
                             if (combo_System.SelectedIndex == 2) {
                                 if (!pathTrim.Contains("xenon") && !pathTrim.Contains("ps3"))
                                     Directory.CreateDirectory(Path.Combine(newPath, pathTrim));

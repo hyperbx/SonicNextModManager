@@ -102,7 +102,7 @@ namespace Unify.Environment3
         /// </summary>
         private void RushInterface_Load(object sender, EventArgs e) {
             RefreshLists(); // Refresh mods list
-            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory) && 
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable) && 
                 Properties.Settings.Default.General_AutoUninstall) UninstallThread(); // Uninstall everything
         }
 
@@ -138,15 +138,15 @@ namespace Unify.Environment3
 
                 #region Restore text fields
                 _isPathInvalid = false;
-                TextBox_GameDirectory.Text      = Properties.Settings.Default.Path_GameDirectory;
+                TextBox_GameDirectory.Text      = Properties.Settings.Default.Path_GameExecutable;
                 TextBox_ModsDirectory.Text      = Properties.Settings.Default.Path_ModsDirectory;
                 TextBox_EmulatorExecutable.Text = Properties.Settings.Default.Path_EmulatorDirectory;
                 TextBox_SaveData.Text           = Properties.Settings.Default.Path_SaveData;
                 TextBox_Arguments.Text          = Properties.Settings.Default.Emulator_Arguments;
 
-                if (Properties.Settings.Default.Path_ModsDirectory != string.Empty && Properties.Settings.Default.Path_GameDirectory != string.Empty) {
-                    if (Paths.IsSubdirectory(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), Properties.Settings.Default.Path_ModsDirectory) ||
-                        Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory) == Properties.Settings.Default.Path_ModsDirectory) {
+                if (Properties.Settings.Default.Path_ModsDirectory != string.Empty && Properties.Settings.Default.Path_GameExecutable != string.Empty) {
+                    if (Paths.IsSubdirectory(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable), Properties.Settings.Default.Path_ModsDirectory) ||
+                        Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable) == Properties.Settings.Default.Path_ModsDirectory) {
                             // If the mods directory is inside the game directory, warn the user
                             Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
                             _isPathInvalid = true;
@@ -154,8 +154,8 @@ namespace Unify.Environment3
                     else
                         Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
 
-                    if (Paths.IsSubdirectory(Properties.Settings.Default.Path_ModsDirectory, Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory)) ||
-                        Properties.Settings.Default.Path_ModsDirectory == Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory)) {
+                    if (Paths.IsSubdirectory(Properties.Settings.Default.Path_ModsDirectory, Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)) ||
+                        Properties.Settings.Default.Path_ModsDirectory == Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)) {
                             // If the mods directory is inside the game directory, warn the user
                             Label_Warning_ModsDirectoryInvalid.ForeColor = Color.Tomato;
                             _isPathInvalid = true;
@@ -278,7 +278,7 @@ namespace Unify.Environment3
                 #endregion
 
                 #region Set controls depending on emulator
-                if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "Xenia") {
+                if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "Xenia") {
                     if (Properties.Settings.Default.Emulator_API != 2)
                         // Enables most controls in the Emulator UI
                         EnableEmulatorInterface();
@@ -288,7 +288,7 @@ namespace Unify.Environment3
 
                     // Set visibility state of controls
                     Label_RPCS3Warning.Visible = false;
-                } else if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "RPCS3") {
+                } else if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "RPCS3") {
                     // Disables most controls in the Emulator UI
                     DisableEmulatorInterface();
 
@@ -546,7 +546,7 @@ namespace Unify.Environment3
                 string gameExecutable = RequestPath.GameExecutable();
 
                 if (gameExecutable != string.Empty) {
-                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = gameExecutable;
+                    Properties.Settings.Default.Path_GameExecutable = TextBox_GameDirectory.Text = gameExecutable;
                     Properties.Settings.Default.Save();
                 }
             } else if (sender == Button_EmulatorExecutable) {
@@ -1106,7 +1106,7 @@ namespace Unify.Environment3
                 }
 
             // Encrypt if decrypted EBOOT
-            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
+            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") {
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Encrypted game executable...");
                 PatchEngine.EncryptExecutable();
             }
@@ -1125,7 +1125,7 @@ namespace Unify.Environment3
                     Label_Status.Text = $"Redirecting save file for {name}...";
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Save] Redirecting save file for {name}...");
 
-                    if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
+                    if (Literal.System(Properties.Settings.Default.Path_GameExecutable) == "Xbox 360") {
                         try {
                             // If the backup directory doesn't exist, create it
                             if (!Directory.Exists($"{Path.GetDirectoryName(saveLocation)}_back")) 
@@ -1139,7 +1139,7 @@ namespace Unify.Environment3
                                 // Copy mod's save to the save data location
                                 File.Copy(Path.Combine(Path.GetDirectoryName(mod), "savedata.360"), saveLocation, true);
                         } catch { ModEngine.skipped.Add($"► {name} (save redirect failed because the save was not targeted for the Xbox 360)"); }
-                    } else if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") {
+                    } else if (Literal.System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") {
                         try {
                             if (File.Exists(Path.Combine(Path.GetDirectoryName(mod), "savedata.ps3")) && Directory.Exists(Path.GetDirectoryName(saveLocation))) {
                                 // If the backup save data doesn't exist, create it
@@ -1177,14 +1177,14 @@ namespace Unify.Environment3
         private void LaunchEmulator(string emulator) {
             List<string> parameters = new List<string>();
 
-            if (File.Exists(Properties.Settings.Default.Path_GameDirectory)) parameters.Add($"\"{Properties.Settings.Default.Path_GameDirectory}\"");
+            if (File.Exists(Properties.Settings.Default.Path_GameExecutable)) parameters.Add($"\"{Properties.Settings.Default.Path_GameExecutable}\"");
             else { // If the game directory is invalid, prompt the user to select a new one
                 string gameExecutable = RequestPath.GameExecutable();
 
                 if (gameExecutable != string.Empty) {
-                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = gameExecutable;
+                    Properties.Settings.Default.Path_GameExecutable = TextBox_GameDirectory.Text = gameExecutable;
                     Properties.Settings.Default.Save();
-                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)); // Perform task again with specified emulator
+                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameExecutable)); // Perform task again with specified emulator
                 } else return;
             }
 
@@ -1197,7 +1197,7 @@ namespace Unify.Environment3
                     if (emulatorExecutable != string.Empty) {
                         Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text = emulatorExecutable;
                         Properties.Settings.Default.Save();
-                        LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory)); // Perform task again with specified emulator
+                        LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameExecutable)); // Perform task again with specified emulator
                     } else return;
             } else {
                 if (emulator == "Xenia") {
@@ -1246,7 +1246,7 @@ namespace Unify.Environment3
             try {
                 string location = string.Empty;
                 if (sender == Button_Open_ModsDirectory)           location = Properties.Settings.Default.Path_ModsDirectory; // Mods Directory
-                else if (sender == Button_Open_GameDirectory)      location = Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory); // Game Directory
+                else if (sender == Button_Open_GameDirectory)      location = Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable); // Game Directory
                 else if (sender == Button_Open_EmulatorExecutable) location = Properties.Settings.Default.Path_EmulatorDirectory; // Xenia
                 else if (sender == Button_Open_SaveData)           location = Path.GetDirectoryName(Properties.Settings.Default.Path_SaveData); // Save Data Directory
                 Process.Start(location); // Launch requested location
@@ -1813,7 +1813,7 @@ namespace Unify.Environment3
                     Label_Description_ForceMSAA.ForeColor =
                     SystemColors.GrayText;
                 } else {
-                    if (Literal.Emulator(Properties.Settings.Default.Path_GameDirectory) == "Xenia") {
+                    if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "Xenia") {
                         // Set enabled state for controls
                         ComboBox_AntiAliasing.Enabled = Button_AntiAliasing_Default.Enabled = CheckBox_ForceMSAA.Enabled = true;
 
@@ -1851,7 +1851,7 @@ namespace Unify.Environment3
                     if (ComboBox_CameraType.SelectedIndex == 1) {
 
                         // Xbox 360 supports FOV changes
-                        if (Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") {
+                        if (Literal.System(Properties.Settings.Default.Path_GameExecutable) == "Xbox 360") {
                             NumericUpDown_CameraDistance.Value = 350;
                             NumericUpDown_CameraHeight.Value = 32.5m;
                             NumericUpDown_FieldOfView.Value = 0.929929435253143m;
@@ -1898,7 +1898,7 @@ namespace Unify.Environment3
         /// </summary>
         private void Button_Tweaks_Default(object sender, EventArgs e) {
             // Check if the system is Xbox 360
-            bool isXbox360 = Literal.System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360";
+            bool isXbox360 = Literal.System(Properties.Settings.Default.Path_GameExecutable) == "Xbox 360";
 
             // Reset Renderer
             if (sender == Button_Renderer_Default)
@@ -2000,7 +2000,7 @@ namespace Unify.Environment3
         /// </summary>
         private void SectionButton_LaunchGame_Click(object sender, EventArgs e) {
             // Launch the emulator of choice
-            LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
+            LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameExecutable));
 
             // Reset status label once emulator process has ended
             Label_Status.Text = $"Ready.";
@@ -2197,7 +2197,7 @@ namespace Unify.Environment3
         /// </summary>
         private void InstallThread(bool mods, bool patches)
         {
-            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameDirectory)) {
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable)) {
                 ModEngine.skipped.Clear(); // Clear the skipped list
                 SaveChecks(); // Save checked items
                 RefreshLists();
@@ -2283,7 +2283,7 @@ namespace Unify.Environment3
 
                 // Launch the emulator of choice
                 if (Properties.Settings.Default.General_LaunchEmulator)
-                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameDirectory));
+                    LaunchEmulator(Literal.Emulator(Properties.Settings.Default.Path_GameExecutable));
 
                 // Reset status label once emulator process has ended
                 Label_Status.Text = $"Ready.";
@@ -2293,7 +2293,7 @@ namespace Unify.Environment3
                 string browseGame = RequestPath.GameExecutable();
 
                 if (browseGame != string.Empty) {
-                    Properties.Settings.Default.Path_GameDirectory = TextBox_GameDirectory.Text = browseGame;
+                    Properties.Settings.Default.Path_GameExecutable = TextBox_GameDirectory.Text = browseGame;
                     Properties.Settings.Default.Save();
                 } else return;
             }

@@ -86,12 +86,12 @@ namespace Unify.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Path_GameDirectory {
+        public string Path_GameExecutable {
             get {
-                return ((string)(this["Path_GameDirectory"]));
+                return ((string)(this["Path_GameExecutable"]));
             }
             set {
-                this["Path_GameDirectory"] = value;
+                this["Path_GameExecutable"] = value;
             }
         }
         

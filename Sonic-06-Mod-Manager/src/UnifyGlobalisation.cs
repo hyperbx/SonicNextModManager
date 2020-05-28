@@ -54,8 +54,8 @@ namespace Unify.Globalisation
         /// Returns the opposite system.
         /// </summary>
         public static string OppositeSystem(string path) {
-            if (System(Properties.Settings.Default.Path_GameDirectory) == "Xbox 360") return "PlayStation 3";
-            else if (System(Properties.Settings.Default.Path_GameDirectory) == "PlayStation 3") return "Xbox 360";
+            if (System(Properties.Settings.Default.Path_GameExecutable) == "Xbox 360") return "PlayStation 3";
+            else if (System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") return "Xbox 360";
             else return "unspecified";
         }
 
@@ -81,7 +81,7 @@ namespace Unify.Globalisation
         /// Renames the 'core' folder to the appropriate system root.
         /// </summary>
         public static string CoreReplace(string path) {
-            string system = System(Properties.Settings.Default.Path_GameDirectory);
+            string system = System(Properties.Settings.Default.Path_GameExecutable);
 
             if (Paths.GetRootFolder(path) == "core") {
                 string[] splitPath = path.Split('\\');

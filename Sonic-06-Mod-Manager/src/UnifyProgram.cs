@@ -51,8 +51,6 @@ namespace Unify.Environment3
                              _7Zip              = $"{ApplicationData}\\Unify\\Tools\\7z.exe",
                              Arctool            = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
                              XexTool            = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
-                             pkgtool            = $"{ApplicationData}\\Unify\\Tools\\pkgtool.exe",
-                             vcruntime          = $"{ApplicationData}\\Unify\\Tools\\vcruntime140_1.dll",
                              unlub              = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
                              Patches            = $"{ApplicationData}\\Unify\\Patches\\",
                              scetool            = $"{ApplicationData}\\Unify\\Tools\\scetool.exe",
@@ -82,12 +80,6 @@ namespace Unify.Environment3
 
             if (!File.Exists(XexTool))
                 File.WriteAllBytes(XexTool, Properties.Resources.xextool);
-
-            if (!File.Exists(pkgtool))
-                File.WriteAllBytes(pkgtool, Properties.Resources.pkgtool);
-
-            if (!File.Exists(vcruntime))
-                File.WriteAllBytes(vcruntime, Properties.Resources.vcruntime140_1);
 
             if (!File.Exists(unlub))
                 File.WriteAllBytes(unlub, Properties.Resources.unlub);

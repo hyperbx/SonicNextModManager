@@ -454,26 +454,6 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] pkgtool {
-            get {
-                object obj = ResourceManager.GetObject("pkgtool", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Protocol_Manager {
-            get {
-                object obj = ResourceManager.GetObject("Protocol_Manager", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Refresh_grey_16x {
@@ -540,16 +520,6 @@ namespace Unify.Properties {
             get {
                 object obj = ResourceManager.GetObject("Update_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] vcruntime140_1 {
-            get {
-                object obj = ResourceManager.GetObject("vcruntime140_1", resourceCulture);
-                return ((byte[])(obj));
             }
         }
         

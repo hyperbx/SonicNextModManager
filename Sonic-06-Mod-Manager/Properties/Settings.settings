@@ -17,7 +17,7 @@
     <Setting Name="General_Priority" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Path_GameDirectory" Type="System.String" Scope="User">
+    <Setting Name="Path_GameExecutable" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="General_Debug" Type="System.Boolean" Scope="User">

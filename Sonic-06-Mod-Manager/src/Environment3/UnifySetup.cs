@@ -51,7 +51,7 @@ namespace Unify
         /// </summary>
         private void LoadSettings() {
             TextBox_ModsDirectory.Text      = Properties.Settings.Default.Path_ModsDirectory;
-            TextBox_GameDirectory.Text      = Properties.Settings.Default.Path_GameDirectory;
+            TextBox_GameDirectory.Text      = Properties.Settings.Default.Path_GameExecutable;
             TextBox_EmulatorExecutable.Text = Properties.Settings.Default.Path_EmulatorDirectory;
             TextBox_SaveData.Text           = Properties.Settings.Default.Path_SaveData;
             CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.General_LaunchEmulator;
@@ -78,7 +78,7 @@ namespace Unify
         /// </summary>
         private void Button_Continue_Click(object sender, EventArgs e) {
             Properties.Settings.Default.Path_ModsDirectory     = TextBox_ModsDirectory.Text;
-            Properties.Settings.Default.Path_GameDirectory     = TextBox_GameDirectory.Text;
+            Properties.Settings.Default.Path_GameExecutable     = TextBox_GameDirectory.Text;
             Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text;
             Properties.Settings.Default.Path_SaveData          = TextBox_SaveData.Text;
             Properties.Settings.Default.General_LaunchEmulator = CheckBox_LaunchEmulator.Checked;

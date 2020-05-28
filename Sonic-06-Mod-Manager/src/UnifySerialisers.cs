@@ -348,7 +348,7 @@ namespace Unify.Serialisers
                         string filePath = Literal.CoreReplace(file.Remove(0, mod.SelectedPath.Length).Substring(1));
 
                         // Absolute file path (from the mod) combined with the game directory
-                        string vanillaFilePath = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameDirectory), filePath);
+                        string vanillaFilePath = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable), filePath);
 
                         if (!File.Exists(vanillaFilePath)) return "The selected mod contains an incompatible filesystem...";
                         else {
