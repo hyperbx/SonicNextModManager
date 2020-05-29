@@ -520,12 +520,14 @@ namespace Unify.Patcher
                                     // Append the location to the active path
                                     string _RenameLocation = GetDataLocation(Literal.CoreReplace(_Rename[0])),
 
-                                    // Define the final path name
-                                    newName = Paths.ReplaceFilename(Literal.CoreReplace(_Rename[0]), Path.GetFileName(_Rename[1]));
+                                           // Define the final path names
+                                           newName = Paths.ReplaceFilename(_RenameLocation, Path.GetFileName(_Rename[1])),
+                                           rBackup = $"{_RenameLocation}_back";
 
                                     BackupFile(_RenameLocation); // Backup the pre-renamed file no matter what
 
                                     if (!File.Exists(newName)) File.Move(_RenameLocation, newName);
+                                    else if (newName == rBackup && File.Exists(rBackup)) File.Delete(_RenameLocation);
                                 break;
 
                                 // Renames all files with the specified extension to the new extension.
@@ -538,8 +540,13 @@ namespace Unify.Patcher
 
                                     // Iterate through all files by extension
                                     foreach (string file in Directory.GetFiles(_RenameExtensionLocation, _RenameByExtension[1], SearchOption.TopDirectoryOnly)) {
-                                        string newExtension = Path.ChangeExtension(file, _RenameByExtension[2]);
+                                        // Get new file name
+                                        string newExtension = Path.ChangeExtension(file, _RenameByExtension[2]),
+                                               rbeBackup = $"{file}_back";
+
                                         if (!File.Exists(newExtension)) File.Move(file, newExtension);
+                                        else if (newExtension == rbeBackup && File.Exists(rbeBackup))
+                                            File.Delete(file);
                                     }
                                 break;
 
@@ -598,6 +605,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("ParameterAdd("):
                                     // Deserialise 'ParameterAdd' parameter
                                     string[] _ParameterAdd = Lua.DeserialiseParameterList("ParameterAdd", line, false);
+
+                                    // Append the location to the active path
                                     string _ParameterAddLocation = GetDataLocation(Literal.CoreReplace(_ParameterAdd[0]));
 
                                     // Add parameters in a single file.
@@ -617,6 +626,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("ParameterEdit("):
                                     // Deserialise 'ParameterEdit' parameter
                                     string[] _ParameterEdit = Lua.DeserialiseParameterList("ParameterEdit", line, false);
+
+                                    // Append the location to the active path
                                     string _ParameterEditLocation = GetDataLocation(Literal.CoreReplace(_ParameterEdit[0]));
 
                                     // Edit parameters in a single file.
@@ -637,6 +648,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("ParameterErase("):
                                     // Deserialise 'ParameterErase' parameter
                                     string[] _ParameterErase = Lua.DeserialiseParameterList("ParameterErase", line, false);
+
+                                    // Append the location to the active path
                                     string _ParameterEraseLocation = GetDataLocation(Literal.CoreReplace(_ParameterErase[0]));
 
                                     // Edit parameters in a single file.
@@ -656,6 +669,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("ParameterRename("):
                                     // Deserialise 'ParameterRename' parameter
                                     string[] _ParameterRename = Lua.DeserialiseParameterList("ParameterRename", line, false);
+
+                                    // Append the location to the active path
                                     string _ParameterRenameLocation = GetDataLocation(Literal.CoreReplace(_ParameterRename[0]));
 
                                     // Edit parameters in a single file.
@@ -675,6 +690,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("TextAdd("):
                                     // Deserialise 'TextAdd' parameter
                                     string[] _TextAdd = Lua.DeserialiseParameterList("TextAdd", line, false);
+
+                                    // Append the location to the active path
                                     string _TextAddLocation = GetDataLocation(Literal.CoreReplace(_TextAdd[0]));
 
                                     // Edit text in a single file.
@@ -694,6 +711,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("TextEdit("):
                                     // Deserialise 'TextEdit' parameter
                                     string[] _TextEdit = Lua.DeserialiseParameterList("TextEdit", line, false);
+
+                                    // Append the location to the active path
                                     string _TextEditLocation = GetDataLocation(Literal.CoreReplace(_TextEdit[0]));
 
                                     // Edit text in a single file.
@@ -713,6 +732,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("StringReplace("):
                                     // Deserialise 'StringReplace' parameter
                                     string[] _StringReplace = Lua.DeserialiseParameterList("StringReplace", line, false);
+
+                                    // Append the location to the active path
                                     string _StringReplaceLocation = GetDataLocation(Literal.CoreReplace(_StringReplace[0]));
 
                                     // Edit text in a single file.
@@ -732,6 +753,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("PackageAdd("):
                                     // Deserialise 'PackageAdd' parameter
                                     string[] _PackageAdd = Lua.DeserialiseParameterList("PackageAdd", line, false);
+
+                                    // Append the location to the active path
                                     string _PackageAddLocation = GetDataLocation(Literal.CoreReplace(_PackageAdd[0]));
 
                                     // Edit text in a single file.
@@ -751,6 +774,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("PackageEdit("):
                                     // Deserialise 'PackageEdit' parameter
                                     string[] _PackageEdit = Lua.DeserialiseParameterList("PackageEdit", line, false);
+
+                                    // Append the location to the active path
                                     string _PackageEditLocation = GetDataLocation(Literal.CoreReplace(_PackageEdit[0]));
 
                                     // Edit text in a single file.
@@ -770,6 +795,8 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("PackageErase("):
                                     // Deserialise 'PackageErase' parameter
                                     string[] _PackageErase = Lua.DeserialiseParameterList("PackageErase", line, false);
+
+                                    // Append the location to the active path
                                     string _PackageEraseLocation = GetDataLocation(Literal.CoreReplace(_PackageErase[0]));
 
                                     // Edit text in a single file.
@@ -1010,18 +1037,11 @@ namespace Unify.Patcher
         private static void StringReplace(string location, string _string, string _new)
         {
             DecompileLua(location);
-            string[] script = File.ReadAllLines(location);
-            int lineCount = 0;
 
-            foreach (string line in script) {
-                if (line.Contains(_string)) {
-                    script[lineCount] = line.Replace(_string, _new);
-                    break;
-                }
-                lineCount++;
-            }
+            _string = _string.Replace("\\n", Environment.NewLine);
+            _new = _new.Replace("\\n", Environment.NewLine);
 
-            File.WriteAllLines(location, script);
+            File.WriteAllText(location, File.ReadAllText(location).Replace(_string, _new));
         }
 
         /// <summary>
