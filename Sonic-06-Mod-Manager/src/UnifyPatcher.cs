@@ -545,8 +545,7 @@ namespace Unify.Patcher
                                                rbeBackup = $"{file}_back";
 
                                         if (!File.Exists(newExtension)) File.Move(file, newExtension);
-                                        else if (newExtension == rbeBackup && File.Exists(rbeBackup))
-                                            File.Delete(file);
+                                        else if (newExtension == rbeBackup && File.Exists(rbeBackup)) File.Delete(file);
                                     }
                                 break;
 
