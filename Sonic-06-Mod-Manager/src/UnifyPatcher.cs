@@ -584,8 +584,8 @@ namespace Unify.Patcher
 
                                     BackupFile(_CopyLocation); // Backup the pre-copied file no matter what
 
-                                    if (File.Exists(Literal.CoreReplace(_Copy[1])))
-                                        File.Copy(Literal.CoreReplace(_Copy[0]), Literal.CoreReplace(_Copy[1]), bool.Parse(_Copy[2]));
+                                    if (File.Exists(_CopyLocation))
+                                        File.Copy(_CopyLocation, GetDataLocation(Literal.CoreReplace(_Copy[1])), bool.Parse(_Copy[2]));
                                 break;
 
                                 // Creates a list of phrases to ignore when iterating.

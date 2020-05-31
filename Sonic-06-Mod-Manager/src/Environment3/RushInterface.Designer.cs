@@ -229,6 +229,7 @@ namespace Unify.Environment3
             this.Label_Description_ModsDirectory = new System.Windows.Forms.Label();
             this.Label_Description_Snapshot = new System.Windows.Forms.Label();
             this.Tab_Section_About = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
             this.LinkLabel_SEGACarnival = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_Testers_Radfordhound = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_Velcomia = new System.Windows.Forms.LinkLabel();
@@ -378,7 +379,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1347, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1356, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -484,7 +485,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2195, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2210, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1219,7 +1220,7 @@ namespace Unify.Environment3
             this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(3, 0);
             this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(293, 23);
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(308, 23);
             this.Button_Patches_DeselectAll.TabIndex = 48;
             this.Button_Patches_DeselectAll.Text = "Deselect All";
             this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
@@ -1237,7 +1238,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1592, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1607, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -2971,6 +2972,7 @@ namespace Unify.Environment3
             // 
             this.Tab_Section_About.AutoScroll = true;
             this.Tab_Section_About.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_About.Controls.Add(this.label7);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_SEGACarnival);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Testers_Radfordhound);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Velcomia);
@@ -2998,6 +3000,19 @@ namespace Unify.Environment3
             this.Tab_Section_About.Tag = "HideControls";
             this.Tab_Section_About.Text = "About";
             this.Tab_Section_About.Visible = false;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label7.Location = new System.Drawing.Point(11, 987);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(176, 15);
+            this.label7.TabIndex = 188;
+            this.label7.Text = "Brought to you by British idiots™";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LinkLabel_SEGACarnival
             // 
@@ -3255,7 +3270,7 @@ namespace Unify.Environment3
             // 
             // Panel_About_UICleanSpace
             // 
-            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 632);
+            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 661);
             this.Panel_About_UICleanSpace.Name = "Panel_About_UICleanSpace";
             this.Panel_About_UICleanSpace.Size = new System.Drawing.Size(214, 17);
             this.Panel_About_UICleanSpace.TabIndex = 175;
@@ -3704,5 +3719,6 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox CheckBox_AllowModStacking;
+        private System.Windows.Forms.Label label7;
     }
 }
