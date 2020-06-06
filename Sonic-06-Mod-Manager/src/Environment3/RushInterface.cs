@@ -2372,5 +2372,11 @@ namespace Unify.Environment3
                 }
             }
         }
+
+        private void ToolTip_Draw(object sender, DrawToolTipEventArgs e) {
+            e.DrawBackground();
+            e.DrawBorder();
+            e.DrawText();
+        }
     }
 }
