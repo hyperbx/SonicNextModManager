@@ -14,7 +14,7 @@
     <Setting Name="Path_ModsDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="General_Priority" Type="System.Boolean" Scope="User">
+    <Setting Name="General_Mods_Priority" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Path_GameExecutable" Type="System.String" Scope="User">
@@ -114,6 +114,9 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Debug_AllowModStacking" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="General_Patches_Priority" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

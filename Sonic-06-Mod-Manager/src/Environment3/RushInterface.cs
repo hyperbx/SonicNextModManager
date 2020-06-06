@@ -130,10 +130,15 @@ namespace Unify.Environment3
                 Label_LastModUpdate.Text      = Literal.Date("Last checked", Properties.Settings.Default.General_LastModUpdate);
                 Label_LastPatchUpdate.Text    = Literal.Date("Last updated", Properties.Settings.Default.General_LastPatchUpdate);
 
-                if (Properties.Settings.Default.General_Priority)
-                    Button_Priority.Text = "Priority: Bottom to Top";
+                if (Properties.Settings.Default.General_Mods_Priority)
+                    Button_Mods_Priority.Text = "Priority: Bottom to Top";
                 else
-                    Button_Priority.Text = "Priority: Top to Bottom";
+                    Button_Mods_Priority.Text = "Priority: Top to Bottom";
+
+                if (Properties.Settings.Default.General_Patches_Priority)
+                    Button_Patches_Priority.Text = "Priority: Bottom to Top";
+                else
+                    Button_Patches_Priority.Text = "Priority: Top to Bottom";
                 #endregion
 
                 #region Restore text fields
@@ -938,18 +943,18 @@ namespace Unify.Environment3
         private void DeserialiseMods() {
             if (Directory.Exists(Properties.Settings.Default.Path_ModsDirectory)) {
                 ListView_ModsList.Items.Clear(); // Clears the mods list
-                Button_UpperPriority.Enabled = Button_DownerPriority.Enabled = false; // Disable priority buttons to prevent index errors
+                Button_Mods_UpperPriority.Enabled = Button_Mods_DownerPriority.Enabled = false; // Disable priority buttons to prevent index errors
                 foreach (string mod in Directory.GetFiles(Properties.Settings.Default.Path_ModsDirectory, "mod.ini", SearchOption.AllDirectories)) {
                     try {
                         string title = INI.DeserialiseKey("Title", mod); // Deserialise 'Title' key
 
                         if (title != string.Empty) {
-                            //Add mod to list, getting information from its mod.ini file
+                            // Add mod to list, getting information from its mod.ini file
                             ListViewItem config = new ListViewItem(new[] {
                                                       title,
-                                                      INI.DeserialiseKey("Version", mod), // Deserialise 'Version' key
-                                                      INI.DeserialiseKey("Author", mod), // Deserialise 'Author' key
-                                                      INI.DeserialiseKey("Platform", mod), // Deserialise 'Platform' key
+                                                      INI.DeserialiseKey("Version", mod),             // Deserialise 'Version' key
+                                                      INI.DeserialiseKey("Author", mod),              // Deserialise 'Author' key
+                                                      INI.DeserialiseKey("Platform", mod),            // Deserialise 'Platform' key
                                                       Literal.Bool(INI.DeserialiseKey("Merge", mod)), // Translates 'True' to 'Yes' and 'False' to 'No'
                                                       string.Empty,
                                                       mod
@@ -967,10 +972,11 @@ namespace Unify.Environment3
         private void DeserialisePatches() {
             if (Directory.Exists(Program.Patches)) {
                 ListView_PatchesList.Items.Clear(); // Clears the patches list
+                Button_Patches_UpperPriority.Enabled = Button_Patches_DownerPriority.Enabled = false; // Disable priority buttons to prevent index errors
                 foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
                     try {
-                        string title       = Lua.DeserialiseParameter("Title", patch, true), // Deserialise 'Title' parameter
-                               blurb       = Lua.DeserialiseParameter("Blurb", patch, true), // Deserialise 'Blurb' parameter
+                        string title       = Lua.DeserialiseParameter("Title", patch, true),       // Deserialise 'Title' parameter
+                               blurb       = Lua.DeserialiseParameter("Blurb", patch, true),       // Deserialise 'Blurb' parameter
                                description = Lua.DeserialiseParameter("Description", patch, true), // Deserialise 'Description' parameter
                                patchInfo   = string.Empty;
 
@@ -979,10 +985,10 @@ namespace Unify.Environment3
                         else                             patchInfo = blurb.Replace(@"\n", " ");
 
                         if (title != string.Empty) {
-                            //Add mod to list, getting information from its mod.ini file
+                            // Add patch to list, getting information from its *.mlua file
                             ListViewItem script = new ListViewItem(new[] {
                                                       title,
-                                                      Lua.DeserialiseParameter("Author", patch, true), // Deserialise 'Author' parameter
+                                                      Lua.DeserialiseParameter("Author", patch, true),   // Deserialise 'Author' parameter
                                                       Lua.DeserialiseParameter("Platform", patch, true), // Deserialise 'Platform' parameter
                                                       patchInfo,
                                                       string.Empty,
@@ -1008,10 +1014,11 @@ namespace Unify.Environment3
                     mods.ReadLine(); // Skip [Main] line
                     while ((line = mods.ReadLine()) != null) { // Read all lines until null
                         try {
-                            if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, line))) {
+                            if (Directory.Exists(Path.Combine(Properties.Settings.Default.Path_ModsDirectory, line)))
                                 // If the item exists, shift it to the top of the list and check it
                                 for (int i = 0; i <= ListView_ModsList.Items.Count - 1; i++)
-                                    if (Paths.GetContainingFolder(ListView_ModsList.Items[i].SubItems[6].Text) == line) {
+                                    if (Paths.GetContainingFolder(ListView_ModsList.Items[i].SubItems[6].Text) == line)
+                                    {
                                         // Store original list item before shifting it in the list
                                         ListViewItem shiftItem = ListView_ModsList.Items[i];
 
@@ -1022,7 +1029,6 @@ namespace Unify.Environment3
                                         ListView_ModsList.Items.Insert(0, shiftItem).Checked = true;
                                         break;
                                     }
-                            }
                         } catch { }
                     }
                 }
@@ -1043,13 +1049,20 @@ namespace Unify.Environment3
                     while ((line = patches.ReadLine()) != null) { // Read all lines until null
                         try {
                             if (File.Exists(Path.Combine(Program.Patches, line))) {
-                                // If the item exists, check it
+                                // If the item exists, shift it to the top of the list and check it
                                 for (int i = 0; i <= ListView_PatchesList.Items.Count - 1; i++)
-                                    foreach (ListViewItem.ListViewSubItem subitem in ListView_PatchesList.Items[i].SubItems)
-                                        if (Path.GetFileName(subitem.Text) == line) {
-                                            ListView_PatchesList.Items[i].Checked = true;
-                                            break;
-                                        }
+                                    if (Path.GetFileName(ListView_PatchesList.Items[i].SubItems[5].Text) == line)
+                                    {
+                                        // Store original list item before shifting it in the list
+                                        ListViewItem shiftItem = ListView_PatchesList.Items[i];
+
+                                        // Remove the mod already in the mods list
+                                        ListView_PatchesList.Items.RemoveAt(i);
+
+                                        // Insert the mod stored previously
+                                        ListView_PatchesList.Items.Insert(0, shiftItem).Checked = true;
+                                        break;
+                                    }
                             }
                         } catch { }
                     }
@@ -1090,26 +1103,6 @@ namespace Unify.Environment3
                             sw.WriteLine(Path.GetFileName(ListView_PatchesList.Items[i].SubItems[5].Text));
                 }
             } catch { }
-        }
-
-        /// <summary>
-        /// Begins the patch installation process.
-        /// </summary>
-        private void InstallPatches() {
-            foreach (ListViewItem patch in ListView_PatchesList.CheckedItems)
-                if (ListView_PatchesList.Items[ListView_PatchesList.Items.IndexOf(patch)].Checked) {
-                    Label_Status.Text = $"Patching {patch.Text}...";
-
-                    // Install the specified patch
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Patching {patch.Text}...");
-                    PatchEngine.InstallPatches(patch.SubItems[5].Text, patch.Text);
-                }
-
-            // Encrypt if decrypted EBOOT
-            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Encrypted game executable...");
-                PatchEngine.EncryptExecutable();
-            }
         }
 
         /// <summary>
@@ -1287,43 +1280,34 @@ namespace Unify.Environment3
         /// Switches between Top to Bottom or Bottom to Top priority.
         /// </summary>
         private void Button_Priority_Click(object sender, EventArgs e) {
-            if (Properties.Settings.Default.General_Priority)
-                Properties.Settings.Default.General_Priority = false;
-            else
-                Properties.Settings.Default.General_Priority = true;
+            if (sender == Button_Mods_Priority) Properties.Settings.Default.General_Mods_Priority = !Properties.Settings.Default.General_Mods_Priority;
+            else if (sender == Button_Patches_Priority) Properties.Settings.Default.General_Patches_Priority = !Properties.Settings.Default.General_Patches_Priority;
             Properties.Settings.Default.Save();
         }
 
         /// <summary>
-        /// Increases or decreases item priority in the list.
+        /// Perform actions if user selects an item in the content list.
         /// </summary>
-        private void Button_Priority_Iteration_Click(object sender, EventArgs e) {
-            if (sender == Button_UpperPriority) {
-                int selectedIndex = ListView_ModsList.SelectedItems[0].Index; // Store the selected index
-                bool check = ListView_ModsList.SelectedItems[0].Checked; // Check state bool
-                ListViewItem shiftItem = ListView_ModsList.SelectedItems[0]; // Store the item
-                ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected item
-                ListView_ModsList.Items.Insert(selectedIndex - 1, shiftItem).Checked = check; // Insert checkbox at selectedIndex
-                ListView_ModsList.Items[selectedIndex - 1].Selected = true; // Selects the recently moved checkbox
-            } else if (sender == Button_DownerPriority) {
-                int selectedIndex = ListView_ModsList.SelectedItems[0].Index; // Store the selected index
-                bool check = ListView_ModsList.SelectedItems[0].Checked; // Check state bool
-                ListViewItem shiftItem = ListView_ModsList.SelectedItems[0]; // Store the item
-                ListView_ModsList.Items.RemoveAt(selectedIndex); // Removes the selected item
-                ListView_ModsList.Items.Insert(selectedIndex + 1, shiftItem).Checked = check; // Insert checkbox at selectedIndex
-                ListView_ModsList.Items[selectedIndex + 1].Selected = true; // Selects the recently moved checkbox
-            }
-        }
+        private void ListView_ContentList_SelectedIndexChanged(object sender, EventArgs e) {
+            ListView list = (ListView)sender;
+            Button upperPriorityIterator  = new Button(),
+                   downerPriorityIterator = new Button();
 
-        /// <summary>
-        /// Perform actions if user selects an item in the mods list.
-        /// </summary>
-        private void ListView_ModsList_SelectedIndexChanged(object sender, EventArgs e) {
+            // Get the buttons to enable/disable
+            if (sender == ListView_ModsList) {
+                upperPriorityIterator = Button_Mods_UpperPriority;
+                downerPriorityIterator = Button_Mods_DownerPriority;
+            }
+            else if (sender == ListView_PatchesList) {
+                upperPriorityIterator = Button_Patches_UpperPriority;
+                downerPriorityIterator = Button_Patches_DownerPriority;
+            }
+
             // Enables/disables the Upper Priority button depending on if a checkbox is selected
-            Button_UpperPriority.Enabled = ListView_ModsList.SelectedItems.Count > 0 && ListView_ModsList.SelectedItems[0].Index > 0;
+            upperPriorityIterator.Enabled = list.SelectedItems.Count > 0 && list.SelectedItems[0].Index > 0;
 
             // Enables/disables the Downer Priority button depending on if a checkbox is selected
-            Button_DownerPriority.Enabled = ListView_ModsList.SelectedItems.Count > 0 && ListView_ModsList.SelectedItems[0].Index < ListView_ModsList.Items.Count - 1;
+            downerPriorityIterator.Enabled = list.SelectedItems.Count > 0 && list.SelectedItems[0].Index < list.Items.Count - 1;
         }
 
         /// <summary>
@@ -2197,7 +2181,8 @@ namespace Unify.Environment3
         /// </summary>
         private void InstallThread(bool mods, bool patches)
         {
-            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable)) {
+            if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable))
+            {
                 ModEngine.skipped.Clear(); // Clear the skipped list
                 SaveChecks(); // Save checked items
                 RefreshLists();
@@ -2219,18 +2204,21 @@ namespace Unify.Environment3
                 }
 
                 if (mods) {
-                    //Top to Bottom Priority
-                    if (Properties.Settings.Default.General_Priority) {
+                    // Top to Bottom Priority
+                    if (Properties.Settings.Default.General_Mods_Priority) {
                         for (int i = ListView_ModsList.Items.Count - 1; i >= 0; i--)
-                            if (ListView_ModsList.Items[i].Checked) {
-                                Label_Status.Text = $"Installing {ListView_ModsList.Items[i].Text}...";
+                            if (ListView_ModsList.Items[i].Checked)
+                            {
+                                ListViewItem @mod = ListView_ModsList.Items[i];
+
+                                Label_Status.Text = $"Installing {@mod.Text}...";
 
                                 // Install the specified mod
                             #if !DEBUG
                                 try {
                             #endif
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {ListView_ModsList.Items[i].Text}...");
-                                    ModEngine.InstallMods(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {@mod.Text}...");
+                                    ModEngine.InstallMods(@mod.SubItems[6].Text, @mod.Text);
                             #if !DEBUG
                                 } catch (Exception ex) {
                                     UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst installing your mods...\n\n{ex}",
@@ -2241,13 +2229,14 @@ namespace Unify.Environment3
 
                                 if (Properties.Settings.Default.General_SaveFileRedirection)
                                     // Redirect save data from the specified mod
-                                    RedirectSaves(ListView_ModsList.Items[i].SubItems[6].Text, ListView_ModsList.Items[i].Text);
+                                    RedirectSaves(@mod.SubItems[6].Text, @mod.Text);
                             }
 
-                    //Bottom to Top Priority
+                    // Bottom to Top Priority
                     } else {
                         foreach (ListViewItem mod in ListView_ModsList.CheckedItems)
-                            if (ListView_ModsList.Items[ListView_ModsList.Items.IndexOf(mod)].Checked) {
+                            if (mod.Checked)
+                            {
                                 Label_Status.Text = $"Installing {mod.Text}...";
 
                                 // Install the specified mod
@@ -2296,6 +2285,91 @@ namespace Unify.Environment3
                     Properties.Settings.Default.Path_GameExecutable = TextBox_GameDirectory.Text = browseGame;
                     Properties.Settings.Default.Save();
                 } else return;
+            }
+        }
+
+        /// <summary>
+        /// Begins the patch installation process.
+        /// </summary>
+        private void InstallPatches() {
+            // Top to Bottom Priority
+            if (Properties.Settings.Default.General_Patches_Priority)
+                for (int i = ListView_PatchesList.Items.Count - 1; i >= 0; i--)
+                {
+                    ListViewItem @patch = ListView_PatchesList.Items[i];
+
+                    if (@patch.Checked)
+                    {
+                        Label_Status.Text = $"Patching {@patch.Text}...";
+
+                        // Install the specified patch
+                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Patching {@patch.Text}...");
+                        PatchEngine.InstallPatches(@patch.SubItems[5].Text, @patch.Text);
+                    }
+                }
+
+            // Bottom to Top Priority
+            else
+                foreach (ListViewItem patch in ListView_PatchesList.CheckedItems)
+                    if (patch.Checked)
+                    {
+                        Label_Status.Text = $"Patching {patch.Text}...";
+
+                        // Install the specified patch
+                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Patching {patch.Text}...");
+                        PatchEngine.InstallPatches(patch.SubItems[5].Text, patch.Text);
+                    }
+
+            // Encrypt if decrypted EBOOT
+            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") {
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Encrypted game executable...");
+                PatchEngine.EncryptExecutable();
+            }
+        }
+
+        /// <summary>
+        /// Increases or decreases item priority in the list.
+        /// </summary>
+        private void Button_Priority_Iteration_MouseUp(object sender, MouseEventArgs e)
+        {
+            ListView list = new ListView();
+
+            // Get the list to modify
+            if (sender == Button_Mods_UpperPriority || sender == Button_Mods_DownerPriority) list = ListView_ModsList;
+            else if (sender == Button_Patches_UpperPriority || sender == Button_Patches_DownerPriority) list = ListView_PatchesList;
+
+            int selectedIndex = list.SelectedItems[0].Index; // Store the selected index
+            bool check = list.SelectedItems[0].Checked;      // Check state bool
+            ListViewItem shiftItem = list.SelectedItems[0];  // Store the item
+
+            // Iterate once...
+            if (e.Button == MouseButtons.Left) {
+                // Iterate item in list by sender
+                if (sender == Button_Mods_UpperPriority || sender == Button_Patches_UpperPriority) {
+                    list.Items.RemoveAt(selectedIndex);                              // Removes the selected item
+                    list.Items.Insert(selectedIndex - 1, shiftItem).Checked = check; // Insert checkbox at selectedIndex
+                    list.Items[selectedIndex - 1].Selected = true;                   // Selects the recently moved checkbox
+                }
+                else if (sender == Button_Mods_DownerPriority || sender == Button_Patches_DownerPriority) {
+                    list.Items.RemoveAt(selectedIndex);                              // Removes the selected item
+                    list.Items.Insert(selectedIndex + 1, shiftItem).Checked = check; // Insert checkbox at selectedIndex
+                    list.Items[selectedIndex + 1].Selected = true;                   // Selects the recently moved checkbox
+                }
+            }
+
+            // Iterate fully...
+            else if (e.Button == MouseButtons.Right) {
+                // Iterate item in list by sender
+                if (sender == Button_Mods_UpperPriority || sender == Button_Patches_UpperPriority) {
+                    list.Items.RemoveAt(selectedIndex);              // Removes the selected item
+                    list.Items.Insert(0, shiftItem).Checked = check; // Insert checkbox at selectedIndex
+                    list.Items[0].Selected = true;                   // Selects the recently moved checkbox
+                }
+                else if (sender == Button_Mods_DownerPriority || sender == Button_Patches_DownerPriority) {
+                    list.Items.RemoveAt(selectedIndex);                               // Removes the selected item
+                    list.Items.Insert(list.Items.Count, shiftItem).Checked = check; // Insert checkbox at selectedIndex
+                    list.Items[list.Items.Count - 1].Selected = true;                   // Selects the recently moved checkbox
+                }
             }
         }
     }

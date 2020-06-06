@@ -308,11 +308,11 @@ namespace Unify.Serialisers
                                 sw.WriteLine("[Main]"); // [Main] specification
 
                             // Writes in reverse so the patches list writes it in it's preferred order
-                            for (int i = patches.Count - 1; i >= 0; i--) {
+                            foreach (string patch in patches) {
                                 using (StreamWriter sw = File.AppendText(patchCheckList)) {
                                     // Write patch name by file name to prevent duplicate patch names conflicting
-                                    sw.WriteLine(patches[i]);
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Written patch '{patches[i]}' to configuration");
+                                    sw.WriteLine(patch);
+                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Written patch '{patch}' to configuration");
                                 }
                             }
                         } catch { }

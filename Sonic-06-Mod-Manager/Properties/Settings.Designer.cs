@@ -74,12 +74,12 @@ namespace Unify.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool General_Priority {
+        public bool General_Mods_Priority {
             get {
-                return ((bool)(this["General_Priority"]));
+                return ((bool)(this["General_Mods_Priority"]));
             }
             set {
-                this["General_Priority"] = value;
+                this["General_Mods_Priority"] = value;
             }
         }
         
@@ -476,6 +476,18 @@ namespace Unify.Properties {
             }
             set {
                 this["Debug_AllowModStacking"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool General_Patches_Priority {
+            get {
+                return ((bool)(this["General_Patches_Priority"]));
+            }
+            set {
+                this["General_Patches_Priority"] = value;
             }
         }
     }

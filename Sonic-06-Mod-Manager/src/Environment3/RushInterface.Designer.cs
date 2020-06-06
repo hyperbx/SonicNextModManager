@@ -30,6 +30,7 @@ namespace Unify.Environment3
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RushInterface));
             this.StatusStrip_Main = new System.Windows.Forms.StatusStrip();
             this.Label_Status = new System.Windows.Forms.Label();
@@ -37,14 +38,17 @@ namespace Unify.Environment3
             this.SplitContainer_MainControls = new System.Windows.Forms.SplitContainer();
             this.SectionButton_InstallMods = new Unify.Environment3.SectionButton();
             this.SectionButton_LaunchGame = new Unify.Environment3.SectionButton();
+            this.ToolTip_Information = new System.Windows.Forms.ToolTip(this.components);
+            this.Button_Mods_UpperPriority = new System.Windows.Forms.Button();
+            this.Button_Mods_DownerPriority = new System.Windows.Forms.Button();
+            this.Button_Patches_DownerPriority = new System.Windows.Forms.Button();
+            this.Button_Patches_UpperPriority = new System.Windows.Forms.Button();
             this.TabControl_Rush = new Unify.Environment3.UnifyTabControl();
             this.Tab_Section_Mods = new System.Windows.Forms.TabPage();
             this.SplitContainer_ModsControls = new System.Windows.Forms.SplitContainer();
             this.SectionButton_SaveChecks = new Unify.Environment3.SectionButton();
             this.SectionButton_RefreshMods = new Unify.Environment3.SectionButton();
-            this.Button_Priority = new System.Windows.Forms.Button();
-            this.Button_DownerPriority = new System.Windows.Forms.Button();
-            this.Button_UpperPriority = new System.Windows.Forms.Button();
+            this.Button_Mods_Priority = new System.Windows.Forms.Button();
             this.Button_Mods_DeselectAll = new System.Windows.Forms.Button();
             this.Button_Mods_SelectAll = new System.Windows.Forms.Button();
             this.Panel_ModBackdrop = new System.Windows.Forms.Panel();
@@ -92,10 +96,11 @@ namespace Unify.Environment3
             this.Label_SaveData = new System.Windows.Forms.Label();
             this.Label_Optional_SaveData = new System.Windows.Forms.Label();
             this.Tab_Section_Patches = new System.Windows.Forms.TabPage();
-            this.SplitContainer_PatchesControls = new System.Windows.Forms.SplitContainer();
-            this.Button_Patches_SelectAll = new System.Windows.Forms.Button();
-            this.SectionButton_SaveCheckedPatches = new Unify.Environment3.SectionButton();
+            this.Button_Patches_Priority = new System.Windows.Forms.Button();
             this.Button_Patches_DeselectAll = new System.Windows.Forms.Button();
+            this.Button_Patches_SelectAll = new System.Windows.Forms.Button();
+            this.SplitContainer_PatchesControls = new System.Windows.Forms.SplitContainer();
+            this.SectionButton_SaveCheckedPatches = new Unify.Environment3.SectionButton();
             this.SectionButton_RefreshPatches = new Unify.Environment3.SectionButton();
             this.Panel_PatchBackdrop = new System.Windows.Forms.Panel();
             this.ListView_PatchesList = new System.Windows.Forms.ListView();
@@ -379,10 +384,87 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1356, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1386, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
+            // 
+            // ToolTip_Information
+            // 
+            this.ToolTip_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.ToolTip_Information.ToolTipTitle = "Information";
+            // 
+            // Button_Mods_UpperPriority
+            // 
+            this.Button_Mods_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Mods_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Mods_UpperPriority.Enabled = false;
+            this.Button_Mods_UpperPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Mods_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Mods_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Mods_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Mods_UpperPriority.Location = new System.Drawing.Point(346, 949);
+            this.Button_Mods_UpperPriority.Name = "Button_Mods_UpperPriority";
+            this.Button_Mods_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Mods_UpperPriority.TabIndex = 47;
+            this.Button_Mods_UpperPriority.Text = "▲";
+            this.ToolTip_Information.SetToolTip(this.Button_Mods_UpperPriority, "Right-click to move the mod to the top of the list...");
+            this.Button_Mods_UpperPriority.UseVisualStyleBackColor = false;
+            this.Button_Mods_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Mods_DownerPriority
+            // 
+            this.Button_Mods_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Mods_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Mods_DownerPriority.Enabled = false;
+            this.Button_Mods_DownerPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Mods_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Mods_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Mods_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Mods_DownerPriority.Location = new System.Drawing.Point(377, 949);
+            this.Button_Mods_DownerPriority.Name = "Button_Mods_DownerPriority";
+            this.Button_Mods_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Mods_DownerPriority.TabIndex = 48;
+            this.Button_Mods_DownerPriority.Text = "▼";
+            this.ToolTip_Information.SetToolTip(this.Button_Mods_DownerPriority, "Right-click to move the mod to the bottom of the list...");
+            this.Button_Mods_DownerPriority.UseVisualStyleBackColor = false;
+            this.Button_Mods_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Patches_DownerPriority
+            // 
+            this.Button_Patches_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Patches_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Patches_DownerPriority.Enabled = false;
+            this.Button_Patches_DownerPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Patches_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_DownerPriority.Location = new System.Drawing.Point(377, 949);
+            this.Button_Patches_DownerPriority.Name = "Button_Patches_DownerPriority";
+            this.Button_Patches_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Patches_DownerPriority.TabIndex = 55;
+            this.Button_Patches_DownerPriority.Text = "▼";
+            this.ToolTip_Information.SetToolTip(this.Button_Patches_DownerPriority, "Right-click to move the patch to the bottom of the list...");
+            this.Button_Patches_DownerPriority.UseVisualStyleBackColor = false;
+            this.Button_Patches_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Patches_UpperPriority
+            // 
+            this.Button_Patches_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Patches_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Patches_UpperPriority.Enabled = false;
+            this.Button_Patches_UpperPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Patches_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_UpperPriority.Location = new System.Drawing.Point(346, 949);
+            this.Button_Patches_UpperPriority.Name = "Button_Patches_UpperPriority";
+            this.Button_Patches_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Patches_UpperPriority.TabIndex = 54;
+            this.Button_Patches_UpperPriority.Text = "▲";
+            this.ToolTip_Information.SetToolTip(this.Button_Patches_UpperPriority, "Right-click to move the patch to the top of the list...");
+            this.Button_Patches_UpperPriority.UseVisualStyleBackColor = false;
+            this.Button_Patches_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
             // 
             // TabControl_Rush
             // 
@@ -423,9 +505,9 @@ namespace Unify.Environment3
             // 
             this.Tab_Section_Mods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.Tab_Section_Mods.Controls.Add(this.SplitContainer_ModsControls);
-            this.Tab_Section_Mods.Controls.Add(this.Button_Priority);
-            this.Tab_Section_Mods.Controls.Add(this.Button_DownerPriority);
-            this.Tab_Section_Mods.Controls.Add(this.Button_UpperPriority);
+            this.Tab_Section_Mods.Controls.Add(this.Button_Mods_Priority);
+            this.Tab_Section_Mods.Controls.Add(this.Button_Mods_DownerPriority);
+            this.Tab_Section_Mods.Controls.Add(this.Button_Mods_UpperPriority);
             this.Tab_Section_Mods.Controls.Add(this.Button_Mods_DeselectAll);
             this.Tab_Section_Mods.Controls.Add(this.Button_Mods_SelectAll);
             this.Tab_Section_Mods.Controls.Add(this.Panel_ModBackdrop);
@@ -485,59 +567,25 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2210, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2255, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
             // 
-            // Button_Priority
+            // Button_Mods_Priority
             // 
-            this.Button_Priority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Priority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Priority.FlatAppearance.BorderSize = 0;
-            this.Button_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Priority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Priority.Location = new System.Drawing.Point(409, 949);
-            this.Button_Priority.Name = "Button_Priority";
-            this.Button_Priority.Size = new System.Drawing.Size(178, 23);
-            this.Button_Priority.TabIndex = 49;
-            this.Button_Priority.Text = "Priority: Top to Bottom";
-            this.Button_Priority.UseVisualStyleBackColor = false;
-            this.Button_Priority.Click += new System.EventHandler(this.Button_Priority_Click);
-            // 
-            // Button_DownerPriority
-            // 
-            this.Button_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_DownerPriority.Enabled = false;
-            this.Button_DownerPriority.FlatAppearance.BorderSize = 0;
-            this.Button_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_DownerPriority.Location = new System.Drawing.Point(377, 949);
-            this.Button_DownerPriority.Name = "Button_DownerPriority";
-            this.Button_DownerPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_DownerPriority.TabIndex = 48;
-            this.Button_DownerPriority.Text = "▼";
-            this.Button_DownerPriority.UseVisualStyleBackColor = false;
-            this.Button_DownerPriority.Click += new System.EventHandler(this.Button_Priority_Iteration_Click);
-            // 
-            // Button_UpperPriority
-            // 
-            this.Button_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_UpperPriority.Enabled = false;
-            this.Button_UpperPriority.FlatAppearance.BorderSize = 0;
-            this.Button_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_UpperPriority.Location = new System.Drawing.Point(346, 949);
-            this.Button_UpperPriority.Name = "Button_UpperPriority";
-            this.Button_UpperPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_UpperPriority.TabIndex = 47;
-            this.Button_UpperPriority.Text = "▲";
-            this.Button_UpperPriority.UseVisualStyleBackColor = false;
-            this.Button_UpperPriority.Click += new System.EventHandler(this.Button_Priority_Iteration_Click);
+            this.Button_Mods_Priority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Mods_Priority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Mods_Priority.FlatAppearance.BorderSize = 0;
+            this.Button_Mods_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Mods_Priority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Mods_Priority.Location = new System.Drawing.Point(409, 949);
+            this.Button_Mods_Priority.Name = "Button_Mods_Priority";
+            this.Button_Mods_Priority.Size = new System.Drawing.Size(178, 23);
+            this.Button_Mods_Priority.TabIndex = 49;
+            this.Button_Mods_Priority.Text = "Priority: Top to Bottom";
+            this.Button_Mods_Priority.UseVisualStyleBackColor = false;
+            this.Button_Mods_Priority.Click += new System.EventHandler(this.Button_Priority_Click);
             // 
             // Button_Mods_DeselectAll
             // 
@@ -614,7 +662,7 @@ namespace Unify.Environment3
             this.ListView_ModsList.View = System.Windows.Forms.View.Details;
             this.ListView_ModsList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView_DrawColumnHeader);
             this.ListView_ModsList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView_DrawItem);
-            this.ListView_ModsList.SelectedIndexChanged += new System.EventHandler(this.ListView_ModsList_SelectedIndexChanged);
+            this.ListView_ModsList.SelectedIndexChanged += new System.EventHandler(this.ListView_ContentList_SelectedIndexChanged);
             this.ListView_ModsList.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView_DragDrop);
             this.ListView_ModsList.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView_DragEnter);
             this.ListView_ModsList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView_MouseClick);
@@ -1146,6 +1194,11 @@ namespace Unify.Environment3
             // Tab_Section_Patches
             // 
             this.Tab_Section_Patches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.Tab_Section_Patches.Controls.Add(this.Button_Patches_Priority);
+            this.Tab_Section_Patches.Controls.Add(this.Button_Patches_DownerPriority);
+            this.Tab_Section_Patches.Controls.Add(this.Button_Patches_UpperPriority);
+            this.Tab_Section_Patches.Controls.Add(this.Button_Patches_DeselectAll);
+            this.Tab_Section_Patches.Controls.Add(this.Button_Patches_SelectAll);
             this.Tab_Section_Patches.Controls.Add(this.SplitContainer_PatchesControls);
             this.Tab_Section_Patches.Controls.Add(this.Panel_PatchBackdrop);
             this.Tab_Section_Patches.Location = new System.Drawing.Point(4, 20);
@@ -1155,43 +1208,70 @@ namespace Unify.Environment3
             this.Tab_Section_Patches.Text = "Patches";
             this.Tab_Section_Patches.Visible = false;
             // 
+            // Button_Patches_Priority
+            // 
+            this.Button_Patches_Priority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Patches_Priority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Patches_Priority.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_Priority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_Priority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_Priority.Location = new System.Drawing.Point(409, 949);
+            this.Button_Patches_Priority.Name = "Button_Patches_Priority";
+            this.Button_Patches_Priority.Size = new System.Drawing.Size(178, 23);
+            this.Button_Patches_Priority.TabIndex = 56;
+            this.Button_Patches_Priority.Text = "Priority: Top to Bottom";
+            this.Button_Patches_Priority.UseVisualStyleBackColor = false;
+            this.Button_Patches_Priority.Click += new System.EventHandler(this.Button_Priority_Click);
+            // 
+            // Button_Patches_DeselectAll
+            // 
+            this.Button_Patches_DeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_Patches_DeselectAll.BackColor = System.Drawing.Color.Tomato;
+            this.Button_Patches_DeselectAll.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(175, 949);
+            this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
+            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(165, 23);
+            this.Button_Patches_DeselectAll.TabIndex = 48;
+            this.Button_Patches_DeselectAll.Text = "Deselect All";
+            this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
+            this.Button_Patches_DeselectAll.Click += new System.EventHandler(this.Button_Selection_Click);
+            // 
+            // Button_Patches_SelectAll
+            // 
+            this.Button_Patches_SelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_Patches_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
+            this.Button_Patches_SelectAll.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_SelectAll.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_SelectAll.Location = new System.Drawing.Point(3, 949);
+            this.Button_Patches_SelectAll.Name = "Button_Patches_SelectAll";
+            this.Button_Patches_SelectAll.Size = new System.Drawing.Size(166, 23);
+            this.Button_Patches_SelectAll.TabIndex = 47;
+            this.Button_Patches_SelectAll.Text = "Select All";
+            this.Button_Patches_SelectAll.UseVisualStyleBackColor = false;
+            this.Button_Patches_SelectAll.Click += new System.EventHandler(this.Button_Selection_Click);
+            // 
             // SplitContainer_PatchesControls
             // 
             this.SplitContainer_PatchesControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SplitContainer_PatchesControls.IsSplitterFixed = true;
-            this.SplitContainer_PatchesControls.Location = new System.Drawing.Point(1, 949);
+            this.SplitContainer_PatchesControls.Location = new System.Drawing.Point(1, 978);
             this.SplitContainer_PatchesControls.Name = "SplitContainer_PatchesControls";
             // 
             // SplitContainer_PatchesControls.Panel1
             // 
-            this.SplitContainer_PatchesControls.Panel1.Controls.Add(this.Button_Patches_SelectAll);
             this.SplitContainer_PatchesControls.Panel1.Controls.Add(this.SectionButton_SaveCheckedPatches);
             // 
             // SplitContainer_PatchesControls.Panel2
             // 
-            this.SplitContainer_PatchesControls.Panel2.Controls.Add(this.Button_Patches_DeselectAll);
             this.SplitContainer_PatchesControls.Panel2.Controls.Add(this.SectionButton_RefreshPatches);
-            this.SplitContainer_PatchesControls.Size = new System.Drawing.Size(586, 64);
+            this.SplitContainer_PatchesControls.Size = new System.Drawing.Size(586, 35);
             this.SplitContainer_PatchesControls.SplitterDistance = 292;
             this.SplitContainer_PatchesControls.SplitterWidth = 1;
             this.SplitContainer_PatchesControls.TabIndex = 53;
-            // 
-            // Button_Patches_SelectAll
-            // 
-            this.Button_Patches_SelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Patches_SelectAll.BackColor = System.Drawing.Color.SkyBlue;
-            this.Button_Patches_SelectAll.FlatAppearance.BorderSize = 0;
-            this.Button_Patches_SelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Patches_SelectAll.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_SelectAll.Location = new System.Drawing.Point(2, 0);
-            this.Button_Patches_SelectAll.Name = "Button_Patches_SelectAll";
-            this.Button_Patches_SelectAll.Size = new System.Drawing.Size(288, 23);
-            this.Button_Patches_SelectAll.TabIndex = 47;
-            this.Button_Patches_SelectAll.Text = "Select All";
-            this.Button_Patches_SelectAll.UseVisualStyleBackColor = false;
-            this.Button_Patches_SelectAll.Click += new System.EventHandler(this.Button_Selection_Click);
             // 
             // SectionButton_SaveCheckedPatches
             // 
@@ -1200,7 +1280,7 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SectionButton_SaveCheckedPatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.SectionButton_SaveCheckedPatches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_SaveCheckedPatches.Location = new System.Drawing.Point(2, 29);
+            this.SectionButton_SaveCheckedPatches.Location = new System.Drawing.Point(2, 0);
             this.SectionButton_SaveCheckedPatches.Name = "SectionButton_SaveCheckedPatches";
             this.SectionButton_SaveCheckedPatches.SectionImage = global::Unify.Properties.Resources.CheckBox_16x_24;
             this.SectionButton_SaveCheckedPatches.SectionText = "Save checked patches";
@@ -1210,22 +1290,6 @@ namespace Unify.Environment3
             this.SectionButton_SaveCheckedPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_SaveCheckedPatches.Click += new System.EventHandler(this.SectionButton_SaveChecks_Click);
             // 
-            // Button_Patches_DeselectAll
-            // 
-            this.Button_Patches_DeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Patches_DeselectAll.BackColor = System.Drawing.Color.Tomato;
-            this.Button_Patches_DeselectAll.FlatAppearance.BorderSize = 0;
-            this.Button_Patches_DeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Patches_DeselectAll.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_DeselectAll.Location = new System.Drawing.Point(3, 0);
-            this.Button_Patches_DeselectAll.Name = "Button_Patches_DeselectAll";
-            this.Button_Patches_DeselectAll.Size = new System.Drawing.Size(308, 23);
-            this.Button_Patches_DeselectAll.TabIndex = 48;
-            this.Button_Patches_DeselectAll.Text = "Deselect All";
-            this.Button_Patches_DeselectAll.UseVisualStyleBackColor = false;
-            this.Button_Patches_DeselectAll.Click += new System.EventHandler(this.Button_Selection_Click);
-            // 
             // SectionButton_RefreshPatches
             // 
             this.SectionButton_RefreshPatches.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1233,12 +1297,12 @@ namespace Unify.Environment3
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SectionButton_RefreshPatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
             this.SectionButton_RefreshPatches.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SectionButton_RefreshPatches.Location = new System.Drawing.Point(0, 29);
+            this.SectionButton_RefreshPatches.Location = new System.Drawing.Point(0, 0);
             this.SectionButton_RefreshPatches.Name = "SectionButton_RefreshPatches";
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1607, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1652, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1286,6 +1350,7 @@ namespace Unify.Environment3
             this.ListView_PatchesList.View = System.Windows.Forms.View.Details;
             this.ListView_PatchesList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView_DrawColumnHeader);
             this.ListView_PatchesList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView_DrawItem);
+            this.ListView_PatchesList.SelectedIndexChanged += new System.EventHandler(this.ListView_ContentList_SelectedIndexChanged);
             this.ListView_PatchesList.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView_DragDrop);
             this.ListView_PatchesList.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView_DragEnter);
             this.ListView_PatchesList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView_MouseClick);
@@ -3538,9 +3603,9 @@ namespace Unify.Environment3
         private System.Windows.Forms.ColumnHeader Column_ModsList_System;
         private System.Windows.Forms.ColumnHeader Column_ModsList_Merge;
         private System.Windows.Forms.ColumnHeader Column_ModsList_Blank;
-        private System.Windows.Forms.Button Button_Priority;
-        private System.Windows.Forms.Button Button_DownerPriority;
-        private System.Windows.Forms.Button Button_UpperPriority;
+        private System.Windows.Forms.Button Button_Mods_Priority;
+        private System.Windows.Forms.Button Button_Mods_DownerPriority;
+        private System.Windows.Forms.Button Button_Mods_UpperPriority;
         private System.Windows.Forms.Button Button_Mods_DeselectAll;
         private System.Windows.Forms.Button Button_Mods_SelectAll;
         private SectionButton SectionButton_InstallMods;
@@ -3720,5 +3785,9 @@ namespace Unify.Environment3
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox CheckBox_AllowModStacking;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button Button_Patches_Priority;
+        private System.Windows.Forms.Button Button_Patches_DownerPriority;
+        private System.Windows.Forms.Button Button_Patches_UpperPriority;
+        private System.Windows.Forms.ToolTip ToolTip_Information;
     }
 }
