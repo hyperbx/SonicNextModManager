@@ -465,6 +465,19 @@ namespace Unify.Patcher
                                     WriteByte(Literal.CoreReplace(_WriteByte[0]), Convert.ToInt32(_WriteByte[1], 16), Convert.ToByte(_WriteByte[2], 16));
                                 break;
 
+                                // Writes a byte array to the specified offset in the file.
+                                case string x when x.StartsWith("WriteBytes("):
+                                    // Deserialise 'WriteBytes' parameter
+                                    string[] _WriteBytes = Lua.DeserialiseParameterList("WriteBytes", line, false);
+
+                                    // Convert the string to a byte array
+                                    byte[] _WriteBytesArray = Bytes.StringToByteArray(_WriteBytes[2].Replace(" ", ""));
+
+                                    // Iterate through byte array to write from the offset
+                                    for (int i = 0; i < _WriteBytesArray.Length; i++)
+                                        WriteByte(Literal.CoreReplace(_WriteBytes[0]), Convert.ToInt32(_WriteBytes[1], 16) + i, _WriteBytesArray[i]);
+                                break;
+
                                 // Writes null bytes to the specified offset in the file.
                                 case string x when x.StartsWith("WriteNullBytes("):
                                     // Deserialise 'WriteNullBytes' parameter
