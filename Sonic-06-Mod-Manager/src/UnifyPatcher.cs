@@ -925,14 +925,17 @@ namespace Unify.Patcher
             int lineCount = 0;
 
             value = value.Replace("\\\"", "\"");
-            foreach (string line in script) {
-                if (line.StartsWith(parameter)) {
+            foreach (string line in script)
+            {
+                if (line.StartsWith(parameter))
+                {
                     string[] split = line.Split(' ');
                     split[2] = value;
                     for (int i = 3; i < split.Count(); i++) split[i] = string.Empty;
                     script[lineCount] = string.Join(" ", split);
                     break;
                 }
+
                 lineCount++;
             }
 
@@ -971,13 +974,16 @@ namespace Unify.Patcher
             string[] script = File.ReadAllLines(location);
             int lineCount = 0;
 
-            foreach (string line in script) {
-                if (line.StartsWith(parameter)) {
+            foreach (string line in script)
+            {
+                if (line.StartsWith(parameter))
+                {
                     string[] split = line.Split(' ');
                     split[0] = _new;
                     script[lineCount] = string.Join(" ", split);
                     break;
                 }
+
                 lineCount++;
             }
 
@@ -1001,6 +1007,7 @@ namespace Unify.Patcher
                 Text = text,
                 Placeholder = placeholder
             };
+
             mst.entries.Add(entry);
 
             mst.Save(location, true);
@@ -1019,8 +1026,10 @@ namespace Unify.Patcher
             mst.Load(location);
 
             bool entryFound = false;
-            for (int i = 0; i < mst.entries.Count; i++) {
-                if (mst.entries[i].Name == name) {
+            for (int i = 0; i < mst.entries.Count; i++)
+            {
+                if (mst.entries[i].Name == name)
+                {
                     entryFound = true;
                     mst.entries[i].Text = text;
                     mst.entries[i].Placeholder = placeholder;
@@ -1028,12 +1037,14 @@ namespace Unify.Patcher
             }
 
             // If the entry doesn't exist, create a new one
-            if (!entryFound) {
+            if (!entryFound)
+            {
                 MSTEntries newEntry = new MSTEntries {
                     Name = name,
                     Text = text,
                     Placeholder = placeholder
                 };
+
                 mst.entries.Add(newEntry);
             }
 
@@ -1068,12 +1079,15 @@ namespace Unify.Patcher
             S06Package pkg = new S06Package();
             pkg.Load(location);
 
-            foreach (var type in pkg.Types) {
-                if (type.TypeName == _type) {
+            foreach (var type in pkg.Types)
+            {
+                if (type.TypeName == _type)
+                {
                     S06FileEntry file = new S06FileEntry {
                         FilePath = filePath,
                         FriendlyName = friendlyName
                     };
+
                     type.Files.Add(file);
                 }
             }
@@ -1094,11 +1108,13 @@ namespace Unify.Patcher
             pkg.Load(location);
 
             foreach (var type in pkg.Types)
+            {
                 if (type.TypeName == _type)
                 {
                     bool friendlyNameFound = false;
 
                     for (int i = 0; i < type.Files.Count; i++)
+                    {
                         if (!string.IsNullOrEmpty(filePath))
                         {
                             // Replace file path if the friendly name exists
@@ -1109,17 +1125,28 @@ namespace Unify.Patcher
                             }
                         }
                         else
-                            type.Files.RemoveAt(i);
+                        {
+                            // Replace file path if the friendly name exists
+                            if (type.Files[i].FriendlyName == friendlyName)
+                            {
+                                friendlyNameFound = true;
+                                type.Files.RemoveAt(i);
+                            }
+                        }
+                    }
 
                     // If the friendly name doesn't exist, create a new reference
-                    if (!friendlyNameFound) {
+                    if (!friendlyNameFound)
+                    {
                         S06FileEntry newFile = new S06FileEntry {
                             FilePath = filePath,
                             FriendlyName = friendlyName
                         };
+
                         type.Files.Add(newFile);
                     }
                 }
+            }
 
             pkg.Save(location, true);
         }
@@ -1153,7 +1180,9 @@ namespace Unify.Patcher
             string[] readText = File.ReadAllLines(_file); //Read the Lub into an array
 
             if (readText[0].Contains("LuaP"))
-                using (Process process = new Process()) {
+            {
+                using (Process process = new Process())
+                {
                     process.StartInfo.FileName = "java.exe";
                     process.StartInfo.Arguments = $"-jar \"{Program.unlub}\" \"{_file}\"";
                     process.StartInfo.UseShellExecute = false;
@@ -1169,6 +1198,7 @@ namespace Unify.Patcher
 
                     File.WriteAllText(_file, outputBuilder.ToString());
                 }
+            }
         }
     }
 
