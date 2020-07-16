@@ -306,23 +306,36 @@ namespace Unify.Patcher
                 if (drive.IsReady && drive.Name == Path.GetPathRoot(Environment.SystemDirectory))
                     if (drive.AvailableFreeSpace > new FileInfo(arc).Length)
                     {
-                        Directory.CreateDirectory(tempPath); // Create temporary location
-                        File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc))); // Copy archive to temporary location
-
-                        // Extracts the archive in the temporary location
-                        var unpack = new ProcessStartInfo()
+                        try
                         {
-                            FileName = Program.Arctool,
-                            Arguments = $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"",
-                            WorkingDirectory = Path.GetDirectoryName(Program.Arctool),
-                            WindowStyle = ProcessWindowStyle.Hidden
-                        };
+                            Directory.CreateDirectory(tempPath); // Create temporary location
+                            File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc))); // Copy archive to temporary location
 
-                        var Unpack = Process.Start(unpack);
-                        Unpack.WaitForExit();
-                        Unpack.Close();
+                            // Extracts the archive in the temporary location
+                            var unpack = new ProcessStartInfo()
+                            {
+                                FileName = Program.Arctool,
+                                Arguments = $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"",
+                                WorkingDirectory = Path.GetDirectoryName(Program.Arctool),
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            };
 
-                        return tempPath;
+                            var Unpack = Process.Start(unpack);
+                            Unpack.WaitForExit();
+                            Unpack.Close();
+
+                            return tempPath;
+                        }
+                        catch (System.ComponentModel.Win32Exception ex)
+                        {
+                            if (!File.Exists(Program.Arctool))
+                            {
+                                skipped.Add($"► {Path.GetFileName(arc)} (a required pre-requisite is missing - check the debug log for more information)");
+                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {Properties.Resources.Exception_ArctoolMissing + Program.Arctool}\n{ex}");
+                            }
+                            
+                            return string.Empty;
+                        }
                     }
                     else
                         throw new InsufficientMemoryException($"Unable to extract '{Path.GetFileName(arc)}' due to insufficient drive space...");
@@ -333,46 +346,62 @@ namespace Unify.Patcher
         /// <summary>
         /// Repacks an archive from a temporary location.
         /// </summary>
-        public static void RepackARC(string arc, string output) {
-            ArcPacker repack = new ArcPacker();
-            repack.WriteArc(output, Path.Combine(arc, Path.GetFileNameWithoutExtension(output)));
+        public static void RepackARC(string arc, string output)
+        {
+            if (arc != string.Empty)
+            {
+                ArcPacker repack = new ArcPacker();
+                repack.WriteArc(output, Path.Combine(arc, Path.GetFileNameWithoutExtension(output)));
 
-            // Erases temporary repack data
-            try {
-                DirectoryInfo tempData = new DirectoryInfo(arc);
-                if (Directory.Exists(arc)) {
-                    foreach (FileInfo file in tempData.GetFiles()) file.Delete();
-                    foreach (DirectoryInfo directory in tempData.GetDirectories()) directory.Delete(true);
-                    Directory.Delete(arc);
-                }
-            } catch { }
+                // Erases temporary repack data
+                try {
+                    DirectoryInfo tempData = new DirectoryInfo(arc);
+                    if (Directory.Exists(arc)) {
+                        foreach (FileInfo file in tempData.GetFiles()) file.Delete();
+                        foreach (DirectoryInfo directory in tempData.GetDirectories()) directory.Delete(true);
+                        Directory.Delete(arc);
+                    }
+                } catch { }
+            }
         }
 
         /// <summary>
         /// Merges two archives into a single archive.
         /// </summary>
-        public static void Merge(string arc1, string arc2) {
-            string tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()); // Defines the temporary path.
-            Directory.CreateDirectory(tempPath);
-            string unpack1 = UnpackARC(arc1, tempPath);
-            ProcessStartInfo arctool;
+        public static void Merge(string arc1, string arc2)
+        {
+            try
+            {
+                string tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()); // Defines the temporary path.
+                Directory.CreateDirectory(tempPath);
+                string unpack1 = UnpackARC(arc1, tempPath);
+                ProcessStartInfo arctool;
 
-            File.Copy(arc2, Path.Combine(tempPath, Path.GetFileName(arc2)), true); // Copies the input ARC to the temporary path.
+                File.Copy(arc2, Path.Combine(tempPath, Path.GetFileName(arc2)), true); // Copies the input ARC to the temporary path.
 
-            // Defines the arctool process.
-            arctool = new ProcessStartInfo() {
-                FileName = Program.Arctool,
-                Arguments = $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc2))}\"",
-                WorkingDirectory = Path.GetDirectoryName(Program.Arctool),
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+                // Defines the arctool process.
+                arctool = new ProcessStartInfo() {
+                    FileName = Program.Arctool,
+                    Arguments = $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc2))}\"",
+                    WorkingDirectory = Path.GetDirectoryName(Program.Arctool),
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
 
-            var Unpack2 = Process.Start(arctool); // Unpacks the merge ARC.
-            Unpack2.WaitForExit();
+                var Unpack2 = Process.Start(arctool); // Unpacks the merge ARC.
+                Unpack2.WaitForExit();
 
-            File.Delete(Path.Combine(tempPath, Path.GetFileName(arc2))); // Deletes the temporary merge ARC.
+                File.Delete(Path.Combine(tempPath, Path.GetFileName(arc2))); // Deletes the temporary merge ARC.
 
-            RepackARC(unpack1, arc1);
+                RepackARC(unpack1, arc1);
+            }
+            catch (System.ComponentModel.Win32Exception ex)
+            {
+                if (!File.Exists(Program.Arctool))
+                {
+                    skipped.Add($"► {Path.GetFileName(arc1)} (a required pre-requisite is missing - check the debug log for more information)");
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {Properties.Resources.Exception_ArctoolMissing + Program.Arctool}\n{ex}");
+                }
+            }
         }
     }
 

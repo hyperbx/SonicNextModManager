@@ -92,7 +92,15 @@ namespace Unify
                     Properties.Settings.Default.General_FirstLaunch = false;
                     Properties.Settings.Default.Save();
                     FormClosing -= UnifySetup_FormClosing;
-            }      
+            }    
+
+            if (!Program.CheckJava())
+            {
+                DialogResult javaWarning = UnifyMessenger.UnifyMessage.ShowDialog("No Java installation was found.\n" +
+                                                                                  "Some patch scripts require Java to alter game logic in Lua scripts.\n" +
+                                                                                  "Please install Java and restart your computer...",
+                                                                                  "Java Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
             Close(); // Close the form
         }

@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Globalization;
+using System.Collections.Generic;
 using Unify.Networking.GameBanana;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
@@ -38,7 +39,7 @@ namespace Unify.Environment3
 {
     static class Program
     {
-        public static readonly string GlobalVersionNumber = $"Version 3.29";
+        public static readonly string GlobalVersionNumber = $"Version 3.3";
 
 #if !DEBUG
         public static readonly string VersionNumber = GlobalVersionNumber;
@@ -182,6 +183,28 @@ namespace Unify.Environment3
                     foreach (DirectoryInfo directory in modManagerData.GetDirectories()) directory.Delete(true);
                 }
             } catch { }
+        }
+
+        public static bool CheckJava()
+        {
+            try
+            {
+                ProcessStartInfo procStartInfo = new ProcessStartInfo("java", "-version ") {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                Process proc = new Process() { StartInfo = procStartInfo };
+                proc.Start();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
