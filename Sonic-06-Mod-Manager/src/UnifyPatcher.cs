@@ -476,14 +476,6 @@ namespace Unify.Patcher
                                     decrypted = true;
                                 break;
 
-                                // Decompresses the game's XEX.
-                                case "DecompressExecutable()":
-                                    BackupFile(gameExecutable);
-                                    if (system == "Xbox 360") XEX.Decompress(gameExecutable);
-                                    else continue;
-                                    decrypted = true;
-                                break;
-
                                 // Encrypts the game's XEX/EBOOT.
                                 case "EncryptExecutable()": EncryptExecutable(); break;
 
@@ -1796,19 +1788,7 @@ namespace Unify.Patcher
             ProcessStartInfo startInfo = new ProcessStartInfo {
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = Program.XexTool,
-                Arguments = $"-e u \"{filepath}\""
-            };
-            process.StartInfo = startInfo;
-            process.Start();
-            process.WaitForExit();
-        }
-
-        public static void Decompress(string filepath) {
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo {
-                WindowStyle = ProcessWindowStyle.Hidden,
-                FileName = Program.XexTool,
-                Arguments = $"-c b \"{filepath}\""
+                Arguments = $"-e u -c b \"{filepath}\""
             };
             process.StartInfo = startInfo;
             process.Start();

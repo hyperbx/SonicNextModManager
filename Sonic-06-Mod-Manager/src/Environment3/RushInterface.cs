@@ -1230,7 +1230,7 @@ namespace Unify.Environment3
                 // Uninstall mods after emulator quits
                 if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
             }
-        }
+        }                                                                                                                                                                                                                                                                                                                                                                                                                                               private void Ugh(object sender, MouseEventArgs e) { if (e.Button == MouseButtons.Right) { UnifyMessenger.UnifyMessage.ShowDialog("This source code is a huge mess... I can't wait for the next rewrite.", "Ugh", MessageBoxButtons.OK, MessageBoxIcon.Warning); } }
 
         /// <summary>
         /// Opens the requested location by sender.
