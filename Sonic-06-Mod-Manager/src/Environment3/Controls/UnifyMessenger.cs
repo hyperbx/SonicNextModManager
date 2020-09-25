@@ -66,8 +66,13 @@ namespace Unify.Messenger
                 case MessageBoxButtons.YesNoCancel:
                     btn_Yes.Visible = true;
                     btn_No.Visible = true;
+                    btn_Abort.Visible = true;
+                    btn_Abort.Text = "Yes";
+                    btn_Abort.BackColor = Color.LightGreen;
+                    btn_Yes.Text = "No";
+                    btn_Yes.BackColor = Color.Tomato;
                     btn_OK.Text = "Cancel";
-                    btn_OK.BackColor = Color.Tomato;
+                    btn_OK.BackColor = SystemColors.ControlLightLight;
                     break;
                 case MessageBoxButtons.OKCancel:
                     btn_Yes.Visible = true;

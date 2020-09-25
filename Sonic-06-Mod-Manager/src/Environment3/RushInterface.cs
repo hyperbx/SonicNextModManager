@@ -1438,7 +1438,27 @@ namespace Unify.Environment3
             // Fetch latest patches is clicked
             else if (sender == SectionButton_FetchPatches) {
                 Properties.Settings.Default.General_LastPatchUpdate = DateTime.Now.Ticks;
-                await UpdatePatches();
+
+                DialogResult deleteOrNah = UnifyMessenger.UnifyMessage.ShowDialog("Do you want to delete all existing patches?\n\n" +
+                                                                                  "" +
+                                                                                  "Clicking No will overwrite existing patches with the latest instead.",
+                                                                                  "Delete existing patches?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+                if (deleteOrNah != DialogResult.Cancel)
+                {
+                    // Answer: delete
+                    if (deleteOrNah == DialogResult.Yes)
+                    {
+                        // Literally just nuke the whole folder
+                        foreach (string file in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.TopDirectoryOnly))
+                        {
+                            File.Delete(file);
+                        }
+                    }
+
+                    await UpdatePatches();
+                }
+
                 Properties.Settings.Default.Save();
 
                 // Reset update button for future checking
