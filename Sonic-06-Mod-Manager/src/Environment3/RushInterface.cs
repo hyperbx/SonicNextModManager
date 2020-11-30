@@ -2203,6 +2203,19 @@ namespace Unify.Environment3
         {
             if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable))
             {
+                if (!File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\xenon\\sound\\voice\\j\\wvo01_w00_tl.xma"))
+                {
+                    DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("This copy of the game does not appear to be a complete extraction! " +
+                                                                                        "This may cause issues with mod and patch installation." +
+                                                                                        "\n\nPlease refer to the Mod Manager Wiki's First Time Setup page for information." +
+                                                                                        "\nDo you wish to try and continue?",
+                                                                                        "Incomplete Dump", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (confirmation == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
                 ModEngine.skipped.Clear(); // Clear the skipped list
                 SaveChecks(); // Save checked items
                 RefreshLists();
@@ -2281,6 +2294,13 @@ namespace Unify.Environment3
                 }
 
                 if (patches) {
+                    if (!Program.CheckJava())
+                    {
+                        DialogResult javaWarning = UnifyMessenger.UnifyMessage.ShowDialog("No Java installation was found.\n" +
+                                                                                          "Some patch scripts require Java to alter game logic in Lua scripts.\n" +
+                                                                                          "Please install Java and restart your computer...",
+                                                                                          "Java Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                     TweakEngine.ApplyTweaks(this); // Begin tweak installation
                     InstallPatches(); // Begin patch installation
                 }
