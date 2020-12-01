@@ -16,7 +16,7 @@ using System.Collections.Generic;
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 HyperPolygon64
+ * Copyright (c) 2020 HyperBE32
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,15 +62,38 @@ namespace Unify.Environment3
             unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Properties.Settings.Default.General_AccentColour;
             if (Properties.Settings.Default.General_HighContrastText) unifytb_ModCreator.SelectedTextColor = SystemColors.ControlText;
 
-            if (edit) {
+            if (Directory.Exists(Program.Patches))
+            {
+                CheckedListBox_PatchesList.Items.Clear(); // Clears the patches list
+
+                foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories))
+                {
+                    if (File.Exists(mod))
+                    {
+                        if (INI.DeserialiseKey("RequiredPatches", mod).Split(',').Contains(Path.GetFileName(patch)))
+                            CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), true);
+                        else
+                            CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), false);
+                    }
+
+                    // I should really stop adding to this mess
+                    else
+                        CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), false);
+                }
+            }
+
+            if (edit)
+            {
                 Text = "Mod Editor";
-                if (File.Exists(mod)) {
+                if (File.Exists(mod))
+                {
                     text_Title.Text = INI.DeserialiseKey("Title", mod);
                     text_Version.Text = INI.DeserialiseKey("Version", mod);
                     text_Date.Text = INI.DeserialiseKey("Date", mod);
                     text_Author.Text = INI.DeserialiseKey("Author", mod);
 
-                    switch (INI.DeserialiseKey("Platform", mod)) {
+                    switch (INI.DeserialiseKey("Platform", mod))
+                    {
                         case "Xbox 360":
                             combo_System.SelectedIndex = 0;
                             break;
@@ -85,14 +108,17 @@ namespace Unify.Environment3
                             break;
                     }
 
-                    try {
-                        if (check_Merge.Checked = bool.Parse(INI.DeserialiseKey("Merge", mod))) {
+                    try
+                    {
+                        if (check_Merge.Checked = bool.Parse(INI.DeserialiseKey("Merge", mod)))
+                        {
                             text_ReadOnly.Enabled = true;
                             btn_ReadOnlyBrowser.Enabled = true;
                             lbl_ReadOnly.ForeColor = SystemColors.Control;
                         }
                         check_CreateCustomFilesystem.Checked = bool.Parse(INI.DeserialiseKey("CustomFilesystem", mod));
-                    } catch { /* ignored */ }
+                    }
+                    catch { /* ignored */ }
 
                     text_ReadOnly.Text = INI.DeserialiseKey("Read-only", mod);
                     text_Custom.Text = INI.DeserialiseKey("Custom", mod);
@@ -101,24 +127,17 @@ namespace Unify.Environment3
                     text_Server.Text += INI.DeserialiseKey("Metadata", mod).Replace(@"\n", Environment.NewLine);
                     text_Data.Text += INI.DeserialiseKey("Data", mod);
 
-                    if (Paths.CheckFileLegitimacy(Paths.ReplaceFilename(mod, "patch.mlua"))) {
+                    if (Paths.CheckFileLegitimacy(Paths.ReplaceFilename(mod, "patch.mlua")))
+                    {
                         CheckBox_GenerateHybridPatch.Enabled = false;
                         CheckBox_GenerateHybridPatch.Checked = true;
                         LinkLabel_EditHybridPatch.Visible = true;
                     }
-
-                    if (Directory.Exists(Program.Patches)) {
-                        CheckedListBox_PatchesList.Items.Clear(); // Clears the patches list
-                        foreach (string patch in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories)) {
-                            if (File.Exists(mod))
-                                if (INI.DeserialiseKey("RequiredPatches", mod).Split(',').Contains(Path.GetFileName(patch)))
-                                    CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), true);
-                                else
-                                    CheckedListBox_PatchesList.Items.Add(Path.GetFileName(patch), false);
-                        }
-                    }
-                } else
+                }
+                else
+                {
                     Close();
+                }
 
                 btn_Create.Text = "Edit Mod";
                 btn_Create.BackColor = Color.SkyBlue;

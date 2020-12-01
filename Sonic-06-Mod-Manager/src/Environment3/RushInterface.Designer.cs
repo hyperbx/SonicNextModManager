@@ -36,17 +36,19 @@ namespace Unify.Environment3
             this.Label_Status = new System.Windows.Forms.Label();
             this.Panel_MainControls = new System.Windows.Forms.Panel();
             this.SplitContainer_MainControls = new System.Windows.Forms.SplitContainer();
-            this.ToolTip_Information = new System.Windows.Forms.ToolTip(this.components);
             this.SectionButton_InstallMods = new Unify.Environment3.SectionButton();
             this.SectionButton_LaunchGame = new Unify.Environment3.SectionButton();
+            this.ToolTip_Information = new System.Windows.Forms.ToolTip(this.components);
+            this.Button_Mods_DownerPriority = new System.Windows.Forms.Button();
+            this.Button_Mods_UpperPriority = new System.Windows.Forms.Button();
+            this.Button_Patches_DownerPriority = new System.Windows.Forms.Button();
+            this.Button_Patches_UpperPriority = new System.Windows.Forms.Button();
             this.TabControl_Rush = new Unify.Environment3.UnifyTabControl();
             this.Tab_Section_Mods = new System.Windows.Forms.TabPage();
             this.SplitContainer_ModsControls = new System.Windows.Forms.SplitContainer();
             this.SectionButton_SaveChecks = new Unify.Environment3.SectionButton();
             this.SectionButton_RefreshMods = new Unify.Environment3.SectionButton();
             this.Button_Mods_Priority = new System.Windows.Forms.Button();
-            this.Button_Mods_DownerPriority = new System.Windows.Forms.Button();
-            this.Button_Mods_UpperPriority = new System.Windows.Forms.Button();
             this.Button_Mods_DeselectAll = new System.Windows.Forms.Button();
             this.Button_Mods_SelectAll = new System.Windows.Forms.Button();
             this.Panel_ModBackdrop = new System.Windows.Forms.Panel();
@@ -95,8 +97,6 @@ namespace Unify.Environment3
             this.Label_Optional_SaveData = new System.Windows.Forms.Label();
             this.Tab_Section_Patches = new System.Windows.Forms.TabPage();
             this.Button_Patches_Priority = new System.Windows.Forms.Button();
-            this.Button_Patches_DownerPriority = new System.Windows.Forms.Button();
-            this.Button_Patches_UpperPriority = new System.Windows.Forms.Button();
             this.Button_Patches_DeselectAll = new System.Windows.Forms.Button();
             this.Button_Patches_SelectAll = new System.Windows.Forms.Button();
             this.SplitContainer_PatchesControls = new System.Windows.Forms.SplitContainer();
@@ -234,27 +234,21 @@ namespace Unify.Environment3
             this.Label_Description_ModsDirectory = new System.Windows.Forms.Label();
             this.Label_Description_Snapshot = new System.Windows.Forms.Label();
             this.Tab_Section_About = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
-            this.LinkLabel_SEGACarnival = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_Testers_Radfordhound = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_Velcomia = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_Melpontro = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_sharu6262 = new System.Windows.Forms.LinkLabel();
-            this.LinkLabel_AssemblyPP = new System.Windows.Forms.LinkLabel();
-            this.LinkLabel_Microsoft = new System.Windows.Forms.LinkLabel();
+            this.Label_Testers = new System.Windows.Forms.Label();
+            this.Title_Testers = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.LinkLabel_Contributors_Radfordhound = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_SuperSonic16 = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_GerbilSoft = new System.Windows.Forms.LinkLabel();
             this.LinkLabel_Knuxfan24 = new System.Windows.Forms.LinkLabel();
-            this.LinkLabel_HyperPolygon64 = new System.Windows.Forms.LinkLabel();
-            this.Label_Testers = new System.Windows.Forms.Label();
-            this.Title_Testers = new System.Windows.Forms.Label();
-            this.Label_SpecialThanks = new System.Windows.Forms.Label();
-            this.Title_SpecialThanks = new System.Windows.Forms.Label();
+            this.LinkLabel_HyperBE32 = new System.Windows.Forms.LinkLabel();
             this.Label_Contributors = new System.Windows.Forms.Label();
             this.Title_Contributors = new System.Windows.Forms.Label();
             this.Label_Version = new System.Windows.Forms.Label();
-            this.Panel_About_UICleanSpace = new System.Windows.Forms.Panel();
             this.Rush_Section_Debug = new Unify.Environment3.SectionButton();
             this.Rush_Section_Updates = new Unify.Environment3.SectionButton();
             this.Rush_Section_Tweaks = new Unify.Environment3.SectionButton();
@@ -355,14 +349,6 @@ namespace Unify.Environment3
             this.SplitContainer_MainControls.SplitterWidth = 1;
             this.SplitContainer_MainControls.TabIndex = 3;
             // 
-            // ToolTip_Information
-            // 
-            this.ToolTip_Information.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ToolTip_Information.ForeColor = System.Drawing.SystemColors.Control;
-            this.ToolTip_Information.OwnerDraw = true;
-            this.ToolTip_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.ToolTip_Information.Draw += new System.Windows.Forms.DrawToolTipEventHandler(this.ToolTip_Draw);
-            // 
             // SectionButton_InstallMods
             // 
             this.SectionButton_InstallMods.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -393,10 +379,90 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1410, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1425, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
+            // 
+            // ToolTip_Information
+            // 
+            this.ToolTip_Information.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.ToolTip_Information.ForeColor = System.Drawing.SystemColors.Control;
+            this.ToolTip_Information.OwnerDraw = true;
+            this.ToolTip_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.ToolTip_Information.Draw += new System.Windows.Forms.DrawToolTipEventHandler(this.ToolTip_Draw);
+            // 
+            // Button_Mods_DownerPriority
+            // 
+            this.Button_Mods_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Mods_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Mods_DownerPriority.Enabled = false;
+            this.Button_Mods_DownerPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Mods_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Mods_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Mods_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Mods_DownerPriority.Location = new System.Drawing.Point(377, 949);
+            this.Button_Mods_DownerPriority.Name = "Button_Mods_DownerPriority";
+            this.Button_Mods_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Mods_DownerPriority.TabIndex = 48;
+            this.Button_Mods_DownerPriority.Text = "▼";
+            this.ToolTip_Information.SetToolTip(this.Button_Mods_DownerPriority, "Right-click to move the mod to the bottom of the list...");
+            this.Button_Mods_DownerPriority.UseVisualStyleBackColor = false;
+            this.Button_Mods_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Mods_UpperPriority
+            // 
+            this.Button_Mods_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Mods_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Mods_UpperPriority.Enabled = false;
+            this.Button_Mods_UpperPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Mods_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Mods_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Mods_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Mods_UpperPriority.Location = new System.Drawing.Point(346, 949);
+            this.Button_Mods_UpperPriority.Name = "Button_Mods_UpperPriority";
+            this.Button_Mods_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Mods_UpperPriority.TabIndex = 47;
+            this.Button_Mods_UpperPriority.Text = "▲";
+            this.ToolTip_Information.SetToolTip(this.Button_Mods_UpperPriority, "Right-click to move the mod to the top of the list...");
+            this.Button_Mods_UpperPriority.UseVisualStyleBackColor = false;
+            this.Button_Mods_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Patches_DownerPriority
+            // 
+            this.Button_Patches_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Patches_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Patches_DownerPriority.Enabled = false;
+            this.Button_Patches_DownerPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Patches_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_DownerPriority.Location = new System.Drawing.Point(377, 949);
+            this.Button_Patches_DownerPriority.Name = "Button_Patches_DownerPriority";
+            this.Button_Patches_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Patches_DownerPriority.TabIndex = 55;
+            this.Button_Patches_DownerPriority.Text = "▼";
+            this.ToolTip_Information.SetToolTip(this.Button_Patches_DownerPriority, "Right-click to move the patch to the bottom of the list...");
+            this.Button_Patches_DownerPriority.UseVisualStyleBackColor = false;
+            this.Button_Patches_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Patches_UpperPriority
+            // 
+            this.Button_Patches_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Patches_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Patches_UpperPriority.Enabled = false;
+            this.Button_Patches_UpperPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Patches_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_UpperPriority.Location = new System.Drawing.Point(346, 949);
+            this.Button_Patches_UpperPriority.Name = "Button_Patches_UpperPriority";
+            this.Button_Patches_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Patches_UpperPriority.TabIndex = 54;
+            this.Button_Patches_UpperPriority.Text = "▲";
+            this.ToolTip_Information.SetToolTip(this.Button_Patches_UpperPriority, "Right-click to move the patch to the top of the list...");
+            this.Button_Patches_UpperPriority.UseVisualStyleBackColor = false;
+            this.Button_Patches_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
             // 
             // TabControl_Rush
             // 
@@ -499,7 +565,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2318, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2345, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -518,42 +584,6 @@ namespace Unify.Environment3
             this.Button_Mods_Priority.Text = "Priority: Top to Bottom";
             this.Button_Mods_Priority.UseVisualStyleBackColor = false;
             this.Button_Mods_Priority.Click += new System.EventHandler(this.Button_Priority_Click);
-            // 
-            // Button_Mods_DownerPriority
-            // 
-            this.Button_Mods_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Mods_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Mods_DownerPriority.Enabled = false;
-            this.Button_Mods_DownerPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Mods_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Mods_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Mods_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Mods_DownerPriority.Location = new System.Drawing.Point(377, 949);
-            this.Button_Mods_DownerPriority.Name = "Button_Mods_DownerPriority";
-            this.Button_Mods_DownerPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Mods_DownerPriority.TabIndex = 48;
-            this.Button_Mods_DownerPriority.Text = "▼";
-            this.ToolTip_Information.SetToolTip(this.Button_Mods_DownerPriority, "Right-click to move the mod to the bottom of the list...");
-            this.Button_Mods_DownerPriority.UseVisualStyleBackColor = false;
-            this.Button_Mods_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
-            // 
-            // Button_Mods_UpperPriority
-            // 
-            this.Button_Mods_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Mods_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Mods_UpperPriority.Enabled = false;
-            this.Button_Mods_UpperPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Mods_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Mods_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Mods_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Mods_UpperPriority.Location = new System.Drawing.Point(346, 949);
-            this.Button_Mods_UpperPriority.Name = "Button_Mods_UpperPriority";
-            this.Button_Mods_UpperPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Mods_UpperPriority.TabIndex = 47;
-            this.Button_Mods_UpperPriority.Text = "▲";
-            this.ToolTip_Information.SetToolTip(this.Button_Mods_UpperPriority, "Right-click to move the mod to the top of the list...");
-            this.Button_Mods_UpperPriority.UseVisualStyleBackColor = false;
-            this.Button_Mods_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
             // 
             // Button_Mods_DeselectAll
             // 
@@ -1191,42 +1221,6 @@ namespace Unify.Environment3
             this.Button_Patches_Priority.UseVisualStyleBackColor = false;
             this.Button_Patches_Priority.Click += new System.EventHandler(this.Button_Priority_Click);
             // 
-            // Button_Patches_DownerPriority
-            // 
-            this.Button_Patches_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Patches_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Patches_DownerPriority.Enabled = false;
-            this.Button_Patches_DownerPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Patches_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Patches_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Patches_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_DownerPriority.Location = new System.Drawing.Point(377, 949);
-            this.Button_Patches_DownerPriority.Name = "Button_Patches_DownerPriority";
-            this.Button_Patches_DownerPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Patches_DownerPriority.TabIndex = 55;
-            this.Button_Patches_DownerPriority.Text = "▼";
-            this.ToolTip_Information.SetToolTip(this.Button_Patches_DownerPriority, "Right-click to move the patch to the bottom of the list...");
-            this.Button_Patches_DownerPriority.UseVisualStyleBackColor = false;
-            this.Button_Patches_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
-            // 
-            // Button_Patches_UpperPriority
-            // 
-            this.Button_Patches_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Patches_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Patches_UpperPriority.Enabled = false;
-            this.Button_Patches_UpperPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Patches_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Patches_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Patches_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_UpperPriority.Location = new System.Drawing.Point(346, 949);
-            this.Button_Patches_UpperPriority.Name = "Button_Patches_UpperPriority";
-            this.Button_Patches_UpperPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Patches_UpperPriority.TabIndex = 54;
-            this.Button_Patches_UpperPriority.Text = "▲";
-            this.ToolTip_Information.SetToolTip(this.Button_Patches_UpperPriority, "Right-click to move the patch to the top of the list...");
-            this.Button_Patches_UpperPriority.UseVisualStyleBackColor = false;
-            this.Button_Patches_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
-            // 
             // Button_Patches_DeselectAll
             // 
             this.Button_Patches_DeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1306,7 +1300,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1715, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1742, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -3041,27 +3035,21 @@ namespace Unify.Environment3
             // 
             this.Tab_Section_About.AutoScroll = true;
             this.Tab_Section_About.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.Tab_Section_About.Controls.Add(this.label7);
-            this.Tab_Section_About.Controls.Add(this.LinkLabel_SEGACarnival);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Testers_Radfordhound);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Velcomia);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Melpontro);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_sharu6262);
-            this.Tab_Section_About.Controls.Add(this.LinkLabel_AssemblyPP);
-            this.Tab_Section_About.Controls.Add(this.LinkLabel_Microsoft);
+            this.Tab_Section_About.Controls.Add(this.Label_Testers);
+            this.Tab_Section_About.Controls.Add(this.Title_Testers);
+            this.Tab_Section_About.Controls.Add(this.label7);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Contributors_Radfordhound);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_SuperSonic16);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_GerbilSoft);
             this.Tab_Section_About.Controls.Add(this.LinkLabel_Knuxfan24);
-            this.Tab_Section_About.Controls.Add(this.LinkLabel_HyperPolygon64);
-            this.Tab_Section_About.Controls.Add(this.Label_Testers);
-            this.Tab_Section_About.Controls.Add(this.Title_Testers);
-            this.Tab_Section_About.Controls.Add(this.Label_SpecialThanks);
-            this.Tab_Section_About.Controls.Add(this.Title_SpecialThanks);
+            this.Tab_Section_About.Controls.Add(this.LinkLabel_HyperBE32);
             this.Tab_Section_About.Controls.Add(this.Label_Contributors);
             this.Tab_Section_About.Controls.Add(this.Title_Contributors);
             this.Tab_Section_About.Controls.Add(this.Label_Version);
-            this.Tab_Section_About.Controls.Add(this.Panel_About_UICleanSpace);
             this.Tab_Section_About.Location = new System.Drawing.Point(4, 20);
             this.Tab_Section_About.Name = "Tab_Section_About";
             this.Tab_Section_About.Size = new System.Drawing.Size(591, 1013);
@@ -3069,6 +3057,86 @@ namespace Unify.Environment3
             this.Tab_Section_About.Tag = "HideControls";
             this.Tab_Section_About.Text = "About";
             this.Tab_Section_About.Visible = false;
+            // 
+            // LinkLabel_Testers_Radfordhound
+            // 
+            this.LinkLabel_Testers_Radfordhound.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Testers_Radfordhound.AutoSize = true;
+            this.LinkLabel_Testers_Radfordhound.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Testers_Radfordhound.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Testers_Radfordhound.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Testers_Radfordhound.Location = new System.Drawing.Point(30, 429);
+            this.LinkLabel_Testers_Radfordhound.Name = "LinkLabel_Testers_Radfordhound";
+            this.LinkLabel_Testers_Radfordhound.Size = new System.Drawing.Size(129, 25);
+            this.LinkLabel_Testers_Radfordhound.TabIndex = 195;
+            this.LinkLabel_Testers_Radfordhound.TabStop = true;
+            this.LinkLabel_Testers_Radfordhound.Text = "Radfordhound";
+            this.LinkLabel_Testers_Radfordhound.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Velcomia
+            // 
+            this.LinkLabel_Velcomia.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Velcomia.AutoSize = true;
+            this.LinkLabel_Velcomia.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Velcomia.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Velcomia.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Velcomia.Location = new System.Drawing.Point(30, 404);
+            this.LinkLabel_Velcomia.Name = "LinkLabel_Velcomia";
+            this.LinkLabel_Velcomia.Size = new System.Drawing.Size(83, 25);
+            this.LinkLabel_Velcomia.TabIndex = 194;
+            this.LinkLabel_Velcomia.TabStop = true;
+            this.LinkLabel_Velcomia.Text = "Velcomia";
+            this.LinkLabel_Velcomia.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_Melpontro
+            // 
+            this.LinkLabel_Melpontro.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_Melpontro.AutoSize = true;
+            this.LinkLabel_Melpontro.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_Melpontro.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_Melpontro.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Melpontro.Location = new System.Drawing.Point(30, 355);
+            this.LinkLabel_Melpontro.Name = "LinkLabel_Melpontro";
+            this.LinkLabel_Melpontro.Size = new System.Drawing.Size(96, 25);
+            this.LinkLabel_Melpontro.TabIndex = 193;
+            this.LinkLabel_Melpontro.TabStop = true;
+            this.LinkLabel_Melpontro.Text = "Melpontro";
+            this.LinkLabel_Melpontro.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // LinkLabel_sharu6262
+            // 
+            this.LinkLabel_sharu6262.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_sharu6262.AutoSize = true;
+            this.LinkLabel_sharu6262.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_sharu6262.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_sharu6262.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_sharu6262.Location = new System.Drawing.Point(30, 330);
+            this.LinkLabel_sharu6262.Name = "LinkLabel_sharu6262";
+            this.LinkLabel_sharu6262.Size = new System.Drawing.Size(95, 25);
+            this.LinkLabel_sharu6262.TabIndex = 192;
+            this.LinkLabel_sharu6262.TabStop = true;
+            this.LinkLabel_sharu6262.Text = "sharu6262";
+            this.LinkLabel_sharu6262.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            // 
+            // Label_Testers
+            // 
+            this.Label_Testers.AutoSize = true;
+            this.Label_Testers.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Label_Testers.Location = new System.Drawing.Point(9, 330);
+            this.Label_Testers.Name = "Label_Testers";
+            this.Label_Testers.Size = new System.Drawing.Size(150, 150);
+            this.Label_Testers.TabIndex = 190;
+            this.Label_Testers.Text = "► sharu6262\r\n► Melpontro\r\n► ChrisHighwind\r\n► Velcomia\r\n► Radfordhound\r\n► Dunker";
+            // 
+            // Title_Testers
+            // 
+            this.Title_Testers.AutoSize = true;
+            this.Title_Testers.Font = new System.Drawing.Font("Segoe UI", 24F);
+            this.Title_Testers.Location = new System.Drawing.Point(6, 276);
+            this.Title_Testers.Name = "Title_Testers";
+            this.Title_Testers.Size = new System.Drawing.Size(118, 45);
+            this.Title_Testers.TabIndex = 189;
+            this.Title_Testers.Text = "Testers";
             // 
             // label7
             // 
@@ -3082,111 +3150,6 @@ namespace Unify.Environment3
             this.label7.TabIndex = 188;
             this.label7.Text = "Brought to you by British idiots™";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // LinkLabel_SEGACarnival
-            // 
-            this.LinkLabel_SEGACarnival.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_SEGACarnival.AutoSize = true;
-            this.LinkLabel_SEGACarnival.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_SEGACarnival.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_SEGACarnival.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_SEGACarnival.Location = new System.Drawing.Point(30, 384);
-            this.LinkLabel_SEGACarnival.Name = "LinkLabel_SEGACarnival";
-            this.LinkLabel_SEGACarnival.Size = new System.Drawing.Size(122, 25);
-            this.LinkLabel_SEGACarnival.TabIndex = 187;
-            this.LinkLabel_SEGACarnival.TabStop = true;
-            this.LinkLabel_SEGACarnival.Text = "SEGA Carnival";
-            this.LinkLabel_SEGACarnival.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
-            // 
-            // LinkLabel_Testers_Radfordhound
-            // 
-            this.LinkLabel_Testers_Radfordhound.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_Testers_Radfordhound.AutoSize = true;
-            this.LinkLabel_Testers_Radfordhound.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_Testers_Radfordhound.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_Testers_Radfordhound.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Testers_Radfordhound.Location = new System.Drawing.Point(30, 582);
-            this.LinkLabel_Testers_Radfordhound.Name = "LinkLabel_Testers_Radfordhound";
-            this.LinkLabel_Testers_Radfordhound.Size = new System.Drawing.Size(129, 25);
-            this.LinkLabel_Testers_Radfordhound.TabIndex = 186;
-            this.LinkLabel_Testers_Radfordhound.TabStop = true;
-            this.LinkLabel_Testers_Radfordhound.Text = "Radfordhound";
-            this.LinkLabel_Testers_Radfordhound.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
-            // 
-            // LinkLabel_Velcomia
-            // 
-            this.LinkLabel_Velcomia.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_Velcomia.AutoSize = true;
-            this.LinkLabel_Velcomia.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_Velcomia.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_Velcomia.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Velcomia.Location = new System.Drawing.Point(30, 557);
-            this.LinkLabel_Velcomia.Name = "LinkLabel_Velcomia";
-            this.LinkLabel_Velcomia.Size = new System.Drawing.Size(83, 25);
-            this.LinkLabel_Velcomia.TabIndex = 185;
-            this.LinkLabel_Velcomia.TabStop = true;
-            this.LinkLabel_Velcomia.Text = "Velcomia";
-            this.LinkLabel_Velcomia.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
-            // 
-            // LinkLabel_Melpontro
-            // 
-            this.LinkLabel_Melpontro.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_Melpontro.AutoSize = true;
-            this.LinkLabel_Melpontro.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_Melpontro.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_Melpontro.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Melpontro.Location = new System.Drawing.Point(30, 508);
-            this.LinkLabel_Melpontro.Name = "LinkLabel_Melpontro";
-            this.LinkLabel_Melpontro.Size = new System.Drawing.Size(96, 25);
-            this.LinkLabel_Melpontro.TabIndex = 184;
-            this.LinkLabel_Melpontro.TabStop = true;
-            this.LinkLabel_Melpontro.Text = "Melpontro";
-            this.LinkLabel_Melpontro.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
-            // 
-            // LinkLabel_sharu6262
-            // 
-            this.LinkLabel_sharu6262.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_sharu6262.AutoSize = true;
-            this.LinkLabel_sharu6262.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_sharu6262.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_sharu6262.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_sharu6262.Location = new System.Drawing.Point(30, 483);
-            this.LinkLabel_sharu6262.Name = "LinkLabel_sharu6262";
-            this.LinkLabel_sharu6262.Size = new System.Drawing.Size(95, 25);
-            this.LinkLabel_sharu6262.TabIndex = 183;
-            this.LinkLabel_sharu6262.TabStop = true;
-            this.LinkLabel_sharu6262.Text = "sharu6262";
-            this.LinkLabel_sharu6262.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
-            // 
-            // LinkLabel_AssemblyPP
-            // 
-            this.LinkLabel_AssemblyPP.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_AssemblyPP.AutoSize = true;
-            this.LinkLabel_AssemblyPP.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_AssemblyPP.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_AssemblyPP.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_AssemblyPP.Location = new System.Drawing.Point(30, 359);
-            this.LinkLabel_AssemblyPP.Name = "LinkLabel_AssemblyPP";
-            this.LinkLabel_AssemblyPP.Size = new System.Drawing.Size(113, 25);
-            this.LinkLabel_AssemblyPP.TabIndex = 182;
-            this.LinkLabel_AssemblyPP.TabStop = true;
-            this.LinkLabel_AssemblyPP.Text = "Assembly++";
-            this.LinkLabel_AssemblyPP.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
-            // 
-            // LinkLabel_Microsoft
-            // 
-            this.LinkLabel_Microsoft.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_Microsoft.AutoSize = true;
-            this.LinkLabel_Microsoft.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_Microsoft.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_Microsoft.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_Microsoft.Location = new System.Drawing.Point(30, 334);
-            this.LinkLabel_Microsoft.Name = "LinkLabel_Microsoft";
-            this.LinkLabel_Microsoft.Size = new System.Drawing.Size(88, 25);
-            this.LinkLabel_Microsoft.TabIndex = 181;
-            this.LinkLabel_Microsoft.TabStop = true;
-            this.LinkLabel_Microsoft.Text = "Microsoft";
-            this.LinkLabel_Microsoft.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
             // 
             // LinkLabel_Contributors_Radfordhound
             // 
@@ -3248,62 +3211,21 @@ namespace Unify.Environment3
             this.LinkLabel_Knuxfan24.Text = "Knuxfan24";
             this.LinkLabel_Knuxfan24.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
             // 
-            // LinkLabel_HyperPolygon64
+            // LinkLabel_HyperBE32
             // 
-            this.LinkLabel_HyperPolygon64.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.LinkLabel_HyperPolygon64.AutoSize = true;
-            this.LinkLabel_HyperPolygon64.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
-            this.LinkLabel_HyperPolygon64.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.LinkLabel_HyperPolygon64.LinkColor = System.Drawing.SystemColors.Control;
-            this.LinkLabel_HyperPolygon64.Location = new System.Drawing.Point(30, 60);
-            this.LinkLabel_HyperPolygon64.Name = "LinkLabel_HyperPolygon64";
-            this.LinkLabel_HyperPolygon64.Size = new System.Drawing.Size(145, 25);
-            this.LinkLabel_HyperPolygon64.TabIndex = 176;
-            this.LinkLabel_HyperPolygon64.TabStop = true;
-            this.LinkLabel_HyperPolygon64.Text = "HyperPolygon64";
-            this.LinkLabel_HyperPolygon64.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
-            this.LinkLabel_HyperPolygon64.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ugh);
-            // 
-            // Label_Testers
-            // 
-            this.Label_Testers.AutoSize = true;
-            this.Label_Testers.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_Testers.Location = new System.Drawing.Point(9, 483);
-            this.Label_Testers.Name = "Label_Testers";
-            this.Label_Testers.Size = new System.Drawing.Size(150, 150);
-            this.Label_Testers.TabIndex = 39;
-            this.Label_Testers.Text = "► sharu6262\r\n► Melpontro\r\n► ChrisHighwind\r\n► Velcomia\r\n► Radfordhound\r\n► Dunker";
-            // 
-            // Title_Testers
-            // 
-            this.Title_Testers.AutoSize = true;
-            this.Title_Testers.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.Title_Testers.Location = new System.Drawing.Point(6, 429);
-            this.Title_Testers.Name = "Title_Testers";
-            this.Title_Testers.Size = new System.Drawing.Size(118, 45);
-            this.Title_Testers.TabIndex = 38;
-            this.Title_Testers.Text = "Testers";
-            // 
-            // Label_SpecialThanks
-            // 
-            this.Label_SpecialThanks.AutoSize = true;
-            this.Label_SpecialThanks.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Label_SpecialThanks.Location = new System.Drawing.Point(9, 334);
-            this.Label_SpecialThanks.Name = "Label_SpecialThanks";
-            this.Label_SpecialThanks.Size = new System.Drawing.Size(294, 75);
-            this.Label_SpecialThanks.TabIndex = 37;
-            this.Label_SpecialThanks.Text = "► Microsoft - Design inspiration\r\n► Assembly++ - Design inspiration\r\n► SEGA Carni" +
-    "val - Update Servers";
-            // 
-            // Title_SpecialThanks
-            // 
-            this.Title_SpecialThanks.AutoSize = true;
-            this.Title_SpecialThanks.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.Title_SpecialThanks.Location = new System.Drawing.Point(6, 280);
-            this.Title_SpecialThanks.Name = "Title_SpecialThanks";
-            this.Title_SpecialThanks.Size = new System.Drawing.Size(228, 45);
-            this.Title_SpecialThanks.TabIndex = 36;
-            this.Title_SpecialThanks.Text = "Special Thanks";
+            this.LinkLabel_HyperBE32.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LinkLabel_HyperBE32.AutoSize = true;
+            this.LinkLabel_HyperBE32.DisabledLinkColor = System.Drawing.SystemColors.GrayText;
+            this.LinkLabel_HyperBE32.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.LinkLabel_HyperBE32.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_HyperBE32.Location = new System.Drawing.Point(30, 60);
+            this.LinkLabel_HyperBE32.Name = "LinkLabel_HyperBE32";
+            this.LinkLabel_HyperBE32.Size = new System.Drawing.Size(99, 25);
+            this.LinkLabel_HyperBE32.TabIndex = 176;
+            this.LinkLabel_HyperBE32.TabStop = true;
+            this.LinkLabel_HyperBE32.Text = "HyperBE32";
+            this.LinkLabel_HyperBE32.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_About_LinkClicked);
+            this.LinkLabel_HyperBE32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ugh);
             // 
             // Label_Contributors
             // 
@@ -3311,7 +3233,7 @@ namespace Unify.Environment3
             this.Label_Contributors.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.Label_Contributors.Location = new System.Drawing.Point(9, 60);
             this.Label_Contributors.Name = "Label_Contributors";
-            this.Label_Contributors.Size = new System.Drawing.Size(531, 200);
+            this.Label_Contributors.Size = new System.Drawing.Size(556, 200);
             this.Label_Contributors.TabIndex = 35;
             this.Label_Contributors.Text = resources.GetString("Label_Contributors.Text");
             // 
@@ -3337,13 +3259,6 @@ namespace Unify.Environment3
             this.Label_Version.TabIndex = 0;
             this.Label_Version.Text = "Rush 3.0";
             this.Label_Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // Panel_About_UICleanSpace
-            // 
-            this.Panel_About_UICleanSpace.Location = new System.Drawing.Point(9, 661);
-            this.Panel_About_UICleanSpace.Name = "Panel_About_UICleanSpace";
-            this.Panel_About_UICleanSpace.Size = new System.Drawing.Size(214, 17);
-            this.Panel_About_UICleanSpace.TabIndex = 175;
             // 
             // Rush_Section_Debug
             // 
@@ -3691,10 +3606,6 @@ namespace Unify.Environment3
         private System.Windows.Forms.LinkLabel LinkLabel_1ClickURLHandler;
         private System.Windows.Forms.Label Label_Warning_ModsDirectoryInvalid;
         private System.Windows.Forms.Label Label_Description_ModsDirectory;
-        private System.Windows.Forms.Label Label_Testers;
-        private System.Windows.Forms.Label Title_Testers;
-        private System.Windows.Forms.Label Label_SpecialThanks;
-        private System.Windows.Forms.Label Title_SpecialThanks;
         private System.Windows.Forms.Label Label_Contributors;
         private System.Windows.Forms.Label Title_Contributors;
         private SectionButton SectionButton_RefreshPatches;
@@ -3742,19 +3653,11 @@ namespace Unify.Environment3
         private System.Windows.Forms.Button Button_Renderer_Default;
         private System.Windows.Forms.Label Label_Description_TailsFlightLimit;
         private System.Windows.Forms.CheckBox CheckBox_TailsFlightLimit;
-        private System.Windows.Forms.Panel Panel_About_UICleanSpace;
-        private System.Windows.Forms.LinkLabel LinkLabel_Testers_Radfordhound;
-        private System.Windows.Forms.LinkLabel LinkLabel_Velcomia;
-        private System.Windows.Forms.LinkLabel LinkLabel_Melpontro;
-        private System.Windows.Forms.LinkLabel LinkLabel_sharu6262;
-        private System.Windows.Forms.LinkLabel LinkLabel_AssemblyPP;
-        private System.Windows.Forms.LinkLabel LinkLabel_Microsoft;
         private System.Windows.Forms.LinkLabel LinkLabel_Contributors_Radfordhound;
         private System.Windows.Forms.LinkLabel LinkLabel_SuperSonic16;
         private System.Windows.Forms.LinkLabel LinkLabel_GerbilSoft;
         private System.Windows.Forms.LinkLabel LinkLabel_Knuxfan24;
-        private System.Windows.Forms.LinkLabel LinkLabel_HyperPolygon64;
-        private System.Windows.Forms.LinkLabel LinkLabel_SEGACarnival;
+        private System.Windows.Forms.LinkLabel LinkLabel_HyperBE32;
         private System.Windows.Forms.Label Label_Description_UninstallOnLaunch;
         private System.Windows.Forms.CheckBox CheckBox_UninstallOnLaunch;
         private System.Windows.Forms.LinkLabel LinkLabel_Snapshot_Create;
@@ -3794,5 +3697,11 @@ namespace Unify.Environment3
         private System.Windows.Forms.Button Button_Patches_DownerPriority;
         private System.Windows.Forms.Button Button_Patches_UpperPriority;
         private System.Windows.Forms.ToolTip ToolTip_Information;
+        private System.Windows.Forms.LinkLabel LinkLabel_Testers_Radfordhound;
+        private System.Windows.Forms.LinkLabel LinkLabel_Velcomia;
+        private System.Windows.Forms.LinkLabel LinkLabel_Melpontro;
+        private System.Windows.Forms.LinkLabel LinkLabel_sharu6262;
+        private System.Windows.Forms.Label Label_Testers;
+        private System.Windows.Forms.Label Title_Testers;
     }
 }

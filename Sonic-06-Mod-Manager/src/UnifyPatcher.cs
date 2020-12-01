@@ -19,7 +19,7 @@ using System.Collections.Generic;
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 HyperPolygon64
+ * Copyright (c) 2020 HyperBE32
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -1852,6 +1852,20 @@ namespace Unify.Patcher
                         file.ExtractToFile(completeFileName, true);
                     else
                         file.ExtractToFile(Path.Combine(destinationDirectoryName, $"{Application.ExecutablePath}.new"), true);
+            }
+        }
+
+        /// <summary>
+        /// Extracts a ZIP file containing patches.
+        /// </summary>
+        public static void ExtractPatches(this ZipArchive archive)
+        {
+            foreach (ZipArchiveEntry file in archive.Entries)
+            {
+                if (!string.IsNullOrEmpty(file.Name) && Path.GetExtension(file.Name) == ".mlua")
+                {
+                    file.ExtractToFile(Path.Combine(Program.Patches, file.FullName).Replace("Sonic-06-Mod-Manager-Patches-master", ""), true);
+                }
             }
         }
 

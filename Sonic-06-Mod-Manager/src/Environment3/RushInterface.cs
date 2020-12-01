@@ -22,7 +22,7 @@ using System.Collections.Generic;
  * MIT License
 
  * Copyright (c) 2020 Knuxfan24
- * Copyright (c) 2020 HyperPolygon64
+ * Copyright (c) 2020 HyperBE32
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -1385,19 +1385,28 @@ namespace Unify.Environment3
             TabControl_Rush.SelectedTab.ScrollControlIntoView(Panel_Updates_UICleanSpace);
 
             try {
+                string patchesArchive = Path.Combine(Program.Patches, "patches.zip");
+
                 //Clone Sonic '06 Mod Manager Patches repository from GitHub
-                string getRepoContents = await Client.RequestString(Properties.Resources.PatchURI_GitHub);
-                string[] repoLinks = getRepoContents.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                using (WebClient client = new WebClient())
+                {
+                    // Download scripts from update servers
+                    client.DownloadFile(new Uri(Properties.Resources.PatchURI_GitHub), patchesArchive);
+                }
 
-                for (int i = 0; i < repoLinks.Length; i++)
-                    using (WebClient client = new WebClient())
-                        if (repoLinks[i] != string.Empty)
-                            // Download scripts from update servers
-                            client.DownloadFileAsync(new Uri(repoLinks[i]), Path.Combine(Program.Patches, Path.GetFileName(repoLinks[i])));
+                using (ZipArchive archive = new ZipArchive(new MemoryStream(File.ReadAllBytes(patchesArchive))))
+                {
+                    // Extract and overwrite all with ZIP contents
+                    ZIP.ExtractPatches(archive);
 
-                //Feedback
-                UnifyMessenger.UnifyMessage.ShowDialog("The latest patches have been downloaded!",
-                                                       "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Feedback
+                    UnifyMessenger.UnifyMessage.ShowDialog("The latest patches have been downloaded!",
+                                                           "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Erase ZIP file
+                    File.Delete(patchesArchive);
+                }
+
             } catch (Exception ex) {
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to update patches...\n{ex}"); // Write exception to debug log
                 UnifyMessenger.UnifyMessage.ShowDialog("Failed to update patches...",
@@ -1450,7 +1459,7 @@ namespace Unify.Environment3
                     if (deleteOrNah == DialogResult.Yes)
                     {
                         // Literally just nuke the whole folder
-                        foreach (string file in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.TopDirectoryOnly))
+                        foreach (string file in Directory.GetFiles(Program.Patches, "*.mlua", SearchOption.AllDirectories))
                         {
                             File.Delete(file);
                         }
@@ -1984,18 +1993,15 @@ namespace Unify.Environment3
         /// Redirects the user to a webpage about the selected contributor.
         /// </summary>
         private void Link_About_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            if    (sender == LinkLabel_HyperPolygon64) Process.Start("https://github.com/HyperPolygon64");
+            if    (sender == LinkLabel_HyperBE32) Process.Start("https://github.com/HyperBE32");
             else if    (sender == LinkLabel_Knuxfan24) Process.Start("https://github.com/Knuxfan24");
             else if   (sender == LinkLabel_GerbilSoft) Process.Start("https://github.com/GerbilSoft");
             else if (sender == LinkLabel_SuperSonic16) Process.Start("https://github.com/thesupersonic16");
             else if (sender == LinkLabel_Contributors_Radfordhound || sender == LinkLabel_Testers_Radfordhound)
                 Process.Start("https://github.com/Radfordhound");
-            else if    (sender == LinkLabel_Microsoft) Process.Start("https://github.com/Microsoft");
-            else if   (sender == LinkLabel_AssemblyPP) Process.Start("https://gamebanana.com/tools/6738");
-            else if (sender == LinkLabel_SEGACarnival) Process.Start("https://www.segacarnival.com/forum/index.php");
-            else if    (sender == LinkLabel_sharu6262) Process.Start("https://twitter.com/sharu6262");
-            else if    (sender == LinkLabel_Melpontro) Process.Start("https://www.youtube.com/user/Melpontro");
-            else if     (sender == LinkLabel_Velcomia) Process.Start("https://twitter.com/Velcomia");
+            else if (sender == LinkLabel_sharu6262) Process.Start("https://twitter.com/sharu6262");
+            else if (sender == LinkLabel_Melpontro) Process.Start("https://www.youtube.com/user/Melpontro");
+            else if (sender == LinkLabel_Velcomia) Process.Start("https://twitter.com/Velcomia");
         }
 
         /// <summary>
