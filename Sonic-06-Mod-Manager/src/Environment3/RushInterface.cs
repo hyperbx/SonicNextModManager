@@ -217,7 +217,6 @@ namespace Unify.Environment3
                 CheckBox_Xenia_Fullscreen.Checked   = Properties.Settings.Default.Emulator_Fullscreen;
                 CheckBox_Xenia_DiscordRPC.Checked   = Properties.Settings.Default.Emulator_DiscordRPC;
                 CheckBox_ForceMSAA.Checked          = Properties.Settings.Default.Tweak_ForceMSAA;
-                CheckBox_TailsFlightLimit.Checked   = Properties.Settings.Default.Tweak_TailsFlightLimit;
                 CheckBox_UninstallOnLaunch.Checked  = Properties.Settings.Default.General_AutoUninstall;
                 CheckBox_AllowModStacking.Checked   = Properties.Settings.Default.Debug_AllowModStacking;
 
@@ -1985,7 +1984,6 @@ namespace Unify.Environment3
         /// </summary>
         private void CheckBox_Tweaks_CheckedChanged(object sender, EventArgs e) {
             if             (sender == CheckBox_ForceMSAA) Properties.Settings.Default.Tweak_ForceMSAA        = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_TailsFlightLimit) Properties.Settings.Default.Tweak_TailsFlightLimit = ((CheckBox)sender).Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -2209,19 +2207,22 @@ namespace Unify.Environment3
         {
             if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable))
             {
-                if (!File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\xenon\\sound\\voice\\j\\wvo01_w00_tl.xma") && !File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\ps3\\sound\\voice\\j\\wvo01_w00_tl.at3"))
+                string cmnPath = @"sound\voice\j\wvo01_w00_tl";
+
+                if (!File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\xenon\\{cmnPath}.xma") && !File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\ps3\\{cmnPath}.at3"))
                 {
                     DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("This copy of the game does not appear to be a complete extraction! " +
-                                                                                        "This may cause issues with mod and patch installation." +
-                                                                                        "\n\nPlease refer to the Mod Manager Wiki's First Time Setup page for information." +
-                                                                                        "\nDo you wish to try and continue?",
-                                                                                        "Incomplete Dump", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                                                                       "This may cause issues with mod and patch installation." +
+                                                                                       "\n\nPlease refer to the Mod Manager Wiki's First Time Setup page for information." +
+                                                                                       "\nDo you wish to try and continue?",
+                                                                                       "Incomplete Dump", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                     if (confirmation == DialogResult.No)
                     {
                         return;
                     }
                 }
+
                 ModEngine.skipped.Clear(); // Clear the skipped list
                 SaveChecks(); // Save checked items
                 RefreshLists();

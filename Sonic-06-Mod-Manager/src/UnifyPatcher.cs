@@ -1247,8 +1247,7 @@ namespace Unify.Patcher
                     beginWithRings = Properties.Settings.Default.Tweak_BeginWithRings,
                     fieldOfView    = Properties.Settings.Default.Tweak_FieldOfView;
 
-            bool forceMSAA        = Properties.Settings.Default.Tweak_ForceMSAA,
-                 tailsFlightLimit = Properties.Settings.Default.Tweak_TailsFlightLimit;
+            bool forceMSAA        = Properties.Settings.Default.Tweak_ForceMSAA;
 
             // Field of View
             if (fieldOfView != 90 && system == "xenon") {
@@ -1401,7 +1400,6 @@ namespace Unify.Patcher
 
                     if (cameraHeight != 70)  proceed++;
                     if (hammerRange != 50)   proceed++;
-                    if (!tailsFlightLimit)   proceed++;
                     if (beginWithRings != 0) proceed++;
 
                     if (proceed != 0) {
@@ -1436,13 +1434,6 @@ namespace Unify.Patcher
                             rush.Status = $"Tweaking Characters...";
                             Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set default Ring count to {beginWithRings}...");
                             BeginWithRings(Path.Combine(tweak, $"player\\{system}\\player\\"), beginWithRings);
-                        }
-
-                        // Unlock Tails' Flight Limit
-                        if (tailsFlightLimit) {
-                            rush.Status = $"Tweaking Characters...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Unlocked Tails' flight limit...");
-                            UnlockTailsFlightLimit(Path.Combine(tweak, $"player\\{system}\\player\\tails.lub"));
                         }
 
                         // Repack archive as tweak
@@ -1700,35 +1691,6 @@ namespace Unify.Patcher
             } catch (Exception ex) {
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Begin with Rings\n{ex}");
                 ModEngine.skipped.Add("► Begin with Rings (check the debug log for more information)");
-            }
-#endif
-        }
-
-        private static void UnlockTailsFlightLimit(string directoryRoot) {
-#if !DEBUG
-            try {
-#endif
-                PatchEngine.DecompileLua(directoryRoot);
-                string[] editedLua = File.ReadAllLines(directoryRoot);
-                int lineNum = 0;
-                decimal origTimer = 0;
-
-                foreach (string line in editedLua) {
-                    string[] tempLine = line.Split(' ');
-
-                    if (tempLine[0] == "c_flight_timer") origTimer = decimal.Parse(tempLine[2]);
-
-                    if (tempLine[0] == "c_flight_timer_b") {
-                        tempLine[2] = (((origTimer * 1000) + 125) / 1000).ToString();
-                        editedLua[lineNum] = string.Join(" ", tempLine);
-                    }
-                    lineNum++;
-                }
-                File.WriteAllLines(directoryRoot, editedLua);
-#if !DEBUG
-            } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Unlock Tails' Flight Limit\n{ex}");
-                ModEngine.skipped.Add("► Unlock Tails' Flight Limit (check the debug log for more information)");
             }
 #endif
         }

@@ -114,8 +114,6 @@ namespace Unify.Environment3
             this.Label_Description_BeginWithRings = new System.Windows.Forms.Label();
             this.Label_BeginWithRings = new System.Windows.Forms.Label();
             this.NumericUpDown_BeginWithRings = new System.Windows.Forms.NumericUpDown();
-            this.Label_Description_TailsFlightLimit = new System.Windows.Forms.Label();
-            this.CheckBox_TailsFlightLimit = new System.Windows.Forms.CheckBox();
             this.Button_AmyHammerRange_Default = new System.Windows.Forms.Button();
             this.Button_FieldOfView_Default = new System.Windows.Forms.Button();
             this.Button_CameraHeight_Default = new System.Windows.Forms.Button();
@@ -379,7 +377,7 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1425, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1428, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
@@ -565,7 +563,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2345, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2348, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1300,7 +1298,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1742, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1745, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -1389,8 +1387,6 @@ namespace Unify.Environment3
             this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_BeginWithRings);
             this.Tab_Section_Tweaks.Controls.Add(this.Label_BeginWithRings);
             this.Tab_Section_Tweaks.Controls.Add(this.NumericUpDown_BeginWithRings);
-            this.Tab_Section_Tweaks.Controls.Add(this.Label_Description_TailsFlightLimit);
-            this.Tab_Section_Tweaks.Controls.Add(this.CheckBox_TailsFlightLimit);
             this.Tab_Section_Tweaks.Controls.Add(this.Button_AmyHammerRange_Default);
             this.Tab_Section_Tweaks.Controls.Add(this.Button_FieldOfView_Default);
             this.Tab_Section_Tweaks.Controls.Add(this.Button_CameraHeight_Default);
@@ -1487,30 +1483,6 @@ namespace Unify.Environment3
             this.NumericUpDown_BeginWithRings.Size = new System.Drawing.Size(534, 23);
             this.NumericUpDown_BeginWithRings.TabIndex = 187;
             this.NumericUpDown_BeginWithRings.ValueChanged += new System.EventHandler(this.NumericUpDown_Tweaks_ValueChanged);
-            // 
-            // Label_Description_TailsFlightLimit
-            // 
-            this.Label_Description_TailsFlightLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Description_TailsFlightLimit.AutoSize = true;
-            this.Label_Description_TailsFlightLimit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Description_TailsFlightLimit.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_TailsFlightLimit.Location = new System.Drawing.Point(402, 667);
-            this.Label_Description_TailsFlightLimit.Name = "Label_Description_TailsFlightLimit";
-            this.Label_Description_TailsFlightLimit.Size = new System.Drawing.Size(173, 15);
-            this.Label_Description_TailsFlightLimit.TabIndex = 184;
-            this.Label_Description_TailsFlightLimit.Text = "Removes the flight cap for Tails.";
-            // 
-            // CheckBox_TailsFlightLimit
-            // 
-            this.CheckBox_TailsFlightLimit.AutoSize = true;
-            this.CheckBox_TailsFlightLimit.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_TailsFlightLimit.Location = new System.Drawing.Point(14, 666);
-            this.CheckBox_TailsFlightLimit.Name = "CheckBox_TailsFlightLimit";
-            this.CheckBox_TailsFlightLimit.Size = new System.Drawing.Size(154, 19);
-            this.CheckBox_TailsFlightLimit.TabIndex = 183;
-            this.CheckBox_TailsFlightLimit.Text = "Unlock Tails\' Flight Limit";
-            this.CheckBox_TailsFlightLimit.UseVisualStyleBackColor = false;
-            this.CheckBox_TailsFlightLimit.CheckedChanged += new System.EventHandler(this.CheckBox_Tweaks_CheckedChanged);
             // 
             // Button_AmyHammerRange_Default
             // 
@@ -2001,7 +1973,7 @@ namespace Unify.Environment3
             // 
             // Panel_Tweaks_UICleanSpace
             // 
-            this.Panel_Tweaks_UICleanSpace.Location = new System.Drawing.Point(14, 684);
+            this.Panel_Tweaks_UICleanSpace.Location = new System.Drawing.Point(14, 651);
             this.Panel_Tweaks_UICleanSpace.Name = "Panel_Tweaks_UICleanSpace";
             this.Panel_Tweaks_UICleanSpace.Size = new System.Drawing.Size(214, 17);
             this.Panel_Tweaks_UICleanSpace.TabIndex = 174;
@@ -3651,8 +3623,6 @@ namespace Unify.Environment3
         private System.Windows.Forms.Button Button_AntiAliasing_Default;
         private System.Windows.Forms.Button Button_Reflections_Default;
         private System.Windows.Forms.Button Button_Renderer_Default;
-        private System.Windows.Forms.Label Label_Description_TailsFlightLimit;
-        private System.Windows.Forms.CheckBox CheckBox_TailsFlightLimit;
         private System.Windows.Forms.LinkLabel LinkLabel_Contributors_Radfordhound;
         private System.Windows.Forms.LinkLabel LinkLabel_SuperSonic16;
         private System.Windows.Forms.LinkLabel LinkLabel_GerbilSoft;
