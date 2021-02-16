@@ -91,20 +91,11 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperBE32/Unify-Networking/master/Sonic_06_Mod_Manager/rush/changelogs.txt.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/Big-Endian-32/Networking/main/Sonic%20&apos;06%20Mod%20Manager/Changelogs.txt.
         /// </summary>
         internal static string ChangelogsURI_GitHub {
             get {
                 return ResourceManager.GetString("ChangelogsURI_GitHub", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/changelogs.txt.
-        /// </summary>
-        internal static string ChangelogsURI_SEGACarnival {
-            get {
-                return ResourceManager.GetString("ChangelogsURI_SEGACarnival", resourceCulture);
             }
         }
         
@@ -169,20 +160,11 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperBE32/Unify-Networking/master/Sonic_06_Mod_Manager/rush/latest.zip.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/Big-Endian-32/Networking/main/Sonic%20&apos;06%20Mod%20Manager/Release.zip.
         /// </summary>
         internal static string DataURI_GitHub {
             get {
                 return ResourceManager.GetString("DataURI_GitHub", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/latest.zip.
-        /// </summary>
-        internal static string DataURI_SEGACarnival {
-            get {
-                return ResourceManager.GetString("DataURI_SEGACarnival", resourceCulture);
             }
         }
         
@@ -535,20 +517,11 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://raw.githubusercontent.com/HyperBE32/Unify-Networking/master/Sonic_06_Mod_Manager/rush/latest.txt.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/Big-Endian-32/Networking/main/Sonic%20&apos;06%20Mod%20Manager/Version.txt.
         /// </summary>
         internal static string VersionURI_GitHub {
             get {
                 return ResourceManager.GetString("VersionURI_GitHub", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/latest.txt.
-        /// </summary>
-        internal static string VersionURI_SEGACarnival {
-            get {
-                return ResourceManager.GetString("VersionURI_SEGACarnival", resourceCulture);
             }
         }
         

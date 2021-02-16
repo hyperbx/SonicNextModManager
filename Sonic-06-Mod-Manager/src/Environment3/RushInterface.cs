@@ -49,7 +49,6 @@ namespace Unify.Environment3
     {
         private bool _isPathInvalid = false;
         private static string protocol = "sonic06mm";
-        private bool _useBackupServer = false;
 
         public RushInterface() {
             InitializeComponent(); // Designer support
@@ -238,7 +237,7 @@ namespace Unify.Environment3
 
                 if (CheckBox_CheckUpdatesOnLaunch.Checked = Properties.Settings.Default.General_CheckUpdatesOnLaunch) {
                     Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                    CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
+                    CheckForUpdates();
                 }
 
                 if (CheckBox_SaveFileRedirection.Checked = Properties.Settings.Default.General_SaveFileRedirection) {
@@ -448,14 +447,14 @@ namespace Unify.Environment3
         /// <summary>
         /// Pings the update servers to check for a new version.
         /// </summary>
-        private async void CheckForUpdates(string versionURI, string changelogsURI) {
+        private async void CheckForUpdates() {
             // Block controls
             SectionButton_CheckForSoftwareUpdates.Enabled = false;
 
             try {
                 if (Client.CheckNetworkConnection().Result) {
-                    string latestVersion = await Client.RequestString(versionURI),    // Request version number
-                           changelogs    = await Client.RequestString(changelogsURI); // Request changelogs
+                    string latestVersion = await Client.RequestString(Properties.Resources.VersionURI_GitHub),    // Request version number
+                           changelogs    = await Client.RequestString(Properties.Resources.ChangelogsURI_GitHub); // Request changelogs
 
                     // New update available!
                     if (Program.VersionNumber != latestVersion && latestVersion.StartsWith("Version"))
@@ -469,27 +468,17 @@ namespace Unify.Environment3
                         throw new WebException("Invalid version number - server might be down...");
                 } else
                     throw new WebException("Could not establish a connection...");
-            } catch {
-                try {
-                    // Check for updates via SEGA Carnival
-                    if (Client.CheckNetworkConnection().Result) {
-                        CheckForUpdates(Properties.Resources.VersionURI_SEGACarnival, Properties.Resources.ChangelogsURI_SEGACarnival);
-                        Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                        _useBackupServer = true;
-                    } else
-                        throw new WebException("Could not establish a connection...");
-                } catch (Exception ex) {
-                    Label_UpdaterStatus.Text = "Connection error";
-                    PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
+            } catch (Exception ex) {
+                Label_UpdaterStatus.Text = "Connection error";
+                PictureBox_UpdaterIcon.BackgroundImage = Properties.Resources.Exception_Logo;
 
-                    // Reset update button for future checking
-                    SectionButton_CheckForSoftwareUpdates.SectionText = "Check for software updates";
-                    SectionButton_CheckForSoftwareUpdates.Refresh();
+                // Reset update button for future checking
+                SectionButton_CheckForSoftwareUpdates.SectionText = "Check for software updates";
+                SectionButton_CheckForSoftwareUpdates.Refresh();
 
-                    // Write exception to logs
-                    RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to request changelogs...\n{ex}");
-                }
+                // Write exception to logs
+                RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to request changelogs...\n{ex}");
             }
 
             // Feedback
@@ -1325,7 +1314,7 @@ namespace Unify.Environment3
         /// <summary>
         /// Update Sonic '06 Mod Manager via requested server.
         /// </summary>
-        private void UpdateVersion(bool useBackupServer) {
+        private void UpdateVersion() {
             // Set controls enabled and visibility state
             SectionButton_CheckForSoftwareUpdates.Visible = CheckBox_CheckUpdatesOnLaunch.Enabled = false;
             TabControl_Rush.SelectedTab.VerticalScroll.Value = 0;
@@ -1334,7 +1323,6 @@ namespace Unify.Environment3
             try {
                 // If SEGA Carnival is offline, use GitHub
                 Uri serverUri = new Uri(Properties.Resources.DataURI_GitHub);
-                if (useBackupServer) serverUri = new Uri(Properties.Resources.DataURI_SEGACarnival);
 
                 using (WebClient client = new WebClient()) {
                     client.DownloadProgressChanged += (s, clientEventArgs) => { ProgressBar_SoftwareUpdate.Value = clientEventArgs.ProgressPercentage; };
@@ -1431,9 +1419,9 @@ namespace Unify.Environment3
             // Check for software updates is clicked
             if (sender == SectionButton_CheckForSoftwareUpdates) {
                 // Check for updates via GitHub
-                CheckForUpdates(Properties.Resources.VersionURI_GitHub, Properties.Resources.ChangelogsURI_GitHub);
+                CheckForUpdates();
                 Properties.Settings.Default.General_LastSoftwareUpdate = DateTime.Now.Ticks;
-                if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(_useBackupServer); // Update if prompted
+                if (((SectionButton)sender).SectionText == "Fetch the latest version") UpdateVersion(); // Update if prompted
                 Properties.Settings.Default.Save();
 
             // Check for mod updates is clicked
@@ -1645,7 +1633,7 @@ namespace Unify.Environment3
                     sonic06mmKey = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\{protocol}", true);
                     if (sonic06mmKey == null)
                         sonic06mmKey = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{protocol}");
-                    sonic06mmKey.SetValue(string.Empty, "URL:Sonic '06 Mod Manager");
+                    sonic06mmKey.SetValue(string.Empty, "Sonic '06 Mod Manager");
                     sonic06mmKey.SetValue("URL Protocol", string.Empty);
                     RegistryKey prevkey = sonic06mmKey;
                     sonic06mmKey = sonic06mmKey.OpenSubKey("shell", true);

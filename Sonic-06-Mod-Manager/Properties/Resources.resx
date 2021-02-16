@@ -125,10 +125,7 @@
     <value>..\res\Images\Cancel_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ChangelogsURI_GitHub" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/HyperBE32/Unify-Networking/master/Sonic_06_Mod_Manager/rush/changelogs.txt</value>
-  </data>
-  <data name="ChangelogsURI_SEGACarnival" xml:space="preserve">
-    <value>https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/changelogs.txt</value>
+    <value>https://raw.githubusercontent.com/Big-Endian-32/Networking/main/Sonic%20'06%20Mod%20Manager/Changelogs.txt</value>
   </data>
   <data name="CheckBox_16x_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\checkbox_16x_24.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -149,10 +146,7 @@
     <value>..\res\images\corner_logo_colour.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DataURI_GitHub" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/HyperBE32/Unify-Networking/master/Sonic_06_Mod_Manager/rush/latest.zip</value>
-  </data>
-  <data name="DataURI_SEGACarnival" xml:space="preserve">
-    <value>https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/latest.zip</value>
+    <value>https://raw.githubusercontent.com/Big-Endian-32/Networking/main/Sonic%20'06%20Mod%20Manager/Release.zip</value>
   </data>
   <data name="debug_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\images\debug 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -253,10 +247,7 @@ Please whitelist the following directory in your antivirus software and restart 
     <value>..\res\images\update 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VersionURI_GitHub" xml:space="preserve">
-    <value>https://raw.githubusercontent.com/HyperBE32/Unify-Networking/master/Sonic_06_Mod_Manager/rush/latest.txt</value>
-  </data>
-  <data name="VersionURI_SEGACarnival" xml:space="preserve">
-    <value>https://www.segacarnival.com/hyper/updates/sonic-06-mod-manager/rush/latest.txt</value>
+    <value>https://raw.githubusercontent.com/Big-Endian-32/Networking/main/Sonic%20'06%20Mod%20Manager/Version.txt</value>
   </data>
   <data name="vsh_curves" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\applications\data\vsh_curves;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
