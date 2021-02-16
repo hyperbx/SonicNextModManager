@@ -2209,7 +2209,7 @@ namespace Unify.Environment3
         {
             if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable))
             {
-                if (!File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\xenon\\sound\\voice\\j\\wvo01_w00_tl.xma"))
+                if (!File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\xenon\\sound\\voice\\j\\wvo01_w00_tl.xma") && !File.Exists($"{Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable)}\\ps3\\sound\\voice\\j\\wvo01_w00_tl.at3"))
                 {
                     DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog("This copy of the game does not appear to be a complete extraction! " +
                                                                                         "This may cause issues with mod and patch installation." +
