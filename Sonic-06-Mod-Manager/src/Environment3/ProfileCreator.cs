@@ -62,11 +62,6 @@ namespace Unify.Environment3
                 Button_Create.Enabled = false;
         }
 
-        private void text_Title_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// Create profile upon hitting confirm.
         /// </summary>
