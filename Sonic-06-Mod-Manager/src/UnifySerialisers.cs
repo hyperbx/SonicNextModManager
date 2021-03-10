@@ -162,8 +162,7 @@ namespace Unify.Serialisers
 #if !DEBUG
                     try {
 #endif
-                        sw.WriteLine($"Sonic '06 Mod Manager");
-                        sw.WriteLine(DateTime.Now);
+                        sw.WriteLine($"Sonic '06 Mod Manager\n{DateTime.Now}");
 
                         sw.WriteLine("\nBuild:");
 #if !DEBUG

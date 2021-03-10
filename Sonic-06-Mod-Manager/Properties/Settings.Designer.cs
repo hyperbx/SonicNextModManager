@@ -478,5 +478,17 @@ namespace Unify.Properties {
                 this["General_Patches_Priority"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string General_Profile {
+            get {
+                return ((string)(this["General_Profile"]));
+            }
+            set {
+                this["General_Profile"] = value;
+            }
+        }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Unify.Messenger;
 using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Collections.Generic;
+using Unify.Messenger;
+using Unify.Environment3;
 using Unify.Networking.GameBanana;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
@@ -35,11 +36,11 @@ using Unify.Networking.GameBanana;
  * SOFTWARE.
  */
 
-namespace Unify.Environment3
+namespace Unify
 {
     static class Program
     {
-        public static readonly string GlobalVersionNumber = $"Version 3.33";
+        public static readonly string GlobalVersionNumber = $"Version 3.34";
 
 #if !DEBUG
         public static readonly string VersionNumber = GlobalVersionNumber;
@@ -54,6 +55,7 @@ namespace Unify.Environment3
                              XexTool            = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
                              unlub              = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
                              Patches            = $"{ApplicationData}\\Unify\\Patches\\",
+                             Profiles           = $"{ApplicationData}\\Unify\\Profiles\\",
                              scetool            = $"{ApplicationData}\\Unify\\Tools\\scetool.exe",
                              zlib               = $"{ApplicationData}\\Unify\\Tools\\zlib1.dll",
                              make_fself         = $"{ApplicationData}\\Unify\\Tools\\make_fself.exe",
@@ -72,6 +74,9 @@ namespace Unify.Environment3
 
             if (!Directory.Exists(Patches))
                 Directory.CreateDirectory(Patches);
+
+            if (!Directory.Exists(Profiles))
+                Directory.CreateDirectory(Profiles);
 
             if (!File.Exists(_7Zip))
                 File.WriteAllBytes(_7Zip, Properties.Resources._7z);

@@ -54,8 +54,8 @@ namespace Unify.Environment3
                 combo_System.SelectedIndex = 0;
             }
 
-            unifytb_ModCreator.ActiveColor = unifytb_ModCreator.HorizontalLineColor = Properties.Settings.Default.General_AccentColour;
-            if (Properties.Settings.Default.General_HighContrastText) unifytb_ModCreator.SelectedTextColor = SystemColors.ControlText;
+            unifytb_PatchCreator.ActiveColor = unifytb_PatchCreator.HorizontalLineColor = Properties.Settings.Default.General_AccentColour;
+            if (Properties.Settings.Default.General_HighContrastText) unifytb_PatchCreator.SelectedTextColor = SystemColors.ControlText;
 
             if (edit) {
                 Text = "Patch Editor";

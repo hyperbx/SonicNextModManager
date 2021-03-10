@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
-using Unify.Dialogs;
 using System.Drawing;
 using Unify.Messenger;
 using Unify.Serialisers;
 using Unify.Environment3;
-using Unify.Globalisation;
 using System.Windows.Forms;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
@@ -111,7 +109,7 @@ namespace Unify
         private void Button_Browse_Click(object sender, EventArgs e) {
             if (sender == Button_ModsDirectory) {
                 // Browse for mods directory
-                string browseMods = RequestPath.ModsDirectory();
+                string browseMods = Dialogs.ModsDirectory();
 
                 if (browseMods != string.Empty)
                     TextBox_ModsDirectory.Text = browseMods;
@@ -126,7 +124,7 @@ namespace Unify
                         Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
             } else if (sender == Button_GameDirectory) {
                 // Browse for game executables
-                string browseGame = RequestPath.GameExecutable();
+                string browseGame = Dialogs.GameExecutable();
 
                 if (browseGame != string.Empty)
                     TextBox_GameDirectory.Text = browseGame;
@@ -141,13 +139,13 @@ namespace Unify
                         Label_Warning_ModsDirectoryInvalid.ForeColor = SystemColors.ControlDark;
             } else if (sender == Button_EmulatorExecutable) {
                 // Browse for emulator executables
-                string browseEmulator = RequestPath.EmulatorExecutable();
+                string browseEmulator = Dialogs.EmulatorExecutable();
 
                 if (browseEmulator != string.Empty)
                     TextBox_EmulatorExecutable.Text = browseEmulator;
             } else if (sender == Button_SaveData) {
                 // Browse for save data
-                string browseSave = RequestPath.SaveData();
+                string browseSave = Dialogs.SaveData();
 
                 if (browseSave != string.Empty)
                     TextBox_SaveData.Text = browseSave;

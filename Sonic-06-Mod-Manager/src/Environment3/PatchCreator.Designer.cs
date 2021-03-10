@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PatchCreator));
             this.btn_Create = new System.Windows.Forms.Button();
-            this.unifytb_ModCreator = new Unify.Environment3.UnifyTabControl();
+            this.unifytb_PatchCreator = new Unify.Environment3.UnifyTabControl();
             this.unifytb_Tab_Details = new System.Windows.Forms.TabPage();
             this.text_Blurb = new System.Windows.Forms.TextBox();
             this.lbl_Blurb = new System.Windows.Forms.Label();
@@ -42,7 +42,7 @@
             this.lbl_Author = new System.Windows.Forms.Label();
             this.lbl_System = new System.Windows.Forms.Label();
             this.combo_System = new System.Windows.Forms.ComboBox();
-            this.unifytb_ModCreator.SuspendLayout();
+            this.unifytb_PatchCreator.SuspendLayout();
             this.unifytb_Tab_Details.SuspendLayout();
             this.group_DescriptionField.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +55,7 @@
             this.btn_Create.FlatAppearance.BorderSize = 0;
             this.btn_Create.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Create.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Create.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btn_Create.Location = new System.Drawing.Point(285, 429);
             this.btn_Create.Name = "btn_Create";
             this.btn_Create.Size = new System.Drawing.Size(84, 23);
@@ -63,33 +64,33 @@
             this.btn_Create.UseVisualStyleBackColor = false;
             this.btn_Create.Click += new System.EventHandler(this.btn_Create_Click);
             // 
-            // unifytb_ModCreator
+            // unifytb_PatchCreator
             // 
-            this.unifytb_ModCreator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.unifytb_ModCreator.AllowDragging = false;
-            this.unifytb_ModCreator.AllowDrop = true;
-            this.unifytb_ModCreator.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.unifytb_PatchCreator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.unifytb_PatchCreator.AllowDragging = false;
+            this.unifytb_PatchCreator.AllowDrop = true;
+            this.unifytb_PatchCreator.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.unifytb_ModCreator.BackTabColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.unifytb_ModCreator.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.unifytb_ModCreator.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
-            this.unifytb_ModCreator.ClosingMessage = null;
-            this.unifytb_ModCreator.Controls.Add(this.unifytb_Tab_Details);
-            this.unifytb_ModCreator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.unifytb_ModCreator.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.unifytb_ModCreator.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.unifytb_ModCreator.ItemSize = new System.Drawing.Size(240, 16);
-            this.unifytb_ModCreator.Location = new System.Drawing.Point(0, 0);
-            this.unifytb_ModCreator.Name = "unifytb_ModCreator";
-            this.unifytb_ModCreator.NoTabDisplay = false;
-            this.unifytb_ModCreator.SelectedIndex = 0;
-            this.unifytb_ModCreator.SelectedTextColor = System.Drawing.SystemColors.Control;
-            this.unifytb_ModCreator.ShowClosingButton = false;
-            this.unifytb_ModCreator.ShowClosingMessage = false;
-            this.unifytb_ModCreator.Size = new System.Drawing.Size(381, 421);
-            this.unifytb_ModCreator.TabIndex = 102;
-            this.unifytb_ModCreator.TextColor = System.Drawing.SystemColors.Control;
+            this.unifytb_PatchCreator.BackTabColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.unifytb_PatchCreator.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.unifytb_PatchCreator.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
+            this.unifytb_PatchCreator.ClosingMessage = null;
+            this.unifytb_PatchCreator.Controls.Add(this.unifytb_Tab_Details);
+            this.unifytb_PatchCreator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.unifytb_PatchCreator.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.unifytb_PatchCreator.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.unifytb_PatchCreator.ItemSize = new System.Drawing.Size(240, 16);
+            this.unifytb_PatchCreator.Location = new System.Drawing.Point(0, 0);
+            this.unifytb_PatchCreator.Name = "unifytb_PatchCreator";
+            this.unifytb_PatchCreator.NoTabDisplay = false;
+            this.unifytb_PatchCreator.SelectedIndex = 0;
+            this.unifytb_PatchCreator.SelectedTextColor = System.Drawing.SystemColors.Control;
+            this.unifytb_PatchCreator.ShowClosingButton = false;
+            this.unifytb_PatchCreator.ShowClosingMessage = false;
+            this.unifytb_PatchCreator.Size = new System.Drawing.Size(381, 421);
+            this.unifytb_PatchCreator.TabIndex = 102;
+            this.unifytb_PatchCreator.TextColor = System.Drawing.SystemColors.Control;
             // 
             // unifytb_Tab_Details
             // 
@@ -239,15 +240,15 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(381, 461);
             this.Controls.Add(this.btn_Create);
-            this.Controls.Add(this.unifytb_ModCreator);
+            this.Controls.Add(this.unifytb_PatchCreator);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ForeColor = System.Drawing.SystemColors.Control;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(397, 500);
             this.Name = "PatchCreator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Patch Creator";
-            this.unifytb_ModCreator.ResumeLayout(false);
+            this.unifytb_PatchCreator.ResumeLayout(false);
             this.unifytb_Tab_Details.ResumeLayout(false);
             this.unifytb_Tab_Details.PerformLayout();
             this.group_DescriptionField.ResumeLayout(false);
@@ -257,7 +258,7 @@
 
         #endregion
 
-        private Environment3.UnifyTabControl unifytb_ModCreator;
+        private Environment3.UnifyTabControl unifytb_PatchCreator;
         private System.Windows.Forms.TabPage unifytb_Tab_Details;
         private System.Windows.Forms.TextBox text_Title;
         private System.Windows.Forms.Label lbl_Title;

@@ -1,6 +1,7 @@
 ﻿using Ookii.Dialogs;
 using Unify.Globalisation;
 using System.Windows.Forms;
+using Unify.Environment3;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -28,9 +29,9 @@ using System.Windows.Forms;
  * SOFTWARE.
  */
 
-namespace Unify.Dialogs
+namespace Unify
 {
-    class RequestPath
+    class Dialogs
     {
         public static string GameExecutable() {
             OpenFileDialog browseGame = new OpenFileDialog() {

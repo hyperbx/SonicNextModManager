@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Linq;
 using Unify.Patcher;
-using Unify.Dialogs;
 using System.Drawing;
 using Microsoft.Win32;
 using Unify.Messenger;
@@ -429,11 +428,18 @@ namespace Unify.Environment3
         /// <summary>
         /// Re-deserialises the mods, then checks them - in turn, refreshing the list.
         /// </summary>
-        private void RefreshLists() {
+        private void RefreshLists()
+        {
             DeserialiseMods(); // Refresh mods list
             DeserialisePatches(); // Refresh patches list
             CheckDeserialisedMods(); // Check saved mods
             CheckDeserialisedPatches(); // Check saved patches
+
+            // Draw dark items for the list views.
+            // I hate this, but it's a cheap 'fix' for now.
+            ListViewDrawing.DrawDarkItems(ListView_ModsList);
+            ListViewDrawing.DrawDarkItems(ListView_PatchesList);
+            ListViewDrawing.DrawDarkItems(ListView_ModUpdates);
         }
 
         /// <summary>
@@ -528,7 +534,7 @@ namespace Unify.Environment3
         private void Button_Browse_Click(object sender, EventArgs e) {
             if (sender == Button_ModsDirectory) {
                 // Browse for mods directory
-                string browseMods = RequestPath.ModsDirectory();
+                string browseMods = Dialogs.ModsDirectory();
 
                 if (browseMods != string.Empty) {
                     Properties.Settings.Default.Path_ModsDirectory = TextBox_ModsDirectory.Text = browseMods;
@@ -536,7 +542,7 @@ namespace Unify.Environment3
                 }
             } else if (sender == Button_GameDirectory) {
                 // Browse for game executables
-                string gameExecutable = RequestPath.GameExecutable();
+                string gameExecutable = Dialogs.GameExecutable();
 
                 if (gameExecutable != string.Empty) {
                     Properties.Settings.Default.Path_GameExecutable = TextBox_GameDirectory.Text = gameExecutable;
@@ -544,7 +550,7 @@ namespace Unify.Environment3
                 }
             } else if (sender == Button_EmulatorExecutable) {
                 // Browse for emulator executables
-                string emulatorExecutable = RequestPath.EmulatorExecutable();
+                string emulatorExecutable = Dialogs.EmulatorExecutable();
 
                 if (emulatorExecutable != string.Empty) {
                     Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text = emulatorExecutable;
@@ -552,7 +558,7 @@ namespace Unify.Environment3
                 }
             } else if (sender == Button_SaveData) {
                 // Browse for save data
-                string saveData = RequestPath.SaveData();
+                string saveData = Dialogs.SaveData();
 
                 if (saveData != string.Empty) {
                     Properties.Settings.Default.Path_SaveData = TextBox_SaveData.Text = saveData;
@@ -656,7 +662,7 @@ namespace Unify.Environment3
                                                            "Sonic '06 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } else {
                 // Browse for mods directory
-                string browseMods = RequestPath.ModsDirectory();
+                string browseMods = Dialogs.ModsDirectory();
 
                 if (browseMods != string.Empty) {
                     Properties.Settings.Default.Path_ModsDirectory = TextBox_ModsDirectory.Text = browseMods;
@@ -847,11 +853,13 @@ namespace Unify.Environment3
         /// <summary>
         /// Event handler for the right-click menu items by index.
         /// </summary>
-        private void ContextMenu_PatchMenu_Items_Click(object sender, EventArgs e) {
+        private void ContextMenu_PatchMenu_Items_Click(object sender, EventArgs e)
+        {
+            string patch = ListView_PatchesList.FocusedItem.SubItems[5].Text;
+
             switch (((ToolStripMenuItem)sender).ToString()) {
                 case "Patch Information":
-                    string patch = ListView_PatchesList.FocusedItem.SubItems[5].Text,
-                           blurb = Lua.DeserialiseParameter("Blurb", patch, true), // Deserialise 'Blurb' parameter
+                    string blurb = Lua.DeserialiseParameter("Blurb", patch, true), // Deserialise 'Blurb' parameter
                            description = Lua.DeserialiseParameter("Description", patch, true), // Deserialise 'Description' parameter
                            patchInfo = string.Empty;
 
@@ -862,7 +870,7 @@ namespace Unify.Environment3
                     UnifyMessenger.UnifyMessage.ShowDialog(patchInfo, ListView_PatchesList.FocusedItem.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
                 case "Open Folder":
-                    try { Process.Start(Program.Patches); }
+                    try { Process.Start("explorer", $"/select, \"{patch}\""); }
                     catch {
                         UnifyMessenger.UnifyMessage.ShowDialog("The patches directory is missing... Please restart Sonic '06 Mod Manager.",
                                                                "Unable to locate patches...", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -911,19 +919,8 @@ namespace Unify.Environment3
         /// <summary>
         /// Draws the column header in the presented design language by sender.
         /// </summary>
-        private void ListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e) {
-            // Draws the column background colour
-            Color theme = Color.FromArgb(35, 35, 38);
-            e.Graphics.FillRectangle(new SolidBrush(theme), e.Bounds);
-            Point point = new Point(0, 4);
-            point.X = e.Bounds.X;
-
-            // Draws the column header by sender
-            ColumnHeader column = ((ListView)sender).Columns[e.ColumnIndex];
-            e.Graphics.FillRectangle(new SolidBrush(theme), point.X, 0, 2, e.Bounds.Height);
-            point.X += column.Width / 2 - TextRenderer.MeasureText(column.Text, ((ListView)sender).Font).Width / 2;
-            TextRenderer.DrawText(e.Graphics, column.Text, ((ListView)sender).Font, point, ((ListView)sender).ForeColor);
-        }
+        private void ListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+            => ListViewDrawing.DrawColumnHeader(sender, e);
 
         /// <summary>
         /// Deserialises 'mod.ini' for each mod in the mods directory.
@@ -1160,7 +1157,7 @@ namespace Unify.Environment3
 
             if (File.Exists(Properties.Settings.Default.Path_GameExecutable)) parameters.Add($"\"{Properties.Settings.Default.Path_GameExecutable}\"");
             else { // If the game directory is invalid, prompt the user to select a new one
-                string gameExecutable = RequestPath.GameExecutable();
+                string gameExecutable = Dialogs.GameExecutable();
 
                 if (gameExecutable != string.Empty) {
                     Properties.Settings.Default.Path_GameExecutable = TextBox_GameDirectory.Text = gameExecutable;
@@ -1173,7 +1170,7 @@ namespace Unify.Environment3
 
             if (Properties.Settings.Default.Path_EmulatorDirectory == string.Empty ||
                 !File.Exists(Properties.Settings.Default.Path_EmulatorDirectory)) { // If the emulator is empty/doesn't exist, prompt the user to select one
-                    string emulatorExecutable = RequestPath.EmulatorExecutable();
+                    string emulatorExecutable = Dialogs.EmulatorExecutable();
 
                     if (emulatorExecutable != string.Empty) {
                         Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text = emulatorExecutable;
@@ -2314,7 +2311,7 @@ namespace Unify.Environment3
 
             // No game directory set - choose a new one...
             } else {
-                string browseGame = RequestPath.GameExecutable();
+                string browseGame = Dialogs.GameExecutable();
 
                 if (browseGame != string.Empty) {
                     Properties.Settings.Default.Path_GameExecutable = TextBox_GameDirectory.Text = browseGame;
@@ -2413,5 +2410,28 @@ namespace Unify.Environment3
             e.DrawBorder();
             e.DrawText();
         }
+
+        /// <summary>
+        /// Displays the dialog to create a profile with.
+        /// </summary>
+        private void LinkLabel_CreateProfile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+            => new ProfileCreator(ListView_ModsList, ListView_PatchesList).ShowDialog();
+
+        /// <summary>
+        /// Displays the profile selector.
+        /// </summary>
+        private void LinkLabel_LoadProfile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new ProfileSelect().ShowDialog();
+
+            // Refresh lists to account for new profile regardless
+            RefreshLists();
+        }
+
+        /// <summary>
+        /// Opens the directory containing the profiles.
+        /// </summary>
+        private void LinkLabel_OpenProfilesDirectory_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+            => Process.Start(Program.Profiles);
     }
 }
