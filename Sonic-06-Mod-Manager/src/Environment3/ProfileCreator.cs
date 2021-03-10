@@ -25,6 +25,7 @@
  */
 
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Unify.Environment3
@@ -34,6 +35,15 @@ namespace Unify.Environment3
         public ProfileCreator(ListView modsList, ListView patchesList)
         {
             InitializeComponent();
+
+            // Set theme colours
+            unifytb_ProfileCreator.ActiveColor =
+            unifytb_ProfileCreator.HorizontalLineColor =
+            Properties.Settings.Default.General_AccentColour;
+
+            // Set contrast colour
+            if (Properties.Settings.Default.General_HighContrastText)
+                unifytb_ProfileCreator.SelectedTextColor = SystemColors.ControlText;
 
             Mods = modsList;
             Patches = patchesList;

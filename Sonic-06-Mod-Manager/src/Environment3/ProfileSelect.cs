@@ -27,6 +27,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Drawing;
 using System.Windows.Forms;
 using Unify.Messenger;
 
@@ -37,6 +38,17 @@ namespace Unify.Environment3
         public ProfileSelect()
         {
             InitializeComponent();
+
+            // Set theme colours
+            unifytb_Profiles.ActiveColor =
+            unifytb_Profiles.HorizontalLineColor =
+            unifytb_Info.ActiveColor =
+            unifytb_Info.HorizontalLineColor =
+            Properties.Settings.Default.General_AccentColour;
+
+            // Set contrast colour
+            if (Properties.Settings.Default.General_HighContrastText)
+                unifytb_Profiles.SelectedTextColor = unifytb_Info.SelectedTextColor = SystemColors.ControlText;
 
             // Display the last selected profile
             if (!string.IsNullOrEmpty(Properties.Settings.Default.General_Profile))

@@ -31,11 +31,11 @@ namespace Unify.Environment3
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProfileCreator));
             this.Button_Create = new System.Windows.Forms.Button();
-            this.unifytb_ModCreator = new Unify.Environment3.UnifyTabControl();
+            this.unifytb_ProfileCreator = new Unify.Environment3.UnifyTabControl();
             this.unifytb_Tab_Details = new System.Windows.Forms.TabPage();
             this.text_Title = new System.Windows.Forms.TextBox();
             this.lbl_Title = new System.Windows.Forms.Label();
-            this.unifytb_ModCreator.SuspendLayout();
+            this.unifytb_ProfileCreator.SuspendLayout();
             this.unifytb_Tab_Details.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,33 +56,33 @@ namespace Unify.Environment3
             this.Button_Create.UseVisualStyleBackColor = false;
             this.Button_Create.Click += new System.EventHandler(this.Button_Create_Click);
             // 
-            // unifytb_ModCreator
+            // unifytb_ProfileCreator
             // 
-            this.unifytb_ModCreator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.unifytb_ModCreator.AllowDragging = false;
-            this.unifytb_ModCreator.AllowDrop = true;
-            this.unifytb_ModCreator.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.unifytb_ProfileCreator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.unifytb_ProfileCreator.AllowDragging = false;
+            this.unifytb_ProfileCreator.AllowDrop = true;
+            this.unifytb_ProfileCreator.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.unifytb_ModCreator.BackTabColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.unifytb_ModCreator.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.unifytb_ModCreator.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
-            this.unifytb_ModCreator.ClosingMessage = null;
-            this.unifytb_ModCreator.Controls.Add(this.unifytb_Tab_Details);
-            this.unifytb_ModCreator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.unifytb_ModCreator.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.unifytb_ModCreator.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.unifytb_ModCreator.ItemSize = new System.Drawing.Size(240, 16);
-            this.unifytb_ModCreator.Location = new System.Drawing.Point(0, 0);
-            this.unifytb_ModCreator.Name = "unifytb_ModCreator";
-            this.unifytb_ModCreator.NoTabDisplay = false;
-            this.unifytb_ModCreator.SelectedIndex = 0;
-            this.unifytb_ModCreator.SelectedTextColor = System.Drawing.SystemColors.Control;
-            this.unifytb_ModCreator.ShowClosingButton = false;
-            this.unifytb_ModCreator.ShowClosingMessage = false;
-            this.unifytb_ModCreator.Size = new System.Drawing.Size(381, 67);
-            this.unifytb_ModCreator.TabIndex = 104;
-            this.unifytb_ModCreator.TextColor = System.Drawing.SystemColors.Control;
+            this.unifytb_ProfileCreator.BackTabColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.unifytb_ProfileCreator.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.unifytb_ProfileCreator.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
+            this.unifytb_ProfileCreator.ClosingMessage = null;
+            this.unifytb_ProfileCreator.Controls.Add(this.unifytb_Tab_Details);
+            this.unifytb_ProfileCreator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.unifytb_ProfileCreator.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.unifytb_ProfileCreator.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.unifytb_ProfileCreator.ItemSize = new System.Drawing.Size(240, 16);
+            this.unifytb_ProfileCreator.Location = new System.Drawing.Point(0, 0);
+            this.unifytb_ProfileCreator.Name = "unifytb_ProfileCreator";
+            this.unifytb_ProfileCreator.NoTabDisplay = false;
+            this.unifytb_ProfileCreator.SelectedIndex = 0;
+            this.unifytb_ProfileCreator.SelectedTextColor = System.Drawing.SystemColors.Control;
+            this.unifytb_ProfileCreator.ShowClosingButton = false;
+            this.unifytb_ProfileCreator.ShowClosingMessage = false;
+            this.unifytb_ProfileCreator.Size = new System.Drawing.Size(381, 67);
+            this.unifytb_ProfileCreator.TabIndex = 104;
+            this.unifytb_ProfileCreator.TextColor = System.Drawing.SystemColors.Control;
             // 
             // unifytb_Tab_Details
             // 
@@ -126,7 +126,7 @@ namespace Unify.Environment3
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(380, 112);
             this.Controls.Add(this.Button_Create);
-            this.Controls.Add(this.unifytb_ModCreator);
+            this.Controls.Add(this.unifytb_ProfileCreator);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -136,7 +136,7 @@ namespace Unify.Environment3
             this.Name = "ProfileCreator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Profile Creator";
-            this.unifytb_ModCreator.ResumeLayout(false);
+            this.unifytb_ProfileCreator.ResumeLayout(false);
             this.unifytb_Tab_Details.ResumeLayout(false);
             this.unifytb_Tab_Details.PerformLayout();
             this.ResumeLayout(false);
@@ -146,7 +146,7 @@ namespace Unify.Environment3
         #endregion
 
         private System.Windows.Forms.Button Button_Create;
-        private Unify.Environment3.UnifyTabControl unifytb_ModCreator;
+        private Unify.Environment3.UnifyTabControl unifytb_ProfileCreator;
         private System.Windows.Forms.TabPage unifytb_Tab_Details;
         private System.Windows.Forms.TextBox text_Title;
         private System.Windows.Forms.Label lbl_Title;
