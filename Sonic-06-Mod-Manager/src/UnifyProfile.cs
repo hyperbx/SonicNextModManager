@@ -32,6 +32,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Unify.Serialisers;
 using Unify.Globalisation;
+using Unify.Messenger;
 
 namespace Unify
 {
@@ -58,6 +59,22 @@ namespace Unify
             {
 #endif
                 string profile = Path.Combine(Program.Profiles, $"{Literal.UseSafeFormattedCharacters(name)}.06mm");
+
+                if (File.Exists(profile))
+                {
+                    DialogResult confirmation = UnifyMessenger.UnifyMessage.ShowDialog
+                    (
+                        "A profile already exists with this name! Would you like to overwrite it?",
+                        "Profile already exists...",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (confirmation == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
 
                 using (StreamWriter sw = File.CreateText(profile))
                 {
@@ -106,6 +123,9 @@ namespace Unify
                             sw.WriteLine($"{property.Name}: {property.PropertyValue}");
                         }
                     }
+
+                    // Set last used profile to the newly created one
+                    Properties.Settings.Default.General_Profile = name;
 
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Success] Created profile successfully!");
                 }

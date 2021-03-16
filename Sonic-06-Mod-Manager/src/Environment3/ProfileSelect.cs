@@ -108,12 +108,24 @@ namespace Unify.Environment3
             ListBox_Patches.Items.Clear();
             ListBox_Tweaks.Items.Clear();
 
-            string noneSelected = "Please select a profile...";
+            string none = "N/A";
+
+            if (ListView_ProfilesList.SelectedItems.Count == 0)
+            {
+                string noneSelected = "Please select a profile...";
+
+                // No profile selected, so 'disable' preview
+                ListBox_Mods.Items.Add(noneSelected);
+                ListBox_Patches.Items.Add(noneSelected);
+                ListBox_Tweaks.Items.Add(noneSelected);
+
+                return;
+            }
 
             // Update mod info list box
             if (Profile.Mods.Count == 0)
             {
-                ListBox_Mods.Items.Add(noneSelected);
+                ListBox_Mods.Items.Add(none);
             }
             else
             {
@@ -124,7 +136,7 @@ namespace Unify.Environment3
             // Update patch info list box
             if (Profile.Patches.Count == 0)
             {
-                ListBox_Patches.Items.Add(noneSelected);
+                ListBox_Patches.Items.Add(none);
             }
             else
             {
@@ -135,7 +147,7 @@ namespace Unify.Environment3
             // Update tweak info list box
             if (Profile.Tweaks.Count == 0)
             {
-                ListBox_Tweaks.Items.Add(noneSelected);
+                ListBox_Tweaks.Items.Add(none);
             }
             else
             {
