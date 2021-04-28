@@ -12,7 +12,7 @@ namespace Unify.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -140,30 +140,6 @@ namespace Unify.Properties {
             }
             set {
                 this["Emulator_API"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Emulator_ForceRTV {
-            get {
-                return ((bool)(this["Emulator_ForceRTV"]));
-            }
-            set {
-                this["Emulator_ForceRTV"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Emulator_DoubleResolution {
-            get {
-                return ((bool)(this["Emulator_DoubleResolution"]));
-            }
-            set {
-                this["Emulator_DoubleResolution"] = value;
             }
         }
         
@@ -488,6 +464,18 @@ namespace Unify.Properties {
             }
             set {
                 this["General_Profile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Emulator_Resolution {
+            get {
+                return ((int)(this["Emulator_Resolution"]));
+            }
+            set {
+                this["Emulator_Resolution"] = value;
             }
         }
     }

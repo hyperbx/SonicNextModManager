@@ -71,16 +71,6 @@ namespace Unify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] arctool {
-            get {
-                object obj = ResourceManager.GetObject("arctool", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Cancel_16x {
@@ -205,17 +195,6 @@ namespace Unify.Properties {
             get {
                 object obj = ResourceManager.GetObject("error", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Arctool is missing, therefore mod installation has failed.
-        ///Please whitelist the following directory in your antivirus software and restart Sonic &apos;06 Mod Manager...
-        ///.
-        /// </summary>
-        internal static string Exception_ArctoolMissing {
-            get {
-                return ResourceManager.GetString("Exception_ArctoolMissing", resourceCulture);
             }
         }
         

@@ -127,13 +127,13 @@ namespace Unify
                     // Set last used profile to the newly created one
                     Properties.Settings.Default.General_Profile = name;
 
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Success] Created profile successfully!");
+                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Success] Created profile successfully!");
                 }
 #if !DEBUG
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to create profile...\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to create profile...\n{ex}");
             }
 #endif
         }
@@ -212,7 +212,7 @@ namespace Unify
                         {
                             // Write mod name by folder name to prevent duplicate mod names conflicting
                             sw.WriteLine(mod);
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Profile] Written mod '{mod}' to configuration");
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Profile] Written mod '{mod}' to configuration");
                         }
                     }
 
@@ -229,7 +229,7 @@ namespace Unify
                             {
                                 // Write patch name by file name to prevent duplicate patch names conflicting
                                 sw.WriteLine(patch);
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Profile] Written patch '{patch}' to configuration");
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Profile] Written patch '{patch}' to configuration");
                             }
                         }
                     }
@@ -246,19 +246,19 @@ namespace Unify
                         {
                             property.PropertyValue = Convert.ChangeType(tweak.Remove(0, valueSplit), property.PropertyValue.GetType());
 
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Profile] Configured tweak '{property.Name}'");
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Profile] Configured tweak '{property.Name}'");
                         }
                     }
                 }
 
                 Properties.Settings.Default.Save();
 
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Success] Loaded profile successfully!");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Success] Loaded profile successfully!");
 #if !DEBUG
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to load profile...\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to load profile...\n{ex}");
             }
 #endif
         }

@@ -51,7 +51,7 @@ namespace Unify.Environment3
                     _list.Invoke(new MethodInvoker(() => _list.Items.Add(_content.ToString())));
                     _list.Invoke(new MethodInvoker(() => _list.SelectedIndex = _list.Items.Count - 1));
                     _list.Invoke(new MethodInvoker(() => _list.SelectedIndex = -1));
-                } catch (ObjectDisposedException ex) { Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to dispose invoker...\n{ex}"); }
+                } catch (ObjectDisposedException ex) { Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to dispose invoker...\n{ex}"); }
             } else {
                 _list.Items.Add(_content.ToString());
                 _list.SelectedIndex = _list.Items.Count - 1;

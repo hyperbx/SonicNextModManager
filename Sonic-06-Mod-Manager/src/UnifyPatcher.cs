@@ -2,9 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Linq;
-using ArcPackerLib;
-using HedgeLib.Text;
-using HedgeLib.Misc;
 using Unify.Messenger;
 using Unify.Serialisers;
 using Unify.Environment3;
@@ -13,6 +10,10 @@ using Unify.Globalisation;
 using System.Windows.Forms;
 using System.IO.Compression;
 using System.Collections.Generic;
+using Marathon.IO.Formats.Miscellaneous;
+using Marathon.IO.Formats.Text;
+using Marathon.IO.Formats.Archives;
+using ArcPackerLib;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -97,7 +98,7 @@ namespace Unify.Patcher
 
                 //Check if file should be merged
                 if (Path.GetExtension(file) == ".arc" && _merge && !read_only.Contains(Path.GetFileName(file)) && File.Exists(vanillaFilePath)) {
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Merge] {file}");
+                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Merge] {file}");
                     Merge(vanillaFilePath, file);
 
                 //If the file is not an archive or it shouldn't be merged, just copy it
@@ -105,7 +106,7 @@ namespace Unify.Patcher
                     // Skip if file doesn't exist in the base game and it's not custom.
                     if (!File.Exists(vanillaFilePath) && !custom.Contains(Path.GetFileName(file))) return;
 
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Copy] {file}");
+                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Copy] {file}");
                     File.Copy(file, vanillaFilePath, true);
                 }
 
@@ -134,7 +135,7 @@ namespace Unify.Patcher
             // If the mod uses a custom patch, install it.
             string modPatch = Paths.ReplaceFilename(mod, "patch.mlua");
             if (Paths.CheckFileLegitimacy(modPatch)) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] <hybrid> Patching {name}...");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Patch] <hybrid> Patching {name}...");
                 PatchEngine.InstallPatches(modPatch, name);
             }
         }
@@ -153,7 +154,7 @@ namespace Unify.Patcher
 
                     foreach (string file in files) {
                         if (File.Exists(file.Remove(file.Length - 5))) {
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {file}");
                             File.Delete(file.Remove(file.Length - 5)); // Delete file with last five characters set to '_back'
                         }
                         File.Move(file, file.Remove(file.Length - 5)); // Remove last five characters ('_back')
@@ -176,7 +177,7 @@ namespace Unify.Patcher
                                 
                             foreach (string customfile in files)
                                 try {
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {customfile}");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {customfile}");
                                     File.Delete(customfile); // If custom archive is found, erase...
                                 } catch { }
                         }
@@ -210,13 +211,13 @@ namespace Unify.Patcher
 
                                 // Copy redirected save data back to the mod's directory (keeps user progress)
                                 if (File.Exists(saveFile)) {
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {dir}");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {dir}");
                                     if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.360"), true);
                                 }
 
                                 // Recursively erase redirected save data
                                 if (Directory.Exists(dir.ToString().Remove(dir.Length - 5))) {
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {dir}");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {dir}");
                                     Directory.Delete(dir.ToString().Remove(dir.Length - 5), true);
                                 }
 
@@ -234,13 +235,13 @@ namespace Unify.Patcher
 
                                 // Copy redirected save data back to the mod's directory (keeps user progress)
                                 if (File.Exists(saveFile)) {
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {file}");
                                     if (savedata != string.Empty) File.Copy(saveFile, Path.Combine(Path.GetDirectoryName(mod.SubItems[6].Text), "savedata.ps3"), true);
                                 }
 
                                 // Erase redirected save data
                                 if (File.Exists(file.ToString().Remove(file.Length - 5))) {
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Remove] {file}");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {file}");
                                     File.Delete(file.ToString().Remove(file.Length - 5));
                                 }
 
@@ -256,34 +257,48 @@ namespace Unify.Patcher
         /// <summary>
         /// Creates a new 'archive.pkg' container for new filesystems.
         /// </summary>
-        public static void CustomFilesystemPackage(string platform) { //Create a custom PKG based on all the custom arcs specified in mods
+        public static void CustomFilesystemPackage(string platform)
+        {
+            //Create a custom PKG based on all the custom arcs specified in mods
             string system = Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable), platform, "archives", "system.arc");
+
             if (!File.Exists($"{system}_back"))
                 File.Copy(system, $"{system}_back", true);
+
             string unpack = UnpackARC(system, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
             // Decode the PKG
-            string directoryRoot = Path.Combine(unpack, $"system\\{platform}\\archive");
-            S06Package pkg = new S06Package();
-            pkg.Load($"{directoryRoot}.pkg");
+            string directoryRoot = Path.Combine(unpack, $"{platform}\\archive");
+            AssetPackage pkg = new AssetPackage($"{directoryRoot}.pkg");
 
-            foreach (var type in pkg.Types) {
-                if (type.TypeName == "archive")
-                    foreach (string arc in corepkg) {
-                        S06FileEntry file = new S06FileEntry {
-                            FilePath = $"archives/{arc}",
-                            FriendlyName = Path.GetFileNameWithoutExtension(arc)
+            foreach (var type in pkg.Types)
+            {
+                if (type.Name == "archive")
+                {
+                    foreach (string arc in corepkg)
+                    {
+                        var file = new AssetPackage.AssetFile
+                        {
+                            File = $"archives/{arc}",
+                            Name = Path.GetFileNameWithoutExtension(arc)
                         };
+
                         type.Files.Add(file);
                     }
-                else if (type.TypeName == "archive_win32")
-                    foreach (string arc in win32pkg) {
-                        S06FileEntry file = new S06FileEntry {
-                            FilePath = $"archives/{arc}",
-                            FriendlyName = Path.GetFileNameWithoutExtension(arc)
+                }
+                else if (type.Name == "archive_win32")
+                {
+                    foreach (string arc in win32pkg)
+                    {
+                        var file = new AssetPackage.AssetFile
+                        {
+                            File = $"archives/{arc}",
+                            Name = Path.GetFileNameWithoutExtension(arc)
                         };
+
                         type.Files.Add(file);
                     }
+                }
             }
 
             //Save the edited PKG
@@ -300,45 +315,25 @@ namespace Unify.Patcher
         /// <summary>
         /// Extracts an archive to a temporary location.
         /// </summary>
-        public static string UnpackARC(string arc, string tempPath)
+        public static string UnpackARC(string arc, string extractDir)
         {
             foreach (DriveInfo drive in DriveInfo.GetDrives())
+            {
                 if (drive.IsReady && drive.Name == Path.GetPathRoot(Environment.SystemDirectory))
+                {
                     if (drive.AvailableFreeSpace > new FileInfo(arc).Length)
                     {
-                        try
-                        {
-                            Directory.CreateDirectory(tempPath); // Create temporary location
-                            File.Copy(arc, Path.Combine(tempPath, Path.GetFileName(arc))); // Copy archive to temporary location
+                        U8Archive unpack = new U8Archive(arc);
+                        unpack.Extract(extractDir);
 
-                            // Extracts the archive in the temporary location
-                            var unpack = new ProcessStartInfo()
-                            {
-                                FileName = Program.Arctool,
-                                Arguments = $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc))}\"",
-                                WorkingDirectory = Path.GetDirectoryName(Program.Arctool),
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            };
-
-                            var Unpack = Process.Start(unpack);
-                            Unpack.WaitForExit();
-                            Unpack.Close();
-
-                            return tempPath;
-                        }
-                        catch (System.ComponentModel.Win32Exception ex)
-                        {
-                            if (!File.Exists(Program.Arctool))
-                            {
-                                skipped.Add($"► {Path.GetFileName(arc)} (a required pre-requisite is missing - check the debug log for more information)");
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {Properties.Resources.Exception_ArctoolMissing + Program.Arctool}\n{ex}");
-                            }
-                            
-                            return string.Empty;
-                        }
+                        return extractDir;
                     }
                     else
+                    {
                         throw new InsufficientMemoryException($"Unable to extract '{Path.GetFileName(arc)}' due to insufficient drive space...");
+                    }
+                }
+            }
 
             return string.Empty;
         }
@@ -346,22 +341,25 @@ namespace Unify.Patcher
         /// <summary>
         /// Repacks an archive from a temporary location.
         /// </summary>
-        public static void RepackARC(string arc, string output)
+        public static void RepackARC(string extractDir, string arc)
         {
-            if (arc != string.Empty)
+            if (extractDir != string.Empty)
             {
                 ArcPacker repack = new ArcPacker();
-                repack.WriteArc(output, Path.Combine(arc, Path.GetFileNameWithoutExtension(output)));
+                repack.WriteArc(arc, extractDir);
 
                 // Erases temporary repack data
-                try {
-                    DirectoryInfo tempData = new DirectoryInfo(arc);
-                    if (Directory.Exists(arc)) {
+                try
+                {
+                    DirectoryInfo tempData = new DirectoryInfo(extractDir);
+                    if (Directory.Exists(extractDir))
+                    {
                         foreach (FileInfo file in tempData.GetFiles()) file.Delete();
                         foreach (DirectoryInfo directory in tempData.GetDirectories()) directory.Delete(true);
-                        Directory.Delete(arc);
+                        Directory.Delete(extractDir);
                     }
-                } catch { }
+                }
+                catch { }
             }
         }
 
@@ -370,38 +368,12 @@ namespace Unify.Patcher
         /// </summary>
         public static void Merge(string arc1, string arc2)
         {
-            try
-            {
-                string tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()); // Defines the temporary path.
-                Directory.CreateDirectory(tempPath);
-                string unpack1 = UnpackARC(arc1, tempPath);
-                ProcessStartInfo arctool;
+            string tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()); // Defines the temporary path.
 
-                File.Copy(arc2, Path.Combine(tempPath, Path.GetFileName(arc2)), true); // Copies the input ARC to the temporary path.
+            UnpackARC(arc1, tempPath);
+            UnpackARC(arc2, tempPath);
 
-                // Defines the arctool process.
-                arctool = new ProcessStartInfo() {
-                    FileName = Program.Arctool,
-                    Arguments = $"-d \"{Path.Combine(tempPath, Path.GetFileName(arc2))}\"",
-                    WorkingDirectory = Path.GetDirectoryName(Program.Arctool),
-                    WindowStyle = ProcessWindowStyle.Hidden
-                };
-
-                var Unpack2 = Process.Start(arctool); // Unpacks the merge ARC.
-                Unpack2.WaitForExit();
-
-                File.Delete(Path.Combine(tempPath, Path.GetFileName(arc2))); // Deletes the temporary merge ARC.
-
-                RepackARC(unpack1, arc1);
-            }
-            catch (System.ComponentModel.Win32Exception ex)
-            {
-                if (!File.Exists(Program.Arctool))
-                {
-                    skipped.Add($"► {Path.GetFileName(arc1)} (a required pre-requisite is missing - check the debug log for more information)");
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {Properties.Resources.Exception_ArctoolMissing + Program.Arctool}\n{ex}");
-                }
-            }
+            RepackARC(tempPath, arc1);
         }
     }
 
@@ -453,6 +425,8 @@ namespace Unify.Patcher
 
                         if (systemReached)
                         {
+                            byte[] nopBytes = new byte[4] { 0x60, 0x00, 0x00, 0x00 }; // PowerPC NOP opcode
+
                             switch (line)
                             {
                                 // Unpacks an archive to a temporary location.
@@ -464,6 +438,7 @@ namespace Unify.Patcher
                                     string location = _archiveLocation = Path.Combine(
                                                                          Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable),
                                                                          Literal.CoreReplace(_BeginBlock));
+
                                     _archive = ModEngine.UnpackARC(location, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
                                 break;
 
@@ -499,6 +474,20 @@ namespace Unify.Patcher
                                         WriteByte(Literal.CoreReplace(_WriteBytes[0]), Convert.ToInt32(_WriteBytes[1], 16) + i, _WriteBytesArray[i]);
                                 break;
 
+                                    
+                                // Writes a byte array to the relative virtual address in the executable.
+                                case string x when x.StartsWith("WriteVirtualBytes("):
+                                    // Deserialise 'WriteVirtualBytes' parameter
+                                    string[] _WriteVirtualBytes = Lua.DeserialiseParameterList("WriteVirtualBytes", line, false);
+
+                                    // Convert the string to a byte array
+                                    byte[] _WriteVirtualBytesArray = Bytes.StringToByteArray(_WriteVirtualBytes[1].Replace(" ", ""));
+
+                                    // Iterate through byte array to write from the offset
+                                    for (int i = 0; i < _WriteVirtualBytesArray.Length; i++)
+                                        WriteByte("Executable", Bytes.GetPhysicalFromVirtual(Convert.ToInt32(_WriteVirtualBytes[0], 16)) + i, _WriteVirtualBytesArray[i]);
+                                break;
+
                                 // Writes null bytes to the specified offset in the file.
                                 case string x when x.StartsWith("WriteNullBytes("):
                                     // Deserialise 'WriteNullBytes' parameter
@@ -528,11 +517,21 @@ namespace Unify.Patcher
                                 case string x when x.StartsWith("WriteNopPPC("):
                                     // Deserialise 'WriteNopPPC' parameter
                                     string[] _WriteNopPPC = Lua.DeserialiseParameterList("WriteNopPPC", line, false);
-                                    byte[] nopBytes = new byte[4] { 0x60, 0x00, 0x00, 0x00 }; // PowerPC NOP opcode
 
                                     // Iterate through the opcode bytes
                                     for (int i = 0; i < nopBytes.Length; i++)
-                                        WriteByte(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16) + i, Convert.ToByte(nopBytes[i]));
+                                        WriteByte(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16) + i, nopBytes[i]);
+                                break;
+
+                                // Writes a NOP value to the relative virtual address in the executable.
+                                case string x when x.StartsWith("WriteVirtualNop("):
+                                    /* Deserialise 'WriteVirtualNop' parameter as a list because our bad code
+                                       causes the first character to be omitted from a single string. */
+                                    string[] _WriteVirtualNop = Lua.DeserialiseParameterList("WriteVirtualNop", line, false);
+
+                                    // Iterate through the opcode bytes
+                                    for (int i = 0; i < nopBytes.Length; i++)
+                                        WriteByte("Executable", Bytes.GetPhysicalFromVirtual(Convert.ToInt32(_WriteVirtualNop[0], 16)) + i, nopBytes[i]);
                                 break;
 
                                 // Writes ASCII text in bytes to the specified offset in the file.
@@ -543,7 +542,7 @@ namespace Unify.Patcher
 
                                     // Iterate through the encoded bytes
                                     for (int i = 0; i < textBytes.Length; i++)
-                                        WriteByte(Literal.CoreReplace(_WriteTextBytes[0]), Convert.ToInt32(_WriteTextBytes[1], 16) + i, Convert.ToByte(textBytes[i]));
+                                        WriteByte(Literal.CoreReplace(_WriteTextBytes[0]), Convert.ToInt32(_WriteTextBytes[1], 16) + i, textBytes[i]);
                                 break;
 
                                 // Renames a file.
@@ -857,7 +856,7 @@ namespace Unify.Patcher
                 }
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] {name}\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] {name}\n{ex}");
                 ModEngine.skipped.Add($"► {name} (check the debug log for more information)");
             }
 #endif
@@ -881,7 +880,7 @@ namespace Unify.Patcher
         private static string GetDataLocation(string location)
         {
             if (_archive != string.Empty)
-                return Path.Combine(Path.Combine(_archive, Path.GetFileNameWithoutExtension(_archiveLocation)), location);
+                return Path.Combine(_archive, location);
             else
                 return Path.Combine(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable), location);
         }
@@ -913,9 +912,13 @@ namespace Unify.Patcher
             BackupFile(location); // Backup the pre-modified archive no matter what
 
             if (File.Exists(location))
-                using (FileStream stream = File.Open(location, FileMode.Open, FileAccess.Write)) {
-                    stream.Position = offset; stream.WriteByte(_byte);
+            {
+                using (FileStream stream = File.Open(location, FileMode.Open, FileAccess.Write))
+                {
+                    stream.Position = offset;
+                    stream.WriteByte(_byte);
                 }
+            }
         }
 
         /// <summary>
@@ -1020,18 +1023,18 @@ namespace Unify.Patcher
         /// <param name="text">Entry text</param>
         private static void TextAdd(string location, string name, string placeholder, string text)
         {
-            MST mst = new MST();
-            mst.Load(location);
+            MessageTable mst = new MessageTable(location);
 
-            MSTEntries entry = new MSTEntries {
+            var entry = new MessageTable.Message
+            {
                 Name = name,
                 Text = text,
                 Placeholder = placeholder
             };
 
-            mst.entries.Add(entry);
+            mst.Entries.Add(entry);
 
-            mst.Save(location, true);
+            mst.Save();
         }
 
         /// <summary>
@@ -1043,33 +1046,33 @@ namespace Unify.Patcher
         /// <param name="text">Entry text</param>
         private static void TextEdit(string location, string name, string placeholder, string text)
         {
-            MST mst = new MST();
-            mst.Load(location);
+            MessageTable mst = new MessageTable(location);
 
             bool entryFound = false;
-            for (int i = 0; i < mst.entries.Count; i++)
+            for (int i = 0; i < mst.Entries.Count; i++)
             {
-                if (mst.entries[i].Name == name)
+                if (mst.Entries[i].Name == name)
                 {
                     entryFound = true;
-                    mst.entries[i].Text = text;
-                    mst.entries[i].Placeholder = placeholder;
+                    mst.Entries[i].Text = text;
+                    mst.Entries[i].Placeholder = placeholder;
                 }
             }
 
             // If the entry doesn't exist, create a new one
             if (!entryFound)
             {
-                MSTEntries newEntry = new MSTEntries {
+                var newEntry = new MessageTable.Message
+                {
                     Name = name,
                     Text = text,
                     Placeholder = placeholder
                 };
 
-                mst.entries.Add(newEntry);
+                mst.Entries.Add(newEntry);
             }
 
-            mst.Save(location, true);
+            mst.Save();
         }
 
         /// <summary>
@@ -1097,23 +1100,23 @@ namespace Unify.Patcher
         /// <param name="filePath">Entry reference</param>
         private static void PackageAdd(string location, string _type, string friendlyName, string filePath)
         {
-            S06Package pkg = new S06Package();
-            pkg.Load(location);
+            AssetPackage pkg = new AssetPackage(location);
 
             foreach (var type in pkg.Types)
             {
-                if (type.TypeName == _type)
+                if (type.Name == _type)
                 {
-                    S06FileEntry file = new S06FileEntry {
-                        FilePath = filePath,
-                        FriendlyName = friendlyName
+                    var file = new AssetPackage.AssetFile
+                    {
+                        File = filePath,
+                        Name = friendlyName
                     };
 
                     type.Files.Add(file);
                 }
             }
 
-            pkg.Save(location, true);
+            pkg.Save();
         }
 
         /// <summary>
@@ -1125,12 +1128,11 @@ namespace Unify.Patcher
         /// <param name="filePath">Entry reference</param>
         private static void PackageEdit(string location, string _type, string friendlyName, string filePath)
         {
-            S06Package pkg = new S06Package();
-            pkg.Load(location);
+            AssetPackage pkg = new AssetPackage(location);
 
             foreach (var type in pkg.Types)
             {
-                if (type.TypeName == _type)
+                if (type.Name == _type)
                 {
                     bool friendlyNameFound = false;
 
@@ -1139,16 +1141,16 @@ namespace Unify.Patcher
                         if (!string.IsNullOrEmpty(filePath))
                         {
                             // Replace file path if the friendly name exists
-                            if (type.Files[i].FriendlyName == friendlyName)
+                            if (type.Files[i].Name == friendlyName)
                             {
                                 friendlyNameFound = true;
-                                type.Files[i].FilePath = filePath;
+                                type.Files[i].File = filePath;
                             }
                         }
                         else
                         {
                             // Replace file path if the friendly name exists
-                            if (type.Files[i].FriendlyName == friendlyName)
+                            if (type.Files[i].Name == friendlyName)
                             {
                                 friendlyNameFound = true;
                                 type.Files.RemoveAt(i);
@@ -1159,9 +1161,10 @@ namespace Unify.Patcher
                     // If the friendly name doesn't exist, create a new reference
                     if (!friendlyNameFound)
                     {
-                        S06FileEntry newFile = new S06FileEntry {
-                            FilePath = filePath,
-                            FriendlyName = friendlyName
+                        var newFile = new AssetPackage.AssetFile
+                        {
+                            File = filePath,
+                            Name = friendlyName
                         };
 
                         type.Files.Add(newFile);
@@ -1169,7 +1172,7 @@ namespace Unify.Patcher
                 }
             }
 
-            pkg.Save(location, true);
+            pkg.Save();
         }
 
         /// <summary>
@@ -1180,16 +1183,23 @@ namespace Unify.Patcher
         /// <param name="friendlyName">Entry name</param>
         private static void PackageErase(string location, string _type, string friendlyName)
         {
-            S06Package pkg = new S06Package();
-            pkg.Load(location);
+            AssetPackage pkg = new AssetPackage(location);
 
             foreach (var type in pkg.Types)
-                if (type.TypeName == _type)
+            {
+                if (type.Name == _type)
+                {
                     for (int i = 0; i < type.Files.Count; i++)
-                            if (type.Files[i].FriendlyName == friendlyName)
-                                type.Files.RemoveAt(i);
+                    {
+                        if (type.Files[i].Name == friendlyName)
+                        {
+                            type.Files.RemoveAt(i);
+                        }
+                    }
+                }
+            }
 
-            pkg.Save(location, true);
+            pkg.Save();
         }
 
         /// <summary>
@@ -1284,54 +1294,54 @@ namespace Unify.Patcher
                             // Force MSAA
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set Anti-Aliasing to {antiAliasing}...");
-                                MSAA(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly);
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set Anti-Aliasing to {antiAliasing}...");
+                                MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly);
                             }
                         }
 
                         // Optimised
                         else if (renderer == 1) {
                             rush.Status = $"Tweaking Renderer...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Optimised...");
-                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.optimised_render_main);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Optimised...");
+                            File.WriteAllBytes(Path.Combine(tweak, $"{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.optimised_render_main);
                         }
 
                         // Destructive
                         else if (renderer == 2) {
                             rush.Status = $"Tweaking Renderer...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Destructive...");
-                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"),   Properties.Resources.vulkan_render_gamemode);
-                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_title.lub"),      Properties.Resources.vulkan_render_title);
-                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Destructive...");
+                            File.WriteAllBytes(Path.Combine(tweak, $"{system}\\scripts\\render\\render_gamemode.lub"),   Properties.Resources.vulkan_render_gamemode);
+                            File.WriteAllBytes(Path.Combine(tweak, $"{system}\\scripts\\render\\render_title.lub"),      Properties.Resources.vulkan_render_title);
+                            File.WriteAllBytes(Path.Combine(tweak, $"{system}\\scripts\\render\\core\\render_main.lub"), Properties.Resources.vulkan_render_main);
                         }
 
                         // Cheap
                         else if (renderer == 3) {
                             rush.Status = $"Tweaking Renderer...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Cheap...");
-                            File.WriteAllBytes(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_cheap);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set renderer to Cheap...");
+                            File.WriteAllBytes(Path.Combine(tweak, $"{system}\\scripts\\render\\render_gamemode.lub"), Properties.Resources.render_cheap);
                         }
 
                         // Reflections
                         if (reflections != 1) {
                             rush.Status = $"Tweaking Reflections...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set reflection resolution to {reflections}...");
-                            Reflections(Path.Combine(tweak, $"cache\\{system}\\scripts\\render\\core\\render_reflection.lub"), reflections);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set reflection resolution to {reflections}...");
+                            Reflections(Path.Combine(tweak, $"{system}\\scripts\\render\\core\\render_reflection.lub"), reflections);
                         }
 
                         if (system == "ps3") {
                             // Camera Type
                             if (cameraType != 0) {
                                 rush.Status = $"Tweaking Camera...";
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set camera type to {cameraType}...");
-                                CameraType(Path.Combine(tweak, $"cache\\{system}\\cameraparam.lub"), cameraType, fieldOfView);
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set camera type to {cameraType}...");
+                                CameraType(Path.Combine(tweak, $"{system}\\cameraparam.lub"), cameraType, fieldOfView);
                             }
 
                             // Camera Distance
                             if (cameraDistance != 650) {
                                 rush.Status = $"Tweaking Camera...";
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <cache.arc> Set camera distance to {cameraDistance}...");
-                                CameraDistance(Path.Combine(tweak, $"cache\\{system}\\cameraparam.lub"), (int)cameraDistance);
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set camera distance to {cameraDistance}...");
+                                CameraDistance(Path.Combine(tweak, $"{system}\\cameraparam.lub"), (int)cameraDistance);
                             }
                         }
 
@@ -1356,8 +1366,8 @@ namespace Unify.Patcher
                             // Force MSAA
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <scripts.arc> Set Anti-Aliasing to {antiAliasing}...");
-                                MSAA(Path.Combine(tweak, $"scripts\\{system}\\scripts\\render\\"), antiAliasing, SearchOption.AllDirectories);
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <scripts.arc> Set Anti-Aliasing to {antiAliasing}...");
+                                MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.AllDirectories);
                             }
 
                         // Repack archive as tweak
@@ -1380,15 +1390,15 @@ namespace Unify.Patcher
                             // Camera Type
                             if (cameraType != 0) {
                                 rush.Status = $"Tweaking Camera...";
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <game.arc> Set camera type to {cameraType}...");
-                                CameraType(Path.Combine(tweak, $"game\\{system}\\cameraparam.lub"), cameraType, fieldOfView);
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <game.arc> Set camera type to {cameraType}...");
+                                CameraType(Path.Combine(tweak, $"{system}\\cameraparam.lub"), cameraType, fieldOfView);
                             }
 
                             // Camera Distance
                             if (cameraDistance != 650) {
                                 rush.Status = $"Tweaking Camera...";
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <game.arc> Set camera distance to {cameraDistance}...");
-                                CameraDistance(Path.Combine(tweak, $"game\\{system}\\cameraparam.lub"), (int)cameraDistance);
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <game.arc> Set camera distance to {cameraDistance}...");
+                                CameraDistance(Path.Combine(tweak, $"{system}\\cameraparam.lub"), (int)cameraDistance);
                             }
                         }
 
@@ -1412,28 +1422,28 @@ namespace Unify.Patcher
                         // Tokyo Game Show
                         if (cameraType == 1) {
                             rush.Status = $"Tweaking Camera...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set camera type to {cameraType}...");
-                            CameraType(Path.Combine(tweak, $"player\\{system}\\player\\common.lub"), cameraType, fieldOfView);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <player.arc> Set camera type to {cameraType}...");
+                            CameraType(Path.Combine(tweak, $"{system}\\player\\common.lub"), cameraType, fieldOfView);
                         }
 
                         // Camera Height
                         if (cameraHeight != 70) {
                             rush.Status = $"Tweaking Camera...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set camera height to {cameraHeight}...");
-                            CameraHeight(Path.Combine(tweak, $"player\\{system}\\player\\common.lub"), cameraHeight);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <player.arc> Set camera height to {cameraHeight}...");
+                            CameraHeight(Path.Combine(tweak, $"{system}\\player\\common.lub"), cameraHeight);
                         }
 
                         // Amy's Hammer Range
                         if (hammerRange != 50) {
                             rush.Status = $"Tweaking Characters...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set Amy's hammer range to {hammerRange}...");
-                            HammerRange(Path.Combine(tweak, $"player\\{system}\\player\\amy.lub"), hammerRange);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <player.arc> Set Amy's hammer range to {hammerRange}...");
+                            HammerRange(Path.Combine(tweak, $"{system}\\player\\amy.lub"), hammerRange);
                         }
 
                         if (beginWithRings != 0) {
                             rush.Status = $"Tweaking Characters...";
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Tweak] <player.arc> Set default Ring count to {beginWithRings}...");
-                            BeginWithRings(Path.Combine(tweak, $"player\\{system}\\player\\"), beginWithRings);
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <player.arc> Set default Ring count to {beginWithRings}...");
+                            BeginWithRings(Path.Combine(tweak, $"{system}\\player\\"), beginWithRings);
                         }
 
                         // Repack archive as tweak
@@ -1480,7 +1490,7 @@ namespace Unify.Patcher
                 }
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] MSAA\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] MSAA\n{ex}");
                 ModEngine.skipped.Add("► MSAA (check the debug log for more information)");
             }
 #endif
@@ -1519,7 +1529,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(directoryRoot, editedLua);
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Reflections\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Reflections\n{ex}");
                 ModEngine.skipped.Add("► Reflections (check the debug log for more information)");
             }
 #endif
@@ -1591,7 +1601,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(directoryRoot, editedLua);
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Camera Type\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Camera Type\n{ex}");
                 ModEngine.skipped.Add("► Camera Type (check the debug log for more information)");
             }
 #endif
@@ -1616,7 +1626,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(directoryRoot, editedLua); //Resave the Lua
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Camera Distance\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Camera Distance\n{ex}");
                 ModEngine.skipped.Add("► Camera Distance (check the debug log for more information)");
             }
 #endif
@@ -1642,7 +1652,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(directoryRoot, editedLua);
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Camera Height\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Camera Height\n{ex}");
                 ModEngine.skipped.Add("► Camera Height (check the debug log for more information)");
             }
 #endif
@@ -1667,7 +1677,7 @@ namespace Unify.Patcher
                 File.WriteAllLines(directoryRoot, editedLua);
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Amy's Hammer Range\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Amy's Hammer Range\n{ex}");
                 ModEngine.skipped.Add("► Amy's Hammer Range (check the debug log for more information)");
             }
 #endif
@@ -1689,7 +1699,7 @@ namespace Unify.Patcher
                 }
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Begin with Rings\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Begin with Rings\n{ex}");
                 ModEngine.skipped.Add("► Begin with Rings (check the debug log for more information)");
             }
 #endif
@@ -1768,7 +1778,7 @@ namespace Unify.Patcher
                 }
 #if !DEBUG
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Field of View\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Field of View\n{ex}");
                 ModEngine.skipped.Add("► Field of View (check the debug log for more information)");
             }
 #endif

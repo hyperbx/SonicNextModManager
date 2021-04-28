@@ -171,6 +171,7 @@ namespace Unify.Environment3
                 #region Restore combo box states
                 ComboBox_API.SelectedIndex          = Properties.Settings.Default.Emulator_API;
                 ComboBox_UserLanguage.SelectedIndex = Properties.Settings.Default.Emulator_UserLanguage;
+                ComboBox_Resolution.SelectedIndex   = Properties.Settings.Default.Emulator_Resolution;
                 ComboBox_Reflections.SelectedIndex  = Properties.Settings.Default.Tweak_Reflections;
                 ComboBox_AntiAliasing.SelectedIndex = Properties.Settings.Default.Tweak_AntiAliasing;
                 ComboBox_CameraType.SelectedIndex   = Properties.Settings.Default.Tweak_CameraType;
@@ -208,8 +209,6 @@ namespace Unify.Environment3
 
                 #region Restore check box states
                 CheckBox_AutoColour.Checked         = Properties.Settings.Default.General_AutoColour;
-                CheckBox_Xenia_ForceRTV.Checked     = Properties.Settings.Default.Emulator_ForceRTV;
-                CheckBox_Xenia_2xResolution.Checked = Properties.Settings.Default.Emulator_DoubleResolution;
                 CheckBox_Xenia_VerticalSync.Checked = Properties.Settings.Default.Emulator_VerticalSync;
                 CheckBox_Xenia_Gamma.Checked        = Properties.Settings.Default.Emulator_Gamma;
                 CheckBox_Xenia_Fullscreen.Checked   = Properties.Settings.Default.Emulator_Fullscreen;
@@ -346,11 +345,11 @@ namespace Unify.Environment3
             }
 
             if (Properties.Settings.Default.Emulator_API != 0) {
-                CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = false;
-                Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.GrayText;
+                ComboBox_Resolution.Enabled = false;
+                Label_Description_Resolution.ForeColor = SystemColors.GrayText;
             } else {
-                CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = true;
-                Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.ControlDark;
+                ComboBox_Resolution.Enabled = true;
+                Label_Description_Resolution.ForeColor = SystemColors.ControlDark;
             }
 
             // Set text colour to Control
@@ -394,8 +393,7 @@ namespace Unify.Environment3
             Label_Description_ForceMSAA.ForeColor =
             Label_Description_Reflections.ForeColor =
             Label_Description_UserLanguage.ForeColor =
-            Label_Description_ForceRTV.ForeColor =
-            Label_Description_2xResolution.ForeColor =
+            Label_Description_Resolution.ForeColor =
             Label_Description_VerticalSync.ForeColor =
             Label_Description_Gamma.ForeColor =
             Label_Description_Fullscreen.ForeColor =
@@ -415,8 +413,6 @@ namespace Unify.Environment3
             ComboBox_Reflections.Enabled =
             Button_Reflections_Default.Enabled =
             ComboBox_UserLanguage.Enabled =
-            CheckBox_Xenia_ForceRTV.Enabled =
-            CheckBox_Xenia_2xResolution.Enabled =
             CheckBox_Xenia_VerticalSync.Enabled =
             CheckBox_Xenia_Gamma.Enabled =
             CheckBox_Xenia_Fullscreen.Enabled =
@@ -484,7 +480,7 @@ namespace Unify.Environment3
 
                 // Write exception to logs
                 RichTextBox_Changelogs.Text = $"Failed to request changelogs...\n\n{ex}";
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to request changelogs...\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to request changelogs...\n{ex}");
             }
 
             // Feedback
@@ -1101,7 +1097,7 @@ namespace Unify.Environment3
                 if (File.Exists(saveLocation)) {
                     // Feedback
                     Label_Status.Text = $"Redirecting save file for {name}...";
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Save] Redirecting save file for {name}...");
+                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Save] Redirecting save file for {name}...");
 
                     if (Literal.System(Properties.Settings.Default.Path_GameExecutable) == "Xbox 360") {
                         try {
@@ -1183,8 +1179,7 @@ namespace Unify.Environment3
                     if (ComboBox_API.SelectedIndex != 2) {
                         if (ComboBox_API.SelectedIndex == 0) {
                             parameters.Add("--gpu=d3d12"); // Use DirectX 12
-                            if (CheckBox_Xenia_ForceRTV.Checked)     parameters.Add("--d3d12_edram_rov=false"); // Force Render Target Views
-                            if (CheckBox_Xenia_2xResolution.Checked) parameters.Add("--d3d12_resolution_scale=2"); // 2x Resolution
+                            parameters.Add($"--draw_resolution_scale={ComboBox_Resolution.SelectedIndex + 1}"); // Resolution
                         } else
                             parameters.Add("--gpu=vulkan"); // Use Vulkan
 
@@ -1206,11 +1201,11 @@ namespace Unify.Environment3
                     Arguments = string.Join(" ", parameters.ToArray())
                 };
 
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Emulator] Launched {emulator}...");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Emulator] Launched {emulator}...");
                 Process emulatorProc = Process.Start(xeniaProc); // Launch the emulator
                 Label_Status.Text = "Waiting for emulator exit call...";
                 emulatorProc.WaitForExit(); // Halt usage of Sonic '06 Mod Manager to prevent the user from breaking stuff in the background
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Emulator] {emulator} session ended...");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Emulator] {emulator} session ended...");
 
                 // Uninstall mods after emulator quits
                 if (Properties.Settings.Default.General_AutoUninstall) UninstallThread();
@@ -1342,7 +1337,7 @@ namespace Unify.Environment3
                     };
                 }
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to update Sonic '06 Mod Manager...\n{ex}"); // Write exception to debug log
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to update Sonic '06 Mod Manager...\n{ex}"); // Write exception to debug log
                 UnifyMessenger.UnifyMessage.ShowDialog("Failed to update Sonic '06 Mod Manager. Reverting back to the previous version...",
                                                        "Update failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -1392,7 +1387,7 @@ namespace Unify.Environment3
                 }
 
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to update patches...\n{ex}"); // Write exception to debug log
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to update patches...\n{ex}"); // Write exception to debug log
                 UnifyMessenger.UnifyMessage.ShowDialog("Failed to update patches...",
                                                        "Update failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1486,7 +1481,7 @@ namespace Unify.Environment3
                     } catch (Exception ex) {
                         // Update failed - prints error to debug console and is subsequently ignored
                         ListBox_UpdateLogs.Items.Add($"Failed to update {mod.Text}...");
-                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to update {mod.Text}\n{ex}");
+                        Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to update {mod.Text}\n{ex}");
                     }
 
                     // Feedback
@@ -1841,6 +1836,8 @@ namespace Unify.Environment3
                 // Save Camera Type ahead of tweaking other values
                 Properties.Settings.Default.Tweak_CameraType = ((ComboBox)sender).SelectedIndex;
 
+                decimal defaultFOV = 0.785398185253143m;
+
                 // Anything but Retail
                 if (ComboBox_CameraType.SelectedIndex != 0) {
 
@@ -1857,21 +1854,21 @@ namespace Unify.Environment3
                         } else {
                             NumericUpDown_CameraDistance.Value = 450;
                             NumericUpDown_CameraHeight.Value = 32.5m;
-                            NumericUpDown_FieldOfView.Value = 0.785398185253143m;
+                            NumericUpDown_FieldOfView.Value = defaultFOV;
                         }
 
                     // Electronic Entertainment Expo
                     } else if (ComboBox_CameraType.SelectedIndex == 2) {
                         NumericUpDown_CameraDistance.Value = 550;
                         NumericUpDown_CameraHeight.Value = 70;
-                        NumericUpDown_FieldOfView.Value = 0.785398185253143m;
+                        NumericUpDown_FieldOfView.Value = 0.9611794m;
                     }
 
                 // Retail
                 } else {
                     NumericUpDown_CameraDistance.Value = 650;
                     NumericUpDown_CameraHeight.Value = 70;
-                    NumericUpDown_FieldOfView.Value = 0.785398185253143m;
+                    NumericUpDown_FieldOfView.Value = defaultFOV;
                 }
             }
 
@@ -1944,13 +1941,21 @@ namespace Unify.Environment3
             // Reset Field of View
             else if (sender == Button_FieldOfView_Default)
             {
-                if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
-                    if (isXbox360) // Xbox 360 supports FOV changes
+                Properties.Settings.Default.Tweak_FieldOfView = 0.785398185253143m;
+
+                if (isXbox360)
+                {
+                    // god help me
+
+                    if (ComboBox_CameraType.SelectedIndex == 1) // Tokyo Game Show
+                    {
                         Properties.Settings.Default.Tweak_FieldOfView = 0.929929435253143m;
-                    else // PlayStation 3 does not support FOV changes
-                        Properties.Settings.Default.Tweak_FieldOfView = 0.785398185253143m;
-                else // Retail
-                    Properties.Settings.Default.Tweak_FieldOfView = 0.785398185253143m;
+                    }
+                    else if (ComboBox_CameraType.SelectedIndex == 2) // Electronic Entertainment Expo
+                    {
+                        Properties.Settings.Default.Tweak_FieldOfView = 0.9611794m;
+                    }
+                }
             }
 
             // Reset Amy's Hammer Range
@@ -1982,6 +1987,7 @@ namespace Unify.Environment3
             else if (sender == LinkLabel_SuperSonic16) Process.Start("https://github.com/thesupersonic16");
             else if (sender == LinkLabel_Contributors_Radfordhound || sender == LinkLabel_Testers_Radfordhound)
                 Process.Start("https://github.com/Radfordhound");
+            else if (sender == LinkLabel_Contributors_VolcanoTheBat) Process.Start("https://www.youtube.com/c/VolcanoTheBat");
             else if (sender == LinkLabel_sharu6262) Process.Start("https://twitter.com/sharu6262");
             else if (sender == LinkLabel_Melpontro) Process.Start("https://www.youtube.com/user/Melpontro");
             else if (sender == LinkLabel_Velcomia) Process.Start("https://twitter.com/Velcomia");
@@ -2044,17 +2050,32 @@ namespace Unify.Environment3
         /// <summary>
         /// Changed index selection events for the Emulator section.
         /// </summary>
-        private void ComboBox_Emulator_SelectedIndexChanged(object sender, EventArgs e) {
-            if (sender == ComboBox_API) {
-                if ((Properties.Settings.Default.Emulator_API = ((ComboBox)sender).SelectedIndex) != 0) {
-                    CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = false;
-                    Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.GrayText;
-                } else {
-                    CheckBox_Xenia_ForceRTV.Enabled = CheckBox_Xenia_2xResolution.Enabled = true;
-                    Label_Description_ForceRTV.ForeColor = Label_Description_2xResolution.ForeColor = SystemColors.ControlDark;
+        private void ComboBox_Emulator_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender == ComboBox_API)
+            {
+                if ((Properties.Settings.Default.Emulator_API = ((ComboBox)sender).SelectedIndex) != 0)
+                {
+                    ComboBox_Resolution.Enabled = false;
+                    Label_Resolution.ForeColor = SystemColors.GrayText;
+                    Label_Description_Resolution.ForeColor = SystemColors.GrayText;
+                }
+                else
+                {
+                    ComboBox_Resolution.Enabled = true;
+                    Label_Resolution.ForeColor = SystemColors.Control;
+                    Label_Description_Resolution.ForeColor = SystemColors.ControlDark;
                 }
             }
-            else if (sender == ComboBox_UserLanguage) Properties.Settings.Default.Emulator_UserLanguage = ((ComboBox)sender).SelectedIndex;
+            else if (sender == ComboBox_UserLanguage)
+            {
+                Properties.Settings.Default.Emulator_UserLanguage = ((ComboBox)sender).SelectedIndex;
+            }
+            else if (sender == ComboBox_Resolution)
+            {
+                Properties.Settings.Default.Emulator_Resolution = ((ComboBox)sender).SelectedIndex;
+            }
+
             Properties.Settings.Default.Save();
         }
 
@@ -2070,12 +2091,10 @@ namespace Unify.Environment3
         /// Save Xenia parameter settings.
         /// </summary>
         private void CheckBox_Xenia_CheckedChanged(object sender, EventArgs e) {
-            if          (sender == CheckBox_Xenia_ForceRTV) Properties.Settings.Default.Emulator_ForceRTV         = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_Xenia_2xResolution) Properties.Settings.Default.Emulator_DoubleResolution = ((CheckBox)sender).Checked;
-            else if (sender == CheckBox_Xenia_VerticalSync) Properties.Settings.Default.Emulator_VerticalSync     = ((CheckBox)sender).Checked;
-            else if        (sender == CheckBox_Xenia_Gamma) Properties.Settings.Default.Emulator_Gamma            = ((CheckBox)sender).Checked;
-            else if   (sender == CheckBox_Xenia_Fullscreen) Properties.Settings.Default.Emulator_Fullscreen       = ((CheckBox)sender).Checked;
-            else if   (sender == CheckBox_Xenia_DiscordRPC) Properties.Settings.Default.Emulator_DiscordRPC       = ((CheckBox)sender).Checked;
+            if (sender == CheckBox_Xenia_VerticalSync) Properties.Settings.Default.Emulator_VerticalSync = ((CheckBox)sender).Checked;
+            else if        (sender == CheckBox_Xenia_Gamma) Properties.Settings.Default.Emulator_Gamma        = ((CheckBox)sender).Checked;
+            else if   (sender == CheckBox_Xenia_Fullscreen) Properties.Settings.Default.Emulator_Fullscreen   = ((CheckBox)sender).Checked;
+            else if   (sender == CheckBox_Xenia_DiscordRPC) Properties.Settings.Default.Emulator_DiscordRPC   = ((CheckBox)sender).Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -2242,7 +2261,7 @@ namespace Unify.Environment3
                             #if !DEBUG
                                 try {
                             #endif
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {@mod.Text}...");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Mod] Installing {@mod.Text}...");
                                     ModEngine.InstallMods(@mod.SubItems[6].Text, @mod.Text);
                             #if !DEBUG
                                 } catch (Exception ex) {
@@ -2268,7 +2287,7 @@ namespace Unify.Environment3
                             #if !DEBUG
                                 try {
                             #endif
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Mod] Installing {mod.Text}...");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Mod] Installing {mod.Text}...");
                                     ModEngine.InstallMods(mod.SubItems[6].Text, mod.Text);
                             #if !DEBUG
                                 } catch (Exception ex) {
@@ -2335,7 +2354,7 @@ namespace Unify.Environment3
                         Label_Status.Text = $"Patching {@patch.Text}...";
 
                         // Install the specified patch
-                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Patching {@patch.Text}...");
+                        Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Patch] Patching {@patch.Text}...");
                         PatchEngine.InstallPatches(@patch.SubItems[5].Text, @patch.Text);
                     }
                 }
@@ -2348,13 +2367,13 @@ namespace Unify.Environment3
                         Label_Status.Text = $"Patching {patch.Text}...";
 
                         // Install the specified patch
-                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Patching {patch.Text}...");
+                        Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Patch] Patching {patch.Text}...");
                         PatchEngine.InstallPatches(patch.SubItems[5].Text, patch.Text);
                     }
 
             // Encrypt if decrypted EBOOT
             if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Patch] Encrypted game executable...");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Patch] Encrypted game executable...");
                 PatchEngine.EncryptExecutable();
             }
         }

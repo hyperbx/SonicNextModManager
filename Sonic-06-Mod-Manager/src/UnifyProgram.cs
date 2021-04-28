@@ -40,7 +40,7 @@ namespace Unify
 {
     static class Program
     {
-        public static readonly string GlobalVersionNumber = $"Version 3.35";
+        public static readonly string GlobalVersionNumber = $"Version 3.36";
 
 #if !DEBUG
         public static readonly string VersionNumber = GlobalVersionNumber;
@@ -51,7 +51,6 @@ namespace Unify
         public static bool _debug = false;
         public static string ApplicationData    = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                              _7Zip              = $"{ApplicationData}\\Unify\\Tools\\7z.exe",
-                             Arctool            = $"{ApplicationData}\\Unify\\Tools\\arctool.exe",
                              XexTool            = $"{ApplicationData}\\Unify\\Tools\\xextool.exe",
                              unlub              = $"{ApplicationData}\\Unify\\Tools\\unlub.jar",
                              Patches            = $"{ApplicationData}\\Unify\\Patches\\",
@@ -80,9 +79,6 @@ namespace Unify
 
             if (!File.Exists(_7Zip))
                 File.WriteAllBytes(_7Zip, Properties.Resources._7z);
-
-            if (!File.Exists(Arctool))
-                File.WriteAllBytes(Arctool, Properties.Resources.arctool);
 
             if (!File.Exists(XexTool))
                 File.WriteAllBytes(XexTool, Properties.Resources.xextool);

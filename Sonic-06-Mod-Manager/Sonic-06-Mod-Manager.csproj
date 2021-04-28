@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Unify</RootNamespace>
     <AssemblyName>Sonic %2706 Mod Manager</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,13 +42,23 @@
     <ApplicationIcon>res\Icons\logo_main_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Marathon.Helpers, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>third_party\Marathon\Marathon.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Marathon.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>third_party\Marathon\Marathon.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -56,7 +67,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -92,7 +102,6 @@
     </Compile>
     <Compile Include="src\UnifyDrawing.cs" />
     <Compile Include="src\UnifyProfile.cs" />
-    <Compile Include="third_party\ArcPackerLib\ArcPacker.cs" />
     <Compile Include="src\Environment3\Controls\UnifyMessenger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,23 +163,8 @@
     <Compile Include="src\Environment3\Controls\SectionButton.Designer.cs">
       <DependentUpon>SectionButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="third_party\ArcPackerLib\ArcPacker.cs" />
     <Compile Include="third_party\ArcPackerLib\ZlibStream.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Exceptions\InvalidSignatureException.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Half.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\HalfHelper.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\BINAHeader.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\BINAv1Header.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\BINAv2Header.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\IHeader.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Headers\PACxHeader.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\IO\BINA.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\IO\ExtendedBinary.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\IO\FileBase.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Misc\S06Package.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Quaternion.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Text\MST.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Text\MSTEntries.cs" />
-    <Compile Include="third_party\HedgeLib\HedgeLib\Vector.cs" />
     <Compile Include="third_party\Ookii.Dialogs\AdditionalVisualStyleElements.cs" />
     <Compile Include="third_party\Ookii.Dialogs\AnimationResource.cs" />
     <Compile Include="third_party\Ookii.Dialogs\ButtonType.cs" />
@@ -320,9 +314,7 @@
     <None Include="third_party\Ookii.Dialogs\ookii.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="license.txt" />
     <Content Include="res\Applications\7z.exe" />
-    <Content Include="res\Applications\arctool.exe" />
     <Content Include="res\Applications\make_fself.exe" />
     <Content Include="res\Applications\scetool.exe" />
     <Content Include="res\Applications\unlub.jar" />
@@ -358,7 +350,8 @@
     <Content Include="res\Images\Save_grey_16x.png" />
     <Content Include="res\Images\Update 4.png" />
     <None Include="src\Environment3\GBStyleSheetDark.css" />
-    <Content Include="third_party\HedgeLib\License.txt" />
+    <Content Include="third_party\Marathon\Marathon.Helpers.dll" />
+    <Content Include="third_party\Marathon\Marathon.IO.dll" />
     <Content Include="third_party\Ookii.Dialogs\CustomDictionary.xml" />
     <Content Include="third_party\Ookii.Dialogs\InputDialog.bmp" />
     <Content Include="third_party\Ookii.Dialogs\license.txt" />
@@ -371,6 +364,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody">
+      <Version>5.2.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

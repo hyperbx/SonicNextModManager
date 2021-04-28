@@ -227,12 +227,12 @@ namespace Unify.Serialisers
                             else sw.WriteLine($"{property.Name}: {property.PropertyValue}");
                         }
 
-                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Success] Created a snapshot");
+                        Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Success] Created a snapshot");
 #if !DEBUG
                     } catch (Exception ex) {
                         // Print exception if something failed
                         sw.WriteLine($"\nExceptions:\n{ex}");
-                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to create snapshot...\n{ex}");
+                        Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to create snapshot...\n{ex}");
                     }
 #endif
                 }
@@ -270,11 +270,11 @@ namespace Unify.Serialisers
                                             string[] splitArray = line.Remove(0, valueSplit).Split(',');
                                             int[] colourArray = splitArray.Select(x => int.Parse(x)).ToArray();
                                             property.PropertyValue = Color.FromArgb(colourArray[0], colourArray[1], colourArray[2]);
-                                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Configured property '{property.Name}'");
+                                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Snapshot] Configured property '{property.Name}'");
                                         }
                                         else if (line.StartsWith(property.Name)) {
                                             property.PropertyValue = Convert.ChangeType(line.Remove(0, valueSplit), property.PropertyValue.GetType());
-                                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Configured property '{property.Name}'");
+                                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Snapshot] Configured property '{property.Name}'");
                                         }
                                     }
                                     Properties.Settings.Default.Save();
@@ -297,7 +297,7 @@ namespace Unify.Serialisers
                             using (StreamWriter sw = File.AppendText(modCheckList)) {
                                 // Write mod name by folder name to prevent duplicate mod names conflicting
                                 sw.WriteLine(mods[i]);
-                                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Written mod '{mods[i]}' to configuration");
+                                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Snapshot] Written mod '{mods[i]}' to configuration");
                             }
                         }
 
@@ -311,16 +311,16 @@ namespace Unify.Serialisers
                                 using (StreamWriter sw = File.AppendText(patchCheckList)) {
                                     // Write patch name by file name to prevent duplicate patch names conflicting
                                     sw.WriteLine(patch);
-                                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Snapshot] Written patch '{patch}' to configuration");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Snapshot] Written patch '{patch}' to configuration");
                                 }
                             }
                         } catch { }
                     }
 
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Success] Loaded a snapshot");
+                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Success] Loaded a snapshot");
 #if !DEBUG
                 } catch (Exception ex) {
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to load snapshot...\n{ex}");
+                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to load snapshot...\n{ex}");
                 }
 #endif
             }
@@ -470,7 +470,7 @@ namespace Unify.Serialisers
                     } else candidateInfo = candidateInfo.Parent;
                 }
             } catch (Exception ex) {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to check directories...\n{ex}");
+                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to check directories...\n{ex}");
             }
 
             return isChild;
@@ -486,5 +486,12 @@ namespace Unify.Serialisers
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                              .ToArray();
         }
+
+        /// <summary>
+        /// Converts a virtual address to physical for writing to the executable.
+        /// </summary>
+        /// <param name="virtualAddr">The virtual address to convert to physical.</param>
+        public static int GetPhysicalFromVirtual(int virtualAddr)
+            => (int)((virtualAddr - 0x82000000) + 0x3000);
     }
 }

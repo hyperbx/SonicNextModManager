@@ -244,7 +244,7 @@ namespace ArcPackerLib
                         // Compress the source data using zlib.
                         using (MemoryStream memStream = new MemoryStream())
                         {
-                            using (ZlibStream zStream = new ZlibStream(memStream, CompressionLevel.Fastest, true))
+                            using (ZlibStream zStream = new ZlibStream(memStream, CompressionLevel.NoCompression, true))
                             {
                                 fs_src.CopyTo(zStream);
                             }

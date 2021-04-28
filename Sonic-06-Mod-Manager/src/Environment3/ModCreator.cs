@@ -235,7 +235,7 @@ namespace Unify.Environment3
                         } catch (Exception ex) {
                             UnifyMessenger.UnifyMessage.ShowDialog($"An error occurred whilst removing the save data.",
                                                                    "I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Console.WriteLine($"[{DateTime.Now:HH:mm:ss tt}] [Error] Failed to remove save data...\n{ex}");
+                            Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Error] Failed to remove save data...\n{ex}");
                         }
                     }
 
@@ -401,7 +401,7 @@ namespace Unify.Environment3
             else btn_TestConnection.Enabled = false;
         }
 
-        private void Log(string value) => list_Console.Items.Add($"[{DateTime.Now:HH:mm:ss tt}] {value}");
+        private void Log(string value) => list_Console.Items.Add($"[{DateTime.Now:hh:mm:ss tt}] {value}");
 
         private async void Btn_TestConnection_Click(object sender, EventArgs e) {
             string metadata = string.Empty;
