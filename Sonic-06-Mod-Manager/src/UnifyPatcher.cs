@@ -14,6 +14,7 @@ using Marathon.IO.Formats.Miscellaneous;
 using Marathon.IO.Formats.Text;
 using Marathon.IO.Formats.Archives;
 using ArcPackerLib;
+using System.Drawing.Text;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -425,12 +426,11 @@ namespace Unify.Patcher
 
                         if (systemReached)
                         {
-                            byte[] nopBytes = new byte[4] { 0x60, 0x00, 0x00, 0x00 }; // PowerPC NOP opcode
-
                             switch (line)
                             {
                                 // Unpacks an archive to a temporary location.
                                 case string x when x.StartsWith("BeginBlock("):
+                                {
                                     // Deserialise 'BeginBlock' parameter
                                     string _BeginBlock = Lua.DeserialiseParameter("BeginBlock", line, false);
 
@@ -440,29 +440,43 @@ namespace Unify.Patcher
                                                                          Literal.CoreReplace(_BeginBlock));
 
                                     _archive = ModEngine.UnpackARC(location, Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
-                                break;
+
+                                    break;
+                                }
 
                                 // Decrypts the game's XEX/EBOOT.
                                 case "DecryptExecutable()":
+                                {
                                     BackupFile(gameExecutable);
                                     if (system == "Xbox 360") XEX.Decrypt(gameExecutable);
                                     else if (system == "PlayStation 3") EBOOT.Decrypt(gameExecutable);
                                     else continue;
                                     decrypted = true;
-                                break;
+
+                                    break;
+                                }
 
                                 // Encrypts the game's XEX/EBOOT.
-                                case "EncryptExecutable()": EncryptExecutable(); break;
+                                case "EncryptExecutable()":
+                                {
+                                    EncryptExecutable();
+
+                                    break;
+                                }
 
                                 // Writes a byte to the specified offset in the file.
                                 case string x when x.StartsWith("WriteByte("):
+                                {
                                     // Deserialise 'WriteByte' parameter
                                     string[] _WriteByte = Lua.DeserialiseParameterList("WriteByte", line, false);
                                     WriteByte(Literal.CoreReplace(_WriteByte[0]), Convert.ToInt32(_WriteByte[1], 16), Convert.ToByte(_WriteByte[2], 16));
-                                break;
+
+                                    break;
+                                }
 
                                 // Writes a byte array to the specified offset in the file.
                                 case string x when x.StartsWith("WriteBytes("):
+                                {
                                     // Deserialise 'WriteBytes' parameter
                                     string[] _WriteBytes = Lua.DeserialiseParameterList("WriteBytes", line, false);
 
@@ -472,11 +486,14 @@ namespace Unify.Patcher
                                     // Iterate through byte array to write from the offset
                                     for (int i = 0; i < _WriteBytesArray.Length; i++)
                                         WriteByte(Literal.CoreReplace(_WriteBytes[0]), Convert.ToInt32(_WriteBytes[1], 16) + i, _WriteBytesArray[i]);
-                                break;
 
-                                    
+                                    break;
+                                }
+
+
                                 // Writes a byte array to the relative virtual address in the executable.
                                 case string x when x.StartsWith("WriteVirtualBytes("):
+                                {
                                     // Deserialise 'WriteVirtualBytes' parameter
                                     string[] _WriteVirtualBytes = Lua.DeserialiseParameterList("WriteVirtualBytes", line, false);
 
@@ -486,20 +503,26 @@ namespace Unify.Patcher
                                     // Iterate through byte array to write from the offset
                                     for (int i = 0; i < _WriteVirtualBytesArray.Length; i++)
                                         WriteByte("Executable", Bytes.GetPhysicalFromVirtual(Convert.ToInt32(_WriteVirtualBytes[0], 16)) + i, _WriteVirtualBytesArray[i]);
-                                break;
+
+                                    break;
+                                }
 
                                 // Writes null bytes to the specified offset in the file.
                                 case string x when x.StartsWith("WriteNullBytes("):
+                                {
                                     // Deserialise 'WriteNullBytes' parameter
                                     string[] _WriteNullBytes = Lua.DeserialiseParameterList("WriteNullBytes", line, false);
 
                                     // Iterate through byte count to null from the offset
                                     for (int i = 0; i < Convert.ToInt32(_WriteNullBytes[2]); i++)
                                         WriteByte(Literal.CoreReplace(_WriteNullBytes[0]), Convert.ToInt32(_WriteNullBytes[1], 16) + i, 0);
-                                break;
+
+                                    break;
+                                }
 
                                 // Writes Base64 data to a binary file.
                                 case string x when x.StartsWith("WriteBase64("):
+                                {
                                     // Deserialise 'WriteBase64' parameter
                                     string[] _WriteBase64 = Lua.DeserialiseParameterList("WriteBase64", line, false);
 
@@ -511,31 +534,38 @@ namespace Unify.Patcher
                                     // Convert and write Base64 to a binary file
                                     byte[] bytes = Convert.FromBase64String(_WriteBase64[1]);
                                     File.WriteAllBytes(_Base64Location, bytes);
-                                break;
+
+                                    break;
+                                }
 
                                 // Writes a NOP value to the specified offset at the file path.
                                 case string x when x.StartsWith("WriteNopPPC("):
+                                {
                                     // Deserialise 'WriteNopPPC' parameter
                                     string[] _WriteNopPPC = Lua.DeserialiseParameterList("WriteNopPPC", line, false);
 
-                                    // Iterate through the opcode bytes
-                                    for (int i = 0; i < nopBytes.Length; i++)
-                                        WriteByte(Literal.CoreReplace(_WriteNopPPC[0]), Convert.ToInt32(_WriteNopPPC[1], 16) + i, nopBytes[i]);
-                                break;
+                                    // Write the NOPs with the information from the parameter
+                                    WriteNop(_WriteNopPPC, false);
+
+                                    break;
+                                }
 
                                 // Writes a NOP value to the relative virtual address in the executable.
                                 case string x when x.StartsWith("WriteVirtualNop("):
+                                {
                                     /* Deserialise 'WriteVirtualNop' parameter as a list because our bad code
                                        causes the first character to be omitted from a single string. */
                                     string[] _WriteVirtualNop = Lua.DeserialiseParameterList("WriteVirtualNop", line, false);
 
-                                    // Iterate through the opcode bytes
-                                    for (int i = 0; i < nopBytes.Length; i++)
-                                        WriteByte("Executable", Bytes.GetPhysicalFromVirtual(Convert.ToInt32(_WriteVirtualNop[0], 16)) + i, nopBytes[i]);
-                                break;
+                                    // Write the NOPs virtually with the information from the parameter
+                                    WriteNop(_WriteVirtualNop, true);
+
+                                    break;
+                                }
 
                                 // Writes ASCII text in bytes to the specified offset in the file.
                                 case string x when x.StartsWith("WriteTextBytes("):
+                                {
                                     // Deserialise 'WriteTextBytes' parameter
                                     string[] _WriteTextBytes = Lua.DeserialiseParameterList("WriteTextBytes", line, false);
                                     byte[] textBytes = Encoding.ASCII.GetBytes(_WriteTextBytes[2]);
@@ -543,10 +573,13 @@ namespace Unify.Patcher
                                     // Iterate through the encoded bytes
                                     for (int i = 0; i < textBytes.Length; i++)
                                         WriteByte(Literal.CoreReplace(_WriteTextBytes[0]), Convert.ToInt32(_WriteTextBytes[1], 16) + i, textBytes[i]);
-                                break;
+
+                                    break;
+                                }
 
                                 // Renames a file.
                                 case string x when x.StartsWith("Rename("):
+                                {
                                     // Deserialise 'Rename' parameter
                                     string[] _Rename = Lua.DeserialiseParameterList("Rename", line, false);
 
@@ -561,10 +594,13 @@ namespace Unify.Patcher
 
                                     if (!File.Exists(newName)) File.Move(_RenameLocation, newName);
                                     else if (newName == rBackup && File.Exists(rBackup)) File.Delete(_RenameLocation);
-                                break;
+
+                                    break;
+                                }
 
                                 // Renames all files with the specified extension to the new extension.
                                 case string x when x.StartsWith("RenameByExtension("):
+                                {
                                     // Deserialise 'RenameByExtension' parameter
                                     string[] _RenameByExtension = Lua.DeserialiseParameterList("RenameByExtension", line, false);
 
@@ -572,7 +608,8 @@ namespace Unify.Patcher
                                     string _RenameExtensionLocation = GetDataLocation(Literal.CoreReplace(_RenameByExtension[0]));
 
                                     // Iterate through all files by extension
-                                    foreach (string file in Directory.GetFiles(_RenameExtensionLocation, _RenameByExtension[1], SearchOption.TopDirectoryOnly)) {
+                                    foreach (string file in Directory.GetFiles(_RenameExtensionLocation, _RenameByExtension[1], SearchOption.TopDirectoryOnly))
+                                    {
                                         // Get new file name
                                         string newExtension = Path.ChangeExtension(file, _RenameByExtension[2]),
                                                rbeBackup = $"{file}_back";
@@ -580,13 +617,16 @@ namespace Unify.Patcher
                                         if (!File.Exists(newExtension)) File.Move(file, newExtension);
                                         else if (newExtension == rbeBackup && File.Exists(rbeBackup)) File.Delete(file);
                                     }
-                                break;
+
+                                    break;
+                                }
 
                                 // Deletes a file or folder.
                                 case string x when x.StartsWith("Delete("):
+                                {
                                     // Deserialise 'Delete' parameter
                                     string _Delete = Lua.DeserialiseParameter("Delete", line, false),
-                                    
+
                                     // Append the location to the active path
                                     _DeleteLocation = GetDataLocation(Literal.CoreReplace(_Delete));
 
@@ -594,21 +634,28 @@ namespace Unify.Patcher
 
                                     // Delete file or directory
                                     if (File.Exists(_DeleteLocation)) File.Delete(_DeleteLocation);
-                                    else if (Directory.Exists(_DeleteLocation) && _archive != string.Empty) {
-                                        try {
+                                    else if (Directory.Exists(_DeleteLocation) && _archive != string.Empty)
+                                    {
+                                        try
+                                        {
                                             // Erases the directory contents
                                             DirectoryInfo data = new DirectoryInfo(_DeleteLocation);
-                                            if (Directory.Exists(_DeleteLocation)) {
+                                            if (Directory.Exists(_DeleteLocation))
+                                            {
                                                 foreach (FileInfo file in data.GetFiles()) file.Delete();
                                                 foreach (DirectoryInfo directory in data.GetDirectories()) directory.Delete(true);
                                                 Directory.Delete(_DeleteLocation);
                                             }
-                                        } catch { }
+                                        }
+                                        catch { }
                                     }
-                                break;
+
+                                    break;
+                                }
 
                                 // Copies a file to a new location, with an overwrite function.
                                 case string x when x.StartsWith("Copy("):
+                                {
                                     // Deserialise 'Copy' parameter
                                     string[] _Copy = Lua.DeserialiseParameterList("Copy", line, false);
 
@@ -619,22 +666,31 @@ namespace Unify.Patcher
 
                                     if (File.Exists(_CopyLocation))
                                         File.Copy(_CopyLocation, GetDataLocation(Literal.CoreReplace(_Copy[1])), bool.Parse(_Copy[2]));
-                                break;
+
+                                    break;
+                                }
 
                                 // Creates a list of phrases to ignore when iterating.
                                 case string x when x.StartsWith("Ignore("):
+                                {
                                     // Deserialise 'Ignore' parameter
                                     _ignoreList = Lua.DeserialiseParameterList("Ignore", line, false).ToList();
-                                break;
+
+                                    break;
+                                }
 
                                 // Creates a list of phrases to search for when iterating.
                                 case string x when x.StartsWith("Search("):
+                                {
                                     // Deserialise 'Search' parameter
                                     _searchList = Lua.DeserialiseParameterList("Search", line, false).ToList();
-                                break;
+
+                                    break;
+                                }
 
                                 // Adds a Lua parameter.
                                 case string x when x.StartsWith("ParameterAdd("):
+                                {
                                     // Deserialise 'ParameterAdd' parameter
                                     string[] _ParameterAdd = Lua.DeserialiseParameterList("ParameterAdd", line, false);
 
@@ -648,14 +704,18 @@ namespace Unify.Patcher
                                     // Add parameters recursively.
                                     else if (Directory.Exists(_ParameterAddLocation))
                                         foreach (string luaData in Directory.GetFiles(_ParameterAddLocation, "*.lub", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(luaData).Contains)) continue;
                                                 ParameterAdd(luaData, _ParameterAdd[1], _ParameterAdd[2]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Edits a Lua parameter.
                                 case string x when x.StartsWith("ParameterEdit("):
+                                {
                                     // Deserialise 'ParameterEdit' parameter
                                     string[] _ParameterEdit = Lua.DeserialiseParameterList("ParameterEdit", line, false);
 
@@ -669,15 +729,19 @@ namespace Unify.Patcher
                                     // Edit parameters recursively.
                                     else if (Directory.Exists(_ParameterEditLocation))
                                         foreach (string luaData in Directory.GetFiles(_ParameterEditLocation, "*.lub", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(luaData).Contains)) continue;
                                                 ParameterEdit(luaData, _ParameterEdit[1], _ParameterEdit[2]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 
                                 // Removes all instances of a parameter from a Lua file.
                                 case string x when x.StartsWith("ParameterErase("):
+                                {
                                     // Deserialise 'ParameterErase' parameter
                                     string[] _ParameterErase = Lua.DeserialiseParameterList("ParameterErase", line, false);
 
@@ -691,14 +755,18 @@ namespace Unify.Patcher
                                     // Edit parameters recursively.
                                     else if (Directory.Exists(_ParameterEraseLocation))
                                         foreach (string luaData in Directory.GetFiles(_ParameterEraseLocation, "*.lub", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(luaData).Contains)) continue;
                                                 ParameterErase(luaData, _ParameterErase[1]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Renames a Lua parameter.
                                 case string x when x.StartsWith("ParameterRename("):
+                                {
                                     // Deserialise 'ParameterRename' parameter
                                     string[] _ParameterRename = Lua.DeserialiseParameterList("ParameterRename", line, false);
 
@@ -712,14 +780,18 @@ namespace Unify.Patcher
                                     // Edit parameters recursively.
                                     else if (Directory.Exists(_ParameterRenameLocation))
                                         foreach (string luaData in Directory.GetFiles(_ParameterRenameLocation, "*.lub", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(luaData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(luaData).Contains)) continue;
                                                 ParameterRename(luaData, _ParameterRename[1], _ParameterRename[2]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Adds an MST entry.
                                 case string x when x.StartsWith("TextAdd("):
+                                {
                                     // Deserialise 'TextAdd' parameter
                                     string[] _TextAdd = Lua.DeserialiseParameterList("TextAdd", line, false);
 
@@ -733,14 +805,18 @@ namespace Unify.Patcher
                                     // Edit text recursively.
                                     else if (Directory.Exists(_TextAddLocation))
                                         foreach (string mstData in Directory.GetFiles(_TextAddLocation, "*.mst", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(mstData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(mstData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(mstData).Contains)) continue;
                                                 TextAdd(mstData, _TextAdd[1], _TextAdd[2], _TextAdd[3]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Edits an MST entry.
                                 case string x when x.StartsWith("TextEdit("):
+                                {
                                     // Deserialise 'TextEdit' parameter
                                     string[] _TextEdit = Lua.DeserialiseParameterList("TextEdit", line, false);
 
@@ -754,14 +830,18 @@ namespace Unify.Patcher
                                     // Edit text recursively.
                                     else if (Directory.Exists(_TextEditLocation))
                                         foreach (string mstData in Directory.GetFiles(_TextEditLocation, "*.mst", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(mstData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(mstData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(mstData).Contains)) continue;
                                                 TextEdit(mstData, _TextEdit[1], _TextEdit[2], _TextEdit[3]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Replaces a string.
                                 case string x when x.StartsWith("StringReplace("):
+                                {
                                     // Deserialise 'StringReplace' parameter
                                     string[] _StringReplace = Lua.DeserialiseParameterList("StringReplace", line, false);
 
@@ -775,14 +855,18 @@ namespace Unify.Patcher
                                     // Edit text recursively.
                                     else if (Directory.Exists(_StringReplaceLocation))
                                         foreach (string lubData in Directory.GetFiles(_StringReplaceLocation, "*.lub", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(lubData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(lubData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(lubData).Contains)) continue;
                                                 StringReplace(lubData, _StringReplace[1], _StringReplace[2]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Adds a PKG entry.
                                 case string x when x.StartsWith("PackageAdd("):
+                                {
                                     // Deserialise 'PackageAdd' parameter
                                     string[] _PackageAdd = Lua.DeserialiseParameterList("PackageAdd", line, false);
 
@@ -796,14 +880,18 @@ namespace Unify.Patcher
                                     // Edit text recursively.
                                     else if (Directory.Exists(_PackageAddLocation))
                                         foreach (string pkgData in Directory.GetFiles(_PackageAddLocation, "*.pkg", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(pkgData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(pkgData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(pkgData).Contains)) continue;
                                                 PackageAdd(pkgData, _PackageAdd[1], _PackageAdd[2], _PackageAdd[3]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Edits a PKG entry.
                                 case string x when x.StartsWith("PackageEdit("):
+                                {
                                     // Deserialise 'PackageEdit' parameter
                                     string[] _PackageEdit = Lua.DeserialiseParameterList("PackageEdit", line, false);
 
@@ -817,14 +905,18 @@ namespace Unify.Patcher
                                     // Edit text recursively.
                                     else if (Directory.Exists(_PackageEditLocation))
                                         foreach (string pkgData in Directory.GetFiles(_PackageEditLocation, "*.pkg", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(pkgData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(pkgData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(pkgData).Contains)) continue;
                                                 PackageEdit(pkgData, _PackageEdit[1], _PackageEdit[2], _PackageEdit[3]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Removes all instances of an entry from a PKG.
                                 case string x when x.StartsWith("PackageErase("):
+                                {
                                     // Deserialise 'PackageErase' parameter
                                     string[] _PackageErase = Lua.DeserialiseParameterList("PackageErase", line, false);
 
@@ -838,18 +930,24 @@ namespace Unify.Patcher
                                     // Edit text recursively.
                                     else if (Directory.Exists(_PackageEraseLocation))
                                         foreach (string pkgData in Directory.GetFiles(_PackageEraseLocation, "*.pkg", SearchOption.TopDirectoryOnly))
-                                            if (!_ignoreList.Any(Path.GetFileName(pkgData).Contains)) {
+                                            if (!_ignoreList.Any(Path.GetFileName(pkgData).Contains))
+                                            {
                                                 if (_searchList.Count != 0 && !_searchList.Any(Path.GetFileName(pkgData).Contains)) continue;
                                                 PackageErase(pkgData, _PackageErase[1], _PackageErase[2]);
                                             }
-                                break;
+
+                                    break;
+                                }
 
                                 // Repacks an archive from the temporary location created by BeginBlock().
                                 case string x when x.StartsWith("EndBlock("):
+                                {
                                     BackupFile(_archiveLocation); // Backup the pre-packed archive no matter what
                                     ModEngine.RepackARC(_archive, _archiveLocation);
                                     _archive = _archiveLocation = string.Empty; // Clear location cache
-                                break;
+
+                                    break;
+                                }
                             }
                         }
                     }
@@ -860,6 +958,32 @@ namespace Unify.Patcher
                 ModEngine.skipped.Add($"► {name} (check the debug log for more information)");
             }
 #endif
+        }
+
+        private static void WriteNop(string[] paramArray, bool @virtual)
+        {
+            byte[] nopBytes = new byte[4] { 0x60, 0x00, 0x00, 0x00 }; // PowerPC NOP opcode
+
+            int nopCount = @virtual ?
+                           paramArray.Length == 2 ? Convert.ToInt32(paramArray[1]) : 1 : // NOP count is the second parameter for virtual
+                           paramArray.Length == 3 ? Convert.ToInt32(paramArray[2]) : 1 ; // NOP count is the third parameter for physical
+
+            int offset = @virtual ?
+                         Bytes.GetPhysicalFromVirtual(Convert.ToInt32(paramArray[0], 16)) : // Virtual address calculation on first parameter
+                         Convert.ToInt32(paramArray[1], 16);
+
+            // Iterate through the opcode bytes
+            for (int nop = 0; nop < nopCount; nop++)
+            {
+                for (int i = 0; i < nopBytes.Length; i++)
+                {
+                    // write bytes
+                    WriteByte(@virtual ? "Executable" : Literal.CoreReplace(paramArray[0]), offset, nopBytes[i]);
+
+                    // increment offset
+                    offset++;
+                }
+            }
         }
 
         /// <summary>
