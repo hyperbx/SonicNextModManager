@@ -279,7 +279,8 @@ namespace Unify.Environment3
                 #endregion
 
                 #region Set controls depending on emulator
-                if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "Xenia") {
+                if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "Xenia")
+                {
                     if (Properties.Settings.Default.Emulator_API != 2)
                         // Enables most controls in the Emulator UI
                         EnableEmulatorInterface();
@@ -289,15 +290,19 @@ namespace Unify.Environment3
 
                     // Set visibility state of controls
                     Label_RPCS3Warning.Visible = false;
-                } else if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "RPCS3") {
+                }
+                else if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "RPCS3")
+                {
                     // Disables most controls in the Emulator UI
                     DisableEmulatorInterface();
 
-                    ComboBox_API.Enabled = false;
+                    ComboBox_API.Enabled = ComboBox_Resolution.Enabled = false;
 
                     Label_Subtitle_Emulator_Options.ForeColor =
                     Label_API.ForeColor =
                     Label_Description_API.ForeColor =
+                    Label_Resolution.ForeColor =
+                    Label_Description_Resolution.ForeColor =
                     SystemColors.GrayText;
 
                     // Set visibility state of controls
@@ -320,30 +325,6 @@ namespace Unify.Environment3
         /// </summary>
         private void EnableEmulatorInterface() {
             #region Enable controls
-            if (Properties.Settings.Default.Tweak_Renderer == 0) {
-                // Set text colour to Control
-                Label_AntiAliasing.ForeColor = Label_Reflections.ForeColor = SystemColors.Control;
-
-                // Set text colour to ControlDark
-                Label_Description_AntiAliasing.ForeColor =
-                Label_Description_Reflections.ForeColor =
-                SystemColors.ControlDark;
-
-                // Set enabled state of controls
-                Button_AntiAliasing_Default.Enabled =
-                ComboBox_AntiAliasing.Enabled =
-                ComboBox_Reflections.Enabled =
-                Button_Reflections_Default.Enabled =
-                true;
-
-                if (CheckBox_ForceMSAA.Enabled = Properties.Settings.Default.Tweak_AntiAliasing == 1)
-                    // Set text colour to ControlDark
-                    Label_Description_ForceMSAA.ForeColor = SystemColors.ControlDark;
-                else
-                    // Set text colour to GrayText
-                    Label_Description_ForceMSAA.ForeColor = SystemColors.GrayText;
-            }
-
             if (Properties.Settings.Default.Emulator_API != 0) {
                 ComboBox_Resolution.Enabled = false;
                 Label_Description_Resolution.ForeColor = SystemColors.GrayText;
@@ -388,30 +369,16 @@ namespace Unify.Environment3
         private void DisableEmulatorInterface() {
             #region Disable controls
             // Set text colour to GrayText
-            Label_Description_FieldOfView.ForeColor =
-            Label_Description_AntiAliasing.ForeColor =
-            Label_Description_ForceMSAA.ForeColor =
-            Label_Description_Reflections.ForeColor =
             Label_Description_UserLanguage.ForeColor =
             Label_Description_Resolution.ForeColor =
             Label_Description_VerticalSync.ForeColor =
             Label_Description_Gamma.ForeColor =
             Label_Description_Fullscreen.ForeColor =
             Label_Description_DiscordRPC.ForeColor =
-            Label_AntiAliasing.ForeColor =
-            Label_FieldOfView.ForeColor =
-            Label_Reflections.ForeColor =
             Label_UserLanguage.ForeColor =
             SystemColors.GrayText;
 
             // Set enabled state of controls
-            NumericUpDown_FieldOfView.Enabled =
-            Button_FieldOfView_Default.Enabled =
-            Button_AntiAliasing_Default.Enabled =
-            ComboBox_AntiAliasing.Enabled =
-            CheckBox_ForceMSAA.Enabled =
-            ComboBox_Reflections.Enabled =
-            Button_Reflections_Default.Enabled =
             ComboBox_UserLanguage.Enabled =
             CheckBox_Xenia_VerticalSync.Enabled =
             CheckBox_Xenia_Gamma.Enabled =
