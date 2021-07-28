@@ -533,6 +533,11 @@ namespace Unify.Patcher
 
                                     // Convert and write Base64 to a binary file
                                     byte[] bytes = Convert.FromBase64String(_WriteBase64[1]);
+
+                                    // Create directory in case it doesn't exist
+                                    Directory.CreateDirectory(Path.GetDirectoryName(_Base64Location));
+
+                                    // Write Base64 data
                                     File.WriteAllBytes(_Base64Location, bytes);
 
                                     break;
