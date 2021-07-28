@@ -492,6 +492,17 @@ namespace Unify.Serialisers
         /// </summary>
         /// <param name="virtualAddr">The virtual address to convert to physical.</param>
         public static int GetPhysicalFromVirtual(int virtualAddr)
-            => (int)((virtualAddr - 0x82000000) + 0x3000);
+        {
+            switch (Literal.System(Properties.Settings.Default.Path_GameExecutable))
+            {
+                case "Xbox 360":
+                    return (int)((virtualAddr - 0x82000000) + 0x3000);
+
+                case "PlayStation 3":
+                    return virtualAddr - 0x10000;
+            }
+
+            return virtualAddr;
+        }
     }
 }
