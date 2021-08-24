@@ -40,7 +40,7 @@ namespace Unify
 {
     static class Program
     {
-        public static readonly string GlobalVersionNumber = $"Version 3.38";
+        public static readonly string GlobalVersionNumber = $"Version 3.39";
 
 #if !DEBUG
         public static readonly string VersionNumber = GlobalVersionNumber;

@@ -1424,7 +1424,7 @@ namespace Unify.Patcher
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
                                 Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set Anti-Aliasing to {antiAliasing}...");
-                                MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly);
+                                MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly, 0);
                             }
                         }
 
@@ -1496,7 +1496,7 @@ namespace Unify.Patcher
                             if (antiAliasing != 1 || forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
                                 Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <scripts.arc> Set Anti-Aliasing to {antiAliasing}...");
-                                MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.AllDirectories);
+                                MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.AllDirectories, 1);
                             }
 
                         // Repack archive as tweak
@@ -1582,23 +1582,32 @@ namespace Unify.Patcher
             }
         }
 
-        private static void MSAA(string directoryRoot, int MSAA, SearchOption searchOption) {
+        private static void MSAA(string directoryRoot, int MSAA, SearchOption searchOption, int arcSource) {
 #if !DEBUG
             try {
 #endif
                 string[] files = Directory.GetFiles(directoryRoot, "*.lub", searchOption);
 
                 foreach (var lub in files) {
-                    PatchEngine.DecompileLua(lub);
 
                     if (Path.GetFileName(lub) == "render_utility.lub") {
+                        PatchEngine.DecompileLua(lub);
+
                         List<string> editedLua = File.ReadAllLines(lub).ToList();
 
                         if (MSAA == 0)      editedLua.Add("MSAAType = \"1x\"");
                         else if (MSAA == 1) editedLua.Add("MSAAType = \"2x\"");
                         else if (MSAA == 2) editedLua.Add("MSAAType = \"4x\"");
                         File.WriteAllLines(lub, editedLua);
-                    } else {
+                    } else if (arcSource == 0 && Path.GetFileName(lub) != "render_event.lub" && Path.GetFileName(lub) != "render_kdv_c.lub" && Path.GetFileName(lub) != "render_test_lightmap.lub"
+                                              && Path.GetFileName(lub) != "render_test_wvo.lub")
+                        {
+                            continue;
+                        }
+                    else
+                        {
+                        PatchEngine.DecompileLua(lub);
+
                         string[] editedLua = File.ReadAllLines(lub);
                         int lineNum = 0;
                         int modified = 0;
