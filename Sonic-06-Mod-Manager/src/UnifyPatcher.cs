@@ -1599,8 +1599,7 @@ namespace Unify.Patcher
                         else if (MSAA == 1) editedLua.Add("MSAAType = \"2x\"");
                         else if (MSAA == 2) editedLua.Add("MSAAType = \"4x\"");
                         File.WriteAllLines(lub, editedLua);
-                    } else if (arcSource == 0 && Path.GetFileName(lub) != "render_event.lub" && Path.GetFileName(lub) != "render_kdv_c.lub" && Path.GetFileName(lub) != "render_test_lightmap.lub"
-                                              && Path.GetFileName(lub) != "render_test_wvo.lub")
+                    } else if (arcSource == 0 && Path.GetFileName(lub) != "render_event.lub")
                         {
                             continue;
                         }
