@@ -5,6 +5,7 @@ using Unify.Messenger;
 using Unify.Serialisers;
 using Unify.Environment3;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 // Sonic '06 Mod Manager is licensed under the MIT License:
 /*
@@ -51,7 +52,6 @@ namespace Unify
             TextBox_ModsDirectory.Text      = Properties.Settings.Default.Path_ModsDirectory;
             TextBox_GameDirectory.Text      = Properties.Settings.Default.Path_GameExecutable;
             TextBox_EmulatorExecutable.Text = Properties.Settings.Default.Path_EmulatorDirectory;
-            TextBox_SaveData.Text           = Properties.Settings.Default.Path_SaveData;
             CheckBox_LaunchEmulator.Checked = Properties.Settings.Default.General_LaunchEmulator;
         }
 
@@ -76,16 +76,14 @@ namespace Unify
         /// </summary>
         private void Button_Continue_Click(object sender, EventArgs e) {
             Properties.Settings.Default.Path_ModsDirectory     = TextBox_ModsDirectory.Text;
-            Properties.Settings.Default.Path_GameExecutable     = TextBox_GameDirectory.Text;
+            Properties.Settings.Default.Path_GameExecutable    = TextBox_GameDirectory.Text;
             Properties.Settings.Default.Path_EmulatorDirectory = TextBox_EmulatorExecutable.Text;
-            Properties.Settings.Default.Path_SaveData          = TextBox_SaveData.Text;
             Properties.Settings.Default.General_LaunchEmulator = CheckBox_LaunchEmulator.Checked;
 
             // If something was changed, unsubscribe from event.
             if (TextBox_ModsDirectory.Text      != string.Empty ||
                 TextBox_GameDirectory.Text      != string.Empty ||
                 TextBox_EmulatorExecutable.Text != string.Empty ||
-                TextBox_SaveData.Text           != string.Empty ||
                 CheckBox_LaunchEmulator.Checked != true) {
                     Properties.Settings.Default.General_FirstLaunch = false;
                     Properties.Settings.Default.Save();
@@ -143,13 +141,12 @@ namespace Unify
 
                 if (browseEmulator != string.Empty)
                     TextBox_EmulatorExecutable.Text = browseEmulator;
-            } else if (sender == Button_SaveData) {
-                // Browse for save data
-                string browseSave = Dialogs.SaveData();
-
-                if (browseSave != string.Empty)
-                    TextBox_SaveData.Text = browseSave;
             }
+        }
+
+        private void LinkLabel_Wiki_Help_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/Knuxfan24/Sonic-06-Mod-Manager/wiki/First-Time-Setup");
         }
     }
 }

@@ -42,19 +42,15 @@
             this.Button_ModsDirectory = new System.Windows.Forms.Button();
             this.TextBox_ModsDirectory = new System.Windows.Forms.TextBox();
             this.Label_ModsDirectory = new System.Windows.Forms.Label();
-            this.TextBox_SaveData = new System.Windows.Forms.TextBox();
             this.Label_Description_EmulatorExecutable = new System.Windows.Forms.Label();
-            this.Button_SaveData = new System.Windows.Forms.Button();
-            this.Label_Description_SaveData = new System.Windows.Forms.Label();
             this.Button_EmulatorExecutable = new System.Windows.Forms.Button();
             this.TextBox_EmulatorExecutable = new System.Windows.Forms.TextBox();
             this.Label_EmulatorExecutable = new System.Windows.Forms.Label();
-            this.Label_SaveData = new System.Windows.Forms.Label();
-            this.Label_Optional_SaveData = new System.Windows.Forms.Label();
             this.Label_Description_LaunchEmulator = new System.Windows.Forms.Label();
             this.CheckBox_LaunchEmulator = new System.Windows.Forms.CheckBox();
             this.Button_Continue = new System.Windows.Forms.Button();
             this.Label_Warning_ModsDirectoryInvalid = new System.Windows.Forms.Label();
+            this.LinkLabel_Wiki_Help = new System.Windows.Forms.LinkLabel();
             this.Panel_SectionBackdrop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_Logo)).BeginInit();
             this.SuspendLayout();
@@ -220,18 +216,6 @@
             this.Label_ModsDirectory.TabIndex = 55;
             this.Label_ModsDirectory.Text = "Mods Directory";
             // 
-            // TextBox_SaveData
-            // 
-            this.TextBox_SaveData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextBox_SaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.TextBox_SaveData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TextBox_SaveData.ForeColor = System.Drawing.SystemColors.Control;
-            this.TextBox_SaveData.Location = new System.Drawing.Point(24, 364);
-            this.TextBox_SaveData.Name = "TextBox_SaveData";
-            this.TextBox_SaveData.Size = new System.Drawing.Size(557, 23);
-            this.TextBox_SaveData.TabIndex = 74;
-            // 
             // Label_Description_EmulatorExecutable
             // 
             this.Label_Description_EmulatorExecutable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -243,34 +227,6 @@
             this.Label_Description_EmulatorExecutable.Size = new System.Drawing.Size(301, 15);
             this.Label_Description_EmulatorExecutable.TabIndex = 72;
             this.Label_Description_EmulatorExecutable.Text = "Emulator executable file (EXE) - used for Xenia or RPCS3.";
-            // 
-            // Button_SaveData
-            // 
-            this.Button_SaveData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_SaveData.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_SaveData.FlatAppearance.BorderSize = 0;
-            this.Button_SaveData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_SaveData.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_SaveData.Location = new System.Drawing.Point(587, 364);
-            this.Button_SaveData.Name = "Button_SaveData";
-            this.Button_SaveData.Size = new System.Drawing.Size(25, 23);
-            this.Button_SaveData.TabIndex = 75;
-            this.Button_SaveData.Text = "...";
-            this.Button_SaveData.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Button_SaveData.UseVisualStyleBackColor = false;
-            this.Button_SaveData.Click += new System.EventHandler(this.Button_Browse_Click);
-            // 
-            // Label_Description_SaveData
-            // 
-            this.Label_Description_SaveData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Description_SaveData.AutoSize = true;
-            this.Label_Description_SaveData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Description_SaveData.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_SaveData.Location = new System.Drawing.Point(274, 344);
-            this.Label_Description_SaveData.Name = "Label_Description_SaveData";
-            this.Label_Description_SaveData.Size = new System.Drawing.Size(307, 15);
-            this.Label_Description_SaveData.TabIndex = 76;
-            this.Label_Description_SaveData.Text = "Sonic \'06 save file currently being used with the emulator.";
             // 
             // Button_EmulatorExecutable
             // 
@@ -311,35 +267,13 @@
             this.Label_EmulatorExecutable.TabIndex = 69;
             this.Label_EmulatorExecutable.Text = "Emulator Executable";
             // 
-            // Label_SaveData
-            // 
-            this.Label_SaveData.AutoSize = true;
-            this.Label_SaveData.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.Label_SaveData.ForeColor = System.Drawing.SystemColors.Control;
-            this.Label_SaveData.Location = new System.Drawing.Point(21, 342);
-            this.Label_SaveData.Name = "Label_SaveData";
-            this.Label_SaveData.Size = new System.Drawing.Size(66, 17);
-            this.Label_SaveData.TabIndex = 73;
-            this.Label_SaveData.Text = "Save Data";
-            // 
-            // Label_Optional_SaveData
-            // 
-            this.Label_Optional_SaveData.AutoSize = true;
-            this.Label_Optional_SaveData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Optional_SaveData.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Optional_SaveData.Location = new System.Drawing.Point(84, 342);
-            this.Label_Optional_SaveData.Name = "Label_Optional_SaveData";
-            this.Label_Optional_SaveData.Size = new System.Drawing.Size(61, 17);
-            this.Label_Optional_SaveData.TabIndex = 77;
-            this.Label_Optional_SaveData.Text = "(optional)";
-            // 
             // Label_Description_LaunchEmulator
             // 
-            this.Label_Description_LaunchEmulator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Description_LaunchEmulator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Description_LaunchEmulator.AutoSize = true;
             this.Label_Description_LaunchEmulator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label_Description_LaunchEmulator.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.Label_Description_LaunchEmulator.Location = new System.Drawing.Point(327, 402);
+            this.Label_Description_LaunchEmulator.Location = new System.Drawing.Point(327, 350);
             this.Label_Description_LaunchEmulator.Name = "Label_Description_LaunchEmulator";
             this.Label_Description_LaunchEmulator.Size = new System.Drawing.Size(285, 15);
             this.Label_Description_LaunchEmulator.TabIndex = 151;
@@ -347,9 +281,10 @@
             // 
             // CheckBox_LaunchEmulator
             // 
+            this.CheckBox_LaunchEmulator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CheckBox_LaunchEmulator.AutoSize = true;
             this.CheckBox_LaunchEmulator.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBox_LaunchEmulator.Location = new System.Drawing.Point(24, 401);
+            this.CheckBox_LaunchEmulator.Location = new System.Drawing.Point(24, 349);
             this.CheckBox_LaunchEmulator.Name = "CheckBox_LaunchEmulator";
             this.CheckBox_LaunchEmulator.Size = new System.Drawing.Size(227, 19);
             this.CheckBox_LaunchEmulator.TabIndex = 150;
@@ -358,12 +293,12 @@
             // 
             // Button_Continue
             // 
-            this.Button_Continue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_Continue.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.Button_Continue.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Button_Continue.FlatAppearance.BorderSize = 0;
             this.Button_Continue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_Continue.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Continue.Location = new System.Drawing.Point(24, 432);
+            this.Button_Continue.Location = new System.Drawing.Point(24, 380);
             this.Button_Continue.Name = "Button_Continue";
             this.Button_Continue.Size = new System.Drawing.Size(588, 23);
             this.Button_Continue.TabIndex = 152;
@@ -383,25 +318,34 @@
             this.Label_Warning_ModsDirectoryInvalid.TabIndex = 153;
             this.Label_Warning_ModsDirectoryInvalid.Text = "(ensure it\'s outside the game directory).";
             // 
+            // LinkLabel_Wiki_Help
+            // 
+            this.LinkLabel_Wiki_Help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LinkLabel_Wiki_Help.LinkColor = System.Drawing.SystemColors.Control;
+            this.LinkLabel_Wiki_Help.Location = new System.Drawing.Point(566, 69);
+            this.LinkLabel_Wiki_Help.Name = "LinkLabel_Wiki_Help";
+            this.LinkLabel_Wiki_Help.Size = new System.Drawing.Size(72, 15);
+            this.LinkLabel_Wiki_Help.TabIndex = 154;
+            this.LinkLabel_Wiki_Help.TabStop = true;
+            this.LinkLabel_Wiki_Help.Text = "Help";
+            this.LinkLabel_Wiki_Help.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LinkLabel_Wiki_Help.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_Wiki_Help_LinkClicked);
+            // 
             // UnifySetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.ClientSize = new System.Drawing.Size(638, 476);
+            this.ClientSize = new System.Drawing.Size(638, 424);
+            this.Controls.Add(this.LinkLabel_Wiki_Help);
             this.Controls.Add(this.Label_Warning_ModsDirectoryInvalid);
             this.Controls.Add(this.Button_Continue);
             this.Controls.Add(this.Label_Description_LaunchEmulator);
             this.Controls.Add(this.CheckBox_LaunchEmulator);
-            this.Controls.Add(this.TextBox_SaveData);
             this.Controls.Add(this.Label_Description_EmulatorExecutable);
-            this.Controls.Add(this.Button_SaveData);
-            this.Controls.Add(this.Label_Description_SaveData);
             this.Controls.Add(this.Button_EmulatorExecutable);
             this.Controls.Add(this.TextBox_EmulatorExecutable);
             this.Controls.Add(this.Label_EmulatorExecutable);
-            this.Controls.Add(this.Label_SaveData);
-            this.Controls.Add(this.Label_Optional_SaveData);
             this.Controls.Add(this.TextBox_GameDirectory);
             this.Controls.Add(this.Label_GameExecutable);
             this.Controls.Add(this.Label_Description_ModsDirectory);
@@ -445,18 +389,14 @@
         private System.Windows.Forms.Button Button_ModsDirectory;
         private System.Windows.Forms.TextBox TextBox_ModsDirectory;
         private System.Windows.Forms.Label Label_ModsDirectory;
-        private System.Windows.Forms.TextBox TextBox_SaveData;
         private System.Windows.Forms.Label Label_Description_EmulatorExecutable;
-        private System.Windows.Forms.Button Button_SaveData;
-        private System.Windows.Forms.Label Label_Description_SaveData;
         private System.Windows.Forms.Button Button_EmulatorExecutable;
         private System.Windows.Forms.TextBox TextBox_EmulatorExecutable;
         private System.Windows.Forms.Label Label_EmulatorExecutable;
-        private System.Windows.Forms.Label Label_SaveData;
-        private System.Windows.Forms.Label Label_Optional_SaveData;
         private System.Windows.Forms.Label Label_Description_LaunchEmulator;
         private System.Windows.Forms.CheckBox CheckBox_LaunchEmulator;
         private System.Windows.Forms.Button Button_Continue;
         private System.Windows.Forms.Label Label_Warning_ModsDirectoryInvalid;
+        private System.Windows.Forms.LinkLabel LinkLabel_Wiki_Help;
     }
 }
