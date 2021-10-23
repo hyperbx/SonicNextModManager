@@ -1,0 +1,295 @@
+﻿<n:NoireWindow x:Class="SonicNextModManager.Setup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:hc="https://handyorg.github.io/handycontrol"
+               xmlns:n="clr-namespace:Noire;assembly=Noire.WPF"
+               mc:Ignorable="d"
+               Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640" ResizeMode="CanMinimize">
+
+    <Grid>
+
+        <Grid.Resources>
+            
+            <!-- Set global transition mode -->
+            <Style TargetType="hc:TransitioningContentControl">
+                <Setter Property="TransitionMode" Value="Right2LeftWithFade"/>
+            </Style>
+
+            <!-- Set global bitmap quality -->
+            <Style TargetType="Image">
+                <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+            </Style>
+
+        </Grid.Resources>
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="72"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <hc:StepBar Name="Steps" Grid.Row="0" Margin="10,15,10,10">
+                <hc:StepBarItem Content="{DynamicResource Setup_Step_Welcome}"/>
+                <hc:StepBarItem Content="{DynamicResource Setup_Step_Game}"/>
+                <hc:StepBarItem Content="{DynamicResource Setup_Step_Emulator}"/>
+                <hc:StepBarItem Content="{DynamicResource Setup_Step_Finish}"/>
+            </hc:StepBar>
+
+            <hc:Divider Grid.Row="1" Margin="0"/>
+
+            <Grid Grid.Row="2" VerticalAlignment="Center">
+                <hc:TabControl Name="MajorStepPages" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource BaseStyle}">
+                    
+                    <hc:TabItem Visibility="Collapsed">
+                        <hc:TransitioningContentControl VerticalAlignment="Center">
+                            <StackPanel>
+                                
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <TextBlock FontSize="32" Margin="0" Text="{DynamicResource Setup_Welcome_Caption}"/>
+                                
+                                <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logo.png" Width="200"/>
+
+                                <TextBlock FontSize="15" Margin="10" Text="{DynamicResource Setup_Welcome_Text_1}"/>
+                                <TextBlock FontSize="15" Text="{DynamicResource Setup_Welcome_Text_2}"/>
+
+                                <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0" Orientation="Horizontal">
+                                    <TextBlock FontSize="15" Margin="0,0,10,0" Text="{DynamicResource Common_Language}" VerticalAlignment="Center"/>
+                                    <ComboBox ItemsSource="{Binding SupportedCultures, Source={x:Static Application.Current}}" SelectedItem="{Binding CurrentCulture, Source={x:Static Application.Current}}" SelectionChanged="Language_SelectionChanged"/>
+                                </StackPanel>
+
+                                <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_Continue}" Height="32" Margin="0,20,0,0" Width="120"/>
+                                
+                            </StackPanel>
+                        </hc:TransitioningContentControl>
+                    </hc:TabItem>
+
+                    <hc:TabItem Visibility="Collapsed">
+                        <hc:TransitioningContentControl VerticalAlignment="Center">
+                            <StackPanel>
+                                
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <TextBlock FontSize="32" Text="{DynamicResource Setup_Game_Caption}"/>
+                                <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Game_Text_1}"/>
+                                
+                                <StackPanel HorizontalAlignment="Center" Margin="15" Orientation="Horizontal">
+                                    <Image Margin="0,0,10,0" Source="/SonicNextModManager;component/Resources/Images/Setup/Game_Executable_360.png"/>
+                                    <Image Source="/SonicNextModManager;component/Resources/Images/Setup/Game_Executable_PS3.png"/>
+                                </StackPanel>
+
+                                <TextBlock FontSize="15" Margin="0,0,0,10" Text="{DynamicResource Setup_Game_Text_2}"/>
+                                <TextBlock FontSize="15" Text="{DynamicResource Setup_Game_Text_3}"/>
+                                
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <TextBox TextChanged="Game_Path_TextChanged" Margin="0,20,10,0" Name="Game_Path" Width="700"/>
+                                    <Button Click="Game_Browse_Click" Margin="0,20,0,0" Content="{DynamicResource Common_Browse}" Width="120"/>
+                                </StackPanel>
+                                
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Button Click="Click_ToPreviousMajorStep" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
+                                    <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_Continue}" Height="32" IsEnabled="False" Margin="0,20,0,0" Name="Game_Continue" Width="120"/>
+                                </StackPanel>
+                                
+                            </StackPanel>
+                        </hc:TransitioningContentControl>
+                    </hc:TabItem>
+
+                    <hc:TabItem Visibility="Collapsed">
+                        <hc:TabControl Name="EmulatorStepPages" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource BaseStyle}">
+
+                            <hc:TabItem Name="Emulator_Prompt" Visibility="Collapsed">
+                                <hc:TransitioningContentControl VerticalAlignment="Center">
+                                    <StackPanel>
+                                        
+                                        <StackPanel.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </StackPanel.Resources>
+
+                                        <TextBlock FontSize="32" Text="{DynamicResource Setup_Emulator_Caption_1}"/>
+
+                                        <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_1}"/>
+                                        <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_2}"/>
+                                        <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_3}"/>
+                                        
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Button Click="Click_ToPreviousMajorStep" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
+                                            <Button Click="Click_ToRelevantEmulatorWarning" Content="{DynamicResource Common_Yes}" Height="32" Margin="0,20,0,0" Width="90"/>
+                                            <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_No}" Height="32" Margin="10,20,0,0" Width="90"/>
+                                        </StackPanel>
+                                        
+                                    </StackPanel>
+                                </hc:TransitioningContentControl>
+                            </hc:TabItem>
+
+                            <hc:TabItem Name="Emulator_Xenia" Visibility="Collapsed">
+                                <hc:TransitioningContentControl VerticalAlignment="Center">
+                                    <StackPanel>
+                                        
+                                        <StackPanel.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </StackPanel.Resources>
+
+                                        <TextBlock FontSize="32" Text="{DynamicResource Setup_Emulator_Caption_2}"/>
+                                        
+                                        <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Xenia_Text_1}"/>
+
+                                        <hc:Carousel Name="Carousel_Xenia" Height="270" IsCenter="True" Margin="0,20,0,10" Width="480">
+                                            <Image MouseDown="Image_Carousel_MouseDown" Source="/SonicNextModManager;component/Resources/Images/Setup/Xenia/Xenia_Issue_1.png" Width="480"/>
+                                            <Image MouseDown="Image_Carousel_MouseDown" Source="/SonicNextModManager;component/Resources/Images/Setup/Xenia/Xenia_Issue_2.png" Width="480"/>
+                                            <Image MouseDown="Image_Carousel_MouseDown" Source="/SonicNextModManager;component/Resources/Images/Setup/Xenia/Xenia_Issue_3.png" Width="480"/>
+                                            <Image MouseDown="Image_Carousel_MouseDown" Source="/SonicNextModManager;component/Resources/Images/Setup/Xenia/Xenia_Issue_4.png" Width="480"/>
+                                        </hc:Carousel>
+
+                                        <TextBlock FontSize="15" Margin="0,10,0,10" Text="{DynamicResource Setup_Emulator_Xenia_Text_2}"/>
+                                        <TextBlock FontSize="15" Text="{DynamicResource Setup_Emulator_Xenia_Text_3}"/>
+                                        
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Button Click="Click_ReturnToEmulatorPrompt" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
+                                            <Button Click="Click_ToEmulatorPathSetup" Content="{DynamicResource Common_Continue}" Height="32" Margin="0,20,0,0" Width="120"/>
+                                        </StackPanel>
+                                        
+                                    </StackPanel>
+                                </hc:TransitioningContentControl>
+                            </hc:TabItem>
+
+                            <hc:TabItem Name="Emulator_RPCS3" Visibility="Collapsed">
+                                <hc:TransitioningContentControl VerticalAlignment="Center">
+                                    <StackPanel>
+                                        
+                                        <StackPanel.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </StackPanel.Resources>
+
+                                        <TextBlock FontSize="32" Text="{DynamicResource Setup_Emulator_Caption_2}"/>
+
+                                        <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_RPCS3_Text_1}"/>
+                                        
+                                        <Image MouseDown="Image_Carousel_MouseDown" Margin="0,20,0,10" Source="/SonicNextModManager;component/Resources/Images/Setup/RPCS3/RPCS3_Issue_1.png" Width="480"/>
+
+                                        <TextBlock FontSize="15" Margin="0,10,0,10" Text="{DynamicResource Setup_Emulator_RPCS3_Text_2}"/>
+                                        <TextBlock FontSize="15" Text="{DynamicResource Setup_Emulator_RPCS3_Text_3}"/>
+                                        
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Button Click="Click_ReturnToEmulatorPrompt" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,0,0" Width="120"/>
+                                        </StackPanel>
+                                        
+                                    </StackPanel>
+                                </hc:TransitioningContentControl>
+                            </hc:TabItem>
+
+                            <hc:TabItem Name="Emulator_Setup" Visibility="Collapsed">
+                                <hc:TransitioningContentControl VerticalAlignment="Center">
+                                    <StackPanel>
+                                        
+                                        <StackPanel.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        
+                                        <TextBlock FontSize="32" Text="{DynamicResource Setup_Emulator_Caption_3}"/>
+
+                                        <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_4}"/>
+
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <TextBox TextChanged="Emulator_Path_TextChanged" Margin="0,20,10,0" Name="Emulator_Path" Width="400"/>
+                                            <Button Click="Emulator_Browse_Click" Margin="0,20,0,0" Content="{DynamicResource Common_Browse}" Width="120"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Button Click="Click_ReturnToEmulatorPrompt" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
+                                            <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_Continue}" Height="32" IsEnabled="False" Margin="0,20,0,0" Name="Emulator_Continue" Width="120"/>
+                                        </StackPanel>
+                                        
+                                    </StackPanel>
+                                </hc:TransitioningContentControl>
+                            </hc:TabItem>
+
+                        </hc:TabControl>
+                    </hc:TabItem>
+
+                    <hc:TabItem Visibility="Collapsed">
+                        <hc:TransitioningContentControl VerticalAlignment="Center">
+                            <StackPanel>
+                                
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+                                
+                                <TextBlock FontSize="32" Margin="0" Text="{DynamicResource Setup_Finish}"/>
+                                
+                                <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logo.png" Width="200"/>
+                                
+                                <TextBlock FontSize="15" Margin="10" Text="{DynamicResource Setup_Finish_Text_1}"/>
+                                <TextBlock FontSize="15" Text="{DynamicResource Setup_Finish_Text_2}"/>
+
+                                <Button Click="Click_FinishSetup" Content="{DynamicResource Setup_Finish_OK}" Height="32" Margin="0,20,0,0" Width="120"/>
+                                
+                            </StackPanel>
+                        </hc:TransitioningContentControl>
+                    </hc:TabItem>
+                    
+                </hc:TabControl>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+    
+</n:NoireWindow>

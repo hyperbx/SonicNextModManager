@@ -1,0 +1,86 @@
+[
+  {
+    "Name": "Hyper",
+    "Description": "Lead developer, designer and reverse-engineer",
+    "URL": "https://github.com/HyperBE32",
+    "Category": "Sonic '06 Mod Manager"
+  },
+  {
+    "Name": "LJSTAR",
+    "Description": "Logo designer",
+    "URL": "https://twitter.com/LJSTAR_",
+    "Category": "Sonic '06 Mod Manager"
+  },
+  {
+    "Name": "Hyper",
+    "Description": "Lead developer",
+    "URL": "https://github.com/HyperBE32",
+    "Category": "Sprint"
+  },
+  {
+    "Name": "MoonSharp",
+    "Description": "Lua interpreter for .NET",
+    "URL": "https://github.com/moonsharp-devs/moonsharp",
+    "Category": "Sprint"
+  },
+  {
+    "Name": "PUC-Rio",
+    "Description": "Lua",
+    "URL": "https://www.puc-rio.br/index.html",
+    "Category": "Sprint"
+  },
+  {
+    "Name": "Hyper",
+    "Description": "Lead developer and reverse-engineer",
+    "URL": "https://github.com/HyperBE32",
+    "Category": "Marathon"
+  },
+  {
+    "Name": "Knuxfan24",
+    "Description": "Developer and reverse-engineer",
+    "URL": "https://github.com/Knuxfan24",
+    "Category": "Marathon"
+  },
+  {
+    "Name": "Labryz",
+    "Description": "Reverse-engineer",
+    "URL": "https://github.com/labreezy",
+    "Category": "Marathon"
+  },
+  {
+    "Name": "Radfordhound",
+    "Description": "Wrote the HedgeLib classes used as a base for Marathon I/O",
+    "URL": "https://github.com/Radfordhound",
+    "Category": "Marathon"
+  },
+  {
+    "Name": "GerbilSoft",
+    "Description": "Wrote ZlibStream and supplied an API for compressing archive data",
+    "URL": "https://github.com/GerbilSoft",
+    "Category": "Marathon"
+  },
+  {
+    "Name": "Shadow LAG",
+    "Description": "Wrote the original Lua decompiler source in Java",
+    "URL": "https://github.com/lllsondowlll",
+    "Category": "Marathon"
+  },
+  {
+    "Name": "LJSTAR",
+    "Description": "Logo designer",
+    "URL": "https://twitter.com/LJSTAR_",
+    "Category": "Marathon"
+  },
+  {
+    "Name": "acro",
+    "Description": "Screenshot provider for Xenia",
+    "URL": "https://twitter.com/acrolvm",
+    "Category": "Miscellaneous"
+  },
+  {
+    "Name": "rom~",
+    "Description": "Screenshot provider for Xenia",
+    "URL": "https://twitter.com/rom8b",
+    "Category": "Miscellaneous"
+  }
+]
