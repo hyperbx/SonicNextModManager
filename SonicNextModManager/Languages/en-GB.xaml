@@ -13,6 +13,10 @@
     <system:String x:Key="Common_Browse"  >Browse...</system:String>
     <system:String x:Key="Common_Language">Language</system:String>
 
+    <!-- Exception Strings -->
+    <system:String x:Key="Exception_IOError">I/O Error</system:String>
+    <system:String x:Key="Exception_DirectoryTreeFailed">An error occurred whilst creating the default directory tree.</system:String>
+
     <!-- Setup Strings -->
     <system:String x:Key="Setup_Step_Welcome"         >Welcome</system:String>
     <system:String x:Key="Setup_Step_Game"            >Game</system:String>

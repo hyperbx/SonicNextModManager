@@ -31,9 +31,8 @@ namespace SonicNextModManager
                 foreach (var directory in Directories)
                     Directory.CreateDirectory(directory.Value);
 
+                string modsDirectory = SonicNextModManager.Properties.Settings.Default.Path_ModsDirectory;
                 {
-                    string modsDirectory = SonicNextModManager.Properties.Settings.Default.Path_ModsDirectory;
-
                     // Create default mods directory if the current one is null or doesn't exist.
                     if (string.IsNullOrEmpty(modsDirectory) || !Directory.Exists(modsDirectory))
                     {
@@ -86,7 +85,7 @@ namespace SonicNextModManager
             // Catch any weird errors if writing the default directories somehow fails.
             if (!CreateDefaultDirectoryTree())
             {
-                MessageBox.Show("An error occurred whilst creating the default directory tree.", "I/O Error");
+                MessageBox.Show(Language.Localise("Exception_DirectoryTreeFailed"), Language.Localise("Exception_IOError"));
                 return;
             }
 
