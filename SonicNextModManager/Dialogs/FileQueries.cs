@@ -35,6 +35,7 @@ namespace SonicNextModManager
             return BasicFileQuery
             (
                 "Please select your game executable...",
+
                 new Dictionary<string, string>
                 {
                     { "Supported files", "*.xex; *.bin" },
@@ -46,16 +47,15 @@ namespace SonicNextModManager
 
         public static string QueryEmulatorExecutable()
         {
-            OpenFileDialog ofd = new()
-            {
-                Filter = "Supported files (*.exe)|*.exe",
-                Title = "Please select your emulator executable..."
-            };
+            return BasicFileQuery
+            (
+                "Please select your emulator executable...",
 
-            if (ofd.ShowDialog() == true)
-                return ofd.FileName;
-
-            return string.Empty;
+                new Dictionary<string, string>
+                {
+                    { "Supported files", "*.exe" }
+                }
+            );
         }
     }
 }
