@@ -34,7 +34,7 @@ namespace SonicNextModManager
         {
             return BasicFileQuery
             (
-                "Please select your game executable...",
+                Language.Localise("Query_GameExecutable"),
 
                 new Dictionary<string, string>
                 {
@@ -49,7 +49,7 @@ namespace SonicNextModManager
         {
             return BasicFileQuery
             (
-                "Please select your emulator executable...",
+                Language.Localise("Query_EmulatorExecutable"),
 
                 new Dictionary<string, string>
                 {

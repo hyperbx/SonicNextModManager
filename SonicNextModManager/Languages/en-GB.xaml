@@ -17,6 +17,10 @@
     <system:String x:Key="Exception_IOError">I/O Error</system:String>
     <system:String x:Key="Exception_DirectoryTreeFailed">An error occurred whilst creating the default directory tree.</system:String>
 
+    <!-- Query Strings -->
+    <system:String x:Key="Query_GameExecutable">Please select your game executable...</system:String>
+    <system:String x:Key="Query_EmulatorExecutable">Please select your emulator executable...</system:String>
+
     <!-- Setup Strings -->
     <system:String x:Key="Setup_Step_Welcome"         >Welcome</system:String>
     <system:String x:Key="Setup_Step_Game"            >Game</system:String>
