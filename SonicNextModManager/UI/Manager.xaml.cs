@@ -8,7 +8,7 @@ namespace SonicNextModManager
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class Manager : Noire.NoireWindow
+    public partial class Manager : ImmersiveWindow
     {
         ManagerViewModel ViewModel { get; set; } = new();
 

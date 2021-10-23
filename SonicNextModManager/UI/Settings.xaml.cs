@@ -7,7 +7,7 @@ namespace SonicNextModManager
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    public partial class Settings : Noire.NoireWindow
+    public partial class Settings : ImmersiveWindow
     {
         public Settings()
         {

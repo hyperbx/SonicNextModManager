@@ -1,16 +1,15 @@
-﻿<n:NoireWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:local="clr-namespace:SonicNextModManager"
-               xmlns:dd="urn:gong-wpf-dragdrop"
-               xmlns:hc="https://handyorg.github.io/handycontrol"
-               xmlns:n="clr-namespace:Noire;assembly=Noire.WPF"
-               xmlns:viewmodel="clr-namespace:SonicNextModManager.UI.ViewModel"
-               d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
-               x:Class="SonicNextModManager.Manager"
-               mc:Ignorable="d"
-               Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640">
+﻿<local:ImmersiveWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:local="clr-namespace:SonicNextModManager"
+                       xmlns:dd="urn:gong-wpf-dragdrop"
+                       xmlns:hc="https://handyorg.github.io/handycontrol"
+                       xmlns:viewmodel="clr-namespace:SonicNextModManager.UI.ViewModel"
+                       d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
+                       x:Class="SonicNextModManager.Manager"
+                       mc:Ignorable="d"
+                       Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640">
 
     <Window.Resources>
 
@@ -131,4 +130,4 @@
 
     </Grid>
 
-</n:NoireWindow>
+</local:ImmersiveWindow>

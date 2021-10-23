@@ -1,14 +1,13 @@
-﻿<n:NoireWindow x:Class="SonicNextModManager.Settings"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:local="clr-namespace:SonicNextModManager"
-               xmlns:properties="clr-namespace:SonicNextModManager.Properties"
-               xmlns:n="clr-namespace:Noire;assembly=Noire.WPF"
-               xmlns:hc="https://handyorg.github.io/handycontrol"
-               mc:Ignorable="d"
-               Title="Settings" Height="540" Width="540" Background="#131313" WindowStartupLocation="CenterOwner" MinWidth="540" MinHeight="540">
+﻿<local:ImmersiveWindow x:Class="SonicNextModManager.Settings"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:local="clr-namespace:SonicNextModManager"
+                       xmlns:properties="clr-namespace:SonicNextModManager.Properties"
+                       xmlns:hc="https://handyorg.github.io/handycontrol"
+                       mc:Ignorable="d"
+                       Title="Settings" Height="540" Width="540" Background="#131313" WindowStartupLocation="CenterOwner" MinWidth="540" MinHeight="540">
 
     <Grid>
 
@@ -139,4 +138,4 @@
         
     </Grid>
     
-</n:NoireWindow>
+</local:ImmersiveWindow>

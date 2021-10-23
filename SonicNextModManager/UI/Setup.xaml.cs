@@ -11,7 +11,7 @@ namespace SonicNextModManager
     /// <summary>
     /// Interaction logic for Setup.xaml
     /// </summary>
-    public partial class Setup : Noire.NoireWindow
+    public partial class Setup : ImmersiveWindow
     {
         public Setup()
         {

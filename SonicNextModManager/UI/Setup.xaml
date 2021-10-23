@@ -1,12 +1,12 @@
-﻿<n:NoireWindow x:Class="SonicNextModManager.Setup"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:hc="https://handyorg.github.io/handycontrol"
-               xmlns:n="clr-namespace:Noire;assembly=Noire.WPF"
-               mc:Ignorable="d"
-               Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640" ResizeMode="CanMinimize">
+﻿<local:ImmersiveWindow x:Class="SonicNextModManager.Setup"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:hc="https://handyorg.github.io/handycontrol"
+                       xmlns:local="clr-namespace:SonicNextModManager"
+                       mc:Ignorable="d"
+                       Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640" ResizeMode="CanMinimize">
 
     <Grid>
 
@@ -292,4 +292,4 @@
 
     </Grid>
     
-</n:NoireWindow>
+</local:ImmersiveWindow>

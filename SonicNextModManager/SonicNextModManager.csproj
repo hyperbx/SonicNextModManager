@@ -36,9 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Noire.WPF">
-      <HintPath>G:\Source\Repositories\Git\CSharp\Big-Endian-32\Noire\Noire.WPF\bin\Release\net5.0-windows\Noire.WPF.dll</HintPath>
-    </Reference>
     <Reference Include="Sprint">
       <HintPath>G:\Source\Repositories\Git\CSharp\Big-Endian-32\Sprint\Sprint\bin\Release\netstandard2.0\Sprint.dll</HintPath>
     </Reference>
