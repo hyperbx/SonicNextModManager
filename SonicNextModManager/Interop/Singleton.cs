@@ -2,7 +2,7 @@
 {
     public struct Singleton<T>
     {
-        private static T StaticInstance { get; set; }
+        private static T? StaticInstance { get; set; }
 
         public T Instance => StaticInstance;
 
