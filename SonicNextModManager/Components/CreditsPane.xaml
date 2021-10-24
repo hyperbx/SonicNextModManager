@@ -39,7 +39,7 @@
                         
                     </Grid>
 
-                    <hc:Divider Margin="1"/>
+                    <hc:Divider Margin="0,1,0,1"/>
 
                     <ListView Background="#191919" BorderBrush="Transparent" ItemsSource="{Binding ElementName=Root, Path=Credits.Contributors}" d:ItemsSource="{d:SampleData ItemCount=2}">
                         <ListView.ItemContainerStyle>
