@@ -114,8 +114,23 @@
                     </StackPanel>
                 </hc:TransitioningContentControl>
             </hc:TabItem>
-            
-            <hc:TabItem Header="{DynamicResource Settings_Paths}" Style="{StaticResource TabItemInLineAccentColour}"/>
+
+            <hc:TabItem Header="{DynamicResource Settings_Paths}" Style="{StaticResource TabItemInLineAccentColour}">
+                <hc:TransitioningContentControl>
+                    <StackPanel Margin="10">
+                        
+                        <!-- Mods Directory -->
+                        <local:PathField Browse="Path_ModsDirectory_Browse" Caption="{DynamicResource Settings_Paths_ModsDirectory}" Description="{DynamicResource Settings_Paths_ModsDirectory_Description}" Property="{Binding Mode=TwoWay, Source={x:Static properties:Settings.Default}, Path=Path_ModsDirectory}" Margin="0,0,0,15"/>
+
+                        <!-- Game Executable -->
+                        <local:PathField Browse="Path_GameExecutable_Browse" Caption="{DynamicResource Settings_Paths_GameExecutable}" Description="{DynamicResource Settings_Paths_GameExecutable_Description}" Property="{Binding Mode=TwoWay, Source={x:Static properties:Settings.Default}, Path=Path_GameExecutable}" Margin="0,0,0,15"/>
+
+                        <!-- Emulator Executable -->
+                        <local:PathField Browse="Path_EmulatorExecutable_Browse" Caption="{DynamicResource Settings_Paths_EmulatorExecutable}" Description="{DynamicResource Settings_Paths_EmulatorExecutable_Description}" Property="{Binding Mode=TwoWay, Source={x:Static properties:Settings.Default}, Path=Path_EmulatorExecutable}" Margin="0,0,0,15"/>
+
+                    </StackPanel>
+                </hc:TransitioningContentControl>
+            </hc:TabItem>
             
             <hc:TabItem Header="{DynamicResource Settings_About}" Style="{StaticResource TabItemInLineAccentColour}">
                 <hc:TransitioningContentControl>

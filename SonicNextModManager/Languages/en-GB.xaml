@@ -18,6 +18,7 @@
     <system:String x:Key="Exception_DirectoryTreeFailed">An error occurred whilst creating the default directory tree.</system:String>
 
     <!-- Query Strings -->
+    <system:String x:Key="Query_ModsDirectory">Please select your mods directory...</system:String>
     <system:String x:Key="Query_GameExecutable">Please select your game executable...</system:String>
     <system:String x:Key="Query_EmulatorExecutable">Please select your emulator executable...</system:String>
 
@@ -100,6 +101,12 @@
     <system:String x:Key="Settings_Emulator_LaunchAfterInstallingContent"            >Launch after installing content</system:String>
     <system:String x:Key="Settings_Emulator_LaunchAfterInstallingContent_Description">Launches the emulator after the installation process.</system:String>
     <system:String x:Key="Settings_Paths"                                            >Paths</system:String>
+    <system:String x:Key="Settings_Paths_GameExecutable"                             >Game Executable</system:String>
+    <system:String x:Key="Settings_Paths_GameExecutable_Description"                 >The path to your game's executable file.</system:String>
+    <system:String x:Key="Settings_Paths_EmulatorExecutable"                         >Emulator Executable</system:String>
+    <system:String x:Key="Settings_Paths_EmulatorExecutable_Description"             >The path to your emulator's executable file.</system:String>
+    <system:String x:Key="Settings_Paths_ModsDirectory"                              >Mods Directory</system:String>
+    <system:String x:Key="Settings_Paths_ModsDirectory_Description"                  >The path to the directory containing your mods.</system:String>
     <system:String x:Key="Settings_About"                                            >About</system:String>
     <system:String x:Key="Settings_About_Credits"                                    >Credits</system:String>
 

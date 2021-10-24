@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -31,5 +32,14 @@ namespace SonicNextModManager
 
             base.OnClosing(e);
         }
+
+        private void Path_ModsDirectory_Browse(object sender, EventArgs e)
+            => PropertyExtensions.SetStringWithNullCheck(s => Properties.Settings.Default.Path_ModsDirectory = s, DirectoryQueries.QueryModsDirectory());
+
+        private void Path_GameExecutable_Browse(object sender, EventArgs e)
+            => PropertyExtensions.SetStringWithNullCheck(s => Properties.Settings.Default.Path_GameExecutable = s, FileQueries.QueryGameExecutable());
+
+        private void Path_EmulatorExecutable_Browse(object sender, EventArgs e)
+            => PropertyExtensions.SetStringWithNullCheck(s => Properties.Settings.Default.Path_EmulatorExecutable = s, FileQueries.QueryEmulatorExecutable());
     }
 }
