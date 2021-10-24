@@ -61,7 +61,7 @@
 
                                 <TextBlock FontSize="32" Margin="0" Text="{DynamicResource Setup_Welcome_Caption}"/>
 
-                                <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logo.png" Width="200"/>
+                                <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logos/SonicNextModManager.png" Width="200"/>
 
                                 <TextBlock FontSize="15" Margin="10" Text="{DynamicResource Setup_Welcome_Text_1}"/>
                                 <TextBlock FontSize="15" Text="{DynamicResource Setup_Welcome_Text_2}"/>
@@ -274,7 +274,7 @@
 
                                 <TextBlock FontSize="32" Margin="0" Text="{DynamicResource Setup_Finish}"/>
 
-                                <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logo.png" Width="200"/>
+                                <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logos/SonicNextModManager.png" Width="200"/>
 
                                 <TextBlock FontSize="15" Margin="10" Text="{DynamicResource Setup_Finish_Text_1}"/>
                                 <TextBlock FontSize="15" Text="{DynamicResource Setup_Finish_Text_2}"/>
