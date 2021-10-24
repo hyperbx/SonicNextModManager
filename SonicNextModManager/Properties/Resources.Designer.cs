@@ -64,8 +64,9 @@ namespace SonicNextModManager.Properties {
         ///   Looks up a localized string similar to [
         ///  {
         ///    &quot;Category&quot;: &quot;Sonic &apos;06 Mod Manager&quot;,
-        ///    &quot;Image&quot;: &quot;/SonicNextModManager;component/Resources/Images/Logos/SonicNextModManager.png&quot;,
         ///    &quot;Description&quot;: &quot;Credits_SonicNextModManager&quot;,
+        ///    &quot;GitHub&quot;: &quot;https://github.com/Big-Endian-32/SonicNextModManager&quot;,
+        ///    &quot;IsExpanded&quot;: true,
         ///    &quot;Contributors&quot;: [
         ///      {
         ///        &quot;Name&quot;: &quot;Hyper&quot;,
@@ -76,7 +77,7 @@ namespace SonicNextModManager.Properties {
         ///        &quot;Name&quot;: &quot;Sajid&quot;,
         ///        &quot;Description&quot;: &quot;GitHub API&quot;,
         ///        &quot;URL&quot;: &quot;https://github.com/Sajidur78&quot;
-        ///      }, [rest of string was truncated]&quot;;.
+        ///      } [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Credits {
             get {

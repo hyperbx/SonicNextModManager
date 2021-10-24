@@ -25,7 +25,7 @@ namespace SonicNextModManager
         {
             ResourceDictionary langDict = new()
             {
-                Source = new Uri($"Languages/{culture}.xaml", UriKind.Relative)
+                Source = new Uri($"Resources/Languages/{culture}.xaml", UriKind.Relative)
             };
 
             while (Application.Current.Resources.MergedDictionaries.Count > 5)
@@ -51,7 +51,7 @@ namespace SonicNextModManager
                 App.SupportedCultures = langs;
 
             // Load language setting as current language.
-            App.CurrentCulture = GetClosestCulture(Properties.Settings.Default.General_Language);
+            App.CurrentCulture = GetClosestCulture(App.Settings.General_Language);
 
             // Set current language.
             if (App.CurrentCulture != null)
@@ -62,7 +62,7 @@ namespace SonicNextModManager
         /// Loads the updated culture and updates the user setting.
         /// </summary>
         public static void UpdateCultureResources()
-            => Load(Properties.Settings.Default.General_Language = App.CurrentCulture.FileName);
+            => Load(App.Settings.General_Language = App.CurrentCulture.FileName);
 
         /// <summary>
         /// Returns the closest supported culture.

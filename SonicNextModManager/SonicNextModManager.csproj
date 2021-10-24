@@ -53,7 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Credits.json" />
+    <Resource Include="Resources\Credits\Credits.json" />
     <Resource Include="Resources\Fonts\Material.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -75,7 +75,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Languages\en-GB.xaml">
+    <Page Update="Resources\Languages\en-GB.xaml">
       <CopyToOutputDirectory></CopyToOutputDirectory>
     </Page>
   </ItemGroup>

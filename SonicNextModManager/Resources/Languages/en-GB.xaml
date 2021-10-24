@@ -12,14 +12,17 @@
     <system:String x:Key="Common_Refresh" >Refresh</system:String>
     <system:String x:Key="Common_Browse"  >Browse...</system:String>
     <system:String x:Key="Common_Language">Language</system:String>
+    <system:String x:Key="Common_Copy"    >Copy</system:String>
+    <system:String x:Key="Common_Report"  >Report</system:String>
+    <system:String x:Key="Common_Ignore"  >Ignore</system:String>
 
     <!-- Exception Strings -->
-    <system:String x:Key="Exception_IOError">I/O Error</system:String>
-    <system:String x:Key="Exception_DirectoryTreeFailed">An error occurred whilst creating the default directory tree.</system:String>
+    <system:String x:Key="Exception_Fatal"    >A fatal error has occurred and the application has been halted...</system:String>
+    <system:String x:Key="Exception_Unhandled">An unhandled exception has occurred and the application has been halted...</system:String>
 
     <!-- Query Strings -->
-    <system:String x:Key="Query_ModsDirectory">Please select your mods directory...</system:String>
-    <system:String x:Key="Query_GameExecutable">Please select your game executable...</system:String>
+    <system:String x:Key="Query_ModsDirectory"     >Please select your mods directory...</system:String>
+    <system:String x:Key="Query_GameExecutable"    >Please select your game executable...</system:String>
     <system:String x:Key="Query_EmulatorExecutable">Please select your emulator executable...</system:String>
 
     <!-- Setup Strings -->
@@ -112,9 +115,9 @@
 
     <!-- Credits Strings -->
     <system:String x:Key="Credits_SonicNextModManager">enhancing the experience since June 27th, 2019</system:String>
-    <system:String x:Key="Credits_Sprint">powering the patch engine</system:String>
-    <system:String x:Key="Credits_Marathon">unlocking modding potential for patches and beyond</system:String>
-    <system:String x:Key="Credits_Xenia">making modding easier since 2018</system:String>
-    <system:String x:Key="Credits_Miscellaneous">our honourable mentions</system:String>
+    <system:String x:Key="Credits_Sprint"             >powering the patch engine</system:String>
+    <system:String x:Key="Credits_Marathon"           >unlocking modding potential for patches and beyond</system:String>
+    <system:String x:Key="Credits_Xenia"              >making modding easier since 2018</system:String>
+    <system:String x:Key="Credits_Miscellaneous"      >our honourable mentions</system:String>
 
 </ResourceDictionary>

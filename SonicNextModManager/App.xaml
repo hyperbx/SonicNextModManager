@@ -19,8 +19,8 @@
                 <hc:Theme AccentColor="{x:Static SystemParameters.WindowGlassColor}" Skin="Dark"/>
 
                 <!-- Load language data -->
-                <ResourceDictionary Source="Languages/Languages.xaml"/>
-                <ResourceDictionary Source="Languages/en-GB.xaml"/>
+                <ResourceDictionary Source="Resources/Languages/Languages.xaml"/>
+                <ResourceDictionary Source="Resources/Languages/en-GB.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
 
