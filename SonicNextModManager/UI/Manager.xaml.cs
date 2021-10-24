@@ -60,27 +60,35 @@ namespace SonicNextModManager
             // Save active content to the database.
             ViewModel.Database.Save();
 
-            // TODO: replace this pseudo crap with real code.
-
+            // TODO: localise this and use an XAML converter instead.
             Install.Content = "Installing...";
             Install.IsEnabled = false;
-
             Uninstall.Content = "Cancel";
 
-            int interval = 1000;
-            foreach (var item in ViewModel.Database.Mods)
+            // TODO: replace this pseudo installer with real code.
             {
-                if (item.Enabled)
+                int interval = 1000;
+
+                foreach (var item in ViewModel.Database.Mods)
+                    SetInstallState(item);
+
+                foreach (var item in ViewModel.Database.Patches)
+                    SetInstallState(item);
+
+                void SetInstallState(Metadata metadata)
                 {
-                    item.State = InstallState.Installing;
+                    if (metadata.Enabled)
+                    {
+                        metadata.State = InstallState.Installing;
 
-                    System.Timers.Timer t = new();
-                    t.Interval = interval;
-                    interval += 1000;
+                        System.Timers.Timer t = new();
+                        t.Interval = interval;
+                        interval += 1000;
 
-                    t.Elapsed += (s, te) => item.State = InstallState.Installed;
+                        t.Elapsed += (s, te) => metadata.State = InstallState.Installed;
 
-                    t.Start();
+                        t.Start();
+                    }
                 }
             }
         }
@@ -88,10 +96,8 @@ namespace SonicNextModManager
         private void Uninstall_Click(object sender, RoutedEventArgs e)
         {
             // TODO: localise this and use an XAML converter instead.
-
             Install.Content = "Install";
             Install.IsEnabled = true;
-
             Uninstall.Content = "Uninstall";
         }
 
