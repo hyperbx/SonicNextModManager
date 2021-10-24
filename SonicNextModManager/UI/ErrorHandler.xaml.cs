@@ -69,7 +69,7 @@ namespace SonicNextModManager
         {
             GitHub.CreateNewIssue
             (
-                "[" + (string.IsNullOrEmpty(Exception.Source) ? "Sonic '06 Mod Manager" : Exception.Source) + "] " +
+                (string.IsNullOrEmpty(Exception.Source) ? string.Empty : $"[{Exception.Source}] ") +
                 (string.IsNullOrEmpty(Exception.Message) ? string.Empty : $"'{Exception.Message}'"),
 
                 BuildExceptionLog(true),

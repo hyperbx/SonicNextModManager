@@ -42,14 +42,14 @@ namespace SonicNextModManager
 
             // Direct to user webpage (if available) when double-clicked.
             if (!string.IsNullOrEmpty(url))
-                ProcessExtensions.OpenWithDefaultProgram(url);
+                ProcessExtensions.StartWithDefaultProgram(url);
         }
 
         private void GitHub_Click(object sender, RoutedEventArgs e)
         {
             // Direct to GitHub repository when clicked.
             if (!string.IsNullOrEmpty(Credits.GitHub))
-                ProcessExtensions.OpenWithDefaultProgram(Credits.GitHub);
+                ProcessExtensions.StartWithDefaultProgram(Credits.GitHub);
         }
     }
 }
