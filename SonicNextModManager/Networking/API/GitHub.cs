@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using SonicNextModManager.Networking.API.GitHub;
 
 namespace SonicNextModManager
@@ -26,5 +28,38 @@ namespace SonicNextModManager
         /// </summary>
         public static Task<ReleaseInfo> GetLatestRelease()
             => GetLatestRelease(Properties.Resources.GitHub_User, Properties.Resources.GitHub_Repository);
+
+        /// <summary>
+        /// Creates an issue on the GitHub issue tracker.
+        /// </summary>
+        /// <param name="title">Title used for the issue.</param>
+        /// <param name="body">Text automatically added to the issue.</param>
+        /// <param name="labels">Labels automatically added to the issue.</param>
+        public static void CreateNewIssue(string username, string repository, string title = "[Sonic '06 Mod Manager]", string body = "", List<string> labels = null)
+        {
+            ProcessExtensions.OpenWithDefaultProgram
+            (
+                StringExtensions.URLCombine
+                (
+                    $"https://github.com/{username}/{repository}/issues/new",
+
+                    // Issue title.
+                    Uri.EscapeUriString("?title=" + (string.IsNullOrEmpty(title) ? "[Sonic '06 Mod Manager]" : title) + " "),
+
+                    // Issue body.
+                    string.IsNullOrEmpty(body) ? string.Empty : $"&body={Uri.EscapeDataString(body)}",
+
+                    // Issue labels.
+                    Uri.EscapeUriString("&labels=" + (labels == null ? string.Empty : string.Join(",", labels)))
+                )
+            );
+        }
+
+        /// <summary>
+        /// Creates an issue on the default GitHub issue tracker.
+        /// </summary>
+        /// <param name="body">Text automatically added to the issue.</param>
+        public static void CreateNewIssue(string title = "", string body = "", List<string> labels = null)
+            => CreateNewIssue(Properties.Resources.GitHub_User, Properties.Resources.GitHub_Repository, title, body, labels);
     }
 }

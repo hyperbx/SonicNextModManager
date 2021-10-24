@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SonicNextModManager.UI.ViewModel;
@@ -28,7 +29,7 @@ namespace SonicNextModManager
         {
             /* Set visibility of the emulator launcher depending on if there's an emulator specified.
                There's no point in displaying this option if the user is installing for real hardware. */
-            Emulator_Launcher.Visibility = string.IsNullOrEmpty(Properties.Settings.Default.Path_EmulatorExecutable)
+            Emulator_Launcher.Visibility = string.IsNullOrEmpty(App.Settings.Path_EmulatorExecutable)
                                            ? Visibility.Collapsed
                                            : Visibility.Visible;
         }
@@ -99,6 +100,8 @@ namespace SonicNextModManager
             Install.Content = "Install";
             Install.IsEnabled = true;
             Uninstall.Content = "Uninstall";
+
+            throw new NotImplementedException();
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)

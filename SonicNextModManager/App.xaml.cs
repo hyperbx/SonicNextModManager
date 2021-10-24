@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using Config.Net;
 
@@ -26,13 +27,11 @@ namespace SonicNextModManager
         /// <summary>
         /// Creates the default directory tree.
         /// </summary>
-        private static bool CreateDefaultDirectoryTree()
+        private static void CreateDefaultDirectoryTree()
         {
-            try
-            {
-                // Create default directory tree from the working directory.
-                foreach (var directory in Directories)
-                    Directory.CreateDirectory(directory.Value);
+            // Create default directory tree from the working directory.
+            foreach (var directory in Directories)
+                Directory.CreateDirectory(directory.Value);
 
             string modsDirectory = Settings.Path_ModsDirectory;
             {
@@ -45,25 +44,37 @@ namespace SonicNextModManager
                     );
                 }
             }
-            catch
-            {
-                return false;
-            }
-
-            return true;
         }
+
+        /// <summary>
+        /// Creates the exception handler to provide a friendly interface for errors.
+        /// </summary>
+        private void CreateExceptionHandler()
+        {
+#if !DEBUG
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                new ErrorHandler((Exception)e.ExceptionObject, e.IsTerminating).ShowDialog();
+            };
+#endif
+        }
+
+        /// <summary>
+        /// Returns the current assembly version.
+        /// </summary>
+        public static string GetAssemblyVersion()
+            => Assembly.GetEntryAssembly().GetName().Version.ToString();
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Set up exception handler.
+            CreateExceptionHandler();
+
+            // Set up directory tree.
+            CreateDefaultDirectoryTree();
+
             // Set up language settings.
             Language.LoadCultureResources();
-
-            // Catch any weird errors if writing the default directories somehow fails.
-            if (!CreateDefaultDirectoryTree())
-            {
-                MessageBox.Show(Language.Localise("Exception_DirectoryTreeFailed"), Language.Localise("Exception_IOError"));
-                return;
-            }
 
             // Start with Manager.xaml if the step-by-step guide has been completed already.
             if (Settings.Setup_Complete)
