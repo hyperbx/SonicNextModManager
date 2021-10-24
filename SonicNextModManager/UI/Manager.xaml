@@ -6,7 +6,7 @@
                        xmlns:dd="urn:gong-wpf-dragdrop"
                        xmlns:hc="https://handyorg.github.io/handycontrol"
                        xmlns:viewmodel="clr-namespace:SonicNextModManager.UI.ViewModel"
-                       d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
+                       d:DataContext="{d:DesignInstance Type=viewmodel:ManagerViewModel}"
                        x:Class="SonicNextModManager.Manager"
                        mc:Ignorable="d"
                        Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640">
@@ -48,7 +48,7 @@
         <hc:TabControl Name="MainTabControl" Background="#191919" Grid.Row="0" ShowContextMenu="False" Style="{StaticResource TabControlInLine}">
             <hc:TabItem Name="ModsTab" Header="{DynamicResource Main_Mods}" Style="{StaticResource TabItemInLineAccentColour}">
                 <hc:TransitioningContentControl>
-                    <ListView x:Name="ModsList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" dd:DragDrop.IsDragSource="True"
+                    <ListView Name="ModsList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True" dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
                               dd:DragDrop.DropHandler="{Binding}" ItemsSource="{Binding Database.Mods}">
 
@@ -75,7 +75,7 @@
             
             <hc:TabItem Name="PatchesTab" Header="{DynamicResource Main_Patches}" Style="{StaticResource TabItemInLineAccentColour}">
                 <hc:TransitioningContentControl>
-                    <ListView x:Name="PatchesList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" dd:DragDrop.IsDragSource="True"
+                    <ListView Name="PatchesList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True" dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
                               dd:DragDrop.DropHandler="{Binding}" ItemsSource="{Binding Database.Patches}">
                         

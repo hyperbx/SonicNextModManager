@@ -8,7 +8,7 @@ namespace SonicNextModManager
     {
         protected override void OnSourceInitialized(EventArgs e)
         {
-            // Initialise immersive dark mode for every NoireWindow.
+            // Initialise immersive dark mode for every window.
             ImmersiveDarkMode.Initialise(new WindowInteropHelper(this).Handle, true);
 
             base.OnSourceInitialized(e);

@@ -43,11 +43,11 @@
 
             <Grid Grid.Row="2" VerticalAlignment="Center">
                 <hc:TabControl Name="MajorStepPages" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource BaseStyle}">
-                    
+
                     <hc:TabItem Visibility="Collapsed">
                         <hc:TransitioningContentControl VerticalAlignment="Center">
                             <StackPanel>
-                                
+
                                 <StackPanel.Resources>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -60,7 +60,7 @@
                                 </StackPanel.Resources>
 
                                 <TextBlock FontSize="32" Margin="0" Text="{DynamicResource Setup_Welcome_Caption}"/>
-                                
+
                                 <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logo.png" Width="200"/>
 
                                 <TextBlock FontSize="15" Margin="10" Text="{DynamicResource Setup_Welcome_Text_1}"/>
@@ -72,7 +72,7 @@
                                 </StackPanel>
 
                                 <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_Continue}" Height="32" Margin="0,20,0,0" Width="120"/>
-                                
+
                             </StackPanel>
                         </hc:TransitioningContentControl>
                     </hc:TabItem>
@@ -80,7 +80,7 @@
                     <hc:TabItem Visibility="Collapsed">
                         <hc:TransitioningContentControl VerticalAlignment="Center">
                             <StackPanel>
-                                
+
                                 <StackPanel.Resources>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -94,7 +94,7 @@
 
                                 <TextBlock FontSize="32" Text="{DynamicResource Setup_Game_Caption}"/>
                                 <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Game_Text_1}"/>
-                                
+
                                 <StackPanel HorizontalAlignment="Center" Margin="15" Orientation="Horizontal">
                                     <Image Margin="0,0,10,0" Source="/SonicNextModManager;component/Resources/Images/Setup/Game_Executable_360.png"/>
                                     <Image Source="/SonicNextModManager;component/Resources/Images/Setup/Game_Executable_PS3.png"/>
@@ -102,17 +102,17 @@
 
                                 <TextBlock FontSize="15" Margin="0,0,0,10" Text="{DynamicResource Setup_Game_Text_2}"/>
                                 <TextBlock FontSize="15" Text="{DynamicResource Setup_Game_Text_3}"/>
-                                
+
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBox TextChanged="Game_Path_TextChanged" Margin="0,20,10,0" Name="Game_Path" Width="700"/>
                                     <Button Click="Game_Browse_Click" Margin="0,20,0,0" Content="{DynamicResource Common_Browse}" Width="120"/>
                                 </StackPanel>
-                                
+
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Button Click="Click_ToPreviousMajorStep" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
                                     <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_Continue}" Height="32" IsEnabled="False" Margin="0,20,0,0" Name="Game_Continue" Width="120"/>
                                 </StackPanel>
-                                
+
                             </StackPanel>
                         </hc:TransitioningContentControl>
                     </hc:TabItem>
@@ -123,7 +123,7 @@
                             <hc:TabItem Name="Emulator_Prompt" Visibility="Collapsed">
                                 <hc:TransitioningContentControl VerticalAlignment="Center">
                                     <StackPanel>
-                                        
+
                                         <StackPanel.Resources>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -140,13 +140,13 @@
                                         <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_1}"/>
                                         <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_2}"/>
                                         <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_3}"/>
-                                        
+
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Button Click="Click_ToPreviousMajorStep" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
                                             <Button Click="Click_ToRelevantEmulatorWarning" Content="{DynamicResource Common_Yes}" Height="32" Margin="0,20,0,0" Width="90"/>
                                             <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_No}" Height="32" Margin="10,20,0,0" Width="90"/>
                                         </StackPanel>
-                                        
+
                                     </StackPanel>
                                 </hc:TransitioningContentControl>
                             </hc:TabItem>
@@ -154,7 +154,7 @@
                             <hc:TabItem Name="Emulator_Xenia" Visibility="Collapsed">
                                 <hc:TransitioningContentControl VerticalAlignment="Center">
                                     <StackPanel>
-                                        
+
                                         <StackPanel.Resources>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -167,7 +167,7 @@
                                         </StackPanel.Resources>
 
                                         <TextBlock FontSize="32" Text="{DynamicResource Setup_Emulator_Caption_2}"/>
-                                        
+
                                         <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Xenia_Text_1}"/>
 
                                         <hc:Carousel Name="Carousel_Xenia" Height="270" IsCenter="True" Margin="0,20,0,10" Width="480">
@@ -179,12 +179,12 @@
 
                                         <TextBlock FontSize="15" Margin="0,10,0,10" Text="{DynamicResource Setup_Emulator_Xenia_Text_2}"/>
                                         <TextBlock FontSize="15" Text="{DynamicResource Setup_Emulator_Xenia_Text_3}"/>
-                                        
+
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Button Click="Click_ReturnToEmulatorPrompt" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
                                             <Button Click="Click_ToEmulatorPathSetup" Content="{DynamicResource Common_Continue}" Height="32" Margin="0,20,0,0" Width="120"/>
                                         </StackPanel>
-                                        
+
                                     </StackPanel>
                                 </hc:TransitioningContentControl>
                             </hc:TabItem>
@@ -192,7 +192,7 @@
                             <hc:TabItem Name="Emulator_RPCS3" Visibility="Collapsed">
                                 <hc:TransitioningContentControl VerticalAlignment="Center">
                                     <StackPanel>
-                                        
+
                                         <StackPanel.Resources>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -207,16 +207,16 @@
                                         <TextBlock FontSize="32" Text="{DynamicResource Setup_Emulator_Caption_2}"/>
 
                                         <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_RPCS3_Text_1}"/>
-                                        
+
                                         <Image MouseDown="Image_Carousel_MouseDown" Margin="0,20,0,10" Source="/SonicNextModManager;component/Resources/Images/Setup/RPCS3/RPCS3_Issue_1.png" Width="480"/>
 
                                         <TextBlock FontSize="15" Margin="0,10,0,10" Text="{DynamicResource Setup_Emulator_RPCS3_Text_2}"/>
                                         <TextBlock FontSize="15" Text="{DynamicResource Setup_Emulator_RPCS3_Text_3}"/>
-                                        
+
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Button Click="Click_ReturnToEmulatorPrompt" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,0,0" Width="120"/>
                                         </StackPanel>
-                                        
+
                                     </StackPanel>
                                 </hc:TransitioningContentControl>
                             </hc:TabItem>
@@ -224,7 +224,7 @@
                             <hc:TabItem Name="Emulator_Setup" Visibility="Collapsed">
                                 <hc:TransitioningContentControl VerticalAlignment="Center">
                                     <StackPanel>
-                                        
+
                                         <StackPanel.Resources>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -235,7 +235,7 @@
                                                 </Setter>
                                             </Style>
                                         </StackPanel.Resources>
-                                        
+
                                         <TextBlock FontSize="32" Text="{DynamicResource Setup_Emulator_Caption_3}"/>
 
                                         <TextBlock FontSize="15" Margin="0,10,0,0" Text="{DynamicResource Setup_Emulator_Text_4}"/>
@@ -244,12 +244,12 @@
                                             <TextBox TextChanged="Emulator_Path_TextChanged" Margin="0,20,10,0" Name="Emulator_Path" Width="400"/>
                                             <Button Click="Emulator_Browse_Click" Margin="0,20,0,0" Content="{DynamicResource Common_Browse}" Width="120"/>
                                         </StackPanel>
-                                        
+
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <Button Click="Click_ReturnToEmulatorPrompt" Content="{DynamicResource Common_Back}" Height="32" Margin="0,20,10,0" Width="60"/>
                                             <Button Click="Click_ToNextMajorStep" Content="{DynamicResource Common_Continue}" Height="32" IsEnabled="False" Margin="0,20,0,0" Name="Emulator_Continue" Width="120"/>
                                         </StackPanel>
-                                        
+
                                     </StackPanel>
                                 </hc:TransitioningContentControl>
                             </hc:TabItem>
@@ -260,7 +260,7 @@
                     <hc:TabItem Visibility="Collapsed">
                         <hc:TransitioningContentControl VerticalAlignment="Center">
                             <StackPanel>
-                                
+
                                 <StackPanel.Resources>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -271,20 +271,20 @@
                                         </Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                
+
                                 <TextBlock FontSize="32" Margin="0" Text="{DynamicResource Setup_Finish}"/>
-                                
+
                                 <Image Margin="15" Source="/SonicNextModManager;component/Resources/Images/Logo.png" Width="200"/>
-                                
+
                                 <TextBlock FontSize="15" Margin="10" Text="{DynamicResource Setup_Finish_Text_1}"/>
                                 <TextBlock FontSize="15" Text="{DynamicResource Setup_Finish_Text_2}"/>
 
                                 <Button Click="Click_FinishSetup" Content="{DynamicResource Setup_Finish_OK}" Height="32" Margin="0,20,0,0" Width="120"/>
-                                
+
                             </StackPanel>
                         </hc:TransitioningContentControl>
                     </hc:TabItem>
-                    
+
                 </hc:TabControl>
             </Grid>
 

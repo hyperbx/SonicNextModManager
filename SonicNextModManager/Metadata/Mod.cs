@@ -49,5 +49,8 @@ namespace SonicNextModManager
 
         public void Write(Mod mod, string file)
             => File.WriteAllText(file, JsonConvert.SerializeObject(mod, Formatting.Indented));
+
+        public void Write(string file)
+            => Write(this, file);
     }
 }

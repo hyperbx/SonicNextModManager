@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <None Remove="FodyWeavers.xml" />
-    <None Remove="Resources\Contributors.json" />
+    <None Remove="Resources\Credits.json" />
     <None Remove="Resources\Fonts\Material.ttf" />
     <None Remove="Resources\Images\Logo.png" />
     <None Remove="Resources\Images\Setup\Game_Executable_360.png" />
@@ -62,11 +62,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Contributors.json" />
+    <Resource Include="Resources\Credits.json" />
     <Resource Include="Resources\Fonts\Material.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Images\Logo.png" />
+    <Resource Include="Resources\Images\Logos\SonicNextModManager.png" />
     <Resource Include="Resources\Images\Setup\Game_Executable_360.png" />
     <Resource Include="Resources\Images\Setup\Game_Executable_PS3.png" />
     <Resource Include="Resources\Images\Setup\RPCS3\RPCS3_Issue_1.png" />
