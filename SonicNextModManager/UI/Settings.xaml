@@ -120,12 +120,7 @@
             <hc:TabItem Header="{DynamicResource Settings_About}" Style="{StaticResource TabItemInLineAccentColour}">
                 <hc:TransitioningContentControl>
                     <hc:ScrollViewer>
-                        <StackPanel>
-                            <Image Margin="0,15,0,0" RenderOptions.BitmapScalingMode="HighQuality" Source="/SonicNextModManager;component/Resources/Images/Logo.png" Width="100"/>
-                            <TextBlock FontSize="16" HorizontalAlignment="Center" Margin="10,10,10,0" Text="Sonic '06 Mod Manager"/>
-                            <TextBlock HorizontalAlignment="Center" Margin="10,0,10,2.5" Text="{DynamicResource Settings_About_Subtitle}"/>
-                            <StackPanel Name="Credits" Margin="0,0,0,10"/>
-                        </StackPanel>
+                        <StackPanel Name="Credits" Margin="0,0,0,10"/>
                     </hc:ScrollViewer>
                 </hc:TransitioningContentControl>
             </hc:TabItem>

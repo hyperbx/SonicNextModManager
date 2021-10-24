@@ -14,8 +14,8 @@ namespace SonicNextModManager
             InitializeComponent();
 
             // Create credits list.
-            foreach (var contributor in Contributor.GetCategorisedExpanders())
-                Credits.Children.Add(contributor.Value);
+            foreach (var credits in SonicNextModManager.Credits.Parse())
+                Credits.Children.Add(new CreditsPane(credits));
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)

@@ -63,29 +63,24 @@ namespace SonicNextModManager.Properties {
         /// <summary>
         ///   Looks up a localized string similar to [
         ///  {
-        ///    &quot;Name&quot;: &quot;Hyper&quot;,
-        ///    &quot;Description&quot;: &quot;Lead developer, designer and reverse-engineer&quot;,
-        ///    &quot;URL&quot;: &quot;https://github.com/HyperBE32&quot;,
-        ///    &quot;Category&quot;: &quot;Sonic &apos;06 Mod Manager&quot;
-        ///  },
-        ///  {
-        ///    &quot;Name&quot;: &quot;LJSTAR&quot;,
-        ///    &quot;Description&quot;: &quot;Logo designer&quot;,
-        ///    &quot;URL&quot;: &quot;https://twitter.com/LJSTAR_&quot;,
-        ///    &quot;Category&quot;: &quot;Sonic &apos;06 Mod Manager&quot;
-        ///  },
-        ///  {
-        ///    &quot;Name&quot;: &quot;Hyper&quot;,
-        ///    &quot;Description&quot;: &quot;Lead developer&quot;,
-        ///    &quot;URL&quot;: &quot;https://github.com/HyperBE32&quot;,
-        ///    &quot;Category&quot;: &quot;Sprint&quot;
-        ///  },
-        ///  {
-        ///    &quot;Name&quot;: &quot;MoonShar [rest of string was truncated]&quot;;.
+        ///    &quot;Category&quot;: &quot;Sonic &apos;06 Mod Manager&quot;,
+        ///    &quot;Image&quot;: &quot;/SonicNextModManager;component/Resources/Images/Logos/SonicNextModManager.png&quot;,
+        ///    &quot;Description&quot;: &quot;Credits_SonicNextModManager&quot;,
+        ///    &quot;Contributors&quot;: [
+        ///      {
+        ///        &quot;Name&quot;: &quot;Hyper&quot;,
+        ///        &quot;Description&quot;: &quot;Lead developer, designer and reverse-engineer&quot;,
+        ///        &quot;URL&quot;: &quot;https://github.com/HyperBE32&quot;
+        ///      },
+        ///      {
+        ///        &quot;Name&quot;: &quot;Sajid&quot;,
+        ///        &quot;Description&quot;: &quot;GitHub API&quot;,
+        ///        &quot;URL&quot;: &quot;https://github.com/Sajidur78&quot;
+        ///      }, [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Contributors {
+        internal static string Credits {
             get {
-                return ResourceManager.GetString("Contributors", resourceCulture);
+                return ResourceManager.GetString("Credits", resourceCulture);
             }
         }
         

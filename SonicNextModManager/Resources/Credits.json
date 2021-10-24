@@ -1,0 +1,132 @@
+[
+  {
+    "Category": "Sonic '06 Mod Manager",
+    "Description": "Credits_SonicNextModManager",
+    "GitHub": "https://github.com/Big-Endian-32/SonicNextModManager",
+    "IsExpanded": true,
+    "Contributors": [
+      {
+        "Name": "Hyper",
+        "Description": "Lead developer, designer and reverse-engineer",
+        "URL": "https://github.com/HyperBE32"
+      },
+      {
+        "Name": "Sajid",
+        "Description": "GitHub API",
+        "URL": "https://github.com/Sajidur78"
+      },
+      {
+        "Name": "SuperSonic16",
+        "Description": "GameBanana API",
+        "URL": "https://github.com/thesupersonic16"
+      },
+      {
+        "Name": "LJSTAR",
+        "Description": "Logo designer",
+        "URL": "https://twitter.com/LJSTAR_"
+      }
+    ]
+  },
+  {
+    "Category": "Sprint",
+    "Description": "Credits_Sprint",
+    "GitHub": "https://github.com/Big-Endian-32/Sprint",
+    "Contributors": [
+      {
+        "Name": "Hyper",
+        "Description": "Lead developer",
+        "URL": "https://github.com/HyperBE32"
+      },
+      {
+        "Name": "MoonSharp",
+        "Description": "Lua interpreter for .NET",
+        "URL": "https://github.com/moonsharp-devs/moonsharp"
+      },
+      {
+        "Name": "PUC-Rio",
+        "Description": "Lua",
+        "URL": "https://www.puc-rio.br/index.html"
+      }
+    ]
+  },
+  {
+    "Category": "Marathon",
+    "Description": "Credits_Marathon",
+    "GitHub": "https://github.com/Big-Endian-32/Marathon",
+    "Contributors": [
+      {
+        "Name": "Hyper",
+        "Description": "Lead developer and reverse-engineer",
+        "URL": "https://github.com/HyperBE32"
+      },
+      {
+        "Name": "Knuxfan24",
+        "Description": "Developer and reverse-engineer",
+        "URL": "https://github.com/Knuxfan24"
+      },
+      {
+        "Name": "Labryz",
+        "Description": "Reverse-engineer",
+        "URL": "https://github.com/labreezy"
+      },
+      {
+        "Name": "Radfordhound",
+        "Description": "Wrote the HedgeLib classes used as a base for Marathon I/O",
+        "URL": "https://github.com/Radfordhound"
+      },
+      {
+        "Name": "GerbilSoft",
+        "Description": "Wrote ZlibStream and supplied an API for compressing archive data",
+        "URL": "https://github.com/GerbilSoft"
+      },
+      {
+        "Name": "Shadow LAG",
+        "Description": "Wrote the original Lua decompiler source in Java",
+        "URL": "https://github.com/lllsondowlll"
+      },
+      {
+        "Name": "LJSTAR",
+        "Description": "Logo designer",
+        "URL": "https://twitter.com/LJSTAR_"
+      }
+    ]
+  },
+  {
+    "Category": "Xenia",
+    "Description": "Credits_Xenia",
+    "GitHub": "https://github.com/xenia-project/xenia",
+    "Contributors": [
+      {
+        "Name": "xenia-project",
+        "Description": "Xenia",
+        "URL": "https://github.com/xenia-project/xenia"
+      },
+      {
+        "Name": "Sajid",
+        "Description": "DLL injection and helper functions",
+        "URL": "https://github.com/Sajidur78"
+      },
+      {
+        "Name": "Hyper",
+        "Description": "Miscellaneous fixes and amendments",
+        "URL": "https://github.com/HyperBE32"
+      }
+    ]
+  },
+  {
+    "Category": "Miscellaneous",
+    "Description": "Credits_Miscellaneous",
+    "Contributors": [
+      {
+        "Name": "acro",
+        "Description": "Screenshot provider for Xenia",
+        "URL": "https://twitter.com/acrolvm"
+      },
+      {
+        "Name": "rom~",
+        "Description": "Screenshot provider for Xenia",
+        "URL": "https://twitter.com/rom8b"
+      }
+    ]
+  }
+]
