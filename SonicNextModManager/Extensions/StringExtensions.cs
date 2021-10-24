@@ -11,13 +11,6 @@ namespace SonicNextModManager
             => Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(newFile));
 
         /// <summary>
-        /// Returns whether or not the directory is safe to perform actions with.
-        /// </summary>
-        /// <param name="directory">Directory to check validity.</param>
-        public static bool IsDirectorySafe(string directory)
-            => Directory.Exists(directory);
-
-        /// <summary>
         /// Removes the source directory from the input path.
         /// </summary>
         /// <param name="path">Path to remove source from.</param>

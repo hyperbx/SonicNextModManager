@@ -45,7 +45,7 @@ namespace SonicNextModManager
         /// <summary>
         /// Location of the content database.
         /// </summary>
-        private string Location { get; } = StringExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory)
+        private string Location { get; } = IOExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory)
                                            ? Path.Combine(Properties.Settings.Default.Path_ModsDirectory, "content.json")
                                            : "content.json";
 
@@ -65,7 +65,7 @@ namespace SonicNextModManager
         /// </summary>
         public ObservableCollection<Mod> InitialiseMods()
         {
-            if (!StringExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory))
+            if (!IOExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory))
                 goto Finish;
 
             // Clear mods list before writing to it.
@@ -87,7 +87,7 @@ namespace SonicNextModManager
         /// </summary>
         public ObservableCollection<Patch> InitialisePatches()
         {
-            if (!StringExtensions.IsDirectorySafe(App.Directories["Patches"]))
+            if (!IOExtensions.IsDirectorySafe(App.Directories["Patches"]))
                 goto Finish;
 
             // Clear patches list before writing to it.
@@ -109,8 +109,8 @@ namespace SonicNextModManager
             if
             (
                 !File.Exists(Location) &&
-                !StringExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory) &&
-                !StringExtensions.IsDirectorySafe(App.Directories["Patches"])
+                !IOExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory) &&
+                !IOExtensions.IsDirectorySafe(App.Directories["Patches"])
             )
             {
                 return;
