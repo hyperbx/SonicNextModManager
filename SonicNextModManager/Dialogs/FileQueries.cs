@@ -6,21 +6,11 @@ namespace SonicNextModManager
 {
     public class FileQueries
     {
-        private static string BasicFileQuery(string title, Dictionary<string, string> filter)
+        private static string BasicFileQuery(string title, Dictionary<string, string> filters)
         {
-            StringBuilder filterBuilder = new();
-            {
-                // Create filter using dictionary values.
-                foreach (var entry in filter)
-                    filterBuilder.Append($"{entry.Key} ({entry.Value})|{entry.Value.Replace(" ", "")}|");
-
-                // Remove last pipe to make it a valid filter.
-                filterBuilder.Remove(filterBuilder.Length - 1, 1);
-            }
-
             OpenFileDialog ofd = new()
             {
-                Filter = filterBuilder.ToString(),
+                Filter = new FilterBuilder(filters).Result,
                 Title = title
             };
 
