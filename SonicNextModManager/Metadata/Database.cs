@@ -45,8 +45,8 @@ namespace SonicNextModManager
         /// <summary>
         /// Location of the content database.
         /// </summary>
-        private string Location { get; } = IOExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory)
-                                           ? Path.Combine(Properties.Settings.Default.Path_ModsDirectory, "content.json")
+        private string Location { get; } = IOExtensions.IsDirectorySafe(App.Settings.Path_ModsDirectory)
+                                           ? Path.Combine(App.Settings.Path_ModsDirectory, "content.json")
                                            : "content.json";
 
         public Database(bool loadActiveContent = true)
@@ -65,7 +65,7 @@ namespace SonicNextModManager
         /// </summary>
         public ObservableCollection<Mod> InitialiseMods()
         {
-            if (!IOExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory))
+            if (!IOExtensions.IsDirectorySafe(App.Settings.Path_ModsDirectory))
                 goto Finish;
 
             // Clear mods list before writing to it.
@@ -74,7 +74,7 @@ namespace SonicNextModManager
             // Parse all mods from the mods directory.
             foreach (string config in new[] { "mod.json", "mod.ini" })
             {
-                foreach (string mod in Directory.GetFiles(Properties.Settings.Default.Path_ModsDirectory, config, SearchOption.AllDirectories))
+                foreach (string mod in Directory.GetFiles(App.Settings.Path_ModsDirectory, config, SearchOption.AllDirectories))
                     Mods.Add(new Mod().Parse(mod));
             }
 
@@ -108,8 +108,8 @@ namespace SonicNextModManager
         {
             if
             (
-                !File.Exists(Location) &&
-                !IOExtensions.IsDirectorySafe(Properties.Settings.Default.Path_ModsDirectory) &&
+                !File.Exists(Location) ||
+                !IOExtensions.IsDirectorySafe(App.Settings.Path_ModsDirectory) ||
                 !IOExtensions.IsDirectorySafe(App.Directories["Patches"])
             )
             {
@@ -124,7 +124,7 @@ namespace SonicNextModManager
                 Mod mod = Mods.SingleOrDefault
                 (
                     // Combine with mods directory with the relative path to get the full path.
-                    mod => mod.Path == Path.Combine(Properties.Settings.Default.Path_ModsDirectory, modRelativePath.ToString())
+                    mod => mod.Path == Path.Combine(App.Settings.Path_ModsDirectory, modRelativePath.ToString())
                 );
 
                 SetMetadataEnabledState(mod, Mods);
@@ -170,7 +170,7 @@ namespace SonicNextModManager
                 {
                     ActiveContent.Mods.Add
                     (
-                        StringExtensions.OmitSourceDirectory(mod.Path, Properties.Settings.Default.Path_ModsDirectory)
+                        StringExtensions.OmitSourceDirectory(mod.Path, App.Settings.Path_ModsDirectory)
                     );
                 }
             }

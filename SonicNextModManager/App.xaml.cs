@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using Config.Net;
 
 namespace SonicNextModManager
 {
@@ -10,6 +11,8 @@ namespace SonicNextModManager
     /// </summary>
     public partial class App : Application
     {
+        public static IConfiguration Settings { get; } = new ConfigurationBuilder<IConfiguration>().UseIniFile("SonicNextModManager.ini").Build();
+
         public static Languages SupportedCultures { get; set; }
 
         public static Language CurrentCulture { get; set; }
@@ -31,16 +34,15 @@ namespace SonicNextModManager
                 foreach (var directory in Directories)
                     Directory.CreateDirectory(directory.Value);
 
-                string modsDirectory = SonicNextModManager.Properties.Settings.Default.Path_ModsDirectory;
+            string modsDirectory = Settings.Path_ModsDirectory;
+            {
+                // Create default mods directory if the current one is null or doesn't exist.
+                if (string.IsNullOrEmpty(modsDirectory) || !Directory.Exists(modsDirectory))
                 {
-                    // Create default mods directory if the current one is null or doesn't exist.
-                    if (string.IsNullOrEmpty(modsDirectory) || !Directory.Exists(modsDirectory))
-                    {
-                        Directory.CreateDirectory
-                        (
-                            SonicNextModManager.Properties.Settings.Default.Path_ModsDirectory = Path.Combine(Environment.CurrentDirectory, "Mods")
-                        );
-                    }
+                    Directory.CreateDirectory
+                    (
+                        Settings.Path_ModsDirectory = Path.Combine(Environment.CurrentDirectory, "Mods")
+                    );
                 }
             }
             catch
@@ -64,7 +66,7 @@ namespace SonicNextModManager
             }
 
             // Start with Manager.xaml if the step-by-step guide has been completed already.
-            if (SonicNextModManager.Properties.Settings.Default.Setup_Complete)
+            if (Settings.Setup_Complete)
                 StartupUri = new Uri("pack://application:,,,/SonicNextModManager;component/UI/Manager.xaml");
 
             base.OnStartup(e);

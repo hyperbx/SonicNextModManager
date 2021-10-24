@@ -59,7 +59,7 @@ namespace SonicNextModManager
             Game_Continue.IsEnabled = Game_Path.Text.Length != 0;
 
             // Set global game executable path.
-            Properties.Settings.Default.Path_GameExecutable = Game_Path.Text;
+            App.Settings.Path_GameExecutable = Game_Path.Text;
         }
 
         private void Game_Browse_Click(object sender, RoutedEventArgs e)
@@ -76,7 +76,7 @@ namespace SonicNextModManager
             Emulator_Continue.IsEnabled = Emulator_Path.Text.Length != 0;
 
             // Set global emulator executable path.
-            Properties.Settings.Default.Path_EmulatorExecutable = Emulator_Path.Text;
+            App.Settings.Path_EmulatorExecutable = Emulator_Path.Text;
         }
 
         private void Emulator_Browse_Click(object sender, RoutedEventArgs e)
@@ -90,10 +90,7 @@ namespace SonicNextModManager
         private void Click_FinishSetup(object sender, RoutedEventArgs e)
         {
             // Set completion flag.
-            Properties.Settings.Default.Setup_Complete = true;
-
-            // Save current settings.
-            Properties.Settings.Default.Save();
+            App.Settings.Setup_Complete = true;
 
             // Load mod manager window.
             new Manager().Show();

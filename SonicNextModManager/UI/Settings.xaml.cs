@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,21 +24,13 @@ namespace SonicNextModManager
         private void Language_SelectionChanged(object sender, SelectionChangedEventArgs e)
             => SonicNextModManager.Language.UpdateCultureResources();
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            // Save current settings.
-            Properties.Settings.Default.Save();
-
-            base.OnClosing(e);
-        }
-
         private void Path_ModsDirectory_Browse(object sender, EventArgs e)
-            => PropertyExtensions.SetStringWithNullCheck(s => Properties.Settings.Default.Path_ModsDirectory = s, DirectoryQueries.QueryModsDirectory());
+            => PropertyExtensions.SetStringWithNullCheck(s => App.Settings.Path_ModsDirectory = s, DirectoryQueries.QueryModsDirectory());
 
         private void Path_GameExecutable_Browse(object sender, EventArgs e)
-            => PropertyExtensions.SetStringWithNullCheck(s => Properties.Settings.Default.Path_GameExecutable = s, FileQueries.QueryGameExecutable());
+            => PropertyExtensions.SetStringWithNullCheck(s => App.Settings.Path_GameExecutable = s, FileQueries.QueryGameExecutable());
 
         private void Path_EmulatorExecutable_Browse(object sender, EventArgs e)
-            => PropertyExtensions.SetStringWithNullCheck(s => Properties.Settings.Default.Path_EmulatorExecutable = s, FileQueries.QueryEmulatorExecutable());
+            => PropertyExtensions.SetStringWithNullCheck(s => App.Settings.Path_EmulatorExecutable = s, FileQueries.QueryEmulatorExecutable());
     }
 }
