@@ -12,7 +12,7 @@ namespace SonicNextModManager
     /// </summary>
     public partial class App : Application
     {
-        public static IConfiguration Settings { get; } = new ConfigurationBuilder<IConfiguration>().UseIniFile("SonicNextModManager.ini").Build();
+        public static IConfiguration Settings { get; } = new ConfigurationBuilder<IConfiguration>().UseIniFile($"{GetAssemblyName()}.ini").Build();
 
         public static Languages SupportedCultures { get; set; }
 
@@ -58,6 +58,9 @@ namespace SonicNextModManager
             };
 #endif
         }
+
+        public static string GetAssemblyName()
+            => Assembly.GetEntryAssembly().GetName().Name;
 
         /// <summary>
         /// Returns the current assembly version.
