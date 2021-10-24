@@ -103,5 +103,32 @@ namespace SonicNextModManager.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SonicNextModManager.
+        /// </summary>
+        internal static string GitHub_Repository {
+            get {
+                return ResourceManager.GetString("GitHub_Repository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Big-Endian-32.
+        /// </summary>
+        internal static string GitHub_User {
+            get {
+                return ResourceManager.GetString("GitHub_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mozilla/5.0 (compatible; SonicNextModManager).
+        /// </summary>
+        internal static string Web_UserAgent {
+            get {
+                return ResourceManager.GetString("Web_UserAgent", resourceCulture);
+            }
+        }
     }
 }

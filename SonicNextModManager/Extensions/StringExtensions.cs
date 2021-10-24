@@ -24,5 +24,12 @@ namespace SonicNextModManager
         /// <param name="source">Source directory to remove.</param>
         public static string OmitSourceDirectory(string path, string source)
             => path.Remove(0, source.Length + 1);
+
+        /// <summary>
+        /// Returns a combined URL path structure.
+        /// </summary>
+        /// <param name="paths">Path structure to combine.</param>
+        public static string URLCombine(params string[] paths)
+            => string.Join('/', paths);
     }
 }

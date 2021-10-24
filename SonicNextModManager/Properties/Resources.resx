@@ -127,4 +127,13 @@
   <data name="Game_Executable_PS3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\images\setup\game_executable_ps3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="GitHub_Repository" xml:space="preserve">
+    <value>SonicNextModManager</value>
+  </data>
+  <data name="GitHub_User" xml:space="preserve">
+    <value>Big-Endian-32</value>
+  </data>
+  <data name="Web_UserAgent" xml:space="preserve">
+    <value>Mozilla/5.0 (compatible; SonicNextModManager)</value>
+  </data>
 </root>
