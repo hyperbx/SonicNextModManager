@@ -19,7 +19,7 @@ namespace SonicNextModManager
         }
 
         private void Language_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            => App.UpdateCultureResources();
+            => SonicNextModManager.Language.UpdateCultureResources();
 
         private void Click_ToPreviousMajorStep(object sender, RoutedEventArgs e)
         {

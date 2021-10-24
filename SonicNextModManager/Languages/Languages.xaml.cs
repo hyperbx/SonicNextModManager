@@ -38,6 +38,36 @@ namespace SonicNextModManager
             Application.Current.Resources.MergedDictionaries.Add(langDict);
         }
 
+        /// <summary>
+        /// Loads the requested culture resources from user settings.
+        /// </summary>
+        public static void LoadCultureResources()
+        {
+            // Find Languages resource from Languages.xaml.
+            object? resource = Application.Current.TryFindResource("Languages");
+
+            // Initialise supported cultures list.
+            if (resource is Languages langs)
+                App.SupportedCultures = langs;
+
+            // Load language setting as current language.
+            App.CurrentCulture = GetClosestCulture(Properties.Settings.Default.General_Language);
+
+            // Set current language.
+            if (App.CurrentCulture != null)
+                Load(App.CurrentCulture.FileName);
+        }
+
+        /// <summary>
+        /// Loads the updated culture and updates the user setting.
+        /// </summary>
+        public static void UpdateCultureResources()
+            => Load(Properties.Settings.Default.General_Language = App.CurrentCulture.FileName);
+
+        /// <summary>
+        /// Returns the closest supported culture.
+        /// </summary>
+        /// <param name="culture">Culture to find.</param>
         public static Language GetClosestCulture(string culture)
         {
             // Check if the culture exists.
@@ -55,6 +85,10 @@ namespace SonicNextModManager
             return cultureEntry;
         }
 
+        /// <summary>
+        /// Returns a localised string from the input resource name.
+        /// </summary>
+        /// <param name="key">Resource name.</param>
         public static string Localise(string key)
         {
             var resource = Application.Current.TryFindResource(key);
@@ -65,6 +99,11 @@ namespace SonicNextModManager
             return key;
         }
 
+        /// <summary>
+        /// Returns a formatted localised string from the input resources.
+        /// </summary>
+        /// <param name="key">Resource name.</param>
+        /// <param name="args">Formatting instructions.</param>
         public static string LocaliseFormat(string key, params object[] args)
             => string.Format(Localise(key), args);
     }

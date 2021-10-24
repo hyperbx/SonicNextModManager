@@ -22,7 +22,7 @@ namespace SonicNextModManager
             => Close();
 
         private void Language_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            => App.UpdateCultureResources();
+            => SonicNextModManager.Language.UpdateCultureResources();
 
         protected override void OnClosing(CancelEventArgs e)
         {
