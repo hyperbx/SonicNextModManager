@@ -29,6 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BE32.Marathon" Version="1.0.14" />
+    <PackageReference Include="BE32.Sprint" Version="1.0.1" />
     <PackageReference Include="Config.Net" Version="4.17.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.4.3" />
     <PackageReference Include="HandyControl" Version="3.2.0" />
@@ -36,12 +38,6 @@
     <PackageReference Include="MoonSharp" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Sprint">
-      <HintPath>G:\Source\Repositories\Git\CSharp\Big-Endian-32\Sprint\Sprint\bin\Release\netstandard2.0\Sprint.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
