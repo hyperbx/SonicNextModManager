@@ -41,7 +41,7 @@ namespace SonicNextModManager
         /// <summary>
         /// Location of the content database.
         /// </summary>
-        private string Location { get; } = IOExtensions.IsDirectorySafe(App.Settings.Path_ModsDirectory)
+        private string Location { get; } = Directory.Exists(App.Settings.Path_ModsDirectory)
                                            ? Path.Combine(App.Settings.Path_ModsDirectory, "content.json")
                                            : "content.json";
 
@@ -61,7 +61,7 @@ namespace SonicNextModManager
         /// </summary>
         public ObservableCollection<Mod> InitialiseMods()
         {
-            if (!IOExtensions.IsDirectorySafe(App.Settings.Path_ModsDirectory))
+            if (!Directory.Exists(App.Settings.Path_ModsDirectory))
                 goto Finish;
 
             // Clear mods list before writing to it.
@@ -70,7 +70,7 @@ namespace SonicNextModManager
             // Parse all mods from the mods directory.
             foreach (string config in new[] { "mod.json", "mod.ini" })
             {
-                foreach (string mod in Directory.GetFiles(App.Settings.Path_ModsDirectory, config, SearchOption.AllDirectories))
+                foreach (string mod in Directory.EnumerateFiles(App.Settings.Path_ModsDirectory, config, SearchOption.AllDirectories))
                     Mods.Add(new Mod().Parse(mod));
             }
 
@@ -83,14 +83,14 @@ namespace SonicNextModManager
         /// </summary>
         public ObservableCollection<Patch> InitialisePatches()
         {
-            if (!IOExtensions.IsDirectorySafe(App.Directories["Patches"]))
+            if (!Directory.Exists(App.Directories["Patches"]))
                 goto Finish;
 
             // Clear patches list before writing to it.
             Patches.Clear();
 
             // Parse all patches from the patches directory.
-            foreach (string patch in Directory.GetFiles(App.Directories["Patches"], "Patch_*.lua", SearchOption.AllDirectories))
+            foreach (string patch in Directory.EnumerateFiles(App.Directories["Patches"], "Patch_*.lua", SearchOption.AllDirectories))
                 Patches.Add(new Patch().Parse(patch));
 
         Finish:
@@ -105,8 +105,8 @@ namespace SonicNextModManager
             if
             (
                 !File.Exists(Location) ||
-                !IOExtensions.IsDirectorySafe(App.Settings.Path_ModsDirectory) ||
-                !IOExtensions.IsDirectorySafe(App.Directories["Patches"])
+                !Directory.Exists(App.Settings.Path_ModsDirectory) ||
+                !Directory.Exists(App.Directories["Patches"])
             )
             {
                 return;
