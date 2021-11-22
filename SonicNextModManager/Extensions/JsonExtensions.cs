@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using SonicNextModManager.Networking;
-using Newtonsoft.Json;
 
 namespace SonicNextModManager
 {

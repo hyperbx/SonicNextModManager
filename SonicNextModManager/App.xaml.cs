@@ -1,9 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿global using Newtonsoft.Json;
+global using System;
+global using System.Collections.Generic;
+global using System.Globalization;
+global using System.IO;
+global using System.Linq;
+global using System.Text;
+global using System.Windows;
+global using System.Windows.Controls;
+global using System.Windows.Data;
+global using System.Windows.Input;
+
 using System.Reflection;
-using System.Windows;
-using Config.Net;
+using MoonSharp.Interpreter;
+using Sprint;
 
 namespace SonicNextModManager
 {

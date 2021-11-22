@@ -1,10 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-
-namespace SonicNextModManager
+﻿namespace SonicNextModManager
 {
     /// <summary>
-    /// Interaction logic for IconControl.xaml
+    /// Interaction logic for IconFontControl.xaml
     /// </summary>
     public partial class IconFontControl : UserControl
     {

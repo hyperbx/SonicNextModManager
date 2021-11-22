@@ -1,7 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-
-namespace SonicNextModManager
+﻿namespace SonicNextModManager
 {
     /// <summary>
     /// Interaction logic for ComboBoxField.xaml

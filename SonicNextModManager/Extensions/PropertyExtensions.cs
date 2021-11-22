@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SonicNextModManager
+﻿namespace SonicNextModManager
 {
     public class PropertyExtensions
     {

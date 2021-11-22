@@ -1,7 +1,5 @@
-﻿using System.IO;
-using System.Linq;
-using MoonSharp.Interpreter;
-using SonicNextModManager.Callback;
+﻿using MoonSharp.Interpreter;
+using SonicNextModManager.IO.Callback;
 using Sprint;
 
 namespace SonicNextModManager

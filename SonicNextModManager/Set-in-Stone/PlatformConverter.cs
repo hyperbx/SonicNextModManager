@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SonicNextModManager.SiS
+﻿namespace SonicNextModManager.SiS
 {
     public class PlatformConverter
     {

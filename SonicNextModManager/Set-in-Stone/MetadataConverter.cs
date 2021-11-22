@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace SonicNextModManager.SiS
+﻿namespace SonicNextModManager.SiS
 {
     public class MetadataConverter
     {

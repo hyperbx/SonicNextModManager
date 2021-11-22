@@ -1,7 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
-
-namespace SonicNextModManager.Networking.API.GitHub
+﻿namespace SonicNextModManager.Networking.API.GitHub
 {
     public class AssetInfo
     {

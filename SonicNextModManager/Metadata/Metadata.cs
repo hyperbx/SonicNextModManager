@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
+﻿using System.ComponentModel;
 
 namespace SonicNextModManager
 {
