@@ -124,11 +124,81 @@ namespace SonicNextModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] keys {
+            get {
+                object obj = ResourceManager.GetObject("keys", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ldr_curves {
+            get {
+                object obj = ResourceManager.GetObject("ldr_curves", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] make_fself {
+            get {
+                object obj = ResourceManager.GetObject("make_fself", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scetool {
+            get {
+                object obj = ResourceManager.GetObject("scetool", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsh_curves {
+            get {
+                object obj = ResourceManager.GetObject("vsh_curves", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mozilla/5.0 (compatible; SonicNextModManager).
         /// </summary>
         internal static string Web_UserAgent {
             get {
                 return ResourceManager.GetString("Web_UserAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xextool {
+            get {
+                object obj = ResourceManager.GetObject("xextool", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] zlib1 {
+            get {
+                object obj = ResourceManager.GetObject("zlib1", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

@@ -133,7 +133,28 @@
   <data name="GitHub_User" xml:space="preserve">
     <value>Big-Endian-32</value>
   </data>
+  <data name="keys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\libraries\playstation\data\keys;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ldr_curves" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\libraries\playstation\data\ldr_curves;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="make_fself" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\libraries\playstation\make_fself.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scetool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\libraries\playstation\scetool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsh_curves" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\libraries\playstation\data\vsh_curves;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Web_UserAgent" xml:space="preserve">
     <value>Mozilla/5.0 (compatible; SonicNextModManager)</value>
+  </data>
+  <data name="xextool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\libraries\xbox\xextool.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="zlib1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\libraries\playstation\zlib1.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -15,6 +15,7 @@
     <None Remove="Resources\Credits.json" />
     <None Remove="Resources\Fonts\Material.ttf" />
     <None Remove="Resources\Images\Logo.png" />
+    <None Remove="Resources\Images\Miscellaneous\Thumbnail.png" />
     <None Remove="Resources\Images\Setup\Game_Executable_360.png" />
     <None Remove="Resources\Images\Setup\Game_Executable_PS3.png" />
     <None Remove="Resources\Images\Setup\RPCS3\RPCS3_Issue_1.png" />
@@ -29,14 +30,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BE32.Marathon" Version="1.0.14" />
-    <PackageReference Include="BE32.Sprint" Version="1.0.1" />
-    <PackageReference Include="Config.Net" Version="4.17.0" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BE32.Marathon" Version="1.0.26" />
+    <PackageReference Include="BE32.Sprint" Version="1.0.4" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.4.3" />
     <PackageReference Include="HandyControl" Version="3.2.0" />
-    <PackageReference Include="keystoneengine.csharp" Version="0.9.1.1" />
-    <PackageReference Include="MoonSharp" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
   </ItemGroup>
 
@@ -54,6 +55,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\Logos\SonicNextModManager.png" />
+    <Resource Include="Resources\Images\Miscellaneous\Thumbnail.png" />
     <Resource Include="Resources\Images\Setup\Game_Executable_360.png" />
     <Resource Include="Resources\Images\Setup\Game_Executable_PS3.png" />
     <Resource Include="Resources\Images\Setup\RPCS3\RPCS3_Issue_1.png" />
@@ -68,6 +70,30 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Libraries\PlayStation\data\keys">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Libraries\PlayStation\data\ldr_curves">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Libraries\PlayStation\data\vsh_curves">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Libraries\PlayStation\make_fself.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Libraries\PlayStation\scetool.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Libraries\PlayStation\zlib1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Libraries\Xbox\xextool.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
