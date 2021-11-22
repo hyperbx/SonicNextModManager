@@ -27,6 +27,8 @@ namespace SonicNextModManager
 
         public static Language CurrentCulture { get; set; }
 
+        public static Platform CurrentPlatform { get; } = StringExtensions.GetPlatformFromFilePath(Settings.Path_GameExecutable);
+
         public static Dictionary<string, string> Directories { get; } = new()
         {
             { "Patches", Path.Combine(Environment.CurrentDirectory, "Patches") },

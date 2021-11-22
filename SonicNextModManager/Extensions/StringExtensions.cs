@@ -24,5 +24,19 @@ namespace SonicNextModManager
         /// <param name="paths">Path structure to combine.</param>
         public static string URLCombine(params string[] paths)
             => string.Join('/', paths);
+
+        /// <summary>
+        /// Returns a platform type from the extension of a file path.
+        /// </summary>
+        /// <param name="path">Path to file.</param>
+        public static Platform GetPlatformFromFilePath(string path)
+        {
+            return Path.GetExtension(path).ToLower() switch
+            {
+                ".xex" => Platform.Xbox,
+                ".bin" => Platform.PlayStation,
+                _ => Platform.Xbox,
+            };
+        }
     }
 }
