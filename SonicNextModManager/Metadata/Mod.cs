@@ -1,28 +1,54 @@
 ﻿using System.Collections.ObjectModel;
-using System.IO;
-using Newtonsoft.Json;
+using System.Windows.Media.Imaging;
 
 namespace SonicNextModManager
 {
     public class Mod : Metadata
     {
+        /// <summary>
+        /// The version string for this mod.
+        /// </summary>
         public string? Version { get; set; }
 
-        public string? Date { get; set; }
-
-        public string? Description { get; set; }
-
+        /// <summary>
+        /// A collection of patches required by this mod.
+        /// </summary>
         public ObservableCollection<string> RequiredPatches { get; set; } = new();
 
+        /// <summary>
+        /// A collection of archives that shouldn't be merged in this mod.
+        /// </summary>
         public ObservableCollection<string> ReadOnly { get; set; } = new();
 
+        /// <summary>
+        /// A collection of custom files that should be loaded for this mod.
+        /// </summary>
         public ObservableCollection<string> Custom { get; set; } = new();
 
+        /// <summary>
+        /// Determines if this mod can merge with others.
+        /// </summary>
         public bool Merge { get; set; }
 
+        /// <summary>
+        /// Determines if this mod uses the DLC system.
+        /// </summary>
+        public bool DLC { get; set; }
+
+        /// <summary>
+        /// A collection of DLLs used by this mod.
+        /// </summary>
         public ObservableCollection<string> DLLs { get; set; } = new();
 
+        /// <summary>
+        /// A collection of hybrid patches used by this mod.
+        /// </summary>
         public ObservableCollection<string> Patches { get; set; } = new();
+
+        /// <summary>
+        /// The path to the thumbnail used by this mod.
+        /// </summary>
+        public string? Thumbnail { get; set; }
 
         public Mod Parse(string file)
         {
@@ -44,6 +70,11 @@ namespace SonicNextModManager
             // Set metadata path.
             metadata.Path = file;
 
+            // Get single thumbnail and use that as the path.
+            string thumbnail;
+            if (DirectoryExtensions.Contains(System.IO.Path.GetDirectoryName(file), "thumbnail.*", out thumbnail))
+                metadata.Thumbnail = thumbnail;
+
             return metadata;
         }
 
@@ -52,5 +83,15 @@ namespace SonicNextModManager
 
         public void Write(string file)
             => Write(this, file);
+    }
+
+    [ValueConversion(typeof(string), typeof(int))]
+    public class Thumbnail2WidthConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            => string.IsNullOrEmpty((string)value) ? 0 : 320;
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
     }
 }

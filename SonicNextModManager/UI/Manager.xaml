@@ -1,4 +1,5 @@
-﻿<local:ImmersiveWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<local:ImmersiveWindow x:Name="Root"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,36 +10,80 @@
                        d:DataContext="{d:DesignInstance Type=viewmodel:ManagerViewModel}"
                        x:Class="SonicNextModManager.Manager"
                        mc:Ignorable="d"
-                       Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640">
+                       Title="Sonic '06 Mod Manager" Height="640" Width="960" Background="#131313" SizeChanged="Manager_SizeChanged" WindowStartupLocation="CenterScreen" MinWidth="960" MinHeight="640">
 
     <Window.Resources>
 
         <!-- Set up converters -->
         <local:Boolean2YesNoConverter x:Key="Boolean2YesNoConverter"/>
+        <local:InstallState2BooleanConverter x:Key="InstallState2BooleanConverter"/>
+        <local:String2NotAvailableConverter x:Key="String2NotAvailableConverter"/>
+        <local:Thumbnail2WidthConverter x:Key="Thumbnail2WidthConverter"/>
 
         <!-- Set up template for content metadata -->
         <DataTemplate x:Key="ContentListItem" DataType="{x:Type local:Metadata}">
             <StackPanel Orientation="Horizontal">
-                <local:IconFontControl Height="18" Margin="0,0,14,0" Text="done" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Installed}}" Width="18"/>
-                <hc:LoadingCircle DotDiameter="3" Height="18" Margin="0,0,14,0" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Installing}}" Width="18"/>
-                <CheckBox IsChecked="{Binding Enabled}" Margin="0,0,14,0" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Idle}}"/>
-                <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
+                <local:IconFontControl Height="17" Margin="-5,0,10,0" Text="done" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Installed}}" Width="18"/>
+                <hc:LoadingCircle DotDiameter="3" Height="17" Margin="-5,0,10,0" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Installing}}" Width="18"/>
+                <CheckBox IsChecked="{Binding Enabled}" Margin="-5,-1,10,0" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Idle}}"/>
+                <TextBlock Text="{Binding Title}" VerticalAlignment="Top"/>
             </StackPanel>
+        </DataTemplate>
+
+        <!-- Set up template for content information -->
+        <DataTemplate x:Key="ContentInformation" DataType="{x:Type local:Metadata}">
+            <Expander IsExpanded="{Binding InfoDisplay}" Margin="{Binding ElementName=Root, Path=InfoDisplayMargin}" Style="{StaticResource BaseStyle}" Template="{StaticResource RevealExpander}">
+                
+                <!-- Set visibility from ancestor IsExpanded property, otherwise we don't get animations from the child TransitioningContentControls, for some reason. -->
+                <StackPanel Visibility="{Binding IsExpanded, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Expander}}, Converter={StaticResource Boolean2VisibilityConverter}}">
+                    <hc:TransitioningContentControl TransitionMode="Fade">
+                        <hc:Divider Margin="0,8,0,16"/>
+                    </hc:TransitioningContentControl>
+                    
+                    <hc:TransitioningContentControl Margin="39,0,0,8" TransitionMode="Top2BottomWithFade">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding Thumbnail, Converter={StaticResource Thumbnail2WidthConverter}}"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Margin="0,0,15,0">
+                                <Border.Background>
+                                    <ImageBrush RenderOptions.BitmapScalingMode="HighQuality" ImageSource="{Binding Thumbnail}" Stretch="Uniform"/>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0.5"/>
+                                </Border.Effect>
+                            </Border>
+
+                            <Border Grid.Column="1" Background="#141414" CornerRadius="3" Height="172" Margin="0,0,30,0">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0.5"/>
+                                </Border.Effect>
+                                <hc:ScrollViewer>
+                                    <TextBlock Margin="5,2,5,2" Text="{Binding Description}" TextWrapping="WrapWithOverflow"/>
+                                </hc:ScrollViewer>
+                            </Border>
+                        </Grid>
+                    </hc:TransitioningContentControl>
+                </StackPanel>
+                
+            </Expander>
         </DataTemplate>
 
     </Window.Resources>
 
     <Grid>
-        
+
         <Grid.Resources>
 
             <!-- Set global transition mode -->
             <Style TargetType="hc:TransitioningContentControl">
                 <Setter Property="TransitionMode" Value="Top2Bottom"/>
             </Style>
-            
+
         </Grid.Resources>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="50"/>
@@ -48,79 +93,85 @@
         <hc:TabControl Name="MainTabControl" Background="#191919" Grid.Row="0" ShowContextMenu="False" Style="{StaticResource TabControlInLine}">
             <hc:TabItem Name="ModsTab" Header="{DynamicResource Main_Mods}" Style="{StaticResource TabItemInLineAccentColour}">
                 <hc:TransitioningContentControl>
-                    <ListView Name="ModsList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" dd:DragDrop.IsDragSource="True"
+                    <ListView Name="ModsList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=1}" dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True" dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
-                              dd:DragDrop.DropHandler="{Binding}" ItemsSource="{Binding Database.Mods}">
+                              dd:DragDrop.DropHandler="{Binding}" dd:DragDrop.SelectDroppedItems="True" Drop="ModsList_Drop" ItemsSource="{Binding Database.Mods}">
 
-                        <!-- Container style to make the items slimmer and use a KeyDown event -->
                         <ListView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">
+                                <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <EventSetter Event="KeyDown" Handler="ModsList_KeyDown"/>
+                                <Setter Property="dd:DragDrop.DragSourceIgnore" Value="{Binding State, Converter={StaticResource InstallState2BooleanConverter}}"/>
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
                             </Style>
                         </ListView.ItemContainerStyle>
-                        
+
                         <ListView.View>
                             <GridView ColumnHeaderContainerStyle="{StaticResource SlimGridViewColumnHeader}">
-                                <GridViewColumn Header="{DynamicResource Column_Title}" CellTemplate="{StaticResource ContentListItem}"/>
-                                <GridViewColumn Header="{DynamicResource Column_Version}" DisplayMemberBinding="{Binding Version}" Width="80"/>
-                                <GridViewColumn Header="{DynamicResource Column_Author}" DisplayMemberBinding="{Binding Author}"/>
-                                <GridViewColumn Header="{DynamicResource Column_Platform}" DisplayMemberBinding="{Binding Platform}" Width="80"/>
-                                <GridViewColumn Header="{DynamicResource Column_Merge}" DisplayMemberBinding="{Binding Merge, Converter={StaticResource Boolean2YesNoConverter}}" Width="60"/>
+                                <GridViewColumn CellTemplate="{StaticResource ContentInformation}" Width="0"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Title}" CellTemplate="{StaticResource ContentListItem}"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Version}" DisplayMemberBinding="{Binding Version}" Width="80"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Author}" DisplayMemberBinding="{Binding Author}"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Date}" DisplayMemberBinding="{Binding Date, Converter={StaticResource String2NotAvailableConverter}}"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Platform}" DisplayMemberBinding="{Binding Platform}" Width="80"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Merge}" DisplayMemberBinding="{Binding Merge, Converter={StaticResource Boolean2YesNoConverter}}" Width="60"/>
                             </GridView>
                         </ListView.View>
-                        
+
                     </ListView>
                 </hc:TransitioningContentControl>
             </hc:TabItem>
-            
+
             <hc:TabItem Name="PatchesTab" Header="{DynamicResource Main_Patches}" Style="{StaticResource TabItemInLineAccentColour}">
                 <hc:TransitioningContentControl>
-                    <ListView Name="PatchesList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" dd:DragDrop.IsDragSource="True"
+                    <ListView Name="PatchesList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=1}" dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True" dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
-                              dd:DragDrop.DropHandler="{Binding}" ItemsSource="{Binding Database.Patches}">
-                        
-                        <!-- Container style to make the items slimmer and use a KeyDown event -->
+                              dd:DragDrop.DropHandler="{Binding}" dd:DragDrop.SelectDroppedItems="True" ItemsSource="{Binding Database.Patches}">
+
                         <ListView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">
+                                <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
                                 <EventSetter Event="KeyDown" Handler="PatchesList_KeyDown"/>
                             </Style>
                         </ListView.ItemContainerStyle>
-                        
+
                         <ListView.View>
                             <GridView ColumnHeaderContainerStyle="{StaticResource SlimGridViewColumnHeader}">
-                                <GridViewColumn Header="{DynamicResource Column_Title}" CellTemplate="{StaticResource ContentListItem}"/>
-                                <GridViewColumn Header="{DynamicResource Column_Author}" DisplayMemberBinding="{Binding Author}"/>
-                                <GridViewColumn Header="{DynamicResource Column_Platform}" DisplayMemberBinding="{Binding Platform}" Width="80"/>
-                                <GridViewColumn Header="{DynamicResource Column_Blurb}" DisplayMemberBinding="{Binding Blurb}"/>
+                                <GridViewColumn CellTemplate="{StaticResource ContentInformation}" Width="0"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Title}" CellTemplate="{StaticResource ContentListItem}"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Author}" DisplayMemberBinding="{Binding Author}"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Platform}" DisplayMemberBinding="{Binding Platform}" Width="80"/>
+                                <GridViewColumn Header="{DynamicResource Metadata_Blurb}" DisplayMemberBinding="{Binding Blurb}"/>
                             </GridView>
                         </ListView.View>
-                        
+
                     </ListView>
                 </hc:TransitioningContentControl>
             </hc:TabItem>
-            
+
             <hc:TabItem Name="TweaksTab" Header="{DynamicResource Main_Tweaks}" Style="{StaticResource TabItemInLineAccentColour}">
                 <hc:TransitioningContentControl>
                     <hc:PropertyGrid Background="#191919" ShowSortButton="False"/>
                 </hc:TransitioningContentControl>
             </hc:TabItem>
-            
+
         </hc:TabControl>
 
         <StackPanel Grid.Row="1" Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-            
+
             <!-- Set up installer thread buttons -->
             <StackPanel Orientation="Horizontal">
                 <hc:ProgressButton Name="Install" Click="Install_Click" Content="{DynamicResource Main_Install}" Height="32" Style="{DynamicResource ProgressButtonPrimaryHorizontalFirst}" Width="120"/>
                 <hc:ProgressButton Name="Uninstall" Click="Uninstall_Click" Content="{DynamicResource Main_Uninstall}" Height="32" Style="{DynamicResource ProgressButtonPrimaryHorizontalLast}" Width="120"/>
             </StackPanel>
-            
+
             <!-- Set up emulator launcher -->
             <StackPanel Name="Emulator_Launcher" Orientation="Horizontal">
                 <hc:Divider Margin="8,0,8,0" MaxHeight="24" Orientation="Vertical"/>
                 <Button Content="{DynamicResource Main_Emulator_Launcher}" Height="32" Width="120"/>
             </StackPanel>
-            
+
         </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using SonicNextModManager.UI.ViewModel;
+﻿using SonicNextModManager.UI.ViewModel;
+using System.Windows.Shapes;
 
 namespace SonicNextModManager
 {
@@ -13,6 +10,26 @@ namespace SonicNextModManager
     {
         ManagerViewModel ViewModel { get; set; } = new();
 
+        /// <summary>
+        /// Property storage for <see cref="InfoDisplayMargin"/>.
+        /// </summary>
+        internal static readonly DependencyProperty InfoDisplayMarginProperty = DependencyProperty.Register
+        (
+            nameof(InfoDisplayMargin),
+            typeof(Thickness),
+            typeof(Manager),
+            new PropertyMetadata(new Thickness(-40, 15, -930, 0))
+        );
+
+        /// <summary>
+        /// The margin used for the info display - the right margin is used as the width.
+        /// </summary>
+        internal Thickness InfoDisplayMargin
+        {
+            get => (Thickness)GetValue(InfoDisplayMarginProperty);
+            set => SetValue(InfoDisplayMarginProperty, value);
+        }
+
         public Manager()
         {
             InitializeComponent();
@@ -21,6 +38,12 @@ namespace SonicNextModManager
             // Set data context to new view model.
             DataContext = ViewModel;
         }
+
+        /// <summary>
+        /// Sets the new width of the info display based on the current window size.
+        /// </summary>
+        private void Manager_SizeChanged(object sender, SizeChangedEventArgs e)
+            => InfoDisplayMargin = new Thickness(-40, 15, (e.NewSize.Width - 30) * -1, 0);
 
         /// <summary>
         /// Amend erroneous UI elements under certain conditions.
@@ -34,6 +57,11 @@ namespace SonicNextModManager
                                            : Visibility.Visible;
         }
 
+        /// <summary>
+        /// Various key down events for list views.
+        /// </summary>
+        /// <param name="sender">List view calling this function.</param>
+        /// <param name="e">Key event handler.</param>
         private void InvokeListViewKeyDown(ListView sender, KeyEventArgs e)
         {
             switch (e.Key)
@@ -44,6 +72,9 @@ namespace SonicNextModManager
                     // Flip enabled state for each selected item.
                     foreach (Metadata item in sender.SelectedItems)
                         item.Enabled ^= true;
+
+                    // Save updated content list.
+                    ViewModel.Database.Save();
 
                     break;
                 }
@@ -56,64 +87,99 @@ namespace SonicNextModManager
         private void PatchesList_KeyDown(object sender, KeyEventArgs e)
             => InvokeListViewKeyDown(PatchesList, e);
 
+        /// <summary>
+        /// Saves the content list upon check box click.
+        /// </summary>
+        private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is Rectangle)
+                ViewModel.Database.Save();
+        }
+
+        /// <summary>
+        /// Opens or closes the info display for the selected content.
+        /// </summary>
+        private void ModsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Metadata selectedItem = (Metadata)ModsList.SelectedItem;
+
+            // Do not handle for check boxes or null items.
+            if (e.OriginalSource is Rectangle || selectedItem == null)
+                return;
+
+            // Close all info displays.
+            foreach (Metadata item in ModsList.Items)
+            {
+                // Don't close the current info display - we invert it later.
+                if (item == selectedItem && selectedItem.InfoDisplay)
+                    continue;
+
+                item.InfoDisplay = false;
+            }
+
+            // Invert info display visibility (description required).
+            if (!string.IsNullOrEmpty(selectedItem.Description))
+                selectedItem.InfoDisplay ^= true;
+        }
+
+        /// <summary>
+        /// TODO: https://github.com/Big-Endian-32/SonicNextModManager/projects/3#card-72800882
+        /// </summary>
         private void Install_Click(object sender, RoutedEventArgs e)
         {
-            // Save active content to the database.
-            ViewModel.Database.Save();
+            int interval = 1000;
 
-            // TODO: localise this and use an XAML converter instead.
-            Install.Content = "Installing...";
-            Install.IsEnabled = false;
-            Uninstall.Content = "Cancel";
+            foreach (var item in ViewModel.Database.Mods)
+                SetInstallState(item);
 
-            // TODO: replace this pseudo installer with real code.
+            foreach (var item in ViewModel.Database.Patches)
+                SetInstallState(item);
+
+            void SetInstallState(Metadata metadata)
             {
-                int interval = 1000;
-
-                foreach (var item in ViewModel.Database.Mods)
-                    SetInstallState(item);
-
-                foreach (var item in ViewModel.Database.Patches)
-                    SetInstallState(item);
-
-                void SetInstallState(Metadata metadata)
+                if (metadata.Enabled)
                 {
-                    if (metadata.Enabled)
-                    {
-                        metadata.State = InstallState.Installing;
+                    metadata.State = InstallState.Installing;
 
-                        System.Timers.Timer t = new();
-                        t.Interval = interval;
-                        interval += 1000;
+                    System.Timers.Timer t = new();
+                    t.Interval = interval;
+                    interval += 1000;
 
-                        t.Elapsed += (s, te) => metadata.State = InstallState.Installed;
+                    t.Elapsed += (s, te) => metadata.State = InstallState.Installed;
 
-                        t.Start();
-                    }
+                    t.Start();
                 }
             }
         }
 
+        /// <summary>
+        /// TODO: https://github.com/Big-Endian-32/SonicNextModManager/projects/3#card-73379659
+        /// </summary>
         private void Uninstall_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: localise this and use an XAML converter instead.
-            Install.Content = "Install";
-            Install.IsEnabled = true;
-            Uninstall.Content = "Uninstall";
+            => throw new NotImplementedException();
 
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Performs a hard refresh of the content database.
+        /// </summary>
         private void Refresh_Click(object sender, RoutedEventArgs e)
             => ViewModel.InvokeDatabaseContentUpdate();
 
+        /// <summary>
+        /// Opens the Settings window.
+        /// </summary>
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             new Settings
             {
-                Owner = this // Set owner to centre window.
+                // Set owner to centre window.
+                Owner = this
             }
             .ShowDialog();
+        }
+
+        private void ModsList_Drop(object sender, DragEventArgs e)
+        {
+            // TODO: https://github.com/Big-Endian-32/SonicNextModManager/projects/3#card-72800879
         }
     }
 }
