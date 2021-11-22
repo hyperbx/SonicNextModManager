@@ -17,8 +17,8 @@
     <system:String x:Key="Common_Ignore"  >Ignore</system:String>
 
     <!-- Exception Strings -->
-    <system:String x:Key="Exception_Fatal"    >A fatal error has occurred and the application has been halted...</system:String>
-    <system:String x:Key="Exception_Unhandled">An unhandled exception has occurred and the application has been halted...</system:String>
+    <system:String x:Key="Exception_Fatal">A fatal error has occurred and the application has been halted...</system:String>
+    <system:String x:Key="Exception_MissingModules">Unable to locate the required modules for mod installation. Please redownload Sonic '06 Mod Manager...</system:String>
 
     <!-- Query Strings -->
     <system:String x:Key="Query_ModsDirectory"     >Please select your mods directory...</system:String>

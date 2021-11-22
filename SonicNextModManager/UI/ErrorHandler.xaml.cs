@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-
-namespace SonicNextModManager
+﻿namespace SonicNextModManager
 {
     /// <summary>
     /// Interaction logic for ErrorHandler.xaml
@@ -14,15 +9,12 @@ namespace SonicNextModManager
 
         private bool Fatal { get; set; }
 
-        public ErrorHandler(Exception ex, bool fatal = false)
+        public ErrorHandler(Exception ex)
         {
             InitializeComponent();
 
             Exception = ex;
             Error.Text = BuildExceptionLog();
-
-            if (Fatal = fatal)
-                Caption.Text = SonicNextModManager.Language.Localise("Exception_Fatal");
         }
 
         /// <summary>

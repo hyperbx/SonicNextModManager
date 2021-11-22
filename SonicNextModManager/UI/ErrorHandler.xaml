@@ -26,7 +26,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Name="Caption" FontSize="16" Margin="20,0,0,0" Text="{StaticResource Exception_Unhandled}" VerticalAlignment="Center"/>
+                <TextBlock Name="Caption" FontSize="16" Margin="20,0,0,0" Text="{StaticResource Exception_Fatal}" VerticalAlignment="Center"/>
                 <Image Grid.Column="1" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" Source="/SonicNextModManager;component/Resources/Images/Logos/SonicNextModManager.png" Width="50"/>
             </Grid>
         </StackPanel>
