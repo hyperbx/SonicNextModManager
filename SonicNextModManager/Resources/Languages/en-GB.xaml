@@ -95,14 +95,16 @@
     <system:String x:Key="Main_Emulator_Launcher">Launch Sonic '06</system:String>
     <system:String x:Key="Main_Settings"         >Settings</system:String>
 
-    <!-- Column Strings -->
-    <system:String x:Key="Column_Title"      >Title</system:String>
-    <system:String x:Key="Column_Version"    >Version</system:String>
-    <system:String x:Key="Column_Author"     >Author</system:String>
-    <system:String x:Key="Column_Platform"   >Platform</system:String>
-    <system:String x:Key="Column_Merge"      >Merge</system:String>
-    <system:String x:Key="Column_Blurb"      >Blurb</system:String>
-    <system:String x:Key="Column_Description">Description</system:String>
+    <!-- Metadata Strings -->
+    <system:String x:Key="Metadata_Title"      >Title</system:String>
+    <system:String x:Key="Metadata_Version"    >Version</system:String>
+    <system:String x:Key="Metadata_Author"     >Author</system:String>
+    <system:String x:Key="Metadata_Platform"   >Platform</system:String>
+    <system:String x:Key="Metadata_Date"       >Date</system:String>
+    <system:String x:Key="Metadata_DLC"        >DLC</system:String>
+    <system:String x:Key="Metadata_Merge"      >Merge</system:String>
+    <system:String x:Key="Metadata_Blurb"      >Blurb</system:String>
+    <system:String x:Key="Metadata_Description">Description</system:String>
 
     <!-- Mods Strings -->
     <system:String x:Key="Mods_Configure" >Configure mod</system:String>
