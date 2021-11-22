@@ -32,7 +32,21 @@ namespace SonicNextModManager
         public static Dictionary<string, string> Directories { get; } = new()
         {
             { "Patches", Path.Combine(Environment.CurrentDirectory, "Patches") },
-            { "Profiles", Path.Combine(Environment.CurrentDirectory, "Profiles") }
+            { "Profiles", Path.Combine(Environment.CurrentDirectory, "Profiles") },
+            { "Resources", Path.Combine(Environment.CurrentDirectory, "Resources") }
+        };
+
+        public static Dictionary<string, string> Configurations { get; } = new()
+        {
+            { "Content", Path.Combine(Settings.Path_ModsDirectory, "content.json") },
+            { "Data", Path.Combine(Settings.Path_ModsDirectory, "data.json") }
+        };
+
+        public static Dictionary<string, string> Modules { get; } = new()
+        {
+            { "xextool", Path.Combine(Directories["Resources"], "Libraries", "Xbox", "xextool.exe") },
+            { "scetool", Path.Combine(Directories["Resources"], "Libraries", "PlayStation", "scetool.exe") },
+            { "make_fself", Path.Combine(Directories["Resources"], "Libraries", "PlayStation", "make_fself.exe") }
         };
 
         public static string GetAssemblyName()
