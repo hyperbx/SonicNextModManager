@@ -21,7 +21,7 @@ namespace SonicNextModManager
     /// </summary>
     public partial class App : Application
     {
-        public static IConfiguration Settings { get; } = new ConfigurationBuilder<IConfiguration>().UseIniFile($"{GetAssemblyName()}.ini").Build();
+        public static Configuration Settings { get; } = new Configuration().Import();
 
         public static Languages SupportedCultures { get; set; }
 
@@ -32,6 +32,28 @@ namespace SonicNextModManager
             { "Patches", Path.Combine(Environment.CurrentDirectory, "Patches") },
             { "Profiles", Path.Combine(Environment.CurrentDirectory, "Profiles") }
         };
+
+        public static string GetAssemblyName()
+            => Assembly.GetEntryAssembly().GetName().Name;
+
+        /// <summary>
+        /// Returns the current assembly version.
+        /// </summary>
+        public static string GetAssemblyVersion()
+            => Assembly.GetEntryAssembly().GetName().Version.ToString();
+
+        /// <summary>
+        /// Creates the exception handler to provide a friendly interface for errors.
+        /// </summary>
+        private void CreateExceptionHandler()
+        {
+#if !DEBUG
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                new ErrorHandler((Exception)e.ExceptionObject).ShowDialog();
+            };
+#endif
+        }
 
         /// <summary>
         /// Creates the default directory tree.
@@ -56,26 +78,23 @@ namespace SonicNextModManager
         }
 
         /// <summary>
-        /// Creates the exception handler to provide a friendly interface for errors.
+        /// Verifies if the required modules exist.
         /// </summary>
-        private void CreateExceptionHandler()
+        private static bool VerifyModuleIntegrity()
         {
-#if !DEBUG
-            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            // If the resources directory doesn't exist, return false.
+            if (!Directory.Exists(Directories["Resources"]))
+                return false;
+
+            foreach (var module in Modules)
             {
-                new ErrorHandler((Exception)e.ExceptionObject, e.IsTerminating).ShowDialog();
-            };
-#endif
+                // If a module doesn't exist, return false.
+                if (!File.Exists(module.Value))
+                    return false;
+            }
+
+            return true;
         }
-
-        public static string GetAssemblyName()
-            => Assembly.GetEntryAssembly().GetName().Name;
-
-        /// <summary>
-        /// Returns the current assembly version.
-        /// </summary>
-        public static string GetAssemblyVersion()
-            => Assembly.GetEntryAssembly().GetName().Version.ToString();
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -84,6 +103,10 @@ namespace SonicNextModManager
 
             // Set up directory tree.
             CreateDefaultDirectoryTree();
+
+            // Verify if the required modules exist and throw if not.
+            if (!VerifyModuleIntegrity())
+                throw new FileNotFoundException(Language.Localise("Exception_MissingModules"));
 
             // Set up language settings.
             Language.LoadCultureResources();
