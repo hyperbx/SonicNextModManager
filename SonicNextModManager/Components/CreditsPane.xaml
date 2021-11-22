@@ -17,7 +17,7 @@
     </UserControl.Resources>
     
     <Grid>
-        <Expander Background="#202020" Header="{Binding ElementName=Root, Path=Credits.Category}" IsExpanded="{Binding ElementName=Root, Path=Credits.IsExpanded}" Margin="10,10,10,0">
+        <Expander Name="Category" Background="#202020" Header="{Binding ElementName=Root, Path=Credits.Category}" IsExpanded="{Binding ElementName=Root, Path=Credits.IsExpanded}" Margin="10,10,10,0">
             <Border BorderBrush="#3F3F46" BorderThickness="1,0,1,1" CornerRadius="0,0,3,3">
                 <StackPanel>
                     
@@ -30,7 +30,7 @@
 
                         <StackPanel Grid.Column="0" Orientation="Horizontal">
                             <StackPanel>
-                                <TextBlock FontSize="16" Text="{Binding ElementName=Root, Path=Credits.Category}" Margin="10,5,10,0"/>
+                                <TextBlock Name="Title" FontSize="16" Text="{Binding ElementName=Root, Path=Credits.Category}" Margin="10,5,10,0"/>
                                 <TextBlock Name="Description" Margin="10,0,10,5"/>
                             </StackPanel>
                         </StackPanel>
@@ -49,8 +49,8 @@
                         </ListView.ItemContainerStyle>
                         <ListView.View>
                             <GridView AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource SlimGridViewColumnHeader}">
-                                <GridViewColumn Header="{StaticResource Column_Author}" DisplayMemberBinding="{Binding Name}" Width="95"/>
-                                <GridViewColumn Header="{StaticResource Column_Description}" DisplayMemberBinding="{Binding Description}" Width="370"/>
+                                <GridViewColumn Header="{StaticResource Metadata_Author}" DisplayMemberBinding="{Binding Name}" Width="95"/>
+                                <GridViewColumn Header="{StaticResource Metadata_Description}" DisplayMemberBinding="{Binding Description}" Width="370"/>
                             </GridView>
                         </ListView.View>
                     </ListView>

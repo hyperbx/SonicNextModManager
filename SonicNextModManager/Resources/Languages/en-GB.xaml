@@ -144,10 +144,13 @@
     <system:String x:Key="Settings_About_Credits"                                    >Credits</system:String>
 
     <!-- Credits Strings -->
-    <system:String x:Key="Credits_SonicNextModManager">enhancing the experience since June 27th, 2019</system:String>
-    <system:String x:Key="Credits_Sprint"             >powering the patch engine</system:String>
-    <system:String x:Key="Credits_Marathon"           >unlocking modding potential for patches and beyond</system:String>
-    <system:String x:Key="Credits_Xenia"              >making modding easier since 2018</system:String>
-    <system:String x:Key="Credits_Miscellaneous"      >our honourable mentions</system:String>
+    <system:String x:Key="Credits_SonicNextModManager_Description">enhancing the experience since June 27th, 2019</system:String>
+    <system:String x:Key="Credits_SonicNextModLoader_Description" >injecting your powerful code</system:String>
+    <system:String x:Key="Credits_Sprint_Description"             >powering the patch engine</system:String>
+    <system:String x:Key="Credits_Marathon_Description"           >unlocking modding potential for patches and beyond</system:String>
+    <system:String x:Key="Credits_Translators"                    >Translators</system:String>
+    <system:String x:Key="Credits_Translators_Description"        >if you can understand this, thank these people</system:String>
+    <system:String x:Key="Credits_Miscellaneous"                  >Miscellaneous</system:String>
+    <system:String x:Key="Credits_Miscellaneous_Description"      >our honourable mentions</system:String>
 
 </ResourceDictionary>

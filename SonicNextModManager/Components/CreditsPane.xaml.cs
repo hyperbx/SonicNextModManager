@@ -28,8 +28,7 @@ namespace SonicNextModManager
             if (credits != null)
             {
                 Credits = credits;
-
-                // Localise description text.
+                Category.Header = Title.Text = SonicNextModManager.Language.Localise(Credits.Category);
                 Description.Text = SonicNextModManager.Language.Localise(Credits.Description);
             }
         }

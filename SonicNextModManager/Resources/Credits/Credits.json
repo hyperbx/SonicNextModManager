@@ -1,13 +1,13 @@
 [
   {
     "Category": "Sonic '06 Mod Manager",
-    "Description": "Credits_SonicNextModManager",
+    "Description": "Credits_SonicNextModManager_Description",
     "GitHub": "https://github.com/Big-Endian-32/SonicNextModManager",
     "IsExpanded": true,
     "Contributors": [
       {
         "Name": "Hyper",
-        "Description": "Lead developer, designer and reverse-engineer",
+        "Description": "Lead developer and designer",
         "URL": "https://github.com/HyperBE32"
       },
       {
@@ -29,7 +29,7 @@
   },
   {
     "Category": "Sprint",
-    "Description": "Credits_Sprint",
+    "Description": "Credits_Sprint_Description",
     "GitHub": "https://github.com/Big-Endian-32/Sprint",
     "Contributors": [
       {
@@ -51,7 +51,7 @@
   },
   {
     "Category": "Marathon",
-    "Description": "Credits_Marathon",
+    "Description": "Credits_Marathon_Description",
     "GitHub": "https://github.com/Big-Endian-32/Marathon",
     "Contributors": [
       {
@@ -61,8 +61,18 @@
       },
       {
         "Name": "Knuxfan24",
-        "Description": "Developer and reverse-engineer",
+        "Description": "API developer and reverse-engineer",
         "URL": "https://github.com/Knuxfan24"
+      },
+      {
+        "Name": "Sajid",
+        "Description": "API developer, reverse-engineer and debugging assistance",
+        "URL": "https://github.com/Sajidur78"
+      },
+      {
+        "Name": "GerbilSoft",
+        "Description": "ZlibStream developer and reverse-engineer",
+        "URL": "https://github.com/GerbilSoft"
       },
       {
         "Name": "Labryz",
@@ -71,17 +81,12 @@
       },
       {
         "Name": "Radfordhound",
-        "Description": "Wrote the HedgeLib classes used as a base for Marathon I/O",
+        "Description": "Wrote HedgeLib - used as a base for Marathon",
         "URL": "https://github.com/Radfordhound"
       },
       {
-        "Name": "GerbilSoft",
-        "Description": "Wrote ZlibStream and supplied an API for compressing archive data",
-        "URL": "https://github.com/GerbilSoft"
-      },
-      {
         "Name": "Shadow LAG",
-        "Description": "Wrote the original Lua decompiler source in Java",
+        "Description": "Ported unluac to Java - used as a base for the C# port",
         "URL": "https://github.com/lllsondowlll"
       },
       {
@@ -92,31 +97,35 @@
     ]
   },
   {
-    "Category": "Xenia",
-    "Description": "Credits_Xenia",
-    "GitHub": "https://github.com/xenia-project/xenia",
+    "Category": "Credits_Translators",
+    "Description": "Credits_Translators_Description",
     "Contributors": [
       {
-        "Name": "xenia-project",
-        "Description": "Xenia",
-        "URL": "https://github.com/xenia-project/xenia"
-      },
-      {
-        "Name": "Sajid",
-        "Description": "DLL injection and helper functions",
-        "URL": "https://github.com/Sajidur78"
-      },
-      {
         "Name": "Hyper",
-        "Description": "Miscellaneous fixes and amendments",
+        "Description": "English (United Kingdom)",
         "URL": "https://github.com/HyperBE32"
-      }
+      },
     ]
   },
   {
-    "Category": "Miscellaneous",
-    "Description": "Credits_Miscellaneous",
+    "Category": "Credits_Miscellaneous",
+    "Description": "Credits_Miscellaneous_Description",
     "Contributors": [
+      {
+        "Name": "xorloser",
+        "Description": "XexTool",
+        "URL": "https://github.com/x0rloser"
+      },
+      {
+        "Name": "naehrwert",
+        "Description": "scetool",
+        "URL": "https://github.com/naehrwert"
+      },
+      {
+        "Name": "flatz",
+        "Description": "make_fself",
+        "URL": "https://github.com/flatz"
+      },
       {
         "Name": "acro",
         "Description": "Screenshot provider for Xenia",
