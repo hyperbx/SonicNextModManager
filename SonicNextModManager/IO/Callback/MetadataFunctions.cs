@@ -1,4 +1,4 @@
-﻿namespace SonicNextModManager.Callback
+﻿namespace SonicNextModManager.IO.Callback
 {
     public class MetadataFunctions
     {
