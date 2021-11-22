@@ -32,18 +32,19 @@
     -->
 
     <!-- Common Strings -->
-    <system:String x:Key="Common_OK"      >OK</system:String>
-    <system:String x:Key="Common_Cancel"  >Cancel</system:String>
-    <system:String x:Key="Common_Yes"     >Yes</system:String>
-    <system:String x:Key="Common_No"      >No</system:String>
-    <system:String x:Key="Common_Continue">Continue</system:String>
-    <system:String x:Key="Common_Back"    >Back</system:String>
-    <system:String x:Key="Common_Refresh" >Refresh</system:String>
-    <system:String x:Key="Common_Browse"  >Browse...</system:String>
-    <system:String x:Key="Common_Language">Language</system:String>
-    <system:String x:Key="Common_Copy"    >Copy</system:String>
-    <system:String x:Key="Common_Report"  >Report</system:String>
-    <system:String x:Key="Common_Ignore"  >Ignore</system:String>
+    <system:String x:Key="Common_OK"          >OK</system:String>
+    <system:String x:Key="Common_Cancel"      >Cancel</system:String>
+    <system:String x:Key="Common_Yes"         >Yes</system:String>
+    <system:String x:Key="Common_No"          >No</system:String>
+    <system:String x:Key="Common_Continue"    >Continue</system:String>
+    <system:String x:Key="Common_Back"        >Back</system:String>
+    <system:String x:Key="Common_Refresh"     >Refresh</system:String>
+    <system:String x:Key="Common_Browse"      >Browse...</system:String>
+    <system:String x:Key="Common_Language"    >Language</system:String>
+    <system:String x:Key="Common_Copy"        >Copy</system:String>
+    <system:String x:Key="Common_Report"      >Report</system:String>
+    <system:String x:Key="Common_Ignore"      >Ignore</system:String>
+    <system:String x:Key="Common_NotAvailable">N/A</system:String>
 
     <!-- Exception Strings -->
     <system:String x:Key="Exception_Fatal">A fatal error has occurred and the application has been halted...</system:String>
