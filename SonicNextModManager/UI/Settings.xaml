@@ -6,7 +6,7 @@
                        xmlns:local="clr-namespace:SonicNextModManager"
                        xmlns:hc="https://handyorg.github.io/handycontrol"
                        mc:Ignorable="d"
-                       Title="Settings" Height="540" Width="540" Background="#131313" WindowStartupLocation="CenterOwner" MinWidth="540" MinHeight="540">
+                       Title="Settings" Height="600" Width="600" Background="#131313" WindowStartupLocation="CenterOwner" MinWidth="600" MinHeight="540">
 
     <Grid>
 
