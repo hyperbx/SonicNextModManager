@@ -25,7 +25,7 @@
             <StackPanel Orientation="Horizontal">
                 <local:IconFontControl Height="17" Margin="-5,0,10,0" Text="done" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Installed}}" Width="18"/>
                 <hc:LoadingCircle DotDiameter="3" Height="17" Margin="-5,0,10,0" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Installing}}" Width="18"/>
-                <CheckBox IsChecked="{Binding Enabled}" Margin="-5,-1,10,0" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Idle}}"/>
+                <CheckBox Checked="Content_CheckBox_CheckedChanged" Unchecked="Content_CheckBox_CheckedChanged" IsChecked="{Binding Enabled}" Margin="-5,-1,10,0" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource InstallState2VisibilityConverter}, ConverterParameter={x:Static local:InstallState.Idle}}"/>
                 <TextBlock Text="{Binding Title}" VerticalAlignment="Top"/>
             </StackPanel>
         </DataTemplate>
@@ -118,7 +118,6 @@
 
                         <ListView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">
-                                <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
                                 <EventSetter Event="KeyDown" Handler="ModsList_KeyDown"/>
                                 <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <Setter Property="ContextMenu" Value="{DynamicResource ModContextMenu}"/>
@@ -151,7 +150,6 @@
 
                         <ListView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">
-                                <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
                                 <EventSetter Event="KeyDown" Handler="PatchesList_KeyDown"/>
                                 <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <Setter Property="ContextMenu" Value="{DynamicResource PatchContextMenu}"/>

@@ -41,7 +41,7 @@ namespace SonicNextModManager
         /// <summary>
         /// The current content data being installed.
         /// </summary>
-        public Metadata CurrentContentInQueue { get; set; }
+        public Metadata? CurrentContentInQueue { get; set; }
 
         /// <summary>
         /// Location of the content database.
@@ -103,11 +103,28 @@ namespace SonicNextModManager
         }
 
         /// <summary>
+        /// Returns the last index of a checked mod.
+        /// </summary>
+        /// <typeparam name="T">Content type.</typeparam>
+        /// <param name="collection">Collection of content.</param>
+        public static int IndexOfLastChecked<T>(ObservableCollection<T> collection) where T : Metadata
+        {
+            // Compute last index of installing or installed content.
+            for (int i = collection.Count - 1; i > 0; i--)
+            {
+                if (collection[i] is T { Enabled: true })
+                    return i;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
         /// Returns the last index of the installing or installed content.
         /// </summary>
         /// <typeparam name="T">Content type.</typeparam>
         /// <param name="collection">Collection of content.</param>
-        public int IndexOfLastInstall<T>(ObservableCollection<T> collection) where T : Metadata
+        public static int IndexOfLastInstall<T>(ObservableCollection<T> collection) where T : Metadata
         {
             // Compute last index of installing or installed content.
             for (int i = collection.Count - 1; i > 0; i--)

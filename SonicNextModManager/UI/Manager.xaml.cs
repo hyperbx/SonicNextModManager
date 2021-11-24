@@ -88,12 +88,37 @@ namespace SonicNextModManager
             => InvokeListViewKeyDown(PatchesList, e);
 
         /// <summary>
-        /// Saves the content list upon check box click.
+        /// Saves the database and shifts newly checked items to the bottom of the queue if currently installing.
         /// </summary>
-        private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void Content_CheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            if (e.OriginalSource is Rectangle)
-                ViewModel.Database.Save();
+            // Save content database.
+            ViewModel.Database.Save();
+
+            if (ViewModel.State == InstallState.Installing)
+            {
+                Metadata metadata = ((CheckBox)sender).DataContext as Metadata;
+
+                if (metadata is Mod)
+                {
+                    // Set up item for the mods database.
+                    InsertQueuedItem(ViewModel.Database.Mods);
+                }
+                else if (metadata is Patch)
+                {
+                    // Set up item for the patches database.
+                    InsertQueuedItem(ViewModel.Database.Patches);
+                }
+
+                void InsertQueuedItem<T>(ObservableCollection<T> collection) where T : Metadata
+                {
+                    // Remove current item.
+                    collection.Remove((T)metadata);
+
+                    // Insert current item to the bottom of the queue.
+                    collection.Insert(Database.IndexOfLastChecked<T>(collection) + 1, (T)metadata);
+                }
+            }
         }
 
         /// <summary>
