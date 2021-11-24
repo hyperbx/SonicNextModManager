@@ -139,12 +139,18 @@ namespace SonicNextModManager
             if (e.OriginalSource is Rectangle || selectedItem == null)
                 return;
 
+            // Do not handle for other mouse clicks.
+            if (e.ChangedButton != MouseButton.Left)
+                return;
+
             if (selectedItem is Mod)
             {
+                // Close all info displays in the mods list.
                 CloseAllInfoDisplays(ViewModel.Database.Mods);
             }
             else if (selectedItem is Patch)
             {
+                // Close all info displays in the patches list.
                 CloseAllInfoDisplays(ViewModel.Database.Patches);
             }
 
