@@ -119,8 +119,8 @@
                         <ListView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">
                                 <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
-                                <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <EventSetter Event="KeyDown" Handler="ModsList_KeyDown"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <Setter Property="ContextMenu" Value="{DynamicResource ModContextMenu}"/>
                                 <Setter Property="dd:DragDrop.DragSourceIgnore" Value="{Binding State, Converter={StaticResource InstallState2BooleanConverter}}"/>
                                 <Setter Property="VerticalContentAlignment" Value="Top"/>
@@ -153,7 +153,9 @@
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">
                                 <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
                                 <EventSetter Event="KeyDown" Handler="PatchesList_KeyDown"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <Setter Property="ContextMenu" Value="{DynamicResource PatchContextMenu}"/>
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
                             </Style>
                         </ListView.ItemContainerStyle>
 

@@ -101,20 +101,32 @@ namespace SonicNextModManager
         /// </summary>
         private void ModsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Metadata selectedItem = (Metadata)ModsList.SelectedItem;
+            Metadata selectedItem = ((ListViewItem)sender).Content as Metadata;
 
             // Do not handle for check boxes or null items.
             if (e.OriginalSource is Rectangle || selectedItem == null)
                 return;
 
-            // Close all info displays.
-            foreach (Metadata item in ModsList.Items)
+            if (selectedItem is Mod)
             {
-                // Don't close the current info display - we invert it later.
-                if (item == selectedItem && selectedItem.InfoDisplay)
-                    continue;
+                CloseAllInfoDisplays(ViewModel.Database.Mods);
+            }
+            else if (selectedItem is Patch)
+            {
+                CloseAllInfoDisplays(ViewModel.Database.Patches);
+            }
 
-                item.InfoDisplay = false;
+            void CloseAllInfoDisplays<T>(ObservableCollection<T> collection) where T : Metadata
+            {
+                // Close all info displays.
+                foreach (T item in collection)
+                {
+                    // Don't close the current info display - we invert it later.
+                    if (item == selectedItem && selectedItem.InfoDisplay)
+                        continue;
+
+                    item.InfoDisplay = false;
+                }
             }
 
             // Invert info display visibility (description required).

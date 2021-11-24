@@ -44,11 +44,6 @@ namespace SonicNextModManager
         /// </summary>
         public ObservableCollection<string> Patches { get; set; } = new();
 
-        /// <summary>
-        /// The path to the thumbnail used by this mod.
-        /// </summary>
-        public string? Thumbnail { get; set; }
-
         public Mod Parse(string file)
         {
             Mod metadata = new() { Title = "Unknown" };

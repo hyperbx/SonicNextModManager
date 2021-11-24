@@ -6,22 +6,10 @@ namespace SonicNextModManager
 {
     public class Patch : Metadata
     {
+        /// <summary>
+        /// The short description for this patch.
+        /// </summary>
         public string? Blurb { get; set; }
-
-        private string? _Description;
-        public string? Description
-        {
-            get => _Description;
-            set
-            {
-                _Description = value;
-
-                /* Set the blurb to the description so the
-                   view model has something to display. */
-                if (string.IsNullOrEmpty(Blurb))
-                    Blurb = value;
-            }
-        }
 
         public static Patch Metadata { get; set; } = new Patch();
 
