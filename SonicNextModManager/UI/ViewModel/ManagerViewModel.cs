@@ -11,11 +11,25 @@ namespace SonicNextModManager.UI.ViewModel
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// The current content installation state.
+        /// </summary>
+        public InstallState State { get; set; } = InstallState.Idle;
+
+        /// <summary>
+        /// The current content database containing mods and patches.
+        /// </summary>
         public Database Database { get; set; } = new();
 
+        /// <summary>
+        /// Updates the database by reloading everything.
+        /// </summary>
         public void InvokeDatabaseContentUpdate()
             => Database = new Database();
 
+        /// <summary>
+        /// Updates the database by reparsing it.
+        /// </summary>
         public void InvokeDatabaseActiveContentUpdate()
             => Database.Load();
 

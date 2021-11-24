@@ -1,4 +1,5 @@
 ﻿using SonicNextModManager.UI.ViewModel;
+using System.Collections.ObjectModel;
 using System.Windows.Shapes;
 
 namespace SonicNextModManager
@@ -81,9 +82,15 @@ namespace SonicNextModManager
             }
         }
 
+        /// <summary>
+        /// Processes key down events for the mods list.
+        /// </summary>
         private void ModsList_KeyDown(object sender, KeyEventArgs e)
             => InvokeListViewKeyDown(ModsList, e);
 
+        /// <summary>
+        /// Processes key down events for the patches list.
+        /// </summary>
         private void PatchesList_KeyDown(object sender, KeyEventArgs e)
             => InvokeListViewKeyDown(PatchesList, e);
 
@@ -164,6 +171,8 @@ namespace SonicNextModManager
         /// </summary>
         private void Install_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.State = InstallState.Installing;
+
             int interval = 1000;
 
             foreach (var item in ViewModel.Database.Mods)
@@ -209,7 +218,6 @@ namespace SonicNextModManager
         {
             new Settings
             {
-                // Set owner to centre window.
                 Owner = this
             }
             .ShowDialog();

@@ -122,6 +122,11 @@
                                 <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <Setter Property="ContextMenu" Value="{DynamicResource ModContextMenu}"/>
                                 <Setter Property="dd:DragDrop.DragSourceIgnore" Value="{Binding State, Converter={StaticResource InstallState2BooleanConverter}}"/>
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <ToolTip Content="{DynamicResource Mods_DragDrop}"/>
+                                    </Setter.Value>
+                                </Setter>
                                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                             </Style>
                         </ListView.ItemContainerStyle>
@@ -153,6 +158,11 @@
                                 <EventSetter Event="KeyDown" Handler="PatchesList_KeyDown"/>
                                 <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <Setter Property="ContextMenu" Value="{DynamicResource PatchContextMenu}"/>
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <ToolTip Content="{DynamicResource Patches_DragDrop}"/>
+                                    </Setter.Value>
+                                </Setter>
                                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                             </Style>
                         </ListView.ItemContainerStyle>
