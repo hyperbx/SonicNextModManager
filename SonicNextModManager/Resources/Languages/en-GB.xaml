@@ -45,15 +45,21 @@
     <system:String x:Key="Common_Report"      >Report</system:String>
     <system:String x:Key="Common_Ignore"      >Ignore</system:String>
     <system:String x:Key="Common_NotAvailable">N/A</system:String>
+    <system:String x:Key="Common_OpenFolder"  >Open Folder</system:String>
+    <system:String x:Key="Common_Updates"     >Check for Updates</system:String>
 
     <!-- Exception Strings -->
-    <system:String x:Key="Exception_Fatal">A fatal error has occurred and the application has been halted...</system:String>
+    <system:String x:Key="Exception_Fatal"         >A fatal error has occurred and the application has been halted...</system:String>
     <system:String x:Key="Exception_MissingModules">Unable to locate the required modules for mod installation. Please redownload Sonic '06 Mod Manager...</system:String>
 
     <!-- Query Strings -->
     <system:String x:Key="Query_ModsDirectory"     >Please select your mods directory...</system:String>
     <system:String x:Key="Query_GameExecutable"    >Please select your game executable...</system:String>
     <system:String x:Key="Query_EmulatorExecutable">Please select your emulator executable...</system:String>
+
+    <!-- Message Strings -->
+    <system:String x:Key="Message_DeleteContent_Title">Content Deletion</system:String>
+    <system:String x:Key="Message_DeleteContent_Body" >Are you sure you want to delete '{0}'?</system:String>
 
     <!-- Setup Strings -->
     <system:String x:Key="Setup_Step_Welcome"         >Welcome</system:String>
@@ -107,15 +113,19 @@
     <system:String x:Key="Metadata_Description">Description</system:String>
 
     <!-- Mods Strings -->
-    <system:String x:Key="Mods_Configure" >Configure mod</system:String>
-    <system:String x:Key="Mods_OpenFolder">Open containing folder</system:String>
-    <system:String x:Key="Mods_Edit"      >Edit mod</system:String>
-    <system:String x:Key="Mods_Delete"    >Delete mod</system:String>
-    <system:String x:Key="Mods_DragDrop"  >Drag and drop items to change the load order of mods.</system:String>
+    <system:String x:Key="Mods_Configure" >Configure Mod</system:String>
+    <system:String x:Key="Mods_Create"    >Create Mod</system:String>
+    <system:String x:Key="Mods_Edit"      >Edit Mod</system:String>
+    <system:String x:Key="Mods_Delete"    >Delete Mod</system:String>
+    <system:String x:Key="Mods_DragDrop"  >Drag and drop items to change the install order of mods.</system:String>
 
     <!-- Patches Strings -->
-    <system:String x:Key="Patches_Download">Download Community Patches</system:String>
-    <system:String x:Key="Patches_Update"  >Update Community Patches</system:String>
+    <system:String x:Key="Patches_Download">Download Patches</system:String>
+    <system:String x:Key="Patches_Update"  >Update Patches</system:String>
+    <system:String x:Key="Patches_Create"  >Create Patch</system:String>
+    <system:String x:Key="Patches_Edit"    >Edit Patch</system:String>
+    <system:String x:Key="Patches_Delete"  >Delete Patch</system:String>
+    <system:String x:Key="Patches_DragDrop">Drag and drop items to change the install order of patches.</system:String>
 
     <!-- Settings Strings -->
     <system:String x:Key="Settings_General"                                          >General</system:String>

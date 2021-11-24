@@ -71,6 +71,25 @@
             </Expander>
         </DataTemplate>
 
+        <!-- Context menu used for the mods list -->
+        <ContextMenu x:Key="ModContextMenu">
+            <MenuItem Header="{DynamicResource Common_OpenFolder}" Click="Common_OpenFolder_Click" InputGestureText="Ctrl+O"/>
+            <MenuItem Header="{DynamicResource Common_Updates}" InputGestureText="Ctrl+U"/>
+            <Separator/>
+            <MenuItem Name="Mods_Create" Header="{DynamicResource Mods_Create}" Click="Content_Create_Click" InputGestureText="Ctrl+N"/>
+            <MenuItem Name="Mods_Edit" Header="{DynamicResource Mods_Edit}" Click="Content_Create_Click" InputGestureText="Ctrl+E"/>
+            <MenuItem Header="{DynamicResource Mods_Delete}" Click="Content_Delete_Click" InputGestureText="Del"/>
+        </ContextMenu>
+
+        <!-- Context menu used for the patches list -->
+        <ContextMenu x:Key="PatchContextMenu">
+            <MenuItem Header="{DynamicResource Common_OpenFolder}" Click="Common_OpenFolder_Click" InputGestureText="Ctrl+O"/>
+            <Separator/>
+            <MenuItem Name="Patches_Create" Header="{DynamicResource Patches_Create}" Click="Content_Create_Click" InputGestureText="Ctrl+N"/>
+            <MenuItem Name="Patches_Edit" Header="{DynamicResource Patches_Edit}" Click="Content_Create_Click" InputGestureText="Ctrl+E"/>
+            <MenuItem Header="{DynamicResource Patches_Delete}" Click="Content_Delete_Click" InputGestureText="Del"/>
+        </ContextMenu>
+
     </Window.Resources>
 
     <Grid>
@@ -102,6 +121,7 @@
                                 <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
                                 <EventSetter Event="MouseDoubleClick" Handler="ModsList_MouseDoubleClick"/>
                                 <EventSetter Event="KeyDown" Handler="ModsList_KeyDown"/>
+                                <Setter Property="ContextMenu" Value="{DynamicResource ModContextMenu}"/>
                                 <Setter Property="dd:DragDrop.DragSourceIgnore" Value="{Binding State, Converter={StaticResource InstallState2BooleanConverter}}"/>
                                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                             </Style>
@@ -133,6 +153,7 @@
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">
                                 <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown"/>
                                 <EventSetter Event="KeyDown" Handler="PatchesList_KeyDown"/>
+                                <Setter Property="ContextMenu" Value="{DynamicResource PatchContextMenu}"/>
                             </Style>
                         </ListView.ItemContainerStyle>
 

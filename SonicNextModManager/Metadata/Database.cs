@@ -120,6 +120,28 @@ namespace SonicNextModManager
         }
 
         /// <summary>
+        /// Deletes the content's data pertaining to metadata.
+        /// </summary>
+        /// <param name="metadata">Metadata to delete.</param>
+        public void Delete(Metadata metadata)
+        {
+            if (metadata is Mod)
+            {
+                Mods.Remove((Mod)metadata);
+
+                // Delete mod directory recursively.
+                Directory.Delete(Path.GetDirectoryName(metadata.Path), true);
+            }
+            else if (metadata is Patch)
+            {
+                Patches.Remove((Patch)metadata);
+
+                // Delete patch.
+                File.Delete(metadata.Path);
+            }
+        }
+
+        /// <summary>
         /// Load and restore all enabled content from the database.
         /// </summary>
         public void Load()

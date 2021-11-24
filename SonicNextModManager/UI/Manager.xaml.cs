@@ -177,5 +177,68 @@ namespace SonicNextModManager
             }
             .ShowDialog();
         }
+
+        /// <summary>
+        /// Opens the containing directory of the content.
+        /// </summary>
+        private void Common_OpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            Metadata metadata = ((MenuItem)sender).DataContext as Metadata;
+
+            if (metadata != null)
+            {
+                // Open path in Windows Explorer.
+                ProcessExtensions.StartWithDefaultProgram
+                (
+                    // Use containing directory if mod, otherwise launch Windows Explorer.
+                    metadata is Mod ? System.IO.Path.GetDirectoryName(metadata.Path) : "explorer",
+
+                    // Use no arguments if mod, otherwise select the patch with Windows Explorer.
+                    metadata is Mod ? string.Empty : $"/select, \"{metadata.Path}\""
+                );
+            }
+        }
+
+        /// <summary>
+        /// Opens the Editor window to create or edit content.
+        /// </summary>
+        private void Content_Create_Click(object sender, RoutedEventArgs e)
+        {
+            string senderName = ((MenuItem)sender).Name;
+            Metadata metadata = ((MenuItem)sender).DataContext as Metadata;
+
+            if (metadata != null)
+            {
+                // Pass current metadata through to the editor if the edit option was chosen.
+                new Editor(senderName == "Mods_Edit" || senderName == "Patches_Edit" ? metadata : null)
+                {
+                    Owner = this
+                }
+                .ShowDialog();
+            }
+        }
+
+        /// <summary>
+        /// Deletes the selected content.
+        /// </summary>
+        private void Content_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            Metadata metadata = ((MenuItem)sender).DataContext as Metadata;
+
+            if (metadata != null)
+            {
+                MessageBoxResult result = HandyControl.Controls.MessageBox.Show
+                (
+                    SonicNextModManager.Language.LocaliseFormat("Message_DeleteContent_Body", metadata.Title),
+                    SonicNextModManager.Language.Localise("Message_DeleteContent_Title"),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                // Delete selected content.
+                if (result == MessageBoxResult.Yes)
+                    ViewModel.Database.Delete(metadata);
+            }
+        }
     }
 }
