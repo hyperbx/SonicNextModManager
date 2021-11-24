@@ -139,6 +139,7 @@ namespace SonicNextModManager
             {
                 if (metadata.Enabled)
                 {
+                    ViewModel.Database.CurrentContentInQueue = metadata;
                     metadata.State = InstallState.Installing;
 
                     System.Timers.Timer t = new();
@@ -175,11 +176,6 @@ namespace SonicNextModManager
                 Owner = this
             }
             .ShowDialog();
-        }
-
-        private void ModsList_Drop(object sender, DragEventArgs e)
-        {
-            // TODO: https://github.com/Big-Endian-32/SonicNextModManager/projects/3#card-72800879
         }
     }
 }

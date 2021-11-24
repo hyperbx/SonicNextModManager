@@ -95,7 +95,7 @@
                 <hc:TransitioningContentControl>
                     <ListView Name="ModsList" Background="#191919" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=1}" dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True" dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
-                              dd:DragDrop.DropHandler="{Binding}" dd:DragDrop.SelectDroppedItems="True" Drop="ModsList_Drop" ItemsSource="{Binding Database.Mods}">
+                              dd:DragDrop.DropHandler="{Binding}" dd:DragDrop.SelectDroppedItems="True" ItemsSource="{Binding Database.Mods}">
 
                         <ListView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource SlimListViewItem}" TargetType="ListViewItem">

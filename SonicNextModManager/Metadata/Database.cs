@@ -39,6 +39,11 @@ namespace SonicNextModManager
         public ActiveContentData ActiveContent { get; set; } = new();
 
         /// <summary>
+        /// The current content data being installed.
+        /// </summary>
+        public Metadata CurrentContentInQueue { get; set; }
+
+        /// <summary>
         /// Location of the content database.
         /// </summary>
         private string Location { get; } = Directory.Exists(App.Settings.Path_ModsDirectory)
@@ -95,6 +100,23 @@ namespace SonicNextModManager
 
         Finish:
             return Patches;
+        }
+
+        /// <summary>
+        /// Returns the last index of the installing or installed content.
+        /// </summary>
+        /// <typeparam name="T">Content type.</typeparam>
+        /// <param name="collection">Collection of content.</param>
+        public int IndexOfLastInstall<T>(ObservableCollection<T> collection) where T : Metadata
+        {
+            // Compute last index of installing or installed content.
+            for (int i = collection.Count - 1; i > 0; i--)
+            {
+                if (collection[i] is T { State: InstallState.Installing } || collection[i] is T { State: InstallState.Installed })
+                    return i;
+            }
+
+            return -1;
         }
 
         /// <summary>
