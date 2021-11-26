@@ -43,6 +43,8 @@
     <system:String x:Key="Common_Language"    >Language</system:String>
     <system:String x:Key="Common_Copy"        >Copy</system:String>
     <system:String x:Key="Common_Report"      >Report</system:String>
+    <system:String x:Key="Common_Abort"       >Abort</system:String>
+    <system:String x:Key="Common_Retry"       >Retry</system:String>
     <system:String x:Key="Common_Ignore"      >Ignore</system:String>
     <system:String x:Key="Common_NotAvailable">N/A</system:String>
     <system:String x:Key="Common_OpenFolder"  >Open Folder</system:String>

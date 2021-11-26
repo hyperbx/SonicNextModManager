@@ -278,16 +278,16 @@ namespace SonicNextModManager
 
             if (metadata != null)
             {
-                MessageBoxResult result = HandyControl.Controls.MessageBox.Show
+                NextDialogResult result = new NextMessageBox().Show
                 (
                     SonicNextModManager.Language.LocaliseFormat("Message_DeleteContent_Body", metadata.Title),
                     SonicNextModManager.Language.Localise("Message_DeleteContent_Title"),
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question
+                    NextMessageBoxButton.YesNo,
+                    NextMessageBoxIcon.Question
                 );
 
                 // Delete selected content.
-                if (result == MessageBoxResult.Yes)
+                if (result == NextDialogResult.Yes)
                     ViewModel.Database.Delete(metadata);
             }
         }
