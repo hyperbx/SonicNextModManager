@@ -1406,8 +1406,8 @@ namespace Unify.Patcher
 
                     if (renderer != 0)         proceed++;
                     if (reflections != 1)      proceed++;
-                    if (antiAliasing != 1)     proceed++;
-                    if (!forceMSAA)            proceed++;
+                    if (antiAliasing != 0)     proceed++;
+                    if (forceMSAA)             proceed++;
                     if (cameraType != 0)       proceed++;
                     if (cameraDistance != 650) proceed++;
 
@@ -1421,7 +1421,7 @@ namespace Unify.Patcher
                         // Default
                         if (renderer == 0) {
                             // Force MSAA
-                            if (antiAliasing != 1 || forceMSAA) {
+                            if (forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
                                 Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <cache.arc> Set Anti-Aliasing to {antiAliasing}...");
                                 MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.TopDirectoryOnly, 0);
@@ -1480,8 +1480,8 @@ namespace Unify.Patcher
                 } else if (Path.GetFileName(archive) == "scripts.arc") {
                     int proceed = 0;
 
-                    if (antiAliasing != 1)  proceed++;
-                    if (!forceMSAA)         proceed++;
+                    if (antiAliasing != 0)  proceed++;
+                    if (forceMSAA)          proceed++;
 
                     if (proceed != 0) {
                         if (!File.Exists($"{archive}_back"))
@@ -1493,7 +1493,7 @@ namespace Unify.Patcher
                         // Default
                         if (Properties.Settings.Default.Tweak_Renderer == 0)
                             // Force MSAA
-                            if (antiAliasing != 1 || forceMSAA) {
+                            if (forceMSAA) {
                                 rush.Status = $"Tweaking Anti-Aliasing...";
                                 Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Tweak] <scripts.arc> Set Anti-Aliasing to {antiAliasing}...");
                                 MSAA(Path.Combine(tweak, $"{system}\\scripts\\render\\"), antiAliasing, SearchOption.AllDirectories, 1);
@@ -1595,9 +1595,8 @@ namespace Unify.Patcher
 
                         List<string> editedLua = File.ReadAllLines(lub).ToList();
 
-                        if (MSAA == 0)      editedLua.Add("MSAAType = \"1x\"");
-                        else if (MSAA == 1) editedLua.Add("MSAAType = \"2x\"");
-                        else if (MSAA == 2) editedLua.Add("MSAAType = \"4x\"");
+                        if (MSAA == 0)      editedLua.Add("MSAAType = \"2x\"");
+                        else if (MSAA == 1) editedLua.Add("MSAAType = \"4x\"");
                         File.WriteAllLines(lub, editedLua);
                     } else if (arcSource == 0 && Path.GetFileName(lub) != "render_event.lub")
                         {
@@ -1614,9 +1613,8 @@ namespace Unify.Patcher
                         foreach (string line in editedLua) {
                             if (line.Contains("MSAAType")) {
                                 string[] tempLine = line.Split(' ');
-                                if (MSAA == 0)      tempLine[2] = "\"1x\"";
-                                else if (MSAA == 1) tempLine[2] = "\"2x\"";
-                                else if (MSAA == 2) tempLine[2] = "\"4x\"";
+                                if (MSAA == 0)      tempLine[2] = "\"2x\"";
+                                else if (MSAA == 1) tempLine[2] = "\"4x\"";
                                 editedLua[lineNum] = string.Join(" ", tempLine);
                                 modified++;
                             }
