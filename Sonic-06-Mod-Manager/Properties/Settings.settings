@@ -113,7 +113,10 @@
     <Setting Name="General_Profile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Emulator_Resolution" Type="System.Int32" Scope="User">
+    <Setting Name="Emulator_Width" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Emulator_Height" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>

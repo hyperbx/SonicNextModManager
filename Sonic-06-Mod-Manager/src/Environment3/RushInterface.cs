@@ -171,7 +171,8 @@ namespace Unify.Environment3
                 #region Restore combo box states
                 ComboBox_API.SelectedIndex          = Properties.Settings.Default.Emulator_API;
                 ComboBox_UserLanguage.SelectedIndex = Properties.Settings.Default.Emulator_UserLanguage;
-                ComboBox_Resolution.SelectedIndex   = Properties.Settings.Default.Emulator_Resolution;
+                ComboBox_Width.SelectedIndex        = Properties.Settings.Default.Emulator_Width;
+                ComboBox_Height.SelectedIndex        = Properties.Settings.Default.Emulator_Height;
                 ComboBox_Reflections.SelectedIndex  = Properties.Settings.Default.Tweak_Reflections;
                 ComboBox_AntiAliasing.SelectedIndex = Properties.Settings.Default.Tweak_AntiAliasing;
                 ComboBox_CameraType.SelectedIndex   = Properties.Settings.Default.Tweak_CameraType;
@@ -281,32 +282,32 @@ namespace Unify.Environment3
                 #region Set controls depending on emulator
                 if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "Xenia")
                 {
-                    if (Properties.Settings.Default.Emulator_API != 2)
-                        // Enables most controls in the Emulator UI
-                        EnableEmulatorInterface();
-                    else
-                        // Disables most controls in the Emulator UI
-                        DisableEmulatorInterface();
+                    Panel_Xenia_Options.Visible = true;
+                    Panel_Xenia_API_Options.Visible = Properties.Settings.Default.Emulator_API != 2 ? true : false;
 
-                    // Set visibility state of controls
-                    Label_RPCS3Warning.Visible = false;
+                    // I am in a considerable amount of pain.
+                    if (Properties.Settings.Default.Emulator_API != 0)
+                    {
+                        ComboBox_Width.Enabled = false;
+                        ComboBox_Height.Enabled = false;
+                        Label_Width.ForeColor = SystemColors.GrayText;
+                        Label_Height.ForeColor = SystemColors.GrayText;
+                        Label_Description_Width.ForeColor = SystemColors.GrayText;
+                        Label_Description_Height.ForeColor = SystemColors.GrayText;
+                    }
+                    else
+                    {
+                        ComboBox_Width.Enabled = true;
+                        ComboBox_Height.Enabled = true;
+                        Label_Width.ForeColor = SystemColors.Control;
+                        Label_Height.ForeColor = SystemColors.Control;
+                        Label_Description_Width.ForeColor = SystemColors.ControlDark;
+                        Label_Description_Height.ForeColor = SystemColors.ControlDark;
+                    }
                 }
                 else if (Literal.Emulator(Properties.Settings.Default.Path_GameExecutable) == "RPCS3")
                 {
-                    // Disables most controls in the Emulator UI
-                    DisableEmulatorInterface();
-
-                    ComboBox_API.Enabled = ComboBox_Resolution.Enabled = false;
-
-                    Label_Subtitle_Emulator_Options.ForeColor =
-                    Label_API.ForeColor =
-                    Label_Description_API.ForeColor =
-                    Label_Resolution.ForeColor =
-                    Label_Description_Resolution.ForeColor =
-                    SystemColors.GrayText;
-
-                    // Set visibility state of controls
-                    Label_RPCS3Warning.Visible = true;
+                    Panel_Xenia_Options.Visible = false;
                 }
                 #endregion
 
@@ -318,74 +319,6 @@ namespace Unify.Environment3
                 #endregion
 
             }
-        }
-
-        /// <summary>
-        /// Enables most controls in the Emulator UI.
-        /// </summary>
-        private void EnableEmulatorInterface() {
-            #region Enable controls
-            if (Properties.Settings.Default.Emulator_API != 0) {
-                ComboBox_Resolution.Enabled = false;
-                Label_Description_Resolution.ForeColor = SystemColors.GrayText;
-            } else {
-                ComboBox_Resolution.Enabled = true;
-                Label_Description_Resolution.ForeColor = SystemColors.ControlDark;
-            }
-
-            // Set text colour to Control
-            Label_Subtitle_Emulator_Options.ForeColor =
-            Label_API.ForeColor =
-            Label_FieldOfView.ForeColor =
-            Label_UserLanguage.ForeColor =
-            SystemColors.Control;
-
-            // Set text colour to ControlDark
-            Label_Description_API.ForeColor =
-            Label_Description_FieldOfView.ForeColor =
-            Label_Description_UserLanguage.ForeColor =
-            Label_Description_VerticalSync.ForeColor =
-            Label_Description_Gamma.ForeColor =
-            Label_Description_Fullscreen.ForeColor =
-            Label_Description_DiscordRPC.ForeColor =
-            SystemColors.ControlDark;
-
-            // Set enabled state of controls
-            ComboBox_API.Enabled =
-            NumericUpDown_FieldOfView.Enabled =
-            Button_FieldOfView_Default.Enabled =
-            ComboBox_UserLanguage.Enabled =
-            CheckBox_Xenia_VerticalSync.Enabled =
-            CheckBox_Xenia_Gamma.Enabled =
-            CheckBox_Xenia_Fullscreen.Enabled =
-            CheckBox_Xenia_DiscordRPC.Enabled =
-            true;
-            #endregion
-        }
-
-        /// <summary>
-        /// Disables most controls in the Emulator UI.
-        /// </summary>
-        private void DisableEmulatorInterface() {
-            #region Disable controls
-            // Set text colour to GrayText
-            Label_Description_UserLanguage.ForeColor =
-            Label_Description_Resolution.ForeColor =
-            Label_Description_VerticalSync.ForeColor =
-            Label_Description_Gamma.ForeColor =
-            Label_Description_Fullscreen.ForeColor =
-            Label_Description_DiscordRPC.ForeColor =
-            Label_UserLanguage.ForeColor =
-            SystemColors.GrayText;
-
-            // Set enabled state of controls
-            ComboBox_UserLanguage.Enabled =
-            CheckBox_Xenia_VerticalSync.Enabled =
-            CheckBox_Xenia_Gamma.Enabled =
-            CheckBox_Xenia_Fullscreen.Enabled =
-            CheckBox_Xenia_DiscordRPC.Enabled =
-            false;
-            #endregion
         }
 
         /// <summary>
@@ -1146,7 +1079,8 @@ namespace Unify.Environment3
                     if (ComboBox_API.SelectedIndex != 2) {
                         if (ComboBox_API.SelectedIndex == 0) {
                             parameters.Add("--gpu=d3d12"); // Use DirectX 12
-                            parameters.Add($"--draw_resolution_scale={ComboBox_Resolution.SelectedIndex + 1}"); // Resolution
+                            parameters.Add($"--draw_resolution_scale_x={ComboBox_Width.SelectedIndex + 1}"); // Width
+                            parameters.Add($"--draw_resolution_scale_y={ComboBox_Height.SelectedIndex + 1}"); // Height
                         } else
                             parameters.Add("--gpu=vulkan"); // Use Vulkan
 
@@ -1790,7 +1724,7 @@ namespace Unify.Environment3
             else if (sender == ComboBox_Reflections) Properties.Settings.Default.Tweak_Reflections  = ((ComboBox)sender).SelectedIndex;
 
             else if (sender == ComboBox_AntiAliasing) {
-                if ((Properties.Settings.Default.Tweak_AntiAliasing = ((ComboBox)sender).SelectedIndex) != 1) {
+                if ((Properties.Settings.Default.Tweak_AntiAliasing = ((ComboBox)sender).SelectedIndex) != 0) {
                     CheckBox_ForceMSAA.Enabled = false; // Set enabled state for Force MSAA
                     Label_Description_ForceMSAA.ForeColor = SystemColors.GrayText; // Set description to GrayText
                 } else {
@@ -2021,26 +1955,19 @@ namespace Unify.Environment3
         {
             if (sender == ComboBox_API)
             {
-                if ((Properties.Settings.Default.Emulator_API = ((ComboBox)sender).SelectedIndex) != 0)
-                {
-                    ComboBox_Resolution.Enabled = false;
-                    Label_Resolution.ForeColor = SystemColors.GrayText;
-                    Label_Description_Resolution.ForeColor = SystemColors.GrayText;
-                }
-                else
-                {
-                    ComboBox_Resolution.Enabled = true;
-                    Label_Resolution.ForeColor = SystemColors.Control;
-                    Label_Description_Resolution.ForeColor = SystemColors.ControlDark;
-                }
+                Properties.Settings.Default.Emulator_API = ((ComboBox)sender).SelectedIndex;
             }
             else if (sender == ComboBox_UserLanguage)
             {
                 Properties.Settings.Default.Emulator_UserLanguage = ((ComboBox)sender).SelectedIndex;
             }
-            else if (sender == ComboBox_Resolution)
+            else if (sender == ComboBox_Width)
             {
-                Properties.Settings.Default.Emulator_Resolution = ((ComboBox)sender).SelectedIndex;
+                Properties.Settings.Default.Emulator_Width = ((ComboBox)sender).SelectedIndex;
+            }
+            else if (sender == ComboBox_Height)
+            {
+                Properties.Settings.Default.Emulator_Height = ((ComboBox)sender).SelectedIndex;
             }
 
             Properties.Settings.Default.Save();
