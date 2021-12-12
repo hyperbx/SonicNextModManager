@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="General_AccentColour" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">186, 0, 0</Value>
+      <Value Profile="(Default)">172, 14, 14</Value>
     </Setting>
     <Setting Name="General_AutoColour" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

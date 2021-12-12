@@ -25,7 +25,7 @@ namespace Unify.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("186, 0, 0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("172, 14, 14")]
         public global::System.Drawing.Color General_AccentColour {
             get {
                 return ((global::System.Drawing.Color)(this["General_AccentColour"]));
