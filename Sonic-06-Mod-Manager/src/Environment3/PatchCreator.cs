@@ -47,6 +47,10 @@ namespace Unify.Environment3
         public PatchCreator(string patch, bool edit)
         {
             InitializeComponent();
+
+            // Initialise immersive dark mode.
+            ImmersiveDarkMode.Initialise(Handle, true);
+
             this.patch = patch;
             this.edit = edit;
             if (!this.edit) {

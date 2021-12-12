@@ -52,6 +52,9 @@ namespace Unify.Environment3
         public ModOneClickInstall(GBAPIItemDataBasic item, string url, int downloadID, int modID) {
             InitializeComponent();
 
+            // Initialise immersive dark mode.
+            ImmersiveDarkMode.Initialise(Handle, true);
+
             this.url = url;
             this.item = item;
             this.modID = modID;

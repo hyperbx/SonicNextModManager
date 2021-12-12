@@ -39,10 +39,19 @@ namespace Unify.Messenger
         public static string Accept = string.Empty;
         public static int TextHeight = 0;
 
-        public UnifyMessenger() { InitializeComponent(); }
+        public UnifyMessenger()
+        {
+            InitializeComponent();
+
+            // Initialise immersive dark mode.
+            ImmersiveDarkMode.Initialise(Handle, true);
+        }
 
         public UnifyMessenger(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon) {
             InitializeComponent();
+
+            // Initialise immersive dark mode.
+            ImmersiveDarkMode.Initialise(Handle, true);
 
             Text = caption;
             rtb_Message.Text = text;

@@ -39,6 +39,9 @@ namespace Unify.Environment3
         {
             InitializeComponent();
 
+            // Initialise immersive dark mode.
+            ImmersiveDarkMode.Initialise(Handle, true);
+
             // Set theme colours
             unifytb_Profiles.ActiveColor =
             unifytb_Profiles.HorizontalLineColor =

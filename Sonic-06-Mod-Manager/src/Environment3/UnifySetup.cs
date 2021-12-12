@@ -39,6 +39,10 @@ namespace Unify
     {
         public UnifySetup() {
             InitializeComponent(); // Designer support
+
+            // Initialise immersive dark mode.
+            ImmersiveDarkMode.Initialise(Handle, true);
+
             LoadSettings(); // Load user settings
 
             // Sets the text of the title bar to contain the version number

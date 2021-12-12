@@ -33,6 +33,9 @@ namespace Unify.Environment3
         public UnifyEnvironment() {
             InitializeComponent(); // Designer support
 
+            // Initialise immersive dark mode.
+            ImmersiveDarkMode.Initialise(Handle, true);
+
             // Sets the text of the title bar to contain the version number
             Text += $" ({Program.VersionNumber})";
         }

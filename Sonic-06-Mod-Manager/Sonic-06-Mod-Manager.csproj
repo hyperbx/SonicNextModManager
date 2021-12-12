@@ -41,6 +41,9 @@
   <PropertyGroup>
     <ApplicationIcon>res\Icons\logo_main_icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Marathon.Helpers, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,6 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\Environment3\Interop\ImmersiveDarkMode.cs" />
     <Compile Include="src\Environment3\PatchCreator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,6 +303,7 @@
       <DependentUpon>ProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
