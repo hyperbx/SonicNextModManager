@@ -1,4 +1,4 @@
 {
-  "IsXeniaBugFree": false,
-  "IsRPCS3BugFree": false
+  "IsXeniaBugFree": true,
+  "IsRPCS3BugFree": true
 }
