@@ -631,7 +631,7 @@ namespace Unify.Environment3
         /// </summary>
         private void Button_ColourPicker_Default_Click(object sender, EventArgs e) {
             Properties.Settings.Default.General_AutoColour = false;
-            Properties.Settings.Default.General_AccentColour = Color.FromArgb(186, 0, 0);
+            Properties.Settings.Default.General_AccentColour = Color.FromArgb(172, 14, 14);
             Properties.Settings.Default.Save();
         }
 
