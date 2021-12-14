@@ -36,17 +36,19 @@ namespace Unify.Environment3
             this.Label_Status = new System.Windows.Forms.Label();
             this.Panel_MainControls = new System.Windows.Forms.Panel();
             this.SplitContainer_MainControls = new System.Windows.Forms.SplitContainer();
-            this.ToolTip_Information = new System.Windows.Forms.ToolTip(this.components);
             this.SectionButton_InstallMods = new Unify.Environment3.SectionButton();
             this.SectionButton_LaunchGame = new Unify.Environment3.SectionButton();
+            this.ToolTip_Information = new System.Windows.Forms.ToolTip(this.components);
+            this.Button_Mods_DownerPriority = new System.Windows.Forms.Button();
+            this.Button_Mods_UpperPriority = new System.Windows.Forms.Button();
+            this.Button_Patches_DownerPriority = new System.Windows.Forms.Button();
+            this.Button_Patches_UpperPriority = new System.Windows.Forms.Button();
             this.TabControl_Rush = new Unify.Environment3.UnifyTabControl();
             this.Tab_Section_Mods = new System.Windows.Forms.TabPage();
             this.SplitContainer_ModsControls = new System.Windows.Forms.SplitContainer();
             this.SectionButton_SaveChecks = new Unify.Environment3.SectionButton();
             this.SectionButton_RefreshMods = new Unify.Environment3.SectionButton();
             this.Button_Mods_Priority = new System.Windows.Forms.Button();
-            this.Button_Mods_DownerPriority = new System.Windows.Forms.Button();
-            this.Button_Mods_UpperPriority = new System.Windows.Forms.Button();
             this.Button_Mods_DeselectAll = new System.Windows.Forms.Button();
             this.Button_Mods_SelectAll = new System.Windows.Forms.Button();
             this.Panel_ModBackdrop = new System.Windows.Forms.Panel();
@@ -99,8 +101,6 @@ namespace Unify.Environment3
             this.Label_Optional_SaveData = new System.Windows.Forms.Label();
             this.Tab_Section_Patches = new System.Windows.Forms.TabPage();
             this.Button_Patches_Priority = new System.Windows.Forms.Button();
-            this.Button_Patches_DownerPriority = new System.Windows.Forms.Button();
-            this.Button_Patches_UpperPriority = new System.Windows.Forms.Button();
             this.Button_Patches_DeselectAll = new System.Windows.Forms.Button();
             this.Button_Patches_SelectAll = new System.Windows.Forms.Button();
             this.SplitContainer_PatchesControls = new System.Windows.Forms.SplitContainer();
@@ -365,14 +365,6 @@ namespace Unify.Environment3
             this.SplitContainer_MainControls.SplitterWidth = 1;
             this.SplitContainer_MainControls.TabIndex = 3;
             // 
-            // ToolTip_Information
-            // 
-            this.ToolTip_Information.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ToolTip_Information.ForeColor = System.Drawing.SystemColors.Control;
-            this.ToolTip_Information.OwnerDraw = true;
-            this.ToolTip_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.ToolTip_Information.Draw += new System.Windows.Forms.DrawToolTipEventHandler(this.ToolTip_Draw);
-            // 
             // SectionButton_InstallMods
             // 
             this.SectionButton_InstallMods.AccentColour = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -403,10 +395,90 @@ namespace Unify.Environment3
             this.SectionButton_LaunchGame.SectionImage = global::Unify.Properties.Resources.Run_16x;
             this.SectionButton_LaunchGame.SectionText = "Launch Sonic \'06";
             this.SectionButton_LaunchGame.SelectedSection = false;
-            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1551, 35);
+            this.SectionButton_LaunchGame.Size = new System.Drawing.Size(1557, 35);
             this.SectionButton_LaunchGame.TabIndex = 51;
             this.SectionButton_LaunchGame.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_LaunchGame.Click += new System.EventHandler(this.SectionButton_LaunchGame_Click);
+            // 
+            // ToolTip_Information
+            // 
+            this.ToolTip_Information.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.ToolTip_Information.ForeColor = System.Drawing.SystemColors.Control;
+            this.ToolTip_Information.OwnerDraw = true;
+            this.ToolTip_Information.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.ToolTip_Information.Draw += new System.Windows.Forms.DrawToolTipEventHandler(this.ToolTip_Draw);
+            // 
+            // Button_Mods_DownerPriority
+            // 
+            this.Button_Mods_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Mods_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Mods_DownerPriority.Enabled = false;
+            this.Button_Mods_DownerPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Mods_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Mods_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Mods_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Mods_DownerPriority.Location = new System.Drawing.Point(377, 1044);
+            this.Button_Mods_DownerPriority.Name = "Button_Mods_DownerPriority";
+            this.Button_Mods_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Mods_DownerPriority.TabIndex = 48;
+            this.Button_Mods_DownerPriority.Text = "▼";
+            this.ToolTip_Information.SetToolTip(this.Button_Mods_DownerPriority, "Right-click to move the mod to the bottom of the list...");
+            this.Button_Mods_DownerPriority.UseVisualStyleBackColor = false;
+            this.Button_Mods_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Mods_UpperPriority
+            // 
+            this.Button_Mods_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Mods_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Mods_UpperPriority.Enabled = false;
+            this.Button_Mods_UpperPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Mods_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Mods_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Mods_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Mods_UpperPriority.Location = new System.Drawing.Point(346, 1044);
+            this.Button_Mods_UpperPriority.Name = "Button_Mods_UpperPriority";
+            this.Button_Mods_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Mods_UpperPriority.TabIndex = 47;
+            this.Button_Mods_UpperPriority.Text = "▲";
+            this.ToolTip_Information.SetToolTip(this.Button_Mods_UpperPriority, "Right-click to move the mod to the top of the list...");
+            this.Button_Mods_UpperPriority.UseVisualStyleBackColor = false;
+            this.Button_Mods_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Patches_DownerPriority
+            // 
+            this.Button_Patches_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Patches_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Patches_DownerPriority.Enabled = false;
+            this.Button_Patches_DownerPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Patches_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_DownerPriority.Location = new System.Drawing.Point(377, 1044);
+            this.Button_Patches_DownerPriority.Name = "Button_Patches_DownerPriority";
+            this.Button_Patches_DownerPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Patches_DownerPriority.TabIndex = 55;
+            this.Button_Patches_DownerPriority.Text = "▼";
+            this.ToolTip_Information.SetToolTip(this.Button_Patches_DownerPriority, "Right-click to move the patch to the bottom of the list...");
+            this.Button_Patches_DownerPriority.UseVisualStyleBackColor = false;
+            this.Button_Patches_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
+            // 
+            // Button_Patches_UpperPriority
+            // 
+            this.Button_Patches_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Patches_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Button_Patches_UpperPriority.Enabled = false;
+            this.Button_Patches_UpperPriority.FlatAppearance.BorderSize = 0;
+            this.Button_Patches_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_Patches_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Patches_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Button_Patches_UpperPriority.Location = new System.Drawing.Point(346, 1044);
+            this.Button_Patches_UpperPriority.Name = "Button_Patches_UpperPriority";
+            this.Button_Patches_UpperPriority.Size = new System.Drawing.Size(26, 23);
+            this.Button_Patches_UpperPriority.TabIndex = 54;
+            this.Button_Patches_UpperPriority.Text = "▲";
+            this.ToolTip_Information.SetToolTip(this.Button_Patches_UpperPriority, "Right-click to move the patch to the top of the list...");
+            this.Button_Patches_UpperPriority.UseVisualStyleBackColor = false;
+            this.Button_Patches_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
             // 
             // TabControl_Rush
             // 
@@ -509,7 +581,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshMods.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshMods.SectionImage")));
             this.SectionButton_RefreshMods.SectionText = "Refresh mods list";
             this.SectionButton_RefreshMods.SelectedSection = false;
-            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2558, 35);
+            this.SectionButton_RefreshMods.Size = new System.Drawing.Size(2564, 35);
             this.SectionButton_RefreshMods.TabIndex = 52;
             this.SectionButton_RefreshMods.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshMods.Click += new System.EventHandler(this.SectionButton_Refresh_Click);
@@ -528,42 +600,6 @@ namespace Unify.Environment3
             this.Button_Mods_Priority.Text = "Priority: Top to Bottom";
             this.Button_Mods_Priority.UseVisualStyleBackColor = false;
             this.Button_Mods_Priority.Click += new System.EventHandler(this.Button_Priority_Click);
-            // 
-            // Button_Mods_DownerPriority
-            // 
-            this.Button_Mods_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Mods_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Mods_DownerPriority.Enabled = false;
-            this.Button_Mods_DownerPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Mods_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Mods_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Mods_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Mods_DownerPriority.Location = new System.Drawing.Point(377, 1044);
-            this.Button_Mods_DownerPriority.Name = "Button_Mods_DownerPriority";
-            this.Button_Mods_DownerPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Mods_DownerPriority.TabIndex = 48;
-            this.Button_Mods_DownerPriority.Text = "▼";
-            this.ToolTip_Information.SetToolTip(this.Button_Mods_DownerPriority, "Right-click to move the mod to the bottom of the list...");
-            this.Button_Mods_DownerPriority.UseVisualStyleBackColor = false;
-            this.Button_Mods_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
-            // 
-            // Button_Mods_UpperPriority
-            // 
-            this.Button_Mods_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Mods_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Mods_UpperPriority.Enabled = false;
-            this.Button_Mods_UpperPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Mods_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Mods_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Mods_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Mods_UpperPriority.Location = new System.Drawing.Point(346, 1044);
-            this.Button_Mods_UpperPriority.Name = "Button_Mods_UpperPriority";
-            this.Button_Mods_UpperPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Mods_UpperPriority.TabIndex = 47;
-            this.Button_Mods_UpperPriority.Text = "▲";
-            this.ToolTip_Information.SetToolTip(this.Button_Mods_UpperPriority, "Right-click to move the mod to the top of the list...");
-            this.Button_Mods_UpperPriority.UseVisualStyleBackColor = false;
-            this.Button_Mods_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
             // 
             // Button_Mods_DeselectAll
             // 
@@ -930,6 +966,7 @@ namespace Unify.Environment3
             this.ComboBox_Height.Name = "ComboBox_Height";
             this.ComboBox_Height.Size = new System.Drawing.Size(275, 23);
             this.ComboBox_Height.TabIndex = 161;
+            this.ComboBox_Height.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Emulator_SelectedIndexChanged);
             // 
             // Label_Description_Height
             // 
@@ -1255,42 +1292,6 @@ namespace Unify.Environment3
             this.Button_Patches_Priority.UseVisualStyleBackColor = false;
             this.Button_Patches_Priority.Click += new System.EventHandler(this.Button_Priority_Click);
             // 
-            // Button_Patches_DownerPriority
-            // 
-            this.Button_Patches_DownerPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Patches_DownerPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Patches_DownerPriority.Enabled = false;
-            this.Button_Patches_DownerPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Patches_DownerPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Patches_DownerPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Patches_DownerPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_DownerPriority.Location = new System.Drawing.Point(377, 1044);
-            this.Button_Patches_DownerPriority.Name = "Button_Patches_DownerPriority";
-            this.Button_Patches_DownerPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Patches_DownerPriority.TabIndex = 55;
-            this.Button_Patches_DownerPriority.Text = "▼";
-            this.ToolTip_Information.SetToolTip(this.Button_Patches_DownerPriority, "Right-click to move the patch to the bottom of the list...");
-            this.Button_Patches_DownerPriority.UseVisualStyleBackColor = false;
-            this.Button_Patches_DownerPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
-            // 
-            // Button_Patches_UpperPriority
-            // 
-            this.Button_Patches_UpperPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Patches_UpperPriority.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Button_Patches_UpperPriority.Enabled = false;
-            this.Button_Patches_UpperPriority.FlatAppearance.BorderSize = 0;
-            this.Button_Patches_UpperPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Button_Patches_UpperPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Button_Patches_UpperPriority.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Button_Patches_UpperPriority.Location = new System.Drawing.Point(346, 1044);
-            this.Button_Patches_UpperPriority.Name = "Button_Patches_UpperPriority";
-            this.Button_Patches_UpperPriority.Size = new System.Drawing.Size(26, 23);
-            this.Button_Patches_UpperPriority.TabIndex = 54;
-            this.Button_Patches_UpperPriority.Text = "▲";
-            this.ToolTip_Information.SetToolTip(this.Button_Patches_UpperPriority, "Right-click to move the patch to the top of the list...");
-            this.Button_Patches_UpperPriority.UseVisualStyleBackColor = false;
-            this.Button_Patches_UpperPriority.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_Priority_Iteration_MouseUp);
-            // 
             // Button_Patches_DeselectAll
             // 
             this.Button_Patches_DeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1370,7 +1371,7 @@ namespace Unify.Environment3
             this.SectionButton_RefreshPatches.SectionImage = ((System.Drawing.Bitmap)(resources.GetObject("SectionButton_RefreshPatches.SectionImage")));
             this.SectionButton_RefreshPatches.SectionText = "Refresh patches list";
             this.SectionButton_RefreshPatches.SelectedSection = false;
-            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1955, 35);
+            this.SectionButton_RefreshPatches.Size = new System.Drawing.Size(1961, 35);
             this.SectionButton_RefreshPatches.TabIndex = 52;
             this.SectionButton_RefreshPatches.TextColour = System.Drawing.SystemColors.Control;
             this.SectionButton_RefreshPatches.Click += new System.EventHandler(this.SectionButton_Refresh_Click);

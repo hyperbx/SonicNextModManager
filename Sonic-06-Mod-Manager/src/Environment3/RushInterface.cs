@@ -172,7 +172,7 @@ namespace Unify.Environment3
                 ComboBox_API.SelectedIndex          = Properties.Settings.Default.Emulator_API;
                 ComboBox_UserLanguage.SelectedIndex = Properties.Settings.Default.Emulator_UserLanguage;
                 ComboBox_Width.SelectedIndex        = Properties.Settings.Default.Emulator_Width;
-                ComboBox_Height.SelectedIndex        = Properties.Settings.Default.Emulator_Height;
+                ComboBox_Height.SelectedIndex       = Properties.Settings.Default.Emulator_Height;
                 ComboBox_Reflections.SelectedIndex  = Properties.Settings.Default.Tweak_Reflections;
                 ComboBox_AntiAliasing.SelectedIndex = Properties.Settings.Default.Tweak_AntiAliasing;
                 ComboBox_CameraType.SelectedIndex   = Properties.Settings.Default.Tweak_CameraType;
