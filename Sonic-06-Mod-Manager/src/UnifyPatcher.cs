@@ -105,7 +105,7 @@ namespace Unify.Patcher
                 //If the file is not an archive or it shouldn't be merged, just copy it
                 } else {
                     // Skip if file doesn't exist in the base game and it's not custom.
-                    if (!File.Exists(vanillaFilePath) && !custom.Contains(Path.GetFileName(file))) return;
+                    if (!File.Exists(vanillaFilePath) && !custom.Contains(Path.GetFileName(file))) continue;
 
                     Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Copy] {file}");
                     File.Copy(file, vanillaFilePath, true);
@@ -168,19 +168,20 @@ namespace Unify.Patcher
         /// </summary>
         public static void UninstallCustomFilesystem(ListView.ListViewItemCollection listViewItems) {
             if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable)) { // If the game directory is empty/doesn't exist, ignore request
+                DirectoryInfo di = new DirectoryInfo(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable));
                 foreach (ListViewItem mod in listViewItems) {
                     string[] custom = INI.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
 
                     if (custom[0] != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
                         foreach (string file in custom) {
-                            // Search for all files with filters from custom
-                            List<string> files = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable), file, SearchOption.AllDirectories).ToList();
-                                
-                            foreach (string customfile in files)
+                            foreach (var fi in di.EnumerateFiles($"*{file}", SearchOption.AllDirectories)) {
                                 try {
-                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {customfile}");
-                                    File.Delete(customfile); // If custom archive is found, erase...
-                                } catch { }
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {fi.Name}");
+                                    File.Delete(fi.FullName); // If custom file is found, erase...
+                                }
+                                catch { }
+
+                            }
                         }
                     }
                 }
