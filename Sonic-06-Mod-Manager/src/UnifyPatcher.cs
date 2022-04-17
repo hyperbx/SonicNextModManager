@@ -176,7 +176,7 @@ namespace Unify.Patcher
                         foreach (string file in custom) {
                             foreach (var fi in di.EnumerateFiles($"*{file}", SearchOption.AllDirectories)) {
                                 try {
-                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {fi.Name}");
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {fi.FullName}");
                                     File.Delete(fi.FullName); // If custom file is found, erase...
                                 }
                                 catch { }
