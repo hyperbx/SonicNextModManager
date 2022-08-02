@@ -168,19 +168,18 @@ namespace Unify.Patcher
         /// </summary>
         public static void UninstallCustomFilesystem(ListView.ListViewItemCollection listViewItems) {
             if (Paths.CheckFileLegitimacy(Properties.Settings.Default.Path_GameExecutable)) { // If the game directory is empty/doesn't exist, ignore request
-                DirectoryInfo di = new DirectoryInfo(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable));
+                string[] gameFiles = Directory.GetFiles(Path.GetDirectoryName(Properties.Settings.Default.Path_GameExecutable), "*.*", SearchOption.AllDirectories); // Get the game files.
                 foreach (ListViewItem mod in listViewItems) {
                     string[] custom = INI.DeserialiseKey("Custom", mod.SubItems[6].Text).Split(','); // Deserialise 'Custom' key
 
                     if (custom[0] != string.Empty) { // Speeds things up a bit - ensures it's not checking a default null parameter
                         foreach (string file in custom) {
-                            foreach (var fi in di.EnumerateFiles($"*{file}", SearchOption.AllDirectories)) {
-                                try {
-                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {fi.FullName}");
-                                    File.Delete(fi.FullName); // If custom file is found, erase...
+                            foreach (string gameFile in gameFiles) {
+                                // Check if this file has the name of one of our custom files, if so, delete it.
+                                if (Path.GetFileName(gameFile) == file) {
+                                    Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Remove] {gameFile}");
+                                    File.Delete(gameFile);
                                 }
-                                catch { }
-
                             }
                         }
                     }
