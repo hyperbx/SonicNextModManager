@@ -2266,10 +2266,10 @@ namespace Unify.Environment3
                     }
 
             // Encrypt if decrypted EBOOT
-            if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") {
-                Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Patch] Encrypted game executable...");
-                PatchEngine.EncryptExecutable();
-            }
+            //if (PatchEngine.decrypted && Literal.System(Properties.Settings.Default.Path_GameExecutable) == "PlayStation 3") {
+              //  Console.WriteLine($"[{DateTime.Now:hh:mm:ss tt}] [Patch] Encrypted game executable...");
+            //    PatchEngine.EncryptExecutable();
+          //  }
         }
 
         /// <summary>
