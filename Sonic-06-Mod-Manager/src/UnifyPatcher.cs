@@ -1844,8 +1844,6 @@ namespace Unify.Patcher
     class EBOOT
     {
         public static void Encrypt(string filepath) {
-            //string encryptedLocation = Path.ChangeExtension(filepath, "BIN_encrypt");
-
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo {
                 WindowStyle = ProcessWindowStyle.Hidden,
@@ -1856,11 +1854,6 @@ namespace Unify.Patcher
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
-
-           // if (File.Exists(encryptedLocation)) {
-              //  File.Delete(filepath);
-             //   File.Move(encryptedLocation, filepath);
-            //}
         }
 
         public static void Decrypt(string filepath) {
