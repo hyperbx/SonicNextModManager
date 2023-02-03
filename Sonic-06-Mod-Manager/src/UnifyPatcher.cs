@@ -1844,22 +1844,16 @@ namespace Unify.Patcher
     class EBOOT
     {
         public static void Encrypt(string filepath) {
-            string encryptedLocation = Path.ChangeExtension(filepath, "BIN_encrypt");
-
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo {
                 WindowStyle = ProcessWindowStyle.Hidden,
-                FileName = Program.make_fself,
-                Arguments = $"\"{filepath}\" \"{encryptedLocation}\""
+                FileName = Program.scetool,
+                Arguments = $"-0 SELF -1 FALSE -s FALSE -2 0A -3 1010000001000003 -4 01000002 -5 APP -A 0001000000000000 -6 0003005500000000 -9 00000000000000000000000000000000000000000000003B0000000100040000 -e \"{filepath}\" \"{filepath}\"", //3.55 keys
+                WorkingDirectory = Path.GetDirectoryName(Program.scetool)
             };
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
-
-            if (File.Exists(encryptedLocation)) {
-                File.Delete(filepath);
-                File.Move(encryptedLocation, filepath);
-            }
         }
 
         public static void Decrypt(string filepath) {
