@@ -19,11 +19,6 @@ namespace SonicNextModManager.Metadata
         /// </summary>
         public ObservableCollection<string> Patches { get; set; } = [];
 
-        /// <summary>
-        /// A collection of DLL modules required by this mod.
-        /// </summary>
-        public ObservableCollection<string> Modules { get; set; } = [];
-
         public Mod() { }
 
         public Mod(string? in_file)

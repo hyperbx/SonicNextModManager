@@ -210,26 +210,6 @@ namespace SonicNextModManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] SonicNextModLoaderPS3 {
-            get {
-                object obj = ResourceManager.GetObject("SonicNextModLoaderPS3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] SonicNextModLoaderXbox {
-            get {
-                object obj = ResourceManager.GetObject("SonicNextModLoaderXbox", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] vsh_curves {
             get {
                 object obj = ResourceManager.GetObject("vsh_curves", resourceCulture);

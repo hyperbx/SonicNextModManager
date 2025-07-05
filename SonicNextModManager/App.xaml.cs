@@ -44,11 +44,9 @@ namespace SonicNextModManager
 
         public static Dictionary<string, string> Modules { get; } = new()
         {
-            { "xextool",    Path.Combine(Directories["Resources"], @"Libraries\Xbox\xextool.exe")                    },
-            { "scetool",    Path.Combine(Directories["Resources"], @"Libraries\PlayStation\scetool.exe")             },
-            { "make_fself", Path.Combine(Directories["Resources"], @"Libraries\PlayStation\make_fself.exe")          },
-            { "LoaderXbox", Path.Combine(Directories["Resources"], @"Libraries\Xbox\SonicNextModLoader.xex")         },
-            { "LoaderPS3",  Path.Combine(Directories["Resources"], @"Libraries\PlayStation\SonicNextModLoader.sprx") }
+            { "xextool",    Path.Combine(Directories["Resources"], @"Libraries\Xbox\xextool.exe")           },
+            { "scetool",    Path.Combine(Directories["Resources"], @"Libraries\PlayStation\scetool.exe")    },
+            { "make_fself", Path.Combine(Directories["Resources"], @"Libraries\PlayStation\make_fself.exe") }
         };
 
         /// <summary>

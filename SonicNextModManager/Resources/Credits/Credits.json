@@ -31,20 +31,6 @@
     ]
   },
   {
-    "Category": "Sonic '06 Mod Loader",
-    "Contributors": [
-      {
-        "Name": "Hyper",
-        "Description": "Programming",
-        "URL": "https://github.com/hyperbx"
-      },
-      {
-        "Name": "Reimous-TH",
-        "Description": "Bootstrapper (Xbox 360)"
-      }
-    ]
-  },
-  {
     "Category": "Marathon",
     "Contributors": [
       {
